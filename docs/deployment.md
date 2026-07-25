@@ -20,6 +20,10 @@ now:
    ```bash
    cp -r frontend/dist/* ~/personal/website/kenmacpherson.com/skib-jay-dee-toilet-game/
    ```
+   Or run the helper script from the repo root:
+   ```bash
+   ./scripts/deploy-static.sh
+   ```
 3. **nginx needs no special config beyond serving static files** from that
    directory — no proxy, no CGI, no Python process. If the existing
    `kenmacpherson.com` server block already serves static files under
