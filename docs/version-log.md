@@ -3,6 +3,51 @@
 This file memorializes the design and plan decisions made during the
 front-end upgrade pass.
 
+## v0.3.0
+
+**Date:** July 26, 2026
+
+### What changed
+
+This entry reconciles v0.2.1–v0.2.4 (which landed piecemeal) into one
+accurate summary of where the code actually ended up this session:
+
+- Added two more levels — The Ramen Aisle and World Star Parking Lot —
+  bringing the total to five (Porcelain Palace → Pipeworks → Flooded
+  Annex → Ramen Aisle → Parking Lot), each with its own theme/wall
+  layout per the PDF's map ideas.
+- Added a lifetime death counter, persisted via cookies, shown on the
+  main menu and in the in-game HUD.
+- Getting caught now deducts 30% of the current skreem total (skreems
+  were previously never lost).
+- Added a multi-chaser mechanic: if the runner survives ~14s of
+  uninterrupted chase, another toilet joins from a random corner (capped
+  at 3 total). All extra chasers reset back to one on capture or level
+  change. HUD shows "TOILETS ON YOU" once more than one is active.
+- Added `crazy-jack-chaser.jpeg` to the chaser face pool.
+- Added `docs/skib-sdlc.md` (session process for every agent),
+  `docs/roadmap.md` (phased backlog + a levels/maps scaling plan, plan
+  only), and `docs/sound-effects-howto.md` (audio how-to, nothing
+  implemented yet).
+
+### Design / plan note
+
+- Death and skreem-loss are treated as part of the core economy now, not
+  just a display counter — this is what makes surviving vs. getting
+  caught actually matter for the sheeb payout loop.
+- Multi-chaser pressure is deliberately time-based (not skill-based) so
+  a level can't be trivially "camped" once the runner learns the map —
+  it forces the level-advance skreem threshold to be cleared before the
+  chase gets harder than intended.
+- Level data is still hardcoded per-level `buildXxx()` functions. That's
+  fine at 5 levels; the roadmap's levels/maps plan says to extract it to
+  data *before* hand-authoring a 6th/7th.
+
+### Known non-goals for this version
+
+- No audio, no intro cinematic, no face-crop, no backend/multiplayer —
+  all still open, tracked in `docs/roadmap.md`.
+
 ## v0.2.4
 
 **Date:** July 26, 2026

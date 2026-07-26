@@ -6,10 +6,11 @@ satirical Skibidi Toilet parody. Skibidty Toilet Guy hunts Jayden through
 for the full design doc, characters, and dialogue script.
 
 **Status: Phase 1+** — core engine, movement, chase mechanic, jump-scare,
-face upload, three playable levels, desktop key support, Shleeb shop,
-cookie-backed user persistence, and a persistent kill counter.
-Multiplayer, role-swapping, and deeper content passes remain future work
-(see [Roadmap](#roadmap) below).
+face upload, five playable levels, desktop key support, Shleeb shop,
+cookie-backed user persistence, a lifetime death counter with a skreem
+penalty on capture, and a multi-chaser mechanic that adds more toilets if
+a level runs long. Multiplayer, role-swapping, audio, and the intro
+cinematic remain future work — see [docs/roadmap.md](docs/roadmap.md).
 
 ## Quick start
 
@@ -47,7 +48,8 @@ multiplayer. See [docs/dev-notes.md](docs/dev-notes.md) for why.
 ```
 frontend/            Vite + React app
   src/GameEngine.js   Canvas game loop, joystick + keyboard input, multi-
-                      level chase AI, jump-scare camera zoom — plain JS
+                      level chase AI, multi-chaser spawning, death/skreem
+                      economy, jump-scare camera zoom — plain JS
   src/App.jsx         Main menu, face upload, Shleeb shop, mounts GameEngine
   src/gameContent.js  Random face gallery + shop item definitions
   src/lib/cookies.js  Cookie-backed profile persistence
@@ -76,14 +78,23 @@ the backend actually gets wired up in a later phase.
 
 | Phase | Focus | Status |
 |---|---|---|
-| 1 | Core chase loop, jump-scare, face upload, desktop controls, 3 levels, Shleeb shop, cookie profile | **Done** (this repo) |
-| 2 | FastAPI WebSocket multiplayer, lobby, server-authoritative roles | Backend scaffolded, not wired up |
+| 1 | Core chase loop, jump-scare, face upload, desktop controls | **Done** |
+| 1.5 | 5 levels, Shleeb shop, cookie profile, death/skreem economy, multi-chaser pressure | **Done** |
+| 2 | Audio pass | Not started |
+| 2.5 | World Star intro cinematic | Not started |
 | 3 | More characters, abilities, map variants, role-swapping | Not started |
-| 4 | Audio pass, intro cinematic, oval face crop, saved cosmetics, UI polish | Not started |
+| 4 | Oval face-crop on upload | Not started |
+| 5 | FastAPI WebSocket multiplayer, lobby, server-authoritative roles | Backend scaffolded, not wired up |
 
-Full detail in the source design doc and [docs/code-seed-initial.md](docs/code-seed-initial.md).
+The full phased backlog — broken into single-session-sized increments, plus
+a plan for scaling level/map authoring — lives in
+[docs/roadmap.md](docs/roadmap.md). Full original design detail is in the
+source PDF and [docs/code-seed-initial.md](docs/code-seed-initial.md).
 
 Versioned design and plan notes live in [docs/version-log.md](docs/version-log.md).
+Every agent working in this repo follows the process in
+[docs/skib-sdlc.md](docs/skib-sdlc.md). Adding sound effects? Start at
+[docs/sound-effects-howto.md](docs/sound-effects-howto.md).
 
 For a ready-to-paste brief on what to do next, see
 [docs/update-directions.md](docs/update-directions.md).

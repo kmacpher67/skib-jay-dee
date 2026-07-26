@@ -5,7 +5,7 @@ Use this as the handoff doc for the next agent working in the repo.
 ## Current state
 
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
-- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, three levels, desktop keyboard controls, and sprint fixes.
+- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, and a multi-chaser mechanic (extra toilets join in if a level runs long).
 - `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, and the play/session handoff.
 - Default faces are randomly shuffled from the local gallery each time the user presses play, unless they upload custom faces.
 - User id, sheeb balance, purchased items, death count, and highest cleared level persist in cookies.
@@ -30,12 +30,16 @@ Use this as the handoff doc for the next agent working in the repo.
 - Mobile joystick still works bottom-left.
 - Sprint button is now a hold-to-run state instead of getting stuck.
 - Desktop players can use Arrow keys or WASD to move and SPACE to boost.
-- The canvas currently has three levels:
+- The canvas currently has five levels:
   - Porcelain Palace
   - Pipeworks
   - Flooded Annex
+  - The Ramen Aisle
+  - World Star Parking Lot
 - The Shleeb shop is front-end only and sells stat upgrades that persist in cookies.
-- The profile also tracks how many times the runner has been killed and shows it in the menu/HUD.
+- The profile tracks lifetime deaths (shown in the menu and the in-game HUD); getting caught also deducts a chunk of the current skreem total.
+- If the runner survives a level too long without getting caught, extra toilets join the chase (capped, resets on capture or level change) — the HUD shows "TOILETS ON YOU" once more than one is active.
+- New chaser/runner faces are added by dropping an image in `frontend/src/assets/` and adding one entry to `RUNNER_FACE_POOL` / `CHASER_FACE_POOL` in `frontend/src/gameContent.js` — see `crazy-jack-chaser` for the pattern.
 
 ## Where to edit things
 
@@ -52,7 +56,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - Use [docs/sound-effects-howto.md](docs/sound-effects-howto.md) as the starting point for the audio pass.
 - Crop or mask uploaded faces instead of stretching the raw image.
 - Add more character roles or abilities from the PDF roster.
-- Add more level variants once the current three feel tuned.
+- Extract level data out of hardcoded map-builder functions before hand-authoring more levels — see the level/map plan in [docs/roadmap.md](docs/roadmap.md).
 - Wire up backend persistence or multiplayer only after the front-end loop feels solid.
 
 ## Version record
