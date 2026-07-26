@@ -24,6 +24,10 @@ export const CHASER_LINES = [
   'AAAAAHHHH SKIBIDI!',
   "I CAN HEAR YOU SCREEEEAMING!",
   'SKIBIDI DOP DOP DOP YES YES!',
+  "Do you think we own the electric company?!",
+  "I'm not mad, Jayden. I'm just disappointed.",
+  "Ask your mother.",
+  "Who left the lights on in here?!",
 ]
 
 // Shown near the runner the moment stamina bottoms out mid-sprint.

@@ -31,7 +31,8 @@ slice to either local Ollama or OpenRouter.
 - Default local Ollama profile: `thinkpad-local`
 - Profile-specific host/model env vars are preferred; `OLLAMA_HOST` is
   the fallback
-- Alternate backend: `openrouter`
+- Alternate backend: `openrouter` (requires exporting `OPENROUTER_API_KEY` or `SKIB_CODE_MONKEY_OPENROUTER_KEY`)
 
 The wrapper reads the handoff copy-paste block, so keep that block short,
-explicit, and safe to run unattended.
+explicit, and safe to run unattended. If using Ollama, ensure your bounded
+copy-paste slices are **very small** to avoid long model timeouts.

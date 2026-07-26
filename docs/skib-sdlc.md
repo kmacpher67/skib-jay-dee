@@ -99,6 +99,8 @@ machine-readable when you want a code-monkey run:
   or its dispatch section. Default backend is local `ollama` on
   the shell's `OLLAMA_HOST`; use `openrouter` when you want a remote
   model.
+- **API Keys**: If using `openrouter`, you must export your API key as an environment variable before running the script: `export OPENROUTER_API_KEY="your-key-here"` or `export SKIB_CODE_MONKEY_OPENROUTER_KEY="your-key-here"`. This is best placed in your `~/.bashrc` or local environment configuration.
+- **Work Slices & Timeouts**: Local models (like Ollama) can take a long time to generate code and may time out. Ensure that your bounded copy-paste work slices are kept **very small** in the handoff document. If a task requires massive changes, break it down into smaller sequential handoffs.
 - For Ollama host selection, prefer the named profile selector
   (`thinkpad-local` or `desktop-gaming`) instead of hard-coding URLs;
   let the profile-specific env vars win and keep `OLLAMA_HOST` as the
