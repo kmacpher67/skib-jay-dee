@@ -6,6 +6,48 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.10 — 5-skib Pipeworks + delayed ambient pass (2026-07-26)
+
+### What changed
+
+- Bumped `MAX_CHASERS` from 4 to 5 so Pipeworks now expects five active,
+  fully ramped chasers before its pressure meter can advance the level.
+  Kept `PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL = 68` unchanged because the
+  existing threshold still felt playable with the extra chaser.
+- Changed `GameEngine.onLevelClear` to carry `{ index, name }` and moved
+  the lvl2 transition trigger out of `handleLevelChange` and into
+  `handleLevelClear`, so `lvl2-transition.mp4` now waits for the actual
+  Pipeworks clear event instead of the arrival event.
+- Added an `onExtraChaserSpawn` callback and used it, plus a 15-second
+  timer, to arm the chase ambience only after tension has built instead
+  of starting `chase-ambient-bopbop.mp3` the instant the chase screen
+  appears.
+- Verified the behavior in-browser against the built preview: no early
+  ambient start, ambient logs once the first extra chaser is forced in,
+  five chasers are present, and the lvl2 overlay stays hidden until
+  Pipeworks is cleared.
+
+### Design decisions
+
+- Kept the Pipeworks threshold at 68 rather than tuning it just because
+  the cap increased; the run already had the extra-chaser speed ramp and
+  the 68-point threshold still produced a reasonable clear pace in the
+  browser check.
+- Chose an explicit `onExtraChaserSpawn` hook instead of polling in
+  React so the ambient layer can react immediately to game-state changes
+  without coupling `App.jsx` to engine internals.
+- Preserved the mute/autoplay guards by making the ambient track
+  "armable" separately from "currently playing." That keeps the delay
+  intact even if the browser blocks the first play call until a later
+  unmute or user gesture.
+
+### Known non-goals for this pass
+
+- No `GAME_ITERATION` bump or deploy.
+- No new death clip or death-vs-video overlap changes beyond the timing
+  fix itself.
+- No audio ducking or 1:1 bark/capture voice clip work yet.
+
 ## v0.4.9 — Pipeworks clear condition pass (2026-07-26)
 
 ### What changed

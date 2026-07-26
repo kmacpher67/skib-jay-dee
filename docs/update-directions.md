@@ -5,8 +5,8 @@ Use this as the handoff doc for the next agent working in the repo.
 ## Current state
 
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
-- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long), and the discreet iteration badge in the HUD.
-- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, and the matching menu build tag.
+- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), and the discreet iteration badge in the HUD.
+- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, the lvl2 transition timing, and the matching menu build tag.
 - `frontend/src/version.js` is the single place to bump the visible iteration number.
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
   can dispatch a bounded handoff to local Ollama using the shell's
@@ -22,9 +22,9 @@ Use this as the handoff doc for the next agent working in the repo.
 - The frontend now has a starter audio loop in `frontend/src/assets/audio/jayden-skreem-loop.m4a`; the menu primes it on first interaction and the caught transition reuses the same clip as a quick sting.
 - All in-game text lives in `frontend/src/dialog.js` (`CAPTURE_LINES`, `CHASER_LINES`, `TIRED_LINES`) — edit lines there, not in `GameEngine.js`.
 - Chaser speed is now rubber-banded across a run (mellows out on capture, ramps up on level-up) instead of fixed per level; see `CHASER_SPEED_MOD_*` constants in `GameEngine.js`. Levels also last longer (raised `advanceAt`) and proximity skreem gain/chaser barks are more frequent.
-- `GameEngine` now exposes `onBoostStart`, `onTired`, `onChaserBark`, and `onLevelClear` constructor-option hooks, all wired to real audio as of v0.4.0 (see below) — no more no-ops.
+- `GameEngine` now exposes `onBoostStart`, `onTired`, `onChaserBark`, `onLevelClear`, and `onExtraChaserSpawn` constructor-option hooks, all wired to real audio or timing hooks as of v0.4.10 — no more no-ops.
 - **v0.4.0 audio pass:** the 11 recorded voice clips from `/audio/` (scratch, now removed) were transcoded to mono 44.1kHz mp3 and moved into `frontend/src/assets/audio/` with names describing their in-game role. They're wired into `App.jsx`: chase ambience loop, capture sting, chaser bark/scream/taunt pool, boost stinger, tired groan, level-start/level-clear stings. A cookie-persisted mute toggle (`profile.muted`) has a button on the menu and in-game HUD.
-- **Lvl2 video transition:** `frontend/src/assets/video/lvl2-transition.mp4` (moved from repo-root `/video/`) plays once as a full-screen overlay the first time a run reaches level 2. User-flagged as a rough clip — treat as a proof of concept, see `docs/future-versions.md`.
+- **Lvl2 video transition:** `frontend/src/assets/video/lvl2-transition.mp4` (moved from repo-root `/video/`) plays once as a full-screen overlay the first time a run clears Pipeworks and reaches level 2. User-flagged as a rough clip — treat as a proof of concept, see `docs/future-versions.md`.
 - A new docs-only plan now queues a funny near-capture interlude that uses `frontend/src/assets/jayden-getting-captured.jpg` as a pause card with parody captions. It is intentionally separate from the real caught/jump-scare state.
 - Full session detail: `docs/handoffs/roadmap-handoff-v0.4.0.md`. Flat change history: `docs/handoffs/ledger.md`. Scoped-out work: `docs/future-versions.md`.
 - **v0.4.1-plan (docs-only):** no code changed, `GAME_ITERATION` is still `v0.4.0`. `docs/characters.md` was rewritten with real content (runner pose table, chaser roster table, planned-new-chasers section). Two new chasers are queued as plan-only roadmap items — Sky-Diver (Motor Killer), source photo already at `images/sky-diver-motor-killer.png`; and a second Yoodeling Unc pose, photo not yet saved to the repo. Also reviewed (not fixed) two randomization gaps: all simultaneous chasers share one face (`frontend/src/GameEngine.js:419-421`), and the five `RUNNER_FACE_POOL` poses are never mapped to game state. See `docs/handoffs/roadmap-handoff-v0.4.1-plan.md` for the copy-paste next-steps block.
@@ -103,23 +103,18 @@ manually:
 
 ## Natural follow-up work
 
-- The v0.4.3-plan three-session backlog is now underway: extra-chaser
-  speed ramp landed in v0.4.8, and Pipeworks's 4-chaser/max-speed clear
-  condition landed in v0.4.9. Next up is Session 3: the lvl2 video timing fix
-  plus death-visual verification. See `docs/handoffs/roadmap-handoff-v0.4.9.md` for the
-  copy-paste next-steps block.
+- The v0.4.3-plan three-session backlog is now fully resolved:
+  extra-chaser speed ramp landed in v0.4.8, Pipeworks's 4-chaser/max-speed
+  clear condition landed in v0.4.9, and the lvl2 video timing fix plus
+  death-visual verification landed in v0.4.10.
 - A separate docs-only planning pass now adds a funny near-capture
   interlude item to `docs/roadmap.md` that pauses the chase and shows
   `jayden-getting-captured.jpg` with parody captions. That item is its
   own increment, not folded into the runner pose mapping.
-- Pick up the remaining items queued in `docs/roadmap.md` from the
-  v0.4.2-plan session (highest priority — direct user playtest
-  feedback, and now fully unblocked, no more open questions):
-  fix the lvl2-video arrival-vs-clear timing bug, then verify the death
-  jump-scare isn't blocked by the video overlay. See
-  `docs/handoffs/roadmap-handoff-v0.4.9.md` and
-  `docs/next-agent-coding-brief.md` for exact file/line references,
-  dependency order, and a copy-paste starting prompt.
+- Pick up the remaining open items queued in `docs/roadmap.md` in the
+  order that best fits a single session. The smallest clear follow-ups
+  right now are the 1:1 audio clip work, the World Star intro cinematic,
+  and the face-crop upload pass.
 - Runner pose-to-state mapping landed in v0.4.6 — no longer on this list.
   Its one loose end is a Ken-only ask, not a coding task: supply real
   distinct photos for `jayden-getting-captured`/`jayden-uncaring-4029`
@@ -132,12 +127,9 @@ manually:
   `jayden-getting-captured.jpg` full-screen with a random parody caption
   when a skib gets too close, distinct from the real caught/jump-scare
   path.
-- Also still open: the rest of the v0.4.2-plan/v0.4.3-plan backlog, in
-  order — the lvl2-video arrival-vs-clear timing fix, then death-visual
-  overlap verification (extra-chaser speed ramp landed in v0.4.8, Pipeworks clear condition in v0.4.9). Fully spec'd
-  in `docs/handoffs/roadmap-handoff-v0.4.9.md` and
-  `docs/next-agent-coding-brief.md` — the highest-priority backlog since
-  it traces to direct user playtest feedback.
+- Also still open: the 1:1 audio clip work, the World Star intro
+  cinematic, the face-crop upload pass, and the other smaller future
+  items parked in `docs/roadmap.md`.
 - Do a real sound-on playthrough of the v0.4.0 audio pass — it was wired and tested (build + Playwright) but never actually listened to in this sandbox (no speakers). Check volume balance before building more on top of it.
 - Audio polish: volume ducking, a real composed menu theme, 1:1 capture-line/chaser-bark clips instead of a themed pool. See [docs/future-versions.md](docs/future-versions.md).
 - Add a skip button to the lvl2 video transition, and/or replace the clip (user-flagged as rough).

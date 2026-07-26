@@ -30,6 +30,7 @@ export default function GameCanvas({
   onTired,
   onChaserBark,
   onLevelClear,
+  onExtraChaserSpawn,
 }) {
   const canvasRef = useRef(null)
   const engineRef = useRef(null)
@@ -47,6 +48,7 @@ export default function GameCanvas({
       onTired,
       onChaserBark,
       onLevelClear,
+      onExtraChaserSpawn,
       initialSheebs,
       initialDeaths,
       loadout: {

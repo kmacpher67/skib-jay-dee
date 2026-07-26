@@ -50,6 +50,8 @@ export default function App() {
   const catchAudioRef = useRef(null)
   const oneShotPoolRef = useRef(new Map())
   const ambientAudioRef = useRef(null)
+  const ambientDelayTimerRef = useRef(null)
+  const ambientArmedRef = useRef(false)
 
   const syncProfile = (updater) => {
     setProfile((current) => {
@@ -109,9 +111,22 @@ export default function App() {
   const handleBoostStart = () => playOneShot(boostStartUrl, 0.35)
   const handleTired = () => playOneShot(tiredUrl, 0.35)
   const handleChaserBark = () => playRandomOneShot(CHASER_BARK_URLS, 0.32)
-  const handleLevelClear = () => playOneShot(levelClearUrl, 0.4)
+  const handleLevelClear = ({ index } = {}) => {
+    playOneShot(levelClearUrl, 0.4)
+    if (index === 2) setShowLvl2Transition(true)
+  }
 
   const handleLevelChangeAudio = () => playOneShot(levelStartUrl, 0.35)
+
+  const startAmbientAudio = () => {
+    if (!ambientArmedRef.current) return
+    playAudio(getAmbientAudio(), false)
+  }
+
+  const armAmbientAudio = () => {
+    ambientArmedRef.current = true
+    startAmbientAudio()
+  }
 
   const toggleMuted = () => {
     syncProfile((current) => ({ ...current, muted: !current.muted }))
@@ -159,13 +174,13 @@ export default function App() {
       highestLevel: Math.max(current.highestLevel, index),
     }))
     handleLevelChangeAudio()
-    // Experimental: play the lvl2 transition clip once, the first time a run
-    // reaches Pipeworks. Rough first pass — see docs/roadmap.md "Intro
-    // cinematic" item for the fuller scripted-transition plan.
-    if (index === 2) setShowLvl2Transition(true)
   }
 
   const hideLvl2Transition = () => setShowLvl2Transition(false)
+
+  const handleExtraChaserSpawn = () => {
+    armAmbientAudio()
+  }
 
   const handleCaught = (captureLine) => {
     setLastCaptureLine(captureLine)
@@ -183,10 +198,22 @@ export default function App() {
 
   useEffect(() => {
     if (screen === 'playing') {
-      playAudio(getAmbientAudio(), false)
+      ambientArmedRef.current = false
+      if (ambientDelayTimerRef.current) clearTimeout(ambientDelayTimerRef.current)
+      ambientDelayTimerRef.current = setTimeout(() => {
+        ambientDelayTimerRef.current = null
+        armAmbientAudio()
+      }, 15000)
     } else if (ambientAudioRef.current) {
+      ambientArmedRef.current = false
+      if (ambientDelayTimerRef.current) clearTimeout(ambientDelayTimerRef.current)
+      ambientDelayTimerRef.current = null
       ambientAudioRef.current.pause()
       ambientAudioRef.current.currentTime = 0
+    }
+    return () => {
+      if (ambientDelayTimerRef.current) clearTimeout(ambientDelayTimerRef.current)
+      ambientDelayTimerRef.current = null
     }
   }, [screen])
 
@@ -194,8 +221,8 @@ export default function App() {
     if (muted) {
       menuAudioRef.current?.pause()
       ambientAudioRef.current?.pause()
-    } else if (screen === 'playing') {
-      playAudio(getAmbientAudio(), false)
+    } else if (screen === 'playing' && ambientArmedRef.current) {
+      startAmbientAudio()
     } else if (screen === 'menu') {
       // Menu loop only resumes on the next user gesture (see onPrimeAudio),
       // browsers won't allow us to unmute-and-autoplay here.
@@ -278,6 +305,7 @@ export default function App() {
               onTired={handleTired}
               onChaserBark={handleChaserBark}
               onLevelClear={handleLevelClear}
+              onExtraChaserSpawn={handleExtraChaserSpawn}
             />
             {showLvl2Transition && (
               <video

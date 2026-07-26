@@ -10,6 +10,13 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.10 — 2026-07-26
+
+- Bumped Pipeworks to 5 simultaneous chasers, kept the pressure goal at 68, and confirmed the level still clears with all five ramped up.
+- Moved the lvl2 transition trigger from arrival to clear by passing `{ index, name }` through `onLevelClear`.
+- Delayed the chase ambience until the run has built tension, either after 15 seconds or the first extra chaser spawn.
+- Verified in-browser that the ambient does not fire immediately, the five-chaser state appears, and the lvl2 overlay only shows after Pipeworks clears.
+
 ## v0.4.9 — 2026-07-26
 
 - Implemented Pipeworks's 4-chaser/max-speed clear condition (Session 2 of the v0.4.3-plan backlog): bumped `MAX_CHASERS` to 4, and made Pipeworks only advance when a separate `pipeworksSkreems` counter reaches `PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL = 68` while all 4 chasers are active and fully ramped (`joinRamp >= 1`).

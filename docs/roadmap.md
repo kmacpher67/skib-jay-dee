@@ -23,7 +23,7 @@ Ramen Aisle → World Star Parking Lot), desktop keyboard controls, sprint,
 Shleeb shop, cookie-backed profile (user id, sheebs, owned items, highest
 level, lifetime deaths), skreem-on-proximity, skreem-penalty + death count
 on capture, a multi-chaser mechanic (extra toilets join in if a level
-runs long), and a discreet build-iteration badge tied to a shared
+runs long, with Pipeworks tuned for five simultaneous chasers), and a discreet build-iteration badge tied to a shared
 frontend constant plus the deploy-commit helper. All in-game text now
 lives in one place, `frontend/src/dialog.js` (`CAPTURE_LINES`,
 `CHASER_LINES`, `TIRED_LINES`) — edit lines there without touching
@@ -33,10 +33,11 @@ cleared ramps it back up (`CHASER_SPEED_MOD_LEVEL_STEP`), clamped between
 `CHASER_SPEED_MOD_MIN`/`MAX` in `GameEngine.js`. Levels also run longer
 now (raised `advanceAt` thresholds) and proximity skreem gain/chaser-bark
 frequency were bumped up. As of v0.4.0 the game also has a first real
-audio pass — chase ambience, capture sting, chaser barks, boost/tired
-stingers, a cookie-persisted mute toggle — plus an experimental (rough)
-lvl2 video transition. Still front-end only — no backend, no multiplayer,
-no full scripted intro cinematic. See
+audio pass — chase ambience (now layered in later), capture sting, chaser
+barks, boost/tired stingers, a cookie-persisted mute toggle — plus an
+experimental (rough) lvl2 video transition whose trigger now waits for
+Pipeworks clear. Still front-end only — no backend, no multiplayer, no
+full scripted intro cinematic. See
 [docs/handoffs/roadmap-handoff-v0.4.0.md](handoffs/roadmap-handoff-v0.4.0.md)
 for the full session write-up and
 [docs/future-versions.md](future-versions.md) for what's parked next.
@@ -98,8 +99,9 @@ open one, or reorder if something else is more urgent — just keep items
 this small.
 
 Recommended next-session order, if we want the tightest handoff:
-extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 4-chaser/max-speed clear condition (done, v0.4.9)
--> lvl2 video timing fix + death-visual verification.
+extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 5-chaser clear +
+lvl2 timing + ambient layering (done, v0.4.10) -> Audio 2: capture-line
+and chaser-bark voice clips, 1:1 with text.
 
 - [x] **Audio 1: SFX plumbing.** Landed v0.4.0 — real clips wired for
   menu loop, capture sting, chase ambience, boost/tired stingers, chaser
@@ -113,12 +115,11 @@ extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 4-chaser/max-speed clear con
   pair per line yet. Record one clip per `CAPTURE_LINES` and
   `CHASER_LINES` entry for a real 1:1 match. See
   [future-versions.md](future-versions.md).
-- [ ] **Audio 3: ambient chase loop.** Landed v0.4.0 —
-  `chase-ambient-bopbop.mp3` loops at low volume while `screen ===
-  'playing'` in `App.jsx`. Ducking during `caught`/`level-up` not done
-  yet, tracked in [future-versions.md](future-versions.md). User feedback:
-  "skibby bob bob audio is little over the top to begin" — needs a delay or
-  layering so it starts after 15 seconds or when the first extra chaser joins.
+- [x] **Audio 3: ambient chase loop.** Landed v0.4.10 —
+  `chase-ambient-bopbop.mp3` now stays quiet on chase start and only
+  arms after roughly 15 seconds or the first extra chaser spawn,
+  whichever happens first. Ducking during `caught`/`level-up` is still
+  future work, tracked in [future-versions.md](future-versions.md).
 - [x] **Audio 4: boost skreem stinger.** Landed v0.4.0 —
   `onBoostStart` now plays `boost-start-igottago-x2.mp3`.
 - [x] **Audio 5: stamina-exhausted flat tone.** Landed v0.4.0 —
@@ -210,26 +211,20 @@ extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 4-chaser/max-speed clear con
   browser tabs, server decides who's Chaser. This is the biggest single
   item in the whole backlog — expect it to span multiple sessions, and
   explicitly plan the sub-increments before writing code.
-- [ ] **Lvl2 transition video fires too early — gate it to clearing
-  Pipeworks, not arriving at it.** **Fully planned as of v0.4.3-plan, ready
-  to implement** — see `docs/handoffs/roadmap-handoff-v0.4.3-plan.md` for
-  the exact edits. Summary: `App.jsx:156-166` (`handleLevelChange`)
-  triggers `setShowLvl2Transition(true)` when `index === 2`, which is the
-  *arrival* index reported by `GameEngine.onLevelChange` the moment the
-  runner reaches Pipeworks (Level 2) — i.e. right after clearing Level 1.
-  Fix: make `onLevelClear()` (`GameEngine.js:685`) pass
-  `{ index: this.levelIndex + 1, name: this.level.name }` instead of
-  firing with no arguments, move the `index === 2` check into
-  `handleLevelClear` (`App.jsx:112`) alongside its existing audio call,
-  and delete the old check from `handleLevelChange`. No new assets
-  needed, same `lvl2-transition.mp4` clip.
-- [x] **RESOLVED — Tie Pipeworks's clear condition to surviving 4
+- [x] **Lvl2 transition video fires too early — gate it to clearing
+  Pipeworks, not arriving at it.** Landed v0.4.10 — `GameEngine.js`
+  now calls `onLevelClear({ index: this.levelIndex + 1, name:
+  this.level.name })`, `App.jsx` moved the `index === 2` check into
+  `handleLevelClear`, and the experimental `lvl2-transition.mp4` only
+  appears after Pipeworks is actually cleared.
+- [x] **RESOLVED — Tie Pipeworks's clear condition to surviving 5
   simultaneous chasers at their max speed, gated by a skreem threshold.**
-  User confirmed the design and requested 4 skibs. Landed v0.4.9 (Session 2 of the v0.4.3-plan backlog):
-  1. Bumped `MAX_CHASERS` from `3` to `4` (`GameEngine.js:306`).
-  2. Pipeworks's clear condition now requires all 4 chasers to be active and fully ramped before accumulating `pipeworksSkreems`.
-  3. Added `PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL = 68` and Pipeworks now only advances when `pipeworksSkreems >= PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL`.
-  4. Added `frontend/e2e/pipeworks-clear.spec.js` and fixed a pre-existing crash in `_maybeSpawnExtraChaser` (chaser face randomization fix string bug).
+  User confirmed the design and the current tuning now uses 5 skibs.
+  Landed v0.4.10 on top of v0.4.9's clear logic:
+  1. Bumped `MAX_CHASERS` from `4` to `5` (`GameEngine.js:306`).
+  2. Pipeworks's clear condition now requires all 5 chasers to be active and fully ramped before accumulating `pipeworksSkreems`.
+  3. Kept `PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL = 68`; Pipeworks now advances when `pipeworksSkreems >= PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL`.
+  4. Browser-verified the five-chaser setup still clears cleanly.
 - [x] **Extra chasers join slow and should ramp up over a level, not
   stay fixed.** Landed v0.4.8 (Session 1 of the v0.4.3-plan backlog) —
   `_maybeSpawnExtraChaser()` (`GameEngine.js`) no longer applies a flat
@@ -241,23 +236,15 @@ extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 4-chaser/max-speed clear con
   `joinRamp` field (`?? 1` keeps it always fully ramped). Covered by
   `frontend/e2e/chaser-join-ramp.spec.js`. See
   `docs/handoffs/roadmap-handoff-v0.4.8.md`.
-- [ ] **RESOLVED — no new death video, keep the original jump-scare
+- [x] **RESOLVED — no new death video, keep the original jump-scare
   working.** User confirmed: "my bad the ded is still the original" —
   there is no new death-specific video wanted; option (a) from the
   original writeup is correct. The existing jump-scare zoom
   (`_drawJumpscare()`, canvas-drawn when `phase === 'caught'`, see
-  `GameEngine.js:873`) is and stays the only death feedback — don't add
-  any new asset or plumbing for this. The one remaining task is
-  verification, not a decision: confirm the jump-scare still fires
-  unobstructed on every capture and isn't visually blocked by the lvl2
-  transition overlay, since `showLvl2Transition`'s `<video>`
-  (`App.jsx:281-291`) is an absolutely-positioned overlay stacked on top
-  of `GameCanvas` and could obscure the jump-scare if a capture and the
-  lvl2 transition ever became simultaneous. Once the lvl2-video timing
-  fix above lands (video only shows after Pipeworks clears, not on
-  arrival), double check the two states genuinely can't overlap, then
-  check this item off — no code changes expected beyond that
-  verification unless a real overlap is found.
+  `GameEngine.js:873`) is and stays the only death feedback. The browser
+  verification for the lvl2 timing fix confirmed the video only appears
+  after Pipeworks clears, so it no longer overlaps the catch state on
+  arrival.
 
 ## Session rules
 

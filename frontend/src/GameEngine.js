@@ -303,7 +303,7 @@ const LEVELS = [
   },
 ]
 
-const MAX_CHASERS = 4
+const MAX_CHASERS = 5
 const EXTRA_CHASER_INTERVAL = 14 // seconds of uninterrupted chase before another toilet joins
 const PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL = 68
 const DEATH_SKREEM_PENALTY = 0.3 // fraction of skreems lost on capture
@@ -337,6 +337,7 @@ export class GameEngine {
       onTired,
       onChaserBark,
       onLevelClear,
+      onExtraChaserSpawn,
       initialSheebs = 200,
       initialDeaths = 0,
       loadout = {},
@@ -360,6 +361,7 @@ export class GameEngine {
     // the per-level-clear stinger — see Audio 2/3 in docs/roadmap.md.
     this.onChaserBark = onChaserBark || (() => {})
     this.onLevelClear = onLevelClear || (() => {})
+    this.onExtraChaserSpawn = onExtraChaserSpawn || (() => {})
 
     this.runner = {
       x: WORLD.width / 2 - 20,
@@ -702,7 +704,7 @@ export class GameEngine {
       CHASER_SPEED_MOD_MIN,
       CHASER_SPEED_MOD_MAX,
     )
-    this.onLevelClear()
+    this.onLevelClear({ index: this.levelIndex + 1, name: this.level.name })
   }
 
   update(dt) {
@@ -842,6 +844,10 @@ export class GameEngine {
       joinRamp: 0,
       color: this.chaser.color,
       face: extraFace,
+    })
+    this.onExtraChaserSpawn({
+      count: this.chasers.length,
+      index: this.chasers.length - 1,
     })
   }
 
