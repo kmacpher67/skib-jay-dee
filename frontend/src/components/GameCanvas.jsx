@@ -18,10 +18,12 @@ export default function GameCanvas({
   loadoutStaminaBonus,
   loadoutRewardBonus,
   initialSheebs,
+  initialDeaths,
   onCaught,
   onSkreem,
   onLevelChange,
   onSheebsChange,
+  onDeath,
 }) {
   const canvasRef = useRef(null)
   const engineRef = useRef(null)
@@ -34,7 +36,9 @@ export default function GameCanvas({
       onSkreem,
       onLevelChange,
       onSheebsChange,
+      onDeath,
       initialSheebs,
+      initialDeaths,
       loadout: {
         speedBonus: loadoutSpeedBonus,
         staminaBonus: loadoutStaminaBonus,

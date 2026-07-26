@@ -8,7 +8,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, three levels, desktop keyboard controls, and sprint fixes.
 - `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, and the play/session handoff.
 - Default faces are randomly shuffled from the local gallery each time the user presses play, unless they upload custom faces.
-- User id, sheeb balance, purchased items, and highest cleared level persist in cookies.
+- User id, sheeb balance, purchased items, death count, and highest cleared level persist in cookies.
 
 ## Files to check first
 
@@ -32,6 +32,7 @@ Use this as the handoff doc for the next agent working in the repo.
   - Pipeworks
   - Flooded Annex
 - The Shleeb shop is front-end only and sells stat upgrades that persist in cookies.
+- The profile also tracks how many times the runner has been killed and shows it in the menu/HUD.
 
 ## Where to edit things
 

@@ -3,6 +3,38 @@
 This file memorializes the design and plan decisions made during the
 front-end upgrade pass.
 
+## v0.2.2
+
+**Date:** July 26, 2026
+
+### What changed
+
+- Added persistent "times killed" tracking to the profile and menu/HUD.
+- Kept the existing kill counter in the canvas engine and saved it to
+  cookies through the front-end profile flow.
+
+### Design / plan note
+
+- Death count is treated as part of the player profile, alongside user id,
+  sheebs, owned items, and best level.
+- The counter is intentionally front-end only for now because the current
+  game loop still does not depend on backend state.
+
+## v0.2.1
+
+**Date:** July 26, 2026
+
+### What changed
+
+- Added `crazy-jack-chaser.jpeg` to the randomized chaser face pool so it
+  can appear during play.
+- Kept the rest of the front-end gameplay loop unchanged.
+
+### Design / plan note
+
+- New gallery assets should be folded into `frontend/src/gameContent.js`
+  and recorded here so the random-face pool stays auditable over time.
+
 ## v0.2.0
 
 **Date:** July 26, 2026  
@@ -74,4 +106,3 @@ front-end upgrade pass.
 - No cinematic intro was added yet.
 - No crop or oval face mask was added yet.
 - No multiplayer or server authority changes were added yet.
-

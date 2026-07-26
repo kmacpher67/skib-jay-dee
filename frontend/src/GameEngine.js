@@ -179,6 +179,84 @@ function buildFloodedAnnex() {
   }
 }
 
+function buildRamenAisle() {
+  const walls = []
+  const puddles = []
+  makeBoundaryWalls(walls)
+
+  // Long, narrow vertical aisles blocked by knocked-over shopping carts.
+  addGrid(walls, {
+    startX: 100,
+    startY: 160,
+    cols: 4,
+    rows: 6,
+    gapX: 190,
+    gapY: 220,
+    tileW: 60,
+    tileH: 170,
+  })
+
+  walls.push({ x: 40, y: 700, w: 140, h: 60 })
+  walls.push({ x: 700, y: 500, w: 140, h: 60 })
+  walls.push({ x: 380, y: 1300, w: 160, h: 60 })
+
+  puddles.push(
+    { x: 220, y: 340, r: 50 },
+    { x: 560, y: 900, r: 60 },
+    { x: 760, y: 1250, r: 45 },
+  )
+
+  return {
+    walls,
+    puddles,
+    theme: {
+      background: '#fff6e6',
+      wallFill: '#d99a3f',
+      wallStroke: '#8a5d1f',
+      puddleFill: 'rgba(255, 140, 40, 0.28)',
+    },
+  }
+}
+
+function buildWorldStarParkingLot() {
+  const walls = []
+  const puddles = []
+  makeBoundaryWalls(walls)
+
+  // Rows of parked "cars" with lanes between them.
+  addGrid(walls, {
+    startX: 90,
+    startY: 200,
+    cols: 3,
+    rows: 5,
+    gapX: 260,
+    gapY: 240,
+    tileW: 150,
+    tileH: 90,
+    staggerEvery: 2,
+    staggerOffset: 90,
+  })
+
+  walls.push({ x: 60, y: 1300, w: 200, h: 70 })
+  walls.push({ x: 620, y: 1320, w: 200, h: 70 })
+
+  puddles.push(
+    { x: 260, y: 1160, r: 60 },
+    { x: 620, y: 780, r: 55 },
+  )
+
+  return {
+    walls,
+    puddles,
+    theme: {
+      background: '#1c1f2b',
+      wallFill: '#3a3f52',
+      wallStroke: '#0d0f16',
+      puddleFill: 'rgba(255, 255, 255, 0.08)',
+    },
+  }
+}
+
 const LEVELS = [
   {
     name: 'Porcelain Palace',
@@ -204,13 +282,37 @@ const LEVELS = [
     name: 'Flooded Annex',
     banner: 'LEVEL 3: FLOODED ANNEX',
     reward: 90,
-    advanceAt: null,
+    advanceAt: 80,
     chaserSpeed: 162,
     runnerSpawn: { x: 260, y: WORLD.height - 120 },
     chaserSpawn: { x: WORLD.width - 140, y: 260 },
     buildMap: buildFloodedAnnex,
   },
+  {
+    name: 'The Ramen Aisle',
+    banner: 'LEVEL 4: THE RAMEN AISLE',
+    reward: 120,
+    advanceAt: 110,
+    chaserSpeed: 172,
+    runnerSpawn: { x: WORLD.width / 2 - 20, y: WORLD.height - 150 },
+    chaserSpawn: { x: 80, y: 190 },
+    buildMap: buildRamenAisle,
+  },
+  {
+    name: 'World Star Parking Lot',
+    banner: 'LEVEL 5: WORLD STAR PARKING LOT',
+    reward: 160,
+    advanceAt: null,
+    chaserSpeed: 182,
+    runnerSpawn: { x: 260, y: WORLD.height - 140 },
+    chaserSpawn: { x: WORLD.width - 150, y: 230 },
+    buildMap: buildWorldStarParkingLot,
+  },
 ]
+
+const MAX_CHASERS = 3
+const EXTRA_CHASER_INTERVAL = 14 // seconds of uninterrupted chase before another toilet joins
+const DEATH_SKREEM_PENALTY = 0.3 // fraction of skreems lost on capture
 
 export class GameEngine {
   constructor(
@@ -220,7 +322,9 @@ export class GameEngine {
       onSkreem,
       onLevelChange,
       onSheebsChange,
+      onDeath,
       initialSheebs = 200,
+      initialDeaths = 0,
       loadout = {},
     } = {},
   ) {
@@ -233,6 +337,7 @@ export class GameEngine {
     this.onSkreem = onSkreem || (() => {})
     this.onLevelChange = onLevelChange || (() => {})
     this.onSheebsChange = onSheebsChange || (() => {})
+    this.onDeath = onDeath || (() => {})
 
     this.runner = {
       x: WORLD.width / 2 - 20,
@@ -252,6 +357,10 @@ export class GameEngine {
       color: '#8a5a34',
       face: null,
     }
+    // Extra toilets that join in if the runner survives one level too long.
+    // this.chaser is always chasers[0]; extras are cloned from it.
+    this.chasers = [this.chaser]
+    this.extraChaserTimer = EXTRA_CHASER_INTERVAL
 
     this.levelIndex = 0
     this.level = LEVELS[0]
@@ -264,6 +373,7 @@ export class GameEngine {
     this.sheebs = Math.max(0, Math.floor(initialSheebs))
     this.skreems = 0
     this.levelSkreems = 0
+    this.deaths = Math.max(0, Math.floor(initialDeaths))
     this.phase = 'intro'
     this.phaseTimer = 1.6
     this.zoom = 1
@@ -293,7 +403,7 @@ export class GameEngine {
 
   setFaces({ runnerFace, chaserFace }) {
     if (runnerFace) this.runner.face = runnerFace
-    if (chaserFace) this.chaser.face = chaserFace
+    if (chaserFace) this.chasers.forEach((c) => { c.face = chaserFace })
   }
 
   setSheebs(sheebs) {
@@ -514,6 +624,8 @@ export class GameEngine {
     this.chaserLine = ''
     this.chaserLineTimer = 0
     this.levelSkreems = 0
+    this.chasers = [this.chaser]
+    this.extraChaserTimer = EXTRA_CHASER_INTERVAL
 
     if (resetPositions) {
       this.runner.x = this.level.runnerSpawn.x
@@ -588,35 +700,70 @@ export class GameEngine {
     const move = this._getMoveVector()
     this._moveWithCollision(this.runner, move.x * speed * dt, move.y * speed * dt)
 
-    const dx = this.runner.x - this.chaser.x
-    const dy = this.runner.y - this.chaser.y
-    const dist = Math.hypot(dx, dy) || 1
-    const chaserSpeed = this.chaser.baseSpeed
-    this.chaser.x += (dx / dist) * chaserSpeed * dt
-    this.chaser.y += (dy / dist) * chaserSpeed * dt
-    this.chaser.x = clamp(this.chaser.x, 24, WORLD.width - 24 - this.chaser.w)
-    this.chaser.y = clamp(this.chaser.y, 24, WORLD.height - 24 - this.chaser.h)
+    this._maybeSpawnExtraChaser(dt)
 
-    if (dist < 260) {
-      this.skreems += dt * (260 - dist) * 0.05
-      this.levelSkreems += dt * (260 - dist) * 0.05
-      this.onSkreem(Math.floor(this.skreems))
+    let closestDist = Infinity
+    let caught = false
+
+    for (const chaser of this.chasers) {
+      const dx = this.runner.x - chaser.x
+      const dy = this.runner.y - chaser.y
+      const dist = Math.hypot(dx, dy) || 1
+      chaser.x += (dx / dist) * chaser.baseSpeed * dt
+      chaser.y += (dy / dist) * chaser.baseSpeed * dt
+      chaser.x = clamp(chaser.x, 24, WORLD.width - 24 - chaser.w)
+      chaser.y = clamp(chaser.y, 24, WORLD.height - 24 - chaser.h)
+
+      if (dist < 260) {
+        const gain = dt * (260 - dist) * 0.05
+        this.skreems += gain
+        this.levelSkreems += gain
+      }
+      if (dist < closestDist) closestDist = dist
+      if (rectsIntersect(this.runner, chaser)) caught = true
     }
+
+    if (this.chasers.length > 0) this.onSkreem(Math.floor(this.skreems))
 
     if (this.level.advanceAt && this.levelSkreems >= this.level.advanceAt) {
       this._startLevelAdvance()
       return
     }
 
-    if (dist < 180 && this.chaserLineTimer <= 0) {
+    if (closestDist < 180 && this.chaserLineTimer <= 0) {
       this.chaserLine = CHASER_LINES[Math.floor(Math.random() * CHASER_LINES.length)]
       this.chaserLineTimer = 2.5
     }
     this.chaserLineTimer = Math.max(0, this.chaserLineTimer - dt)
 
-    if (rectsIntersect(this.runner, this.chaser)) {
+    if (caught) {
       this._triggerCaught()
     }
+  }
+
+  _maybeSpawnExtraChaser(dt) {
+    if (this.chasers.length >= MAX_CHASERS) return
+
+    this.extraChaserTimer -= dt
+    if (this.extraChaserTimer > 0) return
+
+    this.extraChaserTimer = EXTRA_CHASER_INTERVAL
+    const corners = [
+      { x: 40, y: 40 },
+      { x: WORLD.width - 84, y: 40 },
+      { x: 40, y: WORLD.height - 84 },
+      { x: WORLD.width - 84, y: WORLD.height - 84 },
+    ]
+    const spawn = corners[Math.floor(Math.random() * corners.length)]
+    this.chasers.push({
+      x: spawn.x,
+      y: spawn.y,
+      w: 44,
+      h: 44,
+      baseSpeed: this.chaser.baseSpeed * 0.92,
+      color: this.chaser.color,
+      face: this.chaser.face,
+    })
   }
 
   _moveWithCollision(entity, dx, dy) {
@@ -636,6 +783,14 @@ export class GameEngine {
     this.phaseTimer = 2.6
     this.zoom = 1
     this.captureLine = CAPTURE_LINES[Math.floor(Math.random() * CAPTURE_LINES.length)]
+
+    this.deaths += 1
+    const skreemsLost = Math.round(this.skreems * DEATH_SKREEM_PENALTY)
+    this.skreems = Math.max(0, this.skreems - skreemsLost)
+    this.levelSkreems = Math.max(0, this.levelSkreems - skreemsLost)
+
+    this.onDeath(this.deaths)
+    this.onSkreem(Math.floor(this.skreems))
     this.onCaught(this.captureLine)
   }
 
@@ -648,6 +803,8 @@ export class GameEngine {
       this.runner.y = this.level.runnerSpawn.y
       this.chaser.x = this.level.chaserSpawn.x
       this.chaser.y = this.level.chaserSpawn.y
+      this.chasers = [this.chaser]
+      this.extraChaserTimer = EXTRA_CHASER_INTERVAL
       this.zoom = 1
       this.stamina = this.maxStamina
       this.phase = 'chase'
@@ -663,7 +820,7 @@ export class GameEngine {
     ctx.save()
     this._applyCamera(ctx)
     this._drawMap(ctx)
-    this._drawEntity(ctx, this.chaser)
+    this.chasers.forEach((chaser) => this._drawEntity(ctx, chaser))
     this._drawEntity(ctx, this.runner)
     ctx.restore()
 
@@ -744,6 +901,21 @@ export class GameEngine {
 
     ctx.textAlign = 'right'
     ctx.fillText(`LEVEL ${this.levelIndex + 1}/${LEVELS.length}`, VIEW_W - 10, 17)
+    ctx.restore()
+
+    ctx.save()
+    ctx.fillStyle = 'rgba(0,0,0,0.4)'
+    ctx.fillRect(0, 34, VIEW_W, 20)
+    ctx.fillStyle = '#ffb3b3'
+    ctx.font = 'bold 11px sans-serif'
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(`DEATHS: ${this.deaths}`, 10, 44)
+    if (this.chasers.length > 1) {
+      ctx.textAlign = 'right'
+      ctx.fillStyle = '#ffd27a'
+      ctx.fillText(`TOILETS ON YOU: ${this.chasers.length}`, VIEW_W - 10, 44)
+    }
     ctx.restore()
 
     ctx.save()

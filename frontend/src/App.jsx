@@ -59,6 +59,13 @@ export default function App() {
     syncProfile((current) => ({ ...current, sheebs: nextSheebs }))
   }
 
+  const handleDeath = (nextDeaths) => {
+    syncProfile((current) => ({
+      ...current,
+      deaths: Number.isFinite(nextDeaths) ? Math.max(current.deaths, nextDeaths) : current.deaths + 1,
+    }))
+  }
+
   const handleLevelChange = ({ index }) => {
     syncProfile((current) => ({
       ...current,
@@ -116,9 +123,11 @@ export default function App() {
               loadoutStaminaBonus={loadout.staminaBonus}
               loadoutRewardBonus={loadout.rewardBonus}
               initialSheebs={profile.sheebs}
+              initialDeaths={profile.deaths}
               onCaught={handleCaught}
               onLevelChange={handleLevelChange}
               onSheebsChange={handleSheebsChange}
+              onDeath={handleDeath}
             />
             <button className="exit-btn" onClick={() => setScreen('menu')}>
               ✕
@@ -157,6 +166,7 @@ function MainMenu({
         <span>User {profile.userId}</span>
         <span>{profile.sheebs} sheebs</span>
         <span>Best level {profile.highestLevel}</span>
+        <span>Deaths {profile.deaths}</span>
       </div>
 
       <div className="face-row">

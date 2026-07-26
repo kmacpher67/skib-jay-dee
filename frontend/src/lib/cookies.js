@@ -50,6 +50,7 @@ export function normalizeProfile(profile = {}) {
     sheebs: Number.isFinite(profile.sheebs) ? Math.max(0, Math.floor(profile.sheebs)) : 200,
     ownedItems,
     highestLevel: Number.isFinite(profile.highestLevel) ? Math.max(1, Math.floor(profile.highestLevel)) : 1,
+    deaths: Number.isFinite(profile.deaths) ? Math.max(0, Math.floor(profile.deaths)) : 0,
   }
 }
 
@@ -72,4 +73,3 @@ export function persistProfile(profile) {
   writeCookie(PROFILE_COOKIE, JSON.stringify(normalized))
   return normalized
 }
-

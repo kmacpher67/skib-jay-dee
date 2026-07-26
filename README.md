@@ -6,9 +6,10 @@ satirical Skibidi Toilet parody. Skibidty Toilet Guy hunts Jayden through
 for the full design doc, characters, and dialogue script.
 
 **Status: Phase 1+** — core engine, movement, chase mechanic, jump-scare,
-face upload, three playable levels, desktop key support, Shleeb shop, and
-cookie-backed user persistence. Multiplayer, role-swapping, and deeper
-content passes remain future work (see [Roadmap](#roadmap) below).
+face upload, three playable levels, desktop key support, Shleeb shop,
+cookie-backed user persistence, and a persistent kill counter.
+Multiplayer, role-swapping, and deeper content passes remain future work
+(see [Roadmap](#roadmap) below).
 
 ## Quick start
 
