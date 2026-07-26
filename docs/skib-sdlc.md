@@ -56,6 +56,23 @@ Every session that lands a meaningful change updates:
   first," and "Natural follow-up work" accurate for the next agent.
 - **`docs/roadmap.md`** — check off or annotate the backlog item(s) you
   completed, and add anything new that surfaced while working.
+- **`docs/handoffs/roadmap-handoff-vX.Y.Z.md`** — one file per version
+  that lands, matching the `GAME_ITERATION` you bump to. Longer-form than
+  `update-directions.md`: what the session did, how it was verified, what
+  was explicitly skipped, and a copy-paste "what to do next" block for
+  the next agent. See `docs/handoffs/roadmap-handoff-v0.4.0.md` for the
+  template — copy its structure for new versions.
+- **`docs/handoffs/ledger.md`** — append a short bullet list under a new
+  `## vX.Y.Z — <date>` heading, one line per change. This is the
+  fast-scan flat index; `version-log.md` has the *why*, the handoff file
+  has the full session narrative, the ledger is just "what landed, in
+  order." Never edit past entries.
+- **`docs/future-versions.md`** — move anything you scoped out of this
+  session here (not into `roadmap.md`, which is the *pull-from* backlog;
+  this is the *park-it-here* list for things surfaced but not queued
+  yet). Remove items from here once they actually land in a future
+  session — the ledger and version-log are the permanent record, this
+  file is just a parking lot.
 
 If you didn't finish an increment, still update the docs to say what state
 it's in and what's left — don't leave the next agent to reverse-engineer it

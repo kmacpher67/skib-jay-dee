@@ -13,6 +13,12 @@ Use this as the handoff doc for the next agent working in the repo.
 - The deployment helper now takes an iteration label and short slug, then commits only the `skib-jay-dee-toilet-game/` subtree in the website repo.
 - The audio how-to now spells out local recording guidance: capture however is convenient, keep raw edits lossless if possible, and export game-ready clips as mono `.ogg` or `.mp3` at 44.1kHz.
 - The frontend now has a starter audio loop in `frontend/src/assets/audio/jayden-skreem-loop.m4a`; the menu primes it on first interaction and the caught transition reuses the same clip as a quick sting.
+- All in-game text lives in `frontend/src/dialog.js` (`CAPTURE_LINES`, `CHASER_LINES`, `TIRED_LINES`) — edit lines there, not in `GameEngine.js`.
+- Chaser speed is now rubber-banded across a run (mellows out on capture, ramps up on level-up) instead of fixed per level; see `CHASER_SPEED_MOD_*` constants in `GameEngine.js`. Levels also last longer (raised `advanceAt`) and proximity skreem gain/chaser barks are more frequent.
+- `GameEngine` now exposes `onBoostStart`, `onTired`, `onChaserBark`, and `onLevelClear` constructor-option hooks, all wired to real audio as of v0.4.0 (see below) — no more no-ops.
+- **v0.4.0 audio pass:** the 11 recorded voice clips from `/audio/` (scratch, now removed) were transcoded to mono 44.1kHz mp3 and moved into `frontend/src/assets/audio/` with names describing their in-game role. They're wired into `App.jsx`: chase ambience loop, capture sting, chaser bark/scream/taunt pool, boost stinger, tired groan, level-start/level-clear stings. A cookie-persisted mute toggle (`profile.muted`) has a button on the menu and in-game HUD.
+- **Lvl2 video transition:** `frontend/src/assets/video/lvl2-transition.mp4` (moved from repo-root `/video/`) plays once as a full-screen overlay the first time a run reaches level 2. User-flagged as a rough clip — treat as a proof of concept, see `docs/future-versions.md`.
+- Full session detail: `docs/handoffs/roadmap-handoff-v0.4.0.md`. Flat change history: `docs/handoffs/ledger.md`. Scoped-out work: `docs/future-versions.md`.
 
 ## Files to check first
 
@@ -23,6 +29,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - `docs/sound-effects-howto.md`
 - `docs/dev-notes.md`
 - `frontend/src/GameEngine.js`
+- `frontend/src/dialog.js`
 - `frontend/src/App.jsx`
 - `frontend/src/gameContent.js`
 - `frontend/src/version.js`
@@ -58,9 +65,11 @@ Use this as the handoff doc for the next agent working in the repo.
 
 ## Natural follow-up work
 
-- Add the scripted World Star intro cinematic.
-- Finish the audio pass: split the current starter clip into a real menu loop plus separate catch/line clips, add a mute toggle, and keep using [docs/sound-effects-howto.md](docs/sound-effects-howto.md) as the starting point for naming and export guidance.
-- Add the scripted World Star intro cinematic, including the later transition-video beat for the "YOU DIED" meme screen.
+- Do a real sound-on playthrough of the v0.4.0 audio pass — it was wired and tested (build + Playwright) but never actually listened to in this sandbox (no speakers). Check volume balance before building more on top of it.
+- Audio polish: volume ducking, a real composed menu theme, 1:1 capture-line/chaser-bark clips instead of a themed pool. See [docs/future-versions.md](docs/future-versions.md).
+- Add a skip button to the lvl2 video transition, and/or replace the clip (user-flagged as rough).
+- Fix the `.portrait-frame` wide-viewport CSS bug found during v0.4.0 testing (see [docs/future-versions.md](docs/future-versions.md)) — worked around in the test, not fixed in the app.
+- Add the scripted World Star intro cinematic (full script from the PDF, not the standalone lvl2 video clip).
 - Crop or mask uploaded faces instead of stretching the raw image.
 - Add more character roles or abilities from the PDF roster.
 - Extract level data out of hardcoded map-builder functions before hand-authoring more levels — see the level/map plan in [docs/roadmap.md](docs/roadmap.md).

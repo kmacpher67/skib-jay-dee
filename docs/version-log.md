@@ -1,7 +1,132 @@
 # Version Log — Skib-Jay-Dee-Toilet
 
 This file memorializes the design and plan decisions made during the
-front-end upgrade pass.
+front-end upgrade pass. Starting v0.4.0, each version also gets a fuller
+session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
+one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
+focused on *why*, those two are the *what* and *when*.
+
+## v0.4.0
+
+**Date:** July 26, 2026
+
+### What changed
+
+- Landed the first real audio pass (Phase 2 of `docs/roadmap.md`). Moved
+  11 raw voice clips out of the repo-root `/audio/` scratchpad, transcoded
+  each to mono 44.1kHz mp3 per `docs/sound-effects-howto.md`'s shipping
+  guidance, and renamed them by in-game role instead of their original ad
+  hoc names — see `frontend/src/assets/audio/`.
+- Wired those clips into `GameEngine`'s existing `onBoostStart`/`onTired`
+  hooks (previously no-ops) and two new hooks, `onChaserBark` and
+  `onLevelClear`, plus the existing `onCaught`/`onLevelChange` hooks.
+- Added a low-volume looping chase-ambience track and a cookie-persisted
+  mute toggle (`profile.muted` in `frontend/src/lib/cookies.js`), with a
+  button on both the main menu and the in-game HUD.
+- Moved the Gemini-generated "lvl2 total wipeout" transition video from
+  the repo-root `/video/` scratchpad into
+  `frontend/src/assets/video/lvl2-transition.mp4` and wired it as an
+  experimental full-screen overlay the first time a run reaches level 2.
+- Added a Playwright test for the mute toggle; discovered (but
+  deliberately did not fix) a pre-existing CSS bug in `.portrait-frame`'s
+  wide-viewport media query.
+- Started a new docs trio: `docs/handoffs/roadmap-handoff-v0.4.0.md`
+  (this session's full write-up), `docs/handoffs/ledger.md` (flat
+  running change history), and `docs/future-versions.md` (parking lot for
+  scoped-out work) — linked from `docs/skib-sdlc.md` and `README.md`.
+
+### Design / plan note
+
+- Kept the audio format decision consistent with the existing
+  `jayden-skreem-loop.m4a` precedent for the menu loop (left as-is,
+  m4a/AAC plays fine in browsers) but transcoded the *new* clips to mp3
+  since the how-to doc already recommended it and ffmpeg was available —
+  no reason to carry 11 raw AAC voice memos into the shipped bundle when
+  a lossy re-encode at the documented shipping spec (mono, 44.1kHz) cuts
+  file size roughly in half with no audible loss for short voice clips.
+- Used a *themed pool* of chaser-bark/scream/taunt clips (5 clips, played
+  randomly whenever the on-screen `CHASER_LINES` bubble refreshes) rather
+  than trying to record/attribute a clip per exact line. The user's raw
+  clips don't map 1:1 onto the existing `CHASER_LINES` text array, and
+  forcing a fake mapping would have been worse than an honest random
+  pool — a real 1:1 pass is tracked as follow-up work instead.
+- Treated the lvl2 video transition as an experimental proof of concept,
+  not a finished feature, per the user's own "it sux bad" framing of the
+  clip. Wired it minimally (one overlay, one trigger condition, a safety
+  timeout) rather than over-building a general video-transition system
+  around a clip that's likely to be replaced.
+- Added the handoff/ledger/future-versions doc trio because this repo is
+  explicitly designed to be picked up cold by a new agent every session
+  (per `docs/skib-sdlc.md`), and a single `update-directions.md` was
+  starting to accumulate history rather than staying a snapshot — splitting
+  "current state" (update-directions), "why" (version-log), "what
+  happened this session" (handoffs/), and "flat change list" (ledger)
+  keeps each doc doing one job.
+
+### Known non-goals for this version
+
+- Volume ducking between the ambient loop and one-shot stings/barks.
+- A separate music-vs-SFX volume control (mute is all-or-nothing).
+- 1:1 capture-line/chaser-bark audio clips matching the exact on-screen
+  text (see design note above).
+- A real composed menu theme (still a repurposed voice clip).
+- A skip button for the lvl2 transition video.
+- Fixing the `.portrait-frame` wide-viewport CSS bug (worked around in
+  the test, not the app).
+- Manually listening to any of the new audio in a real browser — this
+  session ran in a sandbox with no audio output, so playback was only
+  verified by code path and automated tests. Flagged explicitly in
+  `docs/handoffs/roadmap-handoff-v0.4.0.md` as needing a human check.
+
+## v0.3.4
+
+**Date:** July 26, 2026
+
+### What changed
+
+- Extracted all in-game text into `frontend/src/dialog.js`
+  (`CAPTURE_LINES`, `CHASER_LINES`, `TIRED_LINES`) so lines can be edited
+  or added without touching `GameEngine.js`.
+- Chaser speed is now rubber-banded across a run instead of fixed per
+  level: each capture ("KILLZ") mellows the chaser out
+  (`CHASER_SPEED_MOD_DEATH_STEP = -0.1`), each level cleared ramps it
+  back up (`CHASER_SPEED_MOD_LEVEL_STEP = +0.06`), clamped to
+  `[0.62, 1.35]×` and applied on top of the existing per-level
+  `chaserSpeed`. Persists for the whole run, resets on a fresh game.
+- Raised `advanceAt` on levels 1-4 (~40-45% longer per level) so runs
+  last noticeably more time before the level-up banner.
+- More screeming: proximity skreem radius 260→300 and gain rate
+  0.05→0.06, chaser-bark trigger radius 180→200 with a shorter cooldown
+  (2.5s→2s), plus four new screaming-themed `CHASER_LINES`.
+- Added a runner-side "tired" beat: when a held sprint drains stamina to
+  0, a speech bubble now shows a random `TIRED_LINES` entry (e.g. "AHHH,
+  I'M TIE-RED!") near the runner, edge-triggered once per exhaustion.
+- Added `onBoostStart`/`onTired` no-op hooks to the `GameEngine`
+  constructor options, called on the rising edge of a sprint and on
+  stamina exhaustion respectively — groundwork for the boost-skreem and
+  stamina-tired SFX, not yet wired to any audio.
+- Documented requirements for those two future clips as Audio 4/5 in
+  `docs/roadmap.md`.
+
+### Design / plan note
+
+- Deliberately did *not* implement the boost/tired audio itself this
+  session — no clips exist for them yet (only the menu loop + capture
+  sting clip in `frontend/src/assets/audio/`), and the user explicitly
+  asked for requirements/roadmap on that piece, not an implementation.
+  The engine-side hooks exist now so wiring it later is a small,
+  self-contained change (same pattern as `playCaughtAudio` in
+  `App.jsx`).
+- Kept the rubber-band speed mod as a run-persistent multiplier rather
+  than per-level, since the point is to soften the very next spawn after
+  a death, not just the current level.
+
+### Known non-goals for this version
+
+- Boost-skreem stinger and stamina-tired flat-tone audio clips
+  themselves (see Audio 4/5 in `docs/roadmap.md`).
+- Mute toggle / cookie-backed audio preference — still open from v0.3.3.
+- No changes to the multi-chaser spawn cadence or map layouts.
 
 ## v0.3.3
 

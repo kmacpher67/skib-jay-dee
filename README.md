@@ -5,12 +5,16 @@ satirical Skibidi Toilet parody. Skibidty Toilet Guy hunts Jayden through
 "The Porcelain Palace." See [`Skib-jay-dee-toilet game-init-v1.pdf`](Skib-jay-dee-toilet%20game-init-v1.pdf)
 for the full design doc, characters, and dialogue script.
 
-**Status: Phase 1+** — core engine, movement, chase mechanic, jump-scare,
+**Status: Phase 2** — core engine, movement, chase mechanic, jump-scare,
 face upload, five playable levels, desktop key support, Shleeb shop,
 cookie-backed user persistence, a lifetime death counter with a skreem
-penalty on capture, and a multi-chaser mechanic that adds more toilets if
-a level runs long. Multiplayer, role-swapping, audio, and the intro
-cinematic remain future work — see [docs/roadmap.md](docs/roadmap.md).
+penalty on capture, a multi-chaser mechanic that adds more toilets if a
+level runs long, and a first real audio pass (chase ambience, capture
+sting, chaser barks, boost/tired stingers, a mute toggle, and an
+experimental level-2 video transition). Multiplayer, role-swapping, and
+the full intro cinematic remain future work — see
+[docs/roadmap.md](docs/roadmap.md) and
+[docs/future-versions.md](docs/future-versions.md).
 
 ## Quick start
 
@@ -55,6 +59,8 @@ frontend/            Vite + React app
   src/lib/cookies.js  Cookie-backed profile persistence
   src/components/ShopModal.jsx  Front-end shop overlay
   src/assets/         Default character face textures (see below)
+  src/assets/audio/   In-game SFX/music clips (mono mp3, plus the m4a menu loop)
+  src/assets/video/   The experimental lvl2 transition clip
 backend/
   main.py             FastAPI + WebSocket scaffold, optional Mongo
 images/               Source photos + the game design PDF's reference images
@@ -102,8 +108,8 @@ the backend actually gets wired up in a later phase.
 |---|---|---|
 | 1 | Core chase loop, jump-scare, face upload, desktop controls | **Done** |
 | 1.5 | 5 levels, Shleeb shop, cookie profile, death/skreem economy, multi-chaser pressure | **Done** |
-| 2 | Audio pass | Not started |
-| 2.5 | World Star intro cinematic | Not started |
+| 2 | Audio pass | **First pass done (v0.4.0)** — polish tracked in [docs/future-versions.md](docs/future-versions.md) |
+| 2.5 | World Star intro cinematic | Not started (experimental lvl2 video transition landed as a rough proof of concept) |
 | 3 | More characters, abilities, map variants, role-swapping | Not started |
 | 4 | Oval face-crop on upload | Not started |
 | 5 | FastAPI WebSocket multiplayer, lobby, server-authoritative roles | Backend scaffolded, not wired up |
@@ -120,3 +126,9 @@ Every agent working in this repo follows the process in
 
 For a ready-to-paste brief on what to do next, see
 [docs/update-directions.md](docs/update-directions.md).
+
+Per-version session write-ups live in
+[docs/handoffs/](docs/handoffs/roadmap-handoff-v0.4.0.md), with a flat
+running change ledger in [docs/handoffs/ledger.md](docs/handoffs/ledger.md)
+and scoped-out work parked in
+[docs/future-versions.md](docs/future-versions.md).

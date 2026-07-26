@@ -89,3 +89,18 @@ In order of "funniest per minute of work":
 
 See also [docs/roadmap.md](roadmap.md) for where audio sits in the overall
 backlog.
+
+-- sound effects: 
+
+(base) kenmac@kenmac-ThinkPad-P53:/mnt/data/projects/skib-jay-dee$ ls  audio/
+ ayayay.m4a              play when skib gets close but misses
+ Igottago.m4a            play when game starts or new skib gets added
+ skibidibopbop.m4a       skib scaring as he chases from far away
+ toiletking.m4a          skib says this if he gets close 
+ getoutofhere.m4a        skib says this if he gets close but misses
+ run.m4a                 player says this when skib comes at him.
+ 'Skibidi scream.m4a'    skib when he's trying to freek out player
+ 'You cant catch me.m4a'  player says this when wins round. 
+ IgottagoIgottago.m4a    player says when far away from skib after boost
+ skibidforever.m4a      skib response after player brags on igottago3times
+ skibiscreamfinal.m4a   skib when he's about to kill player. 

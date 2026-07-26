@@ -378,6 +378,38 @@
   backdrop-filter: blur(6px);
 }
 
+.mute-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 20;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+
+.mute-btn-menu {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.lvl2-transition {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 15;
+  background: #000;
+}
+
 .toast-panel {
   position: absolute;
   left: 50%;

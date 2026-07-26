@@ -17,8 +17,22 @@ Shleeb shop, cookie-backed profile (user id, sheebs, owned items, highest
 level, lifetime deaths), skreem-on-proximity, skreem-penalty + death count
 on capture, a multi-chaser mechanic (extra toilets join in if a level
 runs long), and a discreet build-iteration badge tied to a shared
-frontend constant plus the deploy-commit helper. Still front-end only —
-no backend, no multiplayer, no audio, no intro cinematic.
+frontend constant plus the deploy-commit helper. All in-game text now
+lives in one place, `frontend/src/dialog.js` (`CAPTURE_LINES`,
+`CHASER_LINES`, `TIRED_LINES`) — edit lines there without touching
+`GameEngine.js`. Chaser speed is now rubber-banded across a run: each
+capture mellows it out (`CHASER_SPEED_MOD_DEATH_STEP`), each level
+cleared ramps it back up (`CHASER_SPEED_MOD_LEVEL_STEP`), clamped between
+`CHASER_SPEED_MOD_MIN`/`MAX` in `GameEngine.js`. Levels also run longer
+now (raised `advanceAt` thresholds) and proximity skreem gain/chaser-bark
+frequency were bumped up. As of v0.4.0 the game also has a first real
+audio pass — chase ambience, capture sting, chaser barks, boost/tired
+stingers, a cookie-persisted mute toggle — plus an experimental (rough)
+lvl2 video transition. Still front-end only — no backend, no multiplayer,
+no full scripted intro cinematic. See
+[docs/handoffs/roadmap-handoff-v0.4.0.md](handoffs/roadmap-handoff-v0.4.0.md)
+for the full session write-up and
+[docs/future-versions.md](future-versions.md) for what's parked next.
 
 ## High-level phases (from the PDF + repo history)
 
@@ -26,8 +40,8 @@ no backend, no multiplayer, no audio, no intro cinematic.
 |---|---|---|
 | 1 | Core chase loop, jump-scare, face upload, desktop controls | Done |
 | 1.5 | Content pass: more levels, shop, persistence, death/skreem economy | Done (this session) |
-| 2 | Audio pass | Not started — see [sound-effects-howto.md](sound-effects-howto.md) |
-| 2.5 | World Star intro cinematic | Not started |
+| 2 | Audio pass | First pass done (v0.4.0) — see [sound-effects-howto.md](sound-effects-howto.md) and [future-versions.md](future-versions.md) for polish left |
+| 2.5 | World Star intro cinematic | Not started (an experimental lvl2 video-transition clip landed as a rough proof of concept, see below) |
 | 3 | More characters/abilities per PDF roster, role-swapping | Not started |
 | 4 | Oval/masked face-crop on upload instead of stretch | Not started |
 | 5 | FastAPI WebSocket multiplayer, server-authoritative roles | Backend scaffolded only |
@@ -76,21 +90,33 @@ Each item below is scoped to fit in one agent session. Pull the next
 open one, or reorder if something else is more urgent — just keep items
 this small.
 
-- [ ] **Audio 1: SFX plumbing.** Starter menu/caught audio is now wired
-  in `App.jsx` with `frontend/src/assets/audio/jayden-skreem-loop.m4a`;
-  still to do: a proper mute toggle in cookies and a cleaner split
-  between menu music, line clips, and the caught sting. See
-  [sound-effects-howto.md](sound-effects-howto.md).
-- [ ] **Audio 2: capture-line and chaser-bark voice clips.** Record/collect
-  one clip per `CAPTURE_LINES` and `CHASER_LINES` entry, play the matching
-  clip instead of (or alongside) the on-screen text.
-- [ ] **Audio 3: ambient chase loop.** Looping low-volume bass-boost hum
-  while `phase === 'chase'`, ducked or stopped during `caught`/`level-up`.
+- [x] **Audio 1: SFX plumbing.** Landed v0.4.0 — real clips wired for
+  menu loop, capture sting, chase ambience, boost/tired stingers, chaser
+  barks, and level start/clear, plus a cookie-persisted mute toggle. See
+  [sound-effects-howto.md](sound-effects-howto.md) and
+  [future-versions.md](future-versions.md) for what's still rough
+  (volume ducking, a real menu theme).
+- [ ] **Audio 2: capture-line and chaser-bark voice clips, 1:1 with text.**
+  v0.4.0 wired a themed *pool* of chaser-bark/scream/taunt clips that
+  plays alongside the random `CHASER_LINES` text, but it's not a matched
+  pair per line yet. Record one clip per `CAPTURE_LINES` and
+  `CHASER_LINES` entry for a real 1:1 match. See
+  [future-versions.md](future-versions.md).
+- [x] **Audio 3: ambient chase loop.** Landed v0.4.0 —
+  `chase-ambient-bopbop.mp3` loops at low volume while `screen ===
+  'playing'` in `App.jsx`. Ducking during `caught`/`level-up` not done
+  yet, tracked in [future-versions.md](future-versions.md).
+- [x] **Audio 4: boost skreem stinger.** Landed v0.4.0 —
+  `onBoostStart` now plays `boost-start-igottago-x2.mp3`.
+- [x] **Audio 5: stamina-exhausted flat tone.** Landed v0.4.0 —
+  `onTired` now plays `runner-tired-run.mp3`.
 - [ ] **Intro cinematic.** Script the PDF's "World Star" open (Jayden
   recording, Skib bursts from stall, screen cracks) as a pre-`chase` phase
   in `GameEngine.js`, reusing the existing banner/zoom drawing primitives.
   Front-end only, no new assets required beyond what's already scripted in
-  the PDF.
+  the PDF. An experimental, rough lvl2 transition *video* (not this
+  cinematic) landed in v0.4.0 as a separate proof of concept — see
+  [future-versions.md](future-versions.md) for its follow-ups.
 - [x] **Build iteration badge + deploy commit helper.** Added a shared
   `frontend/src/version.js` constant, a discreet iteration label in the
   menu/HUD, and a deploy helper that builds, syncs, and commits only the

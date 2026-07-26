@@ -24,6 +24,10 @@ export default function GameCanvas({
   onLevelChange,
   onSheebsChange,
   onDeath,
+  onBoostStart,
+  onTired,
+  onChaserBark,
+  onLevelClear,
 }) {
   const canvasRef = useRef(null)
   const engineRef = useRef(null)
@@ -37,6 +41,10 @@ export default function GameCanvas({
       onLevelChange,
       onSheebsChange,
       onDeath,
+      onBoostStart,
+      onTired,
+      onChaserBark,
+      onLevelClear,
       initialSheebs,
       initialDeaths,
       loadout: {

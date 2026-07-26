@@ -3,6 +3,7 @@
 // Keeps the action in one place so React stays out of the hot path.
 
 import { GAME_ITERATION } from './version.js'
+import { CAPTURE_LINES, CHASER_LINES, TIRED_LINES } from './dialog.js'
 
 export const WORLD = {
   width: 900,
@@ -11,21 +12,6 @@ export const WORLD = {
 
 const VIEW_W = 360
 const VIEW_H = 640
-
-const CAPTURE_LINES = [
-  'JAYDEN CAPTURED!',
-  'YOU JUST GOT PLUNGED!',
-  "LOOKS LIKE YOU'RE COMPLETELY OUT OF PAPER!",
-  'TOOT-AL-OO! DOWN THE DRAIN YOU GO!',
-  "THAT'S A TOTAL WIPEOUT!",
-]
-
-const CHASER_LINES = [
-  'SKIBIDI SKIBIDI!',
-  "I SEE YOU! YOU CAN RUN, BUT YOU CAN'T WIPE!",
-  "YOU'RE COMPLETELY STALLED!",
-  'SPACE BAR? MORE LIKE ESCAPE BAR.',
-]
 
 function rectsIntersect(a, b) {
   return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y
@@ -264,7 +250,7 @@ const LEVELS = [
     name: 'Porcelain Palace',
     banner: 'LEVEL 1: PORCELAIN PALACE',
     reward: 40,
-    advanceAt: 18,
+    advanceAt: 26,
     chaserSpeed: 130,
     runnerSpawn: { x: WORLD.width / 2 - 20, y: WORLD.height - 200 },
     chaserSpawn: { x: WORLD.width / 2 - 20, y: 150 },
@@ -274,7 +260,7 @@ const LEVELS = [
     name: 'Pipeworks',
     banner: 'LEVEL 2: PIPEWORKS',
     reward: 60,
-    advanceAt: 48,
+    advanceAt: 68,
     chaserSpeed: 145,
     runnerSpawn: { x: 260, y: WORLD.height - 132 },
     chaserSpawn: { x: 60, y: 170 },
@@ -284,7 +270,7 @@ const LEVELS = [
     name: 'Flooded Annex',
     banner: 'LEVEL 3: FLOODED ANNEX',
     reward: 90,
-    advanceAt: 80,
+    advanceAt: 112,
     chaserSpeed: 162,
     runnerSpawn: { x: 260, y: WORLD.height - 120 },
     chaserSpawn: { x: WORLD.width - 140, y: 260 },
@@ -294,7 +280,7 @@ const LEVELS = [
     name: 'The Ramen Aisle',
     banner: 'LEVEL 4: THE RAMEN AISLE',
     reward: 120,
-    advanceAt: 110,
+    advanceAt: 154,
     chaserSpeed: 172,
     runnerSpawn: { x: WORLD.width / 2 - 20, y: WORLD.height - 150 },
     chaserSpawn: { x: 80, y: 190 },
@@ -316,6 +302,16 @@ const MAX_CHASERS = 3
 const EXTRA_CHASER_INTERVAL = 14 // seconds of uninterrupted chase before another toilet joins
 const DEATH_SKREEM_PENALTY = 0.3 // fraction of skreems lost on capture
 
+// Rubber-band chaser speed: each KILLZ (capture) mellows the toilet out a
+// bit since a fresh spawn right after dying is the least fun way to lose
+// again; each level Jayden clears ramps it back up so the game doesn't get
+// permanently easy. Applied as a multiplier on top of the per-level
+// chaserSpeed, and persists for the whole run (reset on a fresh game).
+const CHASER_SPEED_MOD_MIN = 0.62
+const CHASER_SPEED_MOD_MAX = 1.35
+const CHASER_SPEED_MOD_DEATH_STEP = -0.1
+const CHASER_SPEED_MOD_LEVEL_STEP = 0.06
+
 export class GameEngine {
   constructor(
     canvas,
@@ -325,6 +321,10 @@ export class GameEngine {
       onLevelChange,
       onSheebsChange,
       onDeath,
+      onBoostStart,
+      onTired,
+      onChaserBark,
+      onLevelClear,
       initialSheebs = 200,
       initialDeaths = 0,
       loadout = {},
@@ -340,6 +340,14 @@ export class GameEngine {
     this.onLevelChange = onLevelChange || (() => {})
     this.onSheebsChange = onSheebsChange || (() => {})
     this.onDeath = onDeath || (() => {})
+    // Placeholder hooks for the boost-skreem / stamina-tired SFX from the
+    // audio roadmap (docs/roadmap.md) — no-ops until those clips exist.
+    this.onBoostStart = onBoostStart || (() => {})
+    this.onTired = onTired || (() => {})
+    // Chaser bark line audio (matches the on-screen CHASER_LINES bubble) and
+    // the per-level-clear stinger — see Audio 2/3 in docs/roadmap.md.
+    this.onChaserBark = onChaserBark || (() => {})
+    this.onLevelClear = onLevelClear || (() => {})
 
     this.runner = {
       x: WORLD.width / 2 - 20,
@@ -382,6 +390,11 @@ export class GameEngine {
     this.captureLine = CAPTURE_LINES[0]
     this.chaserLine = ''
     this.chaserLineTimer = 0
+    this.runnerLine = ''
+    this.runnerLineTimer = 0
+    this.wasSprinting = false
+    this.staminaExhaustedFired = false
+    this.chaserSpeedMod = 1
 
     this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0 }
 
@@ -625,6 +638,8 @@ export class GameEngine {
     this.zoom = 1
     this.chaserLine = ''
     this.chaserLineTimer = 0
+    this.runnerLine = ''
+    this.runnerLineTimer = 0
     this.levelSkreems = 0
     this.chasers = [this.chaser]
     this.extraChaserTimer = EXTRA_CHASER_INTERVAL
@@ -661,6 +676,12 @@ export class GameEngine {
     this.sheebs += reward
     this.onSheebsChange(this.sheebs)
     this.bannerText = nextLevel.banner
+    this.chaserSpeedMod = clamp(
+      this.chaserSpeedMod + CHASER_SPEED_MOD_LEVEL_STEP,
+      CHASER_SPEED_MOD_MIN,
+      CHASER_SPEED_MOD_MAX,
+    )
+    this.onLevelClear()
   }
 
   update(dt) {
@@ -693,10 +714,20 @@ export class GameEngine {
 
     const sprinting = (this.sprintBtn.active || this.keys.sprint) && this.stamina > 0
     if (sprinting) {
+      if (!this.wasSprinting) this.onBoostStart()
       this.stamina = clamp(this.stamina - dt * 40, 0, this.maxStamina)
+      if (this.stamina <= 0 && !this.staminaExhaustedFired) {
+        this.staminaExhaustedFired = true
+        this.runnerLine = TIRED_LINES[Math.floor(Math.random() * TIRED_LINES.length)]
+        this.runnerLineTimer = 2.2
+        this.onTired()
+      }
     } else {
       this.stamina = clamp(this.stamina + dt * 20, 0, this.maxStamina)
+      if (this.stamina >= this.maxStamina) this.staminaExhaustedFired = false
     }
+    this.wasSprinting = sprinting
+    this.runnerLineTimer = Math.max(0, this.runnerLineTimer - dt)
 
     const speed = this.runner.baseSpeed * (sprinting ? 1.8 : 1)
     const move = this._getMoveVector()
@@ -711,13 +742,14 @@ export class GameEngine {
       const dx = this.runner.x - chaser.x
       const dy = this.runner.y - chaser.y
       const dist = Math.hypot(dx, dy) || 1
-      chaser.x += (dx / dist) * chaser.baseSpeed * dt
-      chaser.y += (dy / dist) * chaser.baseSpeed * dt
+      const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod
+      chaser.x += (dx / dist) * chaserSpeed * dt
+      chaser.y += (dy / dist) * chaserSpeed * dt
       chaser.x = clamp(chaser.x, 24, WORLD.width - 24 - chaser.w)
       chaser.y = clamp(chaser.y, 24, WORLD.height - 24 - chaser.h)
 
-      if (dist < 260) {
-        const gain = dt * (260 - dist) * 0.05
+      if (dist < 300) {
+        const gain = dt * (300 - dist) * 0.06
         this.skreems += gain
         this.levelSkreems += gain
       }
@@ -732,9 +764,10 @@ export class GameEngine {
       return
     }
 
-    if (closestDist < 180 && this.chaserLineTimer <= 0) {
+    if (closestDist < 200 && this.chaserLineTimer <= 0) {
       this.chaserLine = CHASER_LINES[Math.floor(Math.random() * CHASER_LINES.length)]
-      this.chaserLineTimer = 2.5
+      this.chaserLineTimer = 2
+      this.onChaserBark(this.chaserLine)
     }
     this.chaserLineTimer = Math.max(0, this.chaserLineTimer - dt)
 
@@ -790,6 +823,11 @@ export class GameEngine {
     const skreemsLost = Math.round(this.skreems * DEATH_SKREEM_PENALTY)
     this.skreems = Math.max(0, this.skreems - skreemsLost)
     this.levelSkreems = Math.max(0, this.levelSkreems - skreemsLost)
+    this.chaserSpeedMod = clamp(
+      this.chaserSpeedMod + CHASER_SPEED_MOD_DEATH_STEP,
+      CHASER_SPEED_MOD_MIN,
+      CHASER_SPEED_MOD_MAX,
+    )
 
     this.onDeath(this.deaths)
     this.onSkreem(Math.floor(this.skreems))
@@ -812,6 +850,8 @@ export class GameEngine {
       this.phase = 'chase'
       this.phaseTimer = 0
       this.chaserLineTimer = 0
+      this.runnerLineTimer = 0
+      this.staminaExhaustedFired = false
     }
   }
 
@@ -834,6 +874,9 @@ export class GameEngine {
     if (this.phase === 'chase') this._drawControls(ctx)
     if (this.chaserLineTimer > 0 && this.phase === 'chase') {
       this._drawSpeechBubble(ctx, this.chaserLine)
+    }
+    if (this.runnerLineTimer > 0 && this.phase === 'chase') {
+      this._drawSpeechBubble(ctx, this.runnerLine, 74)
     }
   }
 
@@ -995,15 +1038,15 @@ export class GameEngine {
     ctx.restore()
   }
 
-  _drawSpeechBubble(ctx, text) {
+  _drawSpeechBubble(ctx, text, y = 40) {
     ctx.save()
     ctx.fillStyle = 'rgba(255,255,255,0.9)'
-    ctx.fillRect(20, 40, VIEW_W - 40, 28)
+    ctx.fillRect(20, y, VIEW_W - 40, 28)
     ctx.fillStyle = '#000'
     ctx.font = 'bold 12px sans-serif'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
-    ctx.fillText(text, VIEW_W / 2, 54)
+    ctx.fillText(text, VIEW_W / 2, y + 14)
     ctx.restore()
   }
 
