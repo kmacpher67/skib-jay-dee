@@ -10,6 +10,21 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.18-plan — 2026-07-26 (docs-only)
+
+- Answered a batch of "how does this work" menu/gameplay questions by
+  reading the code and writing them up in new `docs/gameplay-mechanics.md`
+  (sheebs/profile, deaths counter has no history log, death penalty,
+  loadout attributes, extra-chaser mechanic, level-1→Pipeworks advance
+  threshold vs. the Pipeworks-clear cinematic gate, version badge
+  location).
+- Added five new `docs/roadmap.md` backlog items: deaths history log,
+  sheebs penalty on capture, tune level-1 advance threshold, remove dead
+  `initialSheebs` default (Dad Case traps/Version page/new-profiles were
+  already tracked from prior sessions).
+- Created `docs/handoffs/roadmap-handoff-v0.4.18-plan.md` with open
+  questions for Ken and copy-paste next steps.
+
 ## v0.4.17-plan — 2026-07-26 (docs-only)
 
 - Scoped the Dad Case environmental trap feature (visual darkening overlay and sound effect).

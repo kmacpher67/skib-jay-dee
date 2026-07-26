@@ -115,6 +115,35 @@ and chaser-bark voice clips, 1:1 with text.
   `volume: 0`/`loop: false` and pauses itself once `play()` resolves.
   Covered by `frontend/e2e/menu-audio-prime.spec.js`.
 - [ ] **Dad Case Environmental Traps.** Implement a visual darkening overlay and a sound effect when the "Dad Case" chaser spawns via the multi-chaser mechanic. Needs a sound effect asset from Ken (e.g., slamming door or light switch).
+- [ ] **Deaths history log.** The menu's "Deaths" pill (`App.jsx`) is
+  read-only display of a lifetime counter with no click handler — tapping
+  it does nothing today. Add a per-death record (timestamp, level, maybe
+  which chaser caught you) to the cookie profile and a small
+  modal/panel that opens on tap to show it. See
+  [gameplay-mechanics.md](gameplay-mechanics.md#deaths-counter-no-history-log).
+- [ ] **Sheebs penalty on capture.** Dying currently only costs `skreems`
+  (30% of the in-run proximity meter, `DEATH_SKREEM_PENALTY` in
+  `GameEngine.js`) — sheebs (the persistent shop currency) are untouched.
+  Add a flat sheebs penalty on capture (e.g. `-20`, floored at `0`) as its
+  own constant next to `DEATH_SKREEM_PENALTY`. Note the "slow the chasers
+  down on death" half of this ask is already implemented
+  (`CHASER_SPEED_MOD_DEATH_STEP`) — this item is only the missing sheebs
+  half. See
+  [gameplay-mechanics.md](gameplay-mechanics.md#death-penalty-what-actually-happens-on-capture).
+- [ ] **Tune the level-1 → Pipeworks advance threshold.** `LEVELS[0].advanceAt
+  = 26` in `GameEngine.js` can be crossed in a couple seconds of close
+  pursuit since skreem gain is proximity-based
+  (`dt * (300 - dist) * 0.06`), which reads as "Pipeworks arrives
+  instantly." This is a different mechanism from the already-tuned
+  Pipeworks-clear cinematic gate (hall coverage + 4-skib survival,
+  landed v0.4.10/v0.4.15) — don't re-tune that one by mistake. See
+  [gameplay-mechanics.md](gameplay-mechanics.md#round--level-advancement-why-does-the-round).
+- [ ] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
+  constructor still defaults to `200` if no `initialSheebs` is passed,
+  left over from before the v0.4.16 cookie-default fix. `App.jsx` always
+  passes the real profile value so this never fires in practice, but it's
+  misleading to read. Small cleanup, bundle with another GameEngine
+  session rather than its own.
 - [ ] **Version page.** Add a simple page/panel to the menu that shows
   the current `GAME_ITERATION` (`frontend/src/version.js`) plus a short
   changelog pulled from or mirroring `docs/handoffs/ledger.md`. Front-end
