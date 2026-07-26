@@ -62,18 +62,18 @@ extra chaser spawned by the multi-chaser mechanic now rolls its own
 independent pick from `CHASER_FACE_POOL` instead of copying the lead
 chaser's face — simultaneous toilets no longer look identical.
 
-| id | label | vibe |
-|---|---|---|
-| `skib-default` | Skib Default | The baseline Skibidty Toilet Guy. |
-| `toiletman-wet` | Toiletman Wet | Drenched, straight out of the bowl. |
-| `skib-killn` | Skibbidy Killn | Feral, mid-chase snarl. |
-| `dad-case` | Dad Case | Deadpan "dad energy" chaser. |
-| `yoodelling-unc-alex` | Yoodelling Unc Alex | The yodeling uncle bit — see below, a second pose is planned. |
-| `ant-k-raman` | Ant K Raman | Raman-Aunt-Toilet-Lady-adjacent, from the PDF roster. |
-| `anti-k-raman-2` | Anti K Raman 2 | Alt take on the above. |
-| `ded-dad` | Ded Dad | Deadpan, unsettling. |
-| `crazy-jack-chaser` | Crazy Jack | Wild-eyed, unhinged energy. |
-| `sky-diver-motor-killer` | Sky-Diver (Motor Killer) | Grizzled, leather-jacket biker portrait — a road-warrior/biker take on the chaser roster, distinct from the toilet-creature designs. Landed this session. |
+| id | label | vibe | profile |
+|---|---|---|---|
+| `skib-default` | Skib Default | The baseline Skibidty Toilet Guy. | [Profile](profiles/skib-default.md) |
+| `toiletman-wet` | Toiletman Wet | Drenched, straight out of the bowl. | [Profile](profiles/toiletman-wet.md) |
+| `skib-killn` | Skibbidy Killn | Feral, mid-chase snarl. | [Profile](profiles/skib-killn.md) |
+| `dad-case` | Dad Case | Deadpan "dad energy" chaser. | [Profile](profiles/dad-case.md) |
+| `yoodelling-unc-alex` | Yoodelling Unc Alex | The yodeling uncle bit — see below, a second pose is planned. | [Profile](profiles/yoodelling-unc-alex.md) |
+| `ant-k-raman` | Ant K Raman | Raman-Aunt-Toilet-Lady-adjacent, from the PDF roster. | TBD |
+| `anti-k-raman-2` | Anti K Raman 2 | Alt take on the above. | TBD |
+| `ded-dad` | Ded Dad | Deadpan, unsettling. | TBD |
+| `crazy-jack-chaser` | Crazy Jack | Wild-eyed, unhinged energy. | TBD |
+| `sky-diver-motor-killer` | Sky-Diver (Motor Killer) | Grizzled, leather-jacket biker portrait — a road-warrior/biker take on the chaser roster, distinct from the toilet-creature designs. Landed this session. | TBD |
 
 ### Planned new chasers (not yet wired — plan only)
 
