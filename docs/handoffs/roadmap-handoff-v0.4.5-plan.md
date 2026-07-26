@@ -1,3 +1,10 @@
+---
+code_monkey_backend: ollama
+code_monkey_model: qwen3:8b
+code_monkey_base_url: http://DESKTOP_GAMING:11434/v1
+done_condition_cmd: cd frontend && npm run build
+---
+
 # Roadmap Handoff — v0.4.5-plan (docs-only)
 
 **Session date:** 2026-07-26
@@ -27,6 +34,17 @@ engineer can pick it up cold without re-interpreting the joke.
      coding session can treat this as its own increment instead of
      smuggling it into the runner pose mapping or the death-visual work.
 3. **Started this handoff file and the matching ledger entry.**
+
+## Code Monkey Dispatch
+
+This handoff is also runnable through `./scripts/run_code_monkey.sh`.
+The wrapper reads the fenced copy-paste block below, so keep that block
+bounded and treat it as the worker prompt. Suggested local defaults for
+this repo:
+
+- `code_monkey_backend: ollama`
+- `code_monkey_model: qwen3:8b`
+- local Ollama base URL: `http://DESKTOP_GAMING:11434/v1`
 
 ## Verification performed
 

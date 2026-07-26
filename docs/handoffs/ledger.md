@@ -10,6 +10,15 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## Code Monkey orchestration pass — 2026-07-26
+
+- Added `AGENTS.md` plus the `scripts/run_code_monkey.sh` /
+  `scripts/code_monkey_*.py` lane for bounded handoff dispatch.
+- Updated `docs/skib-sdlc.md`, `docs/update-directions.md`,
+  `docs/next-agent-coding-brief.md`, `docs/roadmap.md`, and the current
+  open handoff to advertise the new lane and its Ollama/OpenRouter
+  routing hints.
+
 ## v0.4.6 — 2026-07-26
 
 - Implemented runner pose-to-state mapping (oldest open handoff item,

@@ -1,8 +1,17 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
+This brief is now code-monkey ready: you can hand it to
+`./scripts/run_code_monkey.sh` after the active handoff has the right
+`code_monkey_backend` / `code_monkey_model` hint.
+
 Copy and paste the block below into the next coding agent session. This
 brief follows the three-session order documented in
 `docs/handoffs/roadmap-handoff-v0.4.3-plan.md`.
+
+If you're starting fresh, the active open handoff is now
+`docs/handoffs/roadmap-handoff-v0.4.5-plan.md`; keep this brief as the
+older backlog reference and use the newer handoff as the actual starting
+prompt.
 
 A later docs-only planning pass added a separate near-capture pause-card
 item in `docs/handoffs/roadmap-handoff-v0.4.5-plan.md`; keep that one as
@@ -21,6 +30,10 @@ the backlog into a three-session sequence:
 Follow `docs/skib-sdlc.md`'s process: read the docs it lists, work in
 single-session increments, build + verify, update the docs, and commit
 before stopping.
+
+If you are launching this through the code-monkey wrapper, run a
+`--dry-run` first so you can inspect the extracted prompt before the
+actual model call.
 
 Read first:
 
@@ -68,6 +81,8 @@ files.
   done; for gameplay-feel changes, actually drive the canvas rather
   than just eyeballing the diff - see `docs/dev-notes.md` for the
   headless-Chrome approach used previously in this sandbox.
+- If you are using the code-monkey lane, keep the fenced copy-paste
+  block bounded and make the handoff's verification command explicit.
 - Update `docs/version-log.md`, `docs/update-directions.md`,
   `docs/roadmap.md`, a new `docs/handoffs/roadmap-handoff-vX.Y.Z.md`,
   and `docs/handoffs/ledger.md` before stopping, per `docs/skib-sdlc.md`.

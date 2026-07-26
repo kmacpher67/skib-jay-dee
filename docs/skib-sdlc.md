@@ -89,6 +89,26 @@ and can push to prod).
    requirement as Mode A's handoff — leave the next agent (planning or
    coding) able to start cold.
 
+### Code Monkey lane
+
+Some sessions are meant to be dispatched automatically instead of typed
+by hand. Keep the normal Mode A / Mode B process, but make the handoff
+machine-readable when you want a code-monkey run:
+
+- Add `code_monkey_backend` and `code_monkey_model` hints to the handoff
+  or its dispatch section. Default backend is local `ollama` on
+  `DESKTOP_GAMING`; use `openrouter` when you want a remote model.
+- Keep the fenced copy-paste block short and bounded. The wrapper reads
+  that block as the prompt body.
+- Include a real verification command in the handoff so the worker knows
+  what "done" means before it touches code.
+- Start an automated slice with `./scripts/run_code_monkey.sh
+  <handoff.md>`. Use `--dry-run` first if you want to inspect the prompt
+  before the model call.
+- The wrapper and prompt extractor live in `scripts/run_code_monkey.sh`,
+  `scripts/code_monkey_direct.py`, `scripts/code_monkey_extract_prompt.py`,
+  and `scripts/code_monkey_resolve_backend.py`.
+
 ## 1. Read before touching anything
 
 In order:
