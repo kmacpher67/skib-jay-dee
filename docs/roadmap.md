@@ -102,18 +102,7 @@ Each item below is scoped to fit in one agent session. Pull the next
 open one, or reorder if something else is more urgent — just keep items
 this small.
 
-- [ ] **URGENT — live prod bug: broken runner/chaser face preview images,
-  fix committed but not deployed.** The deployed menu (`v0.4.24`) shows a
-  broken-image icon in both face preview boxes on every load. Root cause:
-  `frontend/src/App.jsx`'s `runnerFace`/`chaserFace` state held the whole
-  `{id, label, src}` pool entry object instead of its `.src` string, so
-  `<img src>` got coerced to `"[object Object]"` and 404s. Confirmed live
-  via a headless Playwright check against production. The fix landed as
-  a side effect of the `v0.4.25` post-kill-profile commit (`8339417`) and
-  is verified working locally (build + full Playwright suite pass, fresh
-  `dist/` serves real images) — it just hasn't been deployed yet. Next
-  action is purely `./scripts/deploy-static.sh`, no more coding. Full RCA
-  in [roadmap-handoff-v0.4.27-plan.md](handoffs/roadmap-handoff-v0.4.27-plan.md).
+- [x] **URGENT — live prod bug: broken runner/chaser face preview images.** Landed in the `v0.4.25` deploy. The deployed menu now correctly unwraps the `.src` string instead of coercing the pool object to `[object Object]`. Full RCA in [roadmap-handoff-v0.4.27-plan.md](handoffs/roadmap-handoff-v0.4.27-plan.md).
 
 Recommended next-session order, if we want the tightest handoff:
 extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 5-chaser clear +

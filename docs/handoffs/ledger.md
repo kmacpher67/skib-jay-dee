@@ -17,6 +17,7 @@ update `docs/version-log.md`.
   deaths log opens the same profile card from clickable killer-ID pills.
 - Bumped `GAME_ITERATION` to `v0.4.25` and updated the shipped changelog
   / docs trail to match.
+- Deployed v0.4.25 to production, which also included the fix for the broken face preview images (coerced `[object Object]` bug RCA'd in v0.4.27-plan).
 
 ## v0.4.26-plan — 2026-07-26 (docs-only)
 
