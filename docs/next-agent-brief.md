@@ -1,6 +1,10 @@
 # Next-Agent Brief — Skib-Jay-Dee-Toilet
 
-Copy everything below this line into a fresh agent session to continue the work.
+This brief is now a legacy handoff. For the current upgrade state, start
+with [docs/update-directions.md](docs/update-directions.md).
+
+Copy everything below this line into a fresh agent session only if you need
+the older Phase 1-era context.
 
 ---
 

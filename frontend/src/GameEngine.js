@@ -1,14 +1,12 @@
 // GameEngine.js
-// Vanilla JS / HTML5 Canvas engine for Skib-Jay-Dee-Toilet, Phase 1.
-// Runs update()/draw() on a fixed internal 9:16 resolution, scaled to fill
-// whatever CSS size the <canvas> is given (see index.css .portrait-frame).
+// Vanilla JS / HTML5 Canvas engine for Skib-Jay-Dee-Toilet.
+// Keeps the action in one place so React stays out of the hot path.
 
 export const WORLD = {
   width: 900,
   height: 1500,
 }
 
-// Internal render resolution - kept at a classic 9:16 arcade ratio.
 const VIEW_W = 360
 const VIEW_H = 640
 
@@ -24,6 +22,7 @@ const CHASER_LINES = [
   'SKIBIDI SKIBIDI!',
   "I SEE YOU! YOU CAN RUN, BUT YOU CAN'T WIPE!",
   "YOU'RE COMPLETELY STALLED!",
+  'SPACE BAR? MORE LIKE ESCAPE BAR.',
 ]
 
 function rectsIntersect(a, b) {
@@ -34,43 +33,197 @@ function clamp(v, min, max) {
   return Math.max(min, Math.min(max, v))
 }
 
-// "The Porcelain Palace" - a brightly lit, sterile public restroom.
-// Walls are simple AABB rects the runner collides with; stalls double as
-// hiding spots / dead ends per the design doc.
-function buildPorcelainPalace() {
-  const walls = []
-  const t = 24 // wall thickness
-  // Outer boundary
-  walls.push({ x: 0, y: 0, w: WORLD.width, h: t }) // top
-  walls.push({ x: 0, y: WORLD.height - t, w: WORLD.width, h: t }) // bottom
-  walls.push({ x: 0, y: 0, w: t, h: WORLD.height }) // left
-  walls.push({ x: WORLD.width - t, y: 0, w: t, h: WORLD.height }) // right
+function makeBoundaryWalls(walls) {
+  const t = 24
+  walls.push({ x: 0, y: 0, w: WORLD.width, h: t })
+  walls.push({ x: 0, y: WORLD.height - t, w: WORLD.width, h: t })
+  walls.push({ x: 0, y: 0, w: t, h: WORLD.height })
+  walls.push({ x: WORLD.width - t, y: 0, w: t, h: WORLD.height })
+}
 
-  // Rows of bathroom stalls creating corridors + dead ends.
-  const stallW = 110
-  const stallH = 160
-  const gap = 90
-  for (let row = 0; row < 4; row++) {
-    const y = 220 + row * 300
-    for (let col = 0; col < 3; col++) {
-      const x = 120 + col * (stallW + gap)
-      walls.push({ x, y, w: stallW, h: stallH })
+function addGrid(walls, {
+  startX,
+  startY,
+  cols,
+  rows,
+  gapX,
+  gapY,
+  tileW,
+  tileH,
+  staggerEvery = 0,
+  staggerOffset = 0,
+}) {
+  for (let row = 0; row < rows; row++) {
+    const rowOffset = staggerEvery && row % staggerEvery === 1 ? staggerOffset : 0
+    const y = startY + row * gapY
+    for (let col = 0; col < cols; col++) {
+      const x = startX + rowOffset + col * gapX
+      walls.push({ x, y, w: tileW, h: tileH })
     }
   }
+}
 
-  // A couple of "slippery wet-floor zones" - visual only in Phase 1, no
-  // collision, drawn as puddles.
-  const puddles = [
+function buildPorcelainPalace() {
+  const walls = []
+  const puddles = []
+  makeBoundaryWalls(walls)
+  addGrid(walls, {
+    startX: 120,
+    startY: 220,
+    cols: 3,
+    rows: 4,
+    gapX: 200,
+    gapY: 300,
+    tileW: 110,
+    tileH: 160,
+  })
+  puddles.push(
     { x: 300, y: 500, r: 60 },
     { x: 650, y: 900, r: 70 },
     { x: 200, y: 1200, r: 55 },
-  ]
-
-  return { walls, puddles }
+  )
+  return {
+    walls,
+    puddles,
+    theme: {
+      background: '#e8f4f8',
+      wallFill: '#c9c9d1',
+      wallStroke: '#8f8f9a',
+      puddleFill: 'rgba(120, 190, 255, 0.35)',
+    },
+  }
 }
 
+function buildPipeworks() {
+  const walls = []
+  const puddles = []
+  makeBoundaryWalls(walls)
+
+  // Narrower lanes, more turns.
+  walls.push({ x: 140, y: 170, w: 90, h: 280 })
+  walls.push({ x: 350, y: 250, w: 150, h: 120 })
+  walls.push({ x: 610, y: 160, w: 90, h: 340 })
+  walls.push({ x: 180, y: 620, w: 180, h: 90 })
+  walls.push({ x: 430, y: 760, w: 120, h: 210 })
+  walls.push({ x: 610, y: 1020, w: 160, h: 110 })
+  walls.push({ x: 120, y: 1120, w: 120, h: 240 })
+  walls.push({ x: 340, y: 1230, w: 220, h: 120 })
+  walls.push({ x: 640, y: 1280, w: 110, h: 110 })
+
+  addGrid(walls, {
+    startX: 90,
+    startY: 420,
+    cols: 3,
+    rows: 2,
+    gapX: 230,
+    gapY: 300,
+    tileW: 90,
+    tileH: 150,
+    staggerEvery: 2,
+    staggerOffset: 60,
+  })
+
+  puddles.push(
+    { x: 270, y: 380, r: 45 },
+    { x: 520, y: 980, r: 70 },
+    { x: 710, y: 620, r: 55 },
+  )
+
+  return {
+    walls,
+    puddles,
+    theme: {
+      background: '#edf7ef',
+      wallFill: '#b9c8b8',
+      wallStroke: '#69806d',
+      puddleFill: 'rgba(82, 196, 134, 0.25)',
+    },
+  }
+}
+
+function buildFloodedAnnex() {
+  const walls = []
+  const puddles = []
+  makeBoundaryWalls(walls)
+
+  walls.push({ x: 120, y: 170, w: 660, h: 52 })
+  walls.push({ x: 120, y: 330, w: 110, h: 420 })
+  walls.push({ x: 310, y: 330, w: 110, h: 190 })
+  walls.push({ x: 310, y: 610, w: 110, h: 140 })
+  walls.push({ x: 500, y: 330, w: 110, h: 390 })
+  walls.push({ x: 690, y: 330, w: 90, h: 190 })
+  walls.push({ x: 690, y: 610, w: 90, h: 340 })
+  walls.push({ x: 180, y: 860, w: 160, h: 120 })
+  walls.push({ x: 400, y: 900, w: 150, h: 100 })
+  walls.push({ x: 600, y: 980, w: 180, h: 180 })
+  walls.push({ x: 130, y: 1160, w: 170, h: 160 })
+  walls.push({ x: 360, y: 1180, w: 180, h: 130 })
+  walls.push({ x: 610, y: 1320, w: 160, h: 100 })
+
+  puddles.push(
+    { x: 200, y: 520, r: 80 },
+    { x: 460, y: 1120, r: 65 },
+    { x: 700, y: 820, r: 72 },
+    { x: 300, y: 1380, r: 55 },
+  )
+
+  return {
+    walls,
+    puddles,
+    theme: {
+      background: '#f8f0f6',
+      wallFill: '#d4b7c9',
+      wallStroke: '#8f6e87',
+      puddleFill: 'rgba(190, 100, 255, 0.22)',
+    },
+  }
+}
+
+const LEVELS = [
+  {
+    name: 'Porcelain Palace',
+    banner: 'LEVEL 1: PORCELAIN PALACE',
+    reward: 40,
+    advanceAt: 18,
+    chaserSpeed: 130,
+    runnerSpawn: { x: WORLD.width / 2 - 20, y: WORLD.height - 200 },
+    chaserSpawn: { x: WORLD.width / 2 - 20, y: 150 },
+    buildMap: buildPorcelainPalace,
+  },
+  {
+    name: 'Pipeworks',
+    banner: 'LEVEL 2: PIPEWORKS',
+    reward: 60,
+    advanceAt: 48,
+    chaserSpeed: 145,
+    runnerSpawn: { x: 260, y: WORLD.height - 132 },
+    chaserSpawn: { x: 60, y: 170 },
+    buildMap: buildPipeworks,
+  },
+  {
+    name: 'Flooded Annex',
+    banner: 'LEVEL 3: FLOODED ANNEX',
+    reward: 90,
+    advanceAt: null,
+    chaserSpeed: 162,
+    runnerSpawn: { x: 260, y: WORLD.height - 120 },
+    chaserSpawn: { x: WORLD.width - 140, y: 260 },
+    buildMap: buildFloodedAnnex,
+  },
+]
+
 export class GameEngine {
-  constructor(canvas, { onCaught, onSkreem } = {}) {
+  constructor(
+    canvas,
+    {
+      onCaught,
+      onSkreem,
+      onLevelChange,
+      onSheebsChange,
+      initialSheebs = 200,
+      loadout = {},
+    } = {},
+  ) {
     this.canvas = canvas
     this.ctx = canvas.getContext('2d')
     this.canvas.width = VIEW_W
@@ -78,15 +231,15 @@ export class GameEngine {
 
     this.onCaught = onCaught || (() => {})
     this.onSkreem = onSkreem || (() => {})
-
-    this.map = buildPorcelainPalace()
+    this.onLevelChange = onLevelChange || (() => {})
+    this.onSheebsChange = onSheebsChange || (() => {})
 
     this.runner = {
       x: WORLD.width / 2 - 20,
       y: WORLD.height - 200,
       w: 40,
       h: 40,
-      baseSpeed: 180, // px/sec
+      baseSpeed: 180,
       color: '#3ddc55',
       face: null,
     }
@@ -95,26 +248,47 @@ export class GameEngine {
       y: 150,
       w: 44,
       h: 44,
-      baseSpeed: 130, // slower than a sprinting runner, faster than walking
+      baseSpeed: 130,
       color: '#8a5a34',
       face: null,
     }
 
-    this.stamina = 100
+    this.levelIndex = 0
+    this.level = LEVELS[0]
+    this.map = this.level.buildMap()
+    this.bannerText = this.level.banner
+    this.pendingLevelIndex = null
+
+    this.maxStamina = 100
+    this.stamina = this.maxStamina
+    this.sheebs = Math.max(0, Math.floor(initialSheebs))
     this.skreems = 0
-    this.phase = 'intro' // intro -> chase -> caught
-    this.phaseTimer = 1.6 // seconds "RUN LIKE HELL" banner shows
+    this.levelSkreems = 0
+    this.phase = 'intro'
+    this.phaseTimer = 1.6
     this.zoom = 1
     this.captureLine = CAPTURE_LINES[0]
     this.chaserLine = ''
     this.chaserLineTimer = 0
 
+    this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0 }
+
     this.joystick = { active: false, id: null, cx: 0, cy: 0, dx: 0, dy: 0 }
     this.sprintBtn = { active: false, id: null }
+    this.keys = { up: false, down: false, left: false, right: false, sprint: false }
 
-    this._bindInput()
+    this.setLoadout(loadout)
+    this._syncLevelState({ resetPositions: true, notify: false })
+    this.onLevelChange({
+      index: this.levelIndex + 1,
+      name: this.level.name,
+      banner: this.level.banner,
+      advanceAt: this.level.advanceAt,
+    })
+
     this._raf = null
     this._lastTime = null
+    this._bindInput()
   }
 
   setFaces({ runnerFace, chaserFace }) {
@@ -122,9 +296,26 @@ export class GameEngine {
     if (chaserFace) this.chaser.face = chaserFace
   }
 
+  setSheebs(sheebs) {
+    this.sheebs = Math.max(0, Math.floor(sheebs))
+  }
+
+  setLoadout(loadout = {}) {
+    this.loadout = {
+      speedBonus: Number.isFinite(loadout.speedBonus) ? loadout.speedBonus : 0,
+      staminaBonus: Number.isFinite(loadout.staminaBonus) ? loadout.staminaBonus : 0,
+      rewardBonus: Number.isFinite(loadout.rewardBonus) ? loadout.rewardBonus : 0,
+    }
+
+    this.runner.baseSpeed = 180 + this.loadout.speedBonus
+    this.maxStamina = 100 + this.loadout.staminaBonus
+    this.stamina = clamp(this.stamina, 0, this.maxStamina)
+  }
+
   start() {
     if (this._raf) return
     this._lastTime = performance.now()
+
     const loop = (now) => {
       const dt = Math.min(0.05, (now - this._lastTime) / 1000)
       this._lastTime = now
@@ -132,6 +323,7 @@ export class GameEngine {
       this.draw()
       this._raf = requestAnimationFrame(loop)
     }
+
     this._raf = requestAnimationFrame(loop)
   }
 
@@ -141,17 +333,25 @@ export class GameEngine {
     this._unbindInput()
   }
 
-  // ---- input -------------------------------------------------------------
-
   _bindInput() {
     this._onPointerDown = (e) => this._handlePointerDown(e)
     this._onPointerMove = (e) => this._handlePointerMove(e)
     this._onPointerUp = (e) => this._handlePointerUp(e)
+    this._onKeyDown = (e) => this._handleKey(e, true)
+    this._onKeyUp = (e) => this._handleKey(e, false)
+    this._onWindowBlur = () => this._clearHeldInput()
+    this._onVisibilityChange = () => {
+      if (document.visibilityState !== 'visible') this._clearHeldInput()
+    }
 
     this.canvas.addEventListener('pointerdown', this._onPointerDown)
     window.addEventListener('pointermove', this._onPointerMove)
     window.addEventListener('pointerup', this._onPointerUp)
     window.addEventListener('pointercancel', this._onPointerUp)
+    window.addEventListener('keydown', this._onKeyDown)
+    window.addEventListener('keyup', this._onKeyUp)
+    window.addEventListener('blur', this._onWindowBlur)
+    document.addEventListener('visibilitychange', this._onVisibilityChange)
   }
 
   _unbindInput() {
@@ -159,6 +359,55 @@ export class GameEngine {
     window.removeEventListener('pointermove', this._onPointerMove)
     window.removeEventListener('pointerup', this._onPointerUp)
     window.removeEventListener('pointercancel', this._onPointerUp)
+    window.removeEventListener('keydown', this._onKeyDown)
+    window.removeEventListener('keyup', this._onKeyUp)
+    window.removeEventListener('blur', this._onWindowBlur)
+    document.removeEventListener('visibilitychange', this._onVisibilityChange)
+  }
+
+  _clearHeldInput() {
+    this.joystick.active = false
+    this.joystick.id = null
+    this.joystick.dx = 0
+    this.joystick.dy = 0
+    this.sprintBtn.active = false
+    this.sprintBtn.id = null
+    this.keys.up = false
+    this.keys.down = false
+    this.keys.left = false
+    this.keys.right = false
+    this.keys.sprint = false
+  }
+
+  _handleKey(e, isDown) {
+    const code = e.code
+    let handled = true
+
+    switch (code) {
+      case 'ArrowUp':
+      case 'KeyW':
+        this.keys.up = isDown
+        break
+      case 'ArrowDown':
+      case 'KeyS':
+        this.keys.down = isDown
+        break
+      case 'ArrowLeft':
+      case 'KeyA':
+        this.keys.left = isDown
+        break
+      case 'ArrowRight':
+      case 'KeyD':
+        this.keys.right = isDown
+        break
+      case 'Space':
+        this.keys.sprint = isDown
+        break
+      default:
+        handled = false
+    }
+
+    if (handled) e.preventDefault()
   }
 
   _toViewCoords(e) {
@@ -171,6 +420,7 @@ export class GameEngine {
   _joystickOrigin() {
     return { x: 60, y: VIEW_H - 90 }
   }
+
   _sprintOrigin() {
     return { x: VIEW_W - 55, y: VIEW_H - 90 }
   }
@@ -185,14 +435,17 @@ export class GameEngine {
     if (distSprint < 45) {
       this.sprintBtn.active = true
       this.sprintBtn.id = e.pointerId
+      this.canvas.setPointerCapture?.(e.pointerId)
       return
     }
+
     if (distJoy < 70 || (x < VIEW_W / 2 && y > VIEW_H - 180)) {
       this.joystick.active = true
       this.joystick.id = e.pointerId
       this.joystick.cx = j.x
       this.joystick.cy = j.y
       this._updateJoystickVector(x, y)
+      this.canvas.setPointerCapture?.(e.pointerId)
     }
   }
 
@@ -210,9 +463,16 @@ export class GameEngine {
       this.joystick.dx = 0
       this.joystick.dy = 0
     }
+
     if (e.pointerId === this.sprintBtn.id) {
       this.sprintBtn.active = false
       this.sprintBtn.id = null
+    }
+
+    try {
+      this.canvas.releasePointerCapture?.(e.pointerId)
+    } catch {
+      // Ignore browsers that reject the release after a cancel.
     }
   }
 
@@ -221,20 +481,94 @@ export class GameEngine {
     let dx = x - this.joystick.cx
     let dy = y - this.joystick.cy
     const dist = Math.hypot(dx, dy)
+
     if (dist > maxDist) {
       dx = (dx / dist) * maxDist
       dy = (dy / dist) * maxDist
     }
+
     this.joystick.dx = dx / maxDist
     this.joystick.dy = dy / maxDist
   }
 
-  // ---- update --------------------------------------------------------------
+  _getMoveVector() {
+    if (this.joystick.active) {
+      return { x: this.joystick.dx, y: this.joystick.dy }
+    }
+
+    const x = (this.keys.right ? 1 : 0) - (this.keys.left ? 1 : 0)
+    const y = (this.keys.down ? 1 : 0) - (this.keys.up ? 1 : 0)
+    if (!x && !y) return { x: 0, y: 0 }
+
+    const mag = Math.hypot(x, y) || 1
+    return { x: x / mag, y: y / mag }
+  }
+
+  _syncLevelState({ resetPositions = false, notify = true } = {}) {
+    this.level = LEVELS[this.levelIndex]
+    this.map = this.level.buildMap()
+    this.chaser.baseSpeed = this.level.chaserSpeed
+    this.bannerText = this.level.banner
+    this.pendingLevelIndex = null
+    this.zoom = 1
+    this.chaserLine = ''
+    this.chaserLineTimer = 0
+    this.levelSkreems = 0
+
+    if (resetPositions) {
+      this.runner.x = this.level.runnerSpawn.x
+      this.runner.y = this.level.runnerSpawn.y
+      this.chaser.x = this.level.chaserSpawn.x
+      this.chaser.y = this.level.chaserSpawn.y
+      this.stamina = this.maxStamina
+    }
+
+    if (notify) {
+      this.onLevelChange({
+        index: this.levelIndex + 1,
+        name: this.level.name,
+        banner: this.level.banner,
+        advanceAt: this.level.advanceAt,
+      })
+    }
+  }
+
+  _startLevelAdvance() {
+    if (this.phase !== 'chase' || this.levelIndex >= LEVELS.length - 1) return
+
+    this.phase = 'level-up'
+    this.phaseTimer = 1.25
+    this.pendingLevelIndex = this.levelIndex + 1
+    const nextLevel = LEVELS[this.pendingLevelIndex]
+    const reward = Math.round(
+      this.level.reward * (1 + this.loadout.rewardBonus),
+    )
+
+    this.sheebs += reward
+    this.onSheebsChange(this.sheebs)
+    this.bannerText = nextLevel.banner
+  }
 
   update(dt) {
     if (this.phase === 'intro') {
       this.phaseTimer -= dt
-      if (this.phaseTimer <= 0) this.phase = 'chase'
+      if (this.phaseTimer <= 0) {
+        this.phase = 'chase'
+        this.bannerText = this.level.banner
+      }
+      return
+    }
+
+    if (this.phase === 'level-up') {
+      this.phaseTimer -= dt
+      this.zoom = 1
+      if (this.phaseTimer <= 0 && this.pendingLevelIndex !== null) {
+        this.levelIndex = this.pendingLevelIndex
+        this._syncLevelState({ resetPositions: true })
+        this.phase = 'chase'
+        this.phaseTimer = 0
+        this.bannerText = this.level.banner
+      }
       return
     }
 
@@ -243,20 +577,17 @@ export class GameEngine {
       return
     }
 
-    // --- Runner movement ---
-    const sprinting = this.sprintBtn.active && this.stamina > 0
+    const sprinting = (this.sprintBtn.active || this.keys.sprint) && this.stamina > 0
     if (sprinting) {
-      this.stamina = clamp(this.stamina - dt * 35, 0, 100)
+      this.stamina = clamp(this.stamina - dt * 40, 0, this.maxStamina)
     } else {
-      this.stamina = clamp(this.stamina + dt * 20, 0, 100)
+      this.stamina = clamp(this.stamina + dt * 20, 0, this.maxStamina)
     }
+
     const speed = this.runner.baseSpeed * (sprinting ? 1.8 : 1)
+    const move = this._getMoveVector()
+    this._moveWithCollision(this.runner, move.x * speed * dt, move.y * speed * dt)
 
-    const moveX = this.joystick.dx * speed * dt
-    const moveY = this.joystick.dy * speed * dt
-    this._moveWithCollision(this.runner, moveX, moveY)
-
-    // --- Chaser AI: seek the runner directly ---
     const dx = this.runner.x - this.chaser.x
     const dy = this.runner.y - this.chaser.y
     const dist = Math.hypot(dx, dy) || 1
@@ -266,10 +597,15 @@ export class GameEngine {
     this.chaser.x = clamp(this.chaser.x, 24, WORLD.width - 24 - this.chaser.w)
     this.chaser.y = clamp(this.chaser.y, 24, WORLD.height - 24 - this.chaser.h)
 
-    // Skreem counter ticks up the closer the toilet gets (per design doc).
     if (dist < 260) {
       this.skreems += dt * (260 - dist) * 0.05
+      this.levelSkreems += dt * (260 - dist) * 0.05
       this.onSkreem(Math.floor(this.skreems))
+    }
+
+    if (this.level.advanceAt && this.levelSkreems >= this.level.advanceAt) {
+      this._startLevelAdvance()
+      return
     }
 
     if (dist < 180 && this.chaserLineTimer <= 0) {
@@ -278,7 +614,6 @@ export class GameEngine {
     }
     this.chaserLineTimer = Math.max(0, this.chaserLineTimer - dt)
 
-    // --- Collision -> Caught event ---
     if (rectsIntersect(this.runner, this.chaser)) {
       this._triggerCaught()
     }
@@ -306,21 +641,20 @@ export class GameEngine {
 
   _updateCaught(dt) {
     this.phaseTimer -= dt
-    // Zoom aggressively toward the victim over the first ~0.6s, then hold.
     this.zoom = clamp(this.zoom + dt * 5, 1, 3)
 
     if (this.phaseTimer <= 0) {
-      // Respawn both players and resume the chase.
-      this.runner.x = WORLD.width / 2 - 20
-      this.runner.y = WORLD.height - 200
-      this.chaser.x = WORLD.width / 2 - 20
-      this.chaser.y = 150
+      this.runner.x = this.level.runnerSpawn.x
+      this.runner.y = this.level.runnerSpawn.y
+      this.chaser.x = this.level.chaserSpawn.x
+      this.chaser.y = this.level.chaserSpawn.y
       this.zoom = 1
+      this.stamina = this.maxStamina
       this.phase = 'chase'
+      this.phaseTimer = 0
+      this.chaserLineTimer = 0
     }
   }
-
-  // ---- draw ---------------------------------------------------------------
 
   draw() {
     const ctx = this.ctx
@@ -336,6 +670,7 @@ export class GameEngine {
     this._drawHud(ctx)
 
     if (this.phase === 'intro') this._drawBanner(ctx, 'RUN LIKE HELL')
+    if (this.phase === 'level-up') this._drawBanner(ctx, this.bannerText)
     if (this.phase === 'caught') this._drawJumpscare(ctx)
     if (this.phase === 'chase') this._drawControls(ctx)
     if (this.chaserLineTimer > 0 && this.phase === 'chase') {
@@ -344,8 +679,8 @@ export class GameEngine {
   }
 
   _applyCamera(ctx) {
-    const focus = this.phase === 'caught' ? this.runner : this.runner
-    const zoom = this.phase === 'caught' ? this.zoom : 1.4
+    const focus = this.runner
+    const zoom = this.phase === 'caught' ? this.zoom : 1.35
     const cx = focus.x + focus.w / 2
     const cy = focus.y + focus.h / 2
 
@@ -355,18 +690,19 @@ export class GameEngine {
   }
 
   _drawMap(ctx) {
-    ctx.fillStyle = '#e8f4f8'
+    const { background, wallFill, wallStroke, puddleFill } = this.map.theme
+    ctx.fillStyle = background
     ctx.fillRect(0, 0, WORLD.width, WORLD.height)
 
-    ctx.fillStyle = 'rgba(120, 190, 255, 0.35)'
+    ctx.fillStyle = puddleFill
     this.map.puddles.forEach((p) => {
       ctx.beginPath()
       ctx.ellipse(p.x, p.y, p.r, p.r * 0.6, 0, 0, Math.PI * 2)
       ctx.fill()
     })
 
-    ctx.fillStyle = '#c9c9d1'
-    ctx.strokeStyle = '#8f8f9a'
+    ctx.fillStyle = wallFill
+    ctx.strokeStyle = wallStroke
     ctx.lineWidth = 3
     this.map.walls.forEach((w) => {
       ctx.fillRect(w.x, w.y, w.w, w.h)
@@ -385,30 +721,36 @@ export class GameEngine {
       ctx.strokeStyle = entity.color
       ctx.lineWidth = 3
       ctx.strokeRect(entity.x, entity.y, entity.w, entity.h)
-    } else {
-      ctx.fillStyle = entity.color
-      ctx.fillRect(entity.x, entity.y, entity.w, entity.h)
+      return
     }
+
+    ctx.fillStyle = entity.color
+    ctx.fillRect(entity.x, entity.y, entity.w, entity.h)
   }
 
   _drawHud(ctx) {
     ctx.save()
-    ctx.fillStyle = 'rgba(0,0,0,0.45)'
+    ctx.fillStyle = 'rgba(0,0,0,0.48)'
     ctx.fillRect(0, 0, VIEW_W, 34)
     ctx.fillStyle = '#fff'
-    ctx.font = 'bold 14px sans-serif'
+    ctx.font = 'bold 13px sans-serif'
     ctx.textBaseline = 'middle'
+
+    ctx.textAlign = 'left'
     ctx.fillText(`SKREEMS: ${Math.floor(this.skreems)}`, 10, 17)
+
+    ctx.textAlign = 'center'
+    ctx.fillText(`SHEEBS: ${this.sheebs}`, VIEW_W / 2, 17)
+
     ctx.textAlign = 'right'
-    ctx.fillText(this.phase === 'caught' ? 'CAUGHT!' : 'RUN!', VIEW_W - 10, 17)
+    ctx.fillText(`LEVEL ${this.levelIndex + 1}/${LEVELS.length}`, VIEW_W - 10, 17)
     ctx.restore()
 
-    // Stamina bar
     ctx.save()
     ctx.fillStyle = 'rgba(0,0,0,0.4)'
     ctx.fillRect(VIEW_W / 2 - 60, 6, 120, 8)
     ctx.fillStyle = this.stamina > 25 ? '#3ddc55' : '#e0403f'
-    ctx.fillRect(VIEW_W / 2 - 60, 6, 120 * (this.stamina / 100), 8)
+    ctx.fillRect(VIEW_W / 2 - 60, 6, 120 * (this.stamina / this.maxStamina), 8)
     ctx.restore()
   }
 
@@ -430,7 +772,7 @@ export class GameEngine {
 
     const s = this._sprintOrigin()
     ctx.save()
-    ctx.globalAlpha = this.sprintBtn.active ? 0.9 : 0.5
+    ctx.globalAlpha = this.sprintBtn.active || this.keys.sprint ? 0.95 : 0.5
     ctx.fillStyle = '#ff5a3c'
     ctx.beginPath()
     ctx.arc(s.x, s.y, 40, 0, Math.PI * 2)
@@ -441,6 +783,17 @@ export class GameEngine {
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     ctx.fillText('SPRINT', s.x, s.y)
+    ctx.font = 'bold 10px sans-serif'
+    ctx.fillStyle = 'rgba(255,255,255,0.8)'
+    ctx.fillText('SPACE', s.x, s.y + 16)
+    ctx.restore()
+
+    ctx.save()
+    ctx.fillStyle = 'rgba(255,255,255,0.68)'
+    ctx.font = 'bold 11px sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText('ARROWS / WASD + SPACE', VIEW_W / 2, VIEW_H - 18)
     ctx.restore()
   }
 
@@ -449,7 +802,7 @@ export class GameEngine {
     ctx.fillStyle = 'rgba(0,0,0,0.6)'
     ctx.fillRect(0, 0, VIEW_W, VIEW_H)
     ctx.fillStyle = '#ff2e2e'
-    ctx.font = 'bold 32px sans-serif'
+    ctx.font = 'bold 28px sans-serif'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     ctx.save()
@@ -473,8 +826,6 @@ export class GameEngine {
   }
 
   _drawJumpscare(ctx) {
-    // Flashing red overlay + glitch-ish derp text, per the design doc's
-    // "Instant Camera Snap-to-Face -> Zoom 300% -> Apply Glitch/Derp Filter".
     const flash = Math.sin(performance.now() / 60) > 0
     ctx.save()
     ctx.fillStyle = flash ? 'rgba(255,0,0,0.45)' : 'rgba(120,0,0,0.35)'

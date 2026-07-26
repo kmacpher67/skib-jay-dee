@@ -11,12 +11,36 @@ function loadImage(src) {
   })
 }
 
-export default function GameCanvas({ runnerFace, chaserFace, onCaught, onSkreem }) {
+export default function GameCanvas({
+  runnerFace,
+  chaserFace,
+  loadoutSpeedBonus,
+  loadoutStaminaBonus,
+  loadoutRewardBonus,
+  initialSheebs,
+  onCaught,
+  onSkreem,
+  onLevelChange,
+  onSheebsChange,
+}) {
   const canvasRef = useRef(null)
   const engineRef = useRef(null)
 
   useEffect(() => {
-    const engine = new GameEngine(canvasRef.current, { onCaught, onSkreem })
+    // Mount the canvas engine once per play session; subsequent prop
+    // changes flow through the dedicated setter effects below.
+    const engine = new GameEngine(canvasRef.current, {
+      onCaught,
+      onSkreem,
+      onLevelChange,
+      onSheebsChange,
+      initialSheebs,
+      loadout: {
+        speedBonus: loadoutSpeedBonus,
+        staminaBonus: loadoutStaminaBonus,
+        rewardBonus: loadoutRewardBonus,
+      },
+    })
     engineRef.current = engine
     engine.start()
     return () => engine.stop()
@@ -35,6 +59,20 @@ export default function GameCanvas({ runnerFace, chaserFace, onCaught, onSkreem 
       cancelled = true
     }
   }, [runnerFace, chaserFace])
+
+  useEffect(() => {
+    if (!engineRef.current) return
+    engineRef.current.setLoadout({
+      speedBonus: loadoutSpeedBonus,
+      staminaBonus: loadoutStaminaBonus,
+      rewardBonus: loadoutRewardBonus,
+    })
+  }, [loadoutSpeedBonus, loadoutStaminaBonus, loadoutRewardBonus])
+
+  useEffect(() => {
+    if (!engineRef.current) return
+    engineRef.current.setSheebs(initialSheebs)
+  }, [initialSheebs])
 
   return <canvas ref={canvasRef} />
 }

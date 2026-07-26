@@ -7,13 +7,15 @@
 html, body, #root {
   height: 100%;
   margin: 0;
-  background: #0a0a0a;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(96, 255, 114, 0.08) 0%, rgba(96, 255, 114, 0) 28%),
+    linear-gradient(180deg, #030406 0%, #05070b 55%, #010102 100%);
   overscroll-behavior: none;
   touch-action: none;
 }
 
 body {
-  font-family: 'Trebuchet MS', 'Comic Sans MS', sans-serif;
+  font-family: 'Trebuchet MS', 'Arial Black', sans-serif;
   color: #fff;
 }
 
@@ -36,7 +38,9 @@ body {
   height: 100%;
   max-width: 100%;
   background: #111;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 0 40px rgba(0, 0, 0, 0.8);
   overflow: hidden;
 }
 

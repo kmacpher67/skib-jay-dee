@@ -83,11 +83,16 @@ No `chromium-cli` or Playwright available in this sandbox. Verified by:
   against this canvas again, prefer in-page `PointerEvent` dispatch over
   CDP's `Input` domain.
 
-## Open gaps for Phase 1 sign-off
+## Current follow-up gaps
 
-- No sound (flush sound effect, chaser bass-boost loop, etc. are Phase
-  1/2 flavor from the PDF but weren't in the literal Phase 1 code spec).
+- No sound yet (flush sound effect, chaser bass-boost loop, jump-scare
+  sting, etc. are still on the table).
 - No "World Star" intro cinematic (Jayden recording a video, Skib bursting
-  from a stall) — menu has flavor text but not the scripted intro.
-- Face upload has no crop/oval-mask step — uploaded image is stretched to
-  fill the square sprite as-is.
+  from a stall, screen crack transition) — menu has flavor text but not the
+  scripted intro.
+- Face upload still uses the raw square preview; the design doc called for
+  a crop/oval mask instead of stretching.
+- No backend persistence or multiplayer wiring yet — the current save uses
+  cookies only, and the FastAPI scaffold remains unused by the frontend.
+- More character roles / abilities from the PDF roster are still future
+  work once the chase loop and content set settle down.
