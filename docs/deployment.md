@@ -22,9 +22,11 @@ now:
    ```
    Or run the helper script from the repo root. It builds, rsyncs, and
    commits only the `skib-jay-dee-toilet-game/` subtree in the website
-   repo with the requested short iteration label:
+   repo, reading the iteration label straight from
+   `frontend/src/version.js` (bump `GAME_ITERATION` there first) and
+   pairing it with the short slug you pass in:
    ```bash
-   ./scripts/deploy-static.sh v0.3.1 intro-badge
+   ./scripts/deploy-static.sh intro-badge
    ```
 3. **nginx needs no special config beyond serving static files** from that
    directory — no proxy, no CGI, no Python process. If the existing

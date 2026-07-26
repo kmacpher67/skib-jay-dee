@@ -34,6 +34,22 @@ front-end upgrade pass.
 - No gameplay or content changes were made in this pass.
 - No audio, intro cinematic, or face-crop work was added yet.
 
+### Addendum: deploy script had two sources of truth
+
+- The first pass at `scripts/deploy-static.sh` took the iteration label as
+  a manual `<iteration>` CLI arg, separate from `GAME_ITERATION` in
+  `frontend/src/version.js`. Nothing enforced that the two matched, so a
+  deploy commit message could silently disagree with the iteration tag
+  actually baked into that build.
+- Fixed by having the script read `GAME_ITERATION` straight out of
+  `frontend/src/version.js` instead of accepting it as an argument.
+  `version.js` is now the only place the iteration is set; the script
+  only takes `<short-name>`: `./scripts/deploy-static.sh intro-badge`.
+- Verified with a real deploy run (`version-single-source-fix`): build
+  succeeded, rsync populated the website subtree, and the website repo
+  committed as `kenmacpherson.com - skib-jay-dee toilet game: v0.3.1
+  version-single-source-fix` (commit `ad48764`, not pushed).
+
 ## v0.3.0
 
 **Date:** July 26, 2026

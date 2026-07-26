@@ -7,12 +7,24 @@ WEBSITE_ROOT="${HOME}/personal/website/kenmacpherson.com"
 DEPLOY_RELATIVE="skib-jay-dee-toilet-game"
 DEPLOY_DIR="${WEBSITE_ROOT}/${DEPLOY_RELATIVE}"
 
-ITERATION="${1:-}"
-SHORT_NAME="${2:-}"
+VERSION_FILE="$FRONTEND_DIR/src/version.js"
+SHORT_NAME="${1:-}"
 
-if [[ -z "$ITERATION" || -z "$SHORT_NAME" ]]; then
-  echo "Usage: $0 <iteration> <short-name>" >&2
-  echo "Example: $0 v0.3.1 intro-badge" >&2
+if [[ -z "$SHORT_NAME" ]]; then
+  echo "Usage: $0 <short-name>" >&2
+  echo "Example: $0 intro-badge" >&2
+  exit 1
+fi
+
+if [[ ! -f "$VERSION_FILE" ]]; then
+  echo "version file not found: $VERSION_FILE" >&2
+  exit 1
+fi
+
+ITERATION="$(sed -nE "s/.*GAME_ITERATION[[:space:]]*=[[:space:]]*['\"]([^'\"]+)['\"].*/\1/p" "$VERSION_FILE")"
+
+if [[ -z "$ITERATION" ]]; then
+  echo "Could not read GAME_ITERATION from: $VERSION_FILE" >&2
   exit 1
 fi
 
