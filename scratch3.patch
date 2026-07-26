@@ -1,0 +1,16 @@
+--- docs/version-log.md
++++ docs/version-log.md
+@@ -2,6 +2,15 @@
+ 
+ The design trail. Append-only. One section per meaningful session.
+ 
++## v0.4.30 — Badges System
++
++- **What changed:** Added a persistent rewards/badges system. Initial four badges: "Financial Wizardry", "Glutton for Punishment", "Slippery When Wet" (deferred logic), and "Devs Owe Me Five Bucks". Badges show as toasts on earn, render on the menu, and in the level-change banner.
++- **Design decisions:** Kept `earnedBadges` in `cookies.js` to match `ownedItems`. Passed down to `GameEngine.js` to draw during `_drawBanner` natively.
++- **What's next:** Design the Jayden Gun or Rolling Pickups.
++- **Non-goals:** Did not implement the Schleimy Potion (prereq for Slippery When Wet) yet.
++
+ ## v0.4.28 — Level 4 Warning Screen
+ 
+ - **What changed:** Added a full-screen, red "WARNING: WELCOME TO LEVEL 4. THE STAKES ARE REAL." overlay that fires exactly once per run when progressing from Level 3 to Level 4.

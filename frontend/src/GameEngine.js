@@ -348,6 +348,7 @@ export class GameEngine {
       initialSheebs,
       initialDeaths = 0,
       highestLevel = 0,
+      earnedBadges = [],
       loadout = {},
     } = {},
   ) {
@@ -371,6 +372,7 @@ export class GameEngine {
     this.onLevelClear = onLevelClear || (() => {})
     this.onExtraChaserSpawn = onExtraChaserSpawn || (() => {})
     this.onCaughtProfileReady = onCaughtProfileReady || (() => {})
+    this.onBadgeEarned = onBadgeEarned || (() => {})
 
     this.runner = {
       x: WORLD.width / 2 - 20,
@@ -410,6 +412,7 @@ export class GameEngine {
     this.skreems = 0
     this.levelSkreems = 0
     this.deaths = Math.max(0, Math.floor(initialDeaths))
+    this.earnedBadges = earnedBadges || []
     this.highestLevel = highestLevel
     this.phase = 'intro'
     this.phaseTimer = 1.6
@@ -467,6 +470,10 @@ export class GameEngine {
 
   setSheebs(sheebs) {
     this.sheebs = Math.floor(sheebs) // allow negative when receiving from outside
+  }
+
+  setEarnedBadges(badges) {
+    this.earnedBadges = badges || []
   }
 
   setLoadout(loadout = {}) {
@@ -725,7 +732,12 @@ export class GameEngine {
       this.level.reward * (1 + this.loadout.rewardBonus),
     )
 
+    const wasInDebt = this.sheebs < 0
     this.sheebs += reward
+    if (wasInDebt && this.sheebs >= 0) {
+      this.onBadgeEarned('financial-wizardry')
+    }
+    
     this.onSheebsChange(this.sheebs)
     this.bannerText = nextLevel.banner
     this.chaserSpeedMod = clamp(
@@ -741,6 +753,10 @@ export class GameEngine {
       pipeworksFourSkibSeconds: this.pipeworksFourSkibSeconds,
       pipeworksSimultaneousSkibs: this.chasers.length,
     })
+
+    if (this.levelIndex >= 3) {
+      this.onBadgeEarned('devs-owe-me-five-bucks')
+    }
   }
 
   update(dt) {
@@ -1011,6 +1027,9 @@ export class GameEngine {
     }
 
     this.deaths += 1
+    if (this.deaths >= 50) {
+      this.onBadgeEarned('glutton-for-punishment')
+    }
     const skreemsLost = Math.round(this.skreems * DEATH_SKREEM_PENALTY)
     const baseSheebsLost = DEATH_SHEEBS_PENALTY
     let sheebsLost = 0
@@ -1338,6 +1357,19 @@ export class GameEngine {
     ctx.rotate(-0.05)
     ctx.fillText(text, 0, 0)
     ctx.restore()
+
+    if (this.earnedBadges && this.earnedBadges.length > 0) {
+      ctx.font = '30px sans-serif'
+      let badgeStr = ''
+      for (const badgeId of this.earnedBadges) {
+        if (badgeId === 'financial-wizardry') badgeStr += '📈 '
+        if (badgeId === 'glutton-for-punishment') badgeStr += '💀 '
+        if (badgeId === 'slippery-when-wet') badgeStr += '💧 '
+        if (badgeId === 'devs-owe-me-five-bucks') badgeStr += '💸 '
+      }
+      ctx.fillStyle = 'white'
+      ctx.fillText(badgeStr.trim(), VIEW_W / 2, VIEW_H / 2 + 60)
+    }
     ctx.restore()
   }
 

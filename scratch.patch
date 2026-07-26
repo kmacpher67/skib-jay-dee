@@ -1,0 +1,36 @@
+--- frontend/src/gameContent.js
++++ frontend/src/gameContent.js
+@@ -102,6 +102,33 @@
+   return CHASER_PROFILES[faceId] ?? CHASER_PROFILES['skib-default']
+ }
+ 
++export const BADGES = {
++  'financial-wizardry': {
++    id: 'financial-wizardry',
++    name: 'Financial Wizardry (or Fraud)',
++    lore: "You didn't just survive the map; you survived the IRS. Your offshore accounts are safe.",
++    emoji: '📈',
++  },
++  'glutton-for-punishment': {
++    id: 'glutton-for-punishment',
++    name: 'Glutton for Punishment',
++    lore: "We get it, you really like the respawn animation. Here's a shiny sticker for your pain.",
++    emoji: '💀',
++  },
++  'slippery-when-wet': {
++    id: 'slippery-when-wet',
++    name: 'Slippery When Wet',
++    lore: "You squeezed through those cracks like a greased pig at a summer fair. It wasn't elegant, but it worked.",
++    emoji: '💧',
++  },
++  'devs-owe-me-five-bucks': {
++    id: 'devs-owe-me-five-bucks',
++    name: 'Devs Owe Me Five Bucks',
++    lore: "Honestly, we didn't think you'd make it this far. The developers were taking bets against you.",
++    emoji: '💸',
++  },
++}
++
+ export const SHOP_ITEMS = [
+   {
+     id: 'turbo-clogs',

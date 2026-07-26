@@ -1,0 +1,20 @@
+--- frontend/src/lib/cookies.js
++++ frontend/src/lib/cookies.js
+@@ -62,6 +62,9 @@
+   const ownedItems = Array.isArray(profile.ownedItems)
+     ? [...new Set(profile.ownedItems.filter(Boolean))]
+     : []
++  const earnedBadges = Array.isArray(profile.earnedBadges)
++    ? [...new Set(profile.earnedBadges.filter(Boolean))]
++    : []
+   const deathsHistory = Array.isArray(profile.deathsHistory)
+     ? profile.deathsHistory
+         .filter(
+@@ -88,6 +91,7 @@
+     label: typeof profile.label === 'string' && profile.label.trim() ? profile.label.trim().slice(0, 24) : '',
+     sheebs: Number.isFinite(profile.sheebs) ? Math.floor(profile.sheebs) : 0,
+     ownedItems,
++    earnedBadges,
+     highestLevel: Number.isFinite(profile.highestLevel) ? Math.max(1, Math.floor(profile.highestLevel)) : 1,
+     deaths: Number.isFinite(profile.deaths) ? Math.max(0, Math.floor(profile.deaths)) : 0,
+     deathsHistory,

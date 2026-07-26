@@ -28,6 +28,7 @@ import {
   getChaserProfile,
   SHOP_ITEMS,
   randomFaces,
+  BADGES,
 } from './gameContent.js'
 import { GAME_ITERATION } from './version.js'
 import { loadProfile, persistProfile, listProfiles, switchProfile, createProfile } from './lib/cookies.js'
@@ -56,6 +57,7 @@ export default function App() {
   const [showLvl2Transition, setShowLvl2Transition] = useState(false)
   const [dadCaseSpawned, setDadCaseSpawned] = useState(false)
   const [showLevel4Warning, setShowLevel4Warning] = useState(false)
+  const [activeBadgeToast, setActiveBadgeToast] = useState(null)
   const hasSeenLevel4WarningRef = useRef(false)
   const [profileModal, setProfileModal] = useState(null)
   const [profileModalMode, setProfileModalMode] = useState(null)
@@ -274,6 +276,21 @@ export default function App() {
     })
   }
 
+  const handleBadgeEarned = (badgeId) => {
+    if (profile.earnedBadges.includes(badgeId)) return
+    
+    syncProfile((current) => {
+      if (current.earnedBadges.includes(badgeId)) return current
+      return { ...current, earnedBadges: [...current.earnedBadges, badgeId] }
+    })
+
+    const badge = BADGES[badgeId]
+    if (badge) {
+      setActiveBadgeToast(badge)
+      setTimeout(() => setActiveBadgeToast(null), 5000)
+    }
+  }
+
   const handleCaughtProfileReady = (payload) => {
     setProfileModal(payload)
     setProfileModalMode('caught')
@@ -472,6 +489,7 @@ export default function App() {
               initialSheebs={profile.sheebs}
               initialDeaths={profile.deaths}
               highestLevel={profile.highestLevel}
+              earnedBadges={profile.earnedBadges}
               onCaught={handleCaught}
               onLevelChange={handleLevelChange}
               onSheebsChange={handleSheebsChange}
@@ -482,6 +500,7 @@ export default function App() {
               onLevelClear={handleLevelClear}
               onExtraChaserSpawn={handleExtraChaserSpawn}
               onCaughtProfileReady={handleCaughtProfileReady}
+              onBadgeEarned={handleBadgeEarned}
               onEngineReady={(engine) => {
                 engineRef.current = engine
               }}
@@ -527,6 +546,14 @@ export default function App() {
       {lastCaptureLine && (
         <div className="toast-panel" aria-live="polite">
           {lastCaptureLine}
+        </div>
+      )}
+
+      {activeBadgeToast && (
+        <div className="toast-panel badge-toast" aria-live="polite" style={{ backgroundColor: '#2ecc71', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', border: '3px solid #000' }}>
+          <div style={{ fontSize: '2rem' }}>{activeBadgeToast.emoji}</div>
+          <div style={{ fontWeight: 'bold', margin: '4px 0' }}>ACHIEVEMENT UNLOCKED: {activeBadgeToast.name}</div>
+          <div style={{ fontSize: '0.9rem' }}>{activeBadgeToast.lore}</div>
         </div>
       )}
     </div>
@@ -588,6 +615,19 @@ function MainMenu({
           Deaths {profile.deaths}
         </button>
       </div>
+
+      {profile.earnedBadges && profile.earnedBadges.length > 0 && (
+        <div className="badges-row" style={{ display: 'flex', justifyContent: 'center', gap: '8px', margin: '10px 0' }}>
+          {profile.earnedBadges.map(badgeId => {
+            const badge = BADGES[badgeId]
+            return badge ? (
+              <span key={badgeId} title={`${badge.name}: ${badge.lore}`} style={{ fontSize: '1.5rem', cursor: 'help' }}>
+                {badge.emoji}
+              </span>
+            ) : null
+          })}
+        </div>
+      )}
 
       <div className="face-row">
         <FaceUpload label="Your Face (Runner)" previewSrc={runnerFace} onFace={onRunnerFace} />

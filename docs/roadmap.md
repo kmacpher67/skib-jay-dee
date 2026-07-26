@@ -217,17 +217,9 @@ and chaser-bark voice clips, 1:1 with text.
     guarded import with a `[LEVEL 4 ARTWORK PENDING]` black-box fallback
     in case the asset path ever changes, but it's no longer blocking.
   - Landed in v0.4.28.
-- [ ] **Rewards/badges system.** New persistent-achievement layer, separate
-  from the risk/reward economy above. Ken confirmed the "debt badge" idea
-  is funny and wants a real badges/awards system for high-level
-  milestones (e.g. first time surviving level 4+, paying off debt from
-  negative back to positive, clearing all five levels in one run). No
-  scope/persistence design done yet — needs a follow-up planning pass to
-  pick badge triggers and where they render (menu? profile modal?) before
-  coding; cookie profile (`frontend/src/lib/cookies.js`) is the natural
-  place to persist earned badge IDs, consistent with how `ownedItems` and
-  `deathsHistory` already work. See
-  [roadmap-handoff-v0.4.28-plan.md](handoffs/roadmap-handoff-v0.4.28-plan.md).
+- [x] **Rewards/badges system.** Landed v0.4.30 — added `earnedBadges` to cookie persistence, defined `BADGES` array with four initial badges (Financial Wizardry, Glutton for Punishment, Slippery When Wet, Devs Owe Me Five Bucks). Badges render as toasts in-game when earned, in the menu next to the status pills, and at the bottom of the level-clear banner.
+- [ ] **Feature: The "Jayden" Gun.** Jayden wants a gun feature added to the game. Needs mechanics design (ammo, aiming, etc.) in a future design session before coding.
+- [ ] **Feature: Rolling Pickups (Mario-Style).** Items rolling around the map that the player can pick up or capture. Must be a mix of good items (buffs/points) and bad items (debuffs/damage).
 - [x] **Stamina / take-a-hit-and-keep-running.** Ken asked for a "Call of
   Duty style" stamina feature and guessed it might already exist — it
   does. `GameEngine.js` already has a full stamina system (`maxStamina`,

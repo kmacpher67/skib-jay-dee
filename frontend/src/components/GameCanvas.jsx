@@ -23,6 +23,7 @@ export default function GameCanvas({
   initialSheebs,
   initialDeaths,
   highestLevel,
+  earnedBadges,
   onCaught,
   onSkreem,
   onLevelChange,
@@ -34,6 +35,7 @@ export default function GameCanvas({
   onLevelClear,
   onExtraChaserSpawn,
   onCaughtProfileReady,
+  onBadgeEarned,
   onEngineReady,
 }) {
   const canvasRef = useRef(null)
@@ -54,9 +56,11 @@ export default function GameCanvas({
       onLevelClear,
       onExtraChaserSpawn,
       onCaughtProfileReady,
+      onBadgeEarned,
       initialSheebs,
       initialDeaths,
       highestLevel,
+      earnedBadges,
       loadout: {
         speedBonus: loadoutSpeedBonus,
         staminaBonus: loadoutStaminaBonus,
@@ -114,6 +118,11 @@ export default function GameCanvas({
     if (!engineRef.current) return
     engineRef.current.setSheebs(initialSheebs)
   }, [initialSheebs])
+
+  useEffect(() => {
+    if (!engineRef.current) return
+    engineRef.current.setEarnedBadges(earnedBadges)
+  }, [earnedBadges])
 
   return <canvas ref={canvasRef} />
 }

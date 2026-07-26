@@ -6,6 +6,21 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.30 — Badges System (2026-07-27)
+
+### What changed
+
+- Added a persistent rewards/badges system. Initial four badges: "Financial Wizardry", "Glutton for Punishment", "Slippery When Wet" (deferred logic), and "Devs Owe Me Five Bucks".
+- Badges show as toasts on earn, render on the menu, and in the level-change banner.
+
+### Design decisions
+
+- Kept `earnedBadges` in `cookies.js` to match `ownedItems`. Passed down to `GameEngine.js` to draw during `_drawBanner` natively.
+
+### Known non-goals for this pass
+
+- Did not implement the Schleimy Potion (prereq for Slippery When Wet) yet.
+
 ## v0.4.29 — profile switcher / multiple save slots (2026-07-26)
 
 ### What changed
