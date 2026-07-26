@@ -131,13 +131,21 @@ and chaser-bark voice clips, 1:1 with text.
   (`CHASER_SPEED_MOD_DEATH_STEP`) — this item is only the missing sheebs
   half. See
   [gameplay-mechanics.md](gameplay-mechanics.md#death-penalty-what-actually-happens-on-capture).
-- [ ] **Tune the level-1 → Pipeworks advance threshold.** `LEVELS[0].advanceAt
-  = 26` in `GameEngine.js` can be crossed in a couple seconds of close
-  pursuit since skreem gain is proximity-based
-  (`dt * (300 - dist) * 0.06`), which reads as "Pipeworks arrives
-  instantly." This is a different mechanism from the already-tuned
-  Pipeworks-clear cinematic gate (hall coverage + 4-skib survival,
-  landed v0.4.10/v0.4.15) — don't re-tune that one by mistake. See
+- [ ] **RESOLVED — level-advance pacing is still too fast; add a
+  time floor and a two-simultaneous-chasers floor.** Ken: "level
+  upgrades are still too fast, maybe more time running by the player
+  plus level can not increase until there are at least two skibs
+  simulatenously chasing." Confirmed design: for every non-Pipeworks
+  level with an `advanceAt` threshold (1, 3, 4), require *all three* of
+  the existing skreem threshold, a new elapsed-in-level time floor
+  (`MIN_LEVEL_SECONDS_BEFORE_ADVANCE`, starting guess `20`s), and
+  `this.chasers.length >= 2` before the level can clear. Pipeworks
+  already requires 5 simultaneous chasers (stricter than 2) so it needs
+  no change; the final level has no `advanceAt` and is also unaffected.
+  Ready to code — see
+  [roadmap-handoff-v0.4.22-plan.md](handoffs/roadmap-handoff-v0.4.22-plan.md)
+  for the exact diff and copy-paste block. Previously this item only
+  covered level 1's threshold in isolation; superseded by the above. See
   [gameplay-mechanics.md](gameplay-mechanics.md#round--level-advancement-why-does-the-round).
 - [ ] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,

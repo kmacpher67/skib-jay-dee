@@ -10,6 +10,18 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.20-plan / v0.4.21-plan / v0.4.22-plan — 2026-07-26 (docs-only)
+
+- Reviewed `roadmap-handoff-v0.4.20-plan.md` and `roadmap-handoff-v0.4.21-plan.md`
+  for handoff readiness — both matched their `docs/roadmap.md` backlog
+  items exactly, no changes needed.
+- Wrote `roadmap-handoff-v0.4.22-plan.md`, resolving the open "tune
+  level-1 advance threshold" backlog item with Ken's expanded ask: an
+  elapsed-time floor (`MIN_LEVEL_SECONDS_BEFORE_ADVANCE`) plus a
+  `chasers.length >= 2` floor, AND'd onto the existing skreem threshold,
+  for every non-Pipeworks level. Updated `docs/roadmap.md`'s matching
+  backlog item to `RESOLVED` with the confirmed design.
+
 ## v0.4.19 — 2026-07-26 (real code)
 
 - Wired real audio for Dad Case Environmental Traps: `handleExtraChaserSpawn`
