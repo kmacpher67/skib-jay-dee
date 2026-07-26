@@ -90,6 +90,10 @@ Each item below is scoped to fit in one agent session. Pull the next
 open one, or reorder if something else is more urgent — just keep items
 this small.
 
+Recommended next-three-session order, if we want the tightest handoff:
+extra-chaser speed ramp -> Pipeworks 4-chaser/max-speed clear condition
+-> lvl2 video timing fix + death-visual verification.
+
 - [x] **Audio 1: SFX plumbing.** Landed v0.4.0 — real clips wired for
   menu loop, capture sting, chase ambience, boost/tired stingers, chaser
   barks, and level start/clear, plus a cookie-persisted mute toggle. See
@@ -141,12 +145,10 @@ this small.
   or Raman-Aunt-Toilet Lady) and give it a distinct ability, not just a
   reskin — e.g. Skib-Daddy's Plunger Launch as a periodic speed burst.
   Depends on nothing above; can happen anytime.
-- [ ] **New chaser: Sky-Diver (Motor Killer).** Source photo already
-  dropped at `images/sky-diver-motor-killer.png` (repo-root scratch).
-  Copy into `frontend/src/assets/`, import, and add one
-  `CHASER_FACE_POOL` entry in `frontend/src/gameContent.js` per the
-  existing pattern (see `crazy-jack-chaser` for reference). See
-  `docs/characters.md` for the character note.
+- [x] **New chaser: Sky-Diver (Motor Killer).** Landed in the current worktree —
+  `frontend/src/assets/sky-diver-motor-killer.png` copied in, imported in
+  `frontend/src/gameContent.js`, and added to `CHASER_FACE_POOL` as
+  `sky-diver-motor-killer`.
 - [ ] **New chaser: Yoodeling Unc, second pose.** A second costume photo
   for the existing "Yoodelling Unc Alex" bit was shared but **not yet
   saved to the repo** — ask the user to drop it in `images/` (e.g.

@@ -13,6 +13,16 @@ firms up two of the four items v0.4.2-plan queued (the two that were
 already unblocked) into concrete, ready-to-type implementation plans, so
 the next coding session doesn't have to re-derive the design.
 
+## Tight three-session order
+
+The backlog is now documented as a three-session sequence so the next
+agent can keep each pass small and land one increment at a time:
+
+1. Extra-chaser speed ramp.
+2. Pipeworks's 4-chaser/max-speed clear condition.
+3. Lvl2 video timing fix, then a quick death-visual verification that
+   the jump-scare still shows unobstructed.
+
 ## What this session did
 
 1. **Re-verified the chaser-face-randomization fix is live.** The user's
@@ -157,55 +167,49 @@ record, since it changes the dependency order of everything queued:
   and stays the only death feedback. Only a verification step remains
   (confirm it can't be visually blocked by the lvl2 `<video>` overlay).
 
-`docs/next-agent-coding-brief.md` now has the authoritative, fully
-merged four-item sequence (speed-ramp → clear-condition → video-timing →
-death-visual verification) reflecting all of this — treat it, not the
-"Copy-paste" block below, as the canonical next-steps brief. The block
-below is left as originally written for the two items it covers, but
-read it in light of the dependency this addendum describes.
+`docs/next-agent-coding-brief.md` now has the concise three-session
+sequence (speed-ramp → clear-condition → video-timing / death-visual
+verification) reflecting all of this — treat it, not any older copy, as
+the canonical next-steps brief. The copy-paste block below mirrors that
+same order for a new agent starting cold.
 
 ## Copy-paste: next natural steps for the next agent
 
 ```
 Read docs/skib-sdlc.md, then docs/update-directions.md, then this file
-(docs/handoffs/roadmap-handoff-v0.4.3-plan.md). Two items are now fully
-scoped and ready to implement in one session (pick one, or both if they
-stay small):
+(docs/handoffs/roadmap-handoff-v0.4.3-plan.md). The backlog is now
+documented as a three-session sequence — keep each session to one
+increment, and commit before stopping:
 
-1. Lvl2-video timing fix:
-   - GameEngine.js:685 — change `this.onLevelClear()` to
-     `this.onLevelClear({ index: this.levelIndex + 1, name: this.level.name })`.
-   - App.jsx:112 — change `handleLevelClear` to accept `{ index }`, keep
-     the existing `playOneShot(levelClearUrl, 0.4)` call, and add
-     `if (index === 2) setShowLvl2Transition(true)`.
-   - App.jsx:165 — delete the old `if (index === 2) setShowLvl2Transition(true)`
-     line inside `handleLevelChange` (the arrival-based trigger being
-     replaced).
-   - Verify: play to the end of Pipeworks, confirm the video now plays
-     on the Pipeworks-to-Flooded-Annex transition, not Palace-to-Pipeworks.
+1. Session 1: extra-chaser speed ramp.
+   - GameEngine.js:780-803 — replace the flat `baseSpeed * 0.92`
+     discount with a per-chaser `joinRamp` that starts near 0.7 and
+     rises to 1.0 over a few seconds, layered on top of the existing
+     `chaserSpeedMod` rubber-band.
+   - Verify: survive long enough for a second/third chaser to spawn and
+     confirm the fresh one visibly lags before matching the pack.
 
-2. Extra-chaser speed ramp:
-   - GameEngine.js, near CHASER_SPEED_MOD_* (line ~314) — add
-     `CHASER_JOIN_RAMP_START = 0.7` and `CHASER_JOIN_RAMP_SECONDS = 5`.
-   - _maybeSpawnExtraChaser() (GameEngine.js:794-802) — drop the `* 0.92`
-     on `baseSpeed`, add `joinRamp: 0` to the pushed chaser object.
-   - Chase-update loop (GameEngine.js:742-750) — advance `joinRamp`
-     toward 1 over CHASER_JOIN_RAMP_SECONDS, compute
-     `joinMod = lerp(CHASER_JOIN_RAMP_START, 1, joinRamp)` (default 1 if
-     `joinRamp` is undefined, i.e. the lead chaser), and multiply it into
-     the existing `chaserSpeed` calc alongside `chaserSpeedMod`.
-   - Verify: survive long enough for a second chaser to spawn, confirm
-     it visibly lags for ~5s before matching pack speed.
+2. Session 2: Pipeworks clear condition.
+   - GameEngine.js:301 and 762 — bump `MAX_CHASERS` to 4, then make
+     Pipeworks only advance once all four chasers are active and fully
+     ramped, with a separate skreem gate/goal for the "4-up, all maxed"
+     state.
+   - Verify: clear Pipeworks only after the 4-chaser/max-speed gate is
+     satisfied; other levels should keep their current behavior.
 
-Both are self-contained, additive, and don't touch cookie persistence,
-face randomization, or backend code. Follow docs/skib-sdlc.md: build
-(npm run build), drive the canvas per docs/dev-notes.md's CDP approach if
-testing headlessly, update docs/version-log.md + docs/update-directions.md
-+ docs/roadmap.md + a new docs/handoffs/roadmap-handoff-vX.Y.Z.md + ledger
-entry, then commit. Only bump GAME_ITERATION and run
-./scripts/deploy-static.sh <short-name> if the user asks to publish.
+3. Session 3: lvl2 timing fix + death-visual verification.
+   - App.jsx:156-166 and GameEngine.js:685 — move the lvl2 transition
+     trigger off arrival and onto the Pipeworks clear event.
+   - Verify: the clip now plays on the Pipeworks -> Flooded Annex
+     transition, then confirm the original jump-scare still shows
+     unobstructed and no new death clip was introduced.
 
-The other two v0.4.2-plan items (Pipeworks's 4-chaser clear condition,
-and the death-video confirmation) are still blocked on one-line product
-decisions from the user — see roadmap-handoff-v0.4.2-plan.md, unchanged.
+Each session stays front-end only and keeps the existing cookie
+persistence, face randomization, and deployment rules intact. Follow
+docs/skib-sdlc.md: build (`cd frontend && npm run build`), drive the
+canvas per docs/dev-notes.md if you need to verify interaction, update
+docs/version-log.md + docs/update-directions.md + docs/roadmap.md + a
+new docs/handoffs/roadmap-handoff-vX.Y.Z.md + ledger entry, then commit.
+Only bump `GAME_ITERATION` and run `./scripts/deploy-static.sh <short-name>`
+if the user explicitly asks to publish.
 ```

@@ -21,6 +21,10 @@ update `docs/version-log.md`.
   join-speed ramp (new `CHASER_JOIN_RAMP_START`/`CHASER_JOIN_RAMP_SECONDS`
   constants, per-chaser `joinRamp` field, layered on top of the existing
   `chaserSpeedMod`).
+- Tightened the backlog into a three-session order and mirrored it in the
+  handoff copy-paste block so the next agent can keep each session small:
+  extra-chaser speed ramp, Pipeworks's 4-chaser/max-speed clear
+  condition, then lvl2-video timing fix plus death-visual verification.
 - Added `docs/handoffs/roadmap-handoff-v0.4.3-plan.md`.
 
 ## v0.4.2-plan — 2026-07-26 (docs-only planning + one pre-existing code fix)
