@@ -3,6 +3,33 @@
 This file memorializes the design and plan decisions made during the
 front-end upgrade pass.
 
+## v0.3.2
+
+**Date:** July 26, 2026
+
+### What changed
+
+- Clarified the audio how-to in `docs/sound-effects-howto.md` so it now
+  answers the local-recording question directly, recommends keeping raw
+  takes lossless when possible, and spells out the shipping export format
+  as mono `.ogg` or `.mp3` at 44.1kHz.
+- Refreshed `docs/update-directions.md` so the next handoff points at the
+  updated audio guidance without making the next agent rediscover it.
+
+### Design / plan note
+
+- The repo now distinguishes between capture/editing format and game
+  delivery format, which should reduce confusion if someone wants to use
+  a better local recording setup.
+- Keeping the export guidance in the audio how-to avoids scattering
+  format rules across multiple docs.
+
+### Known non-goals for this version
+
+- No gameplay code changed.
+- No audio assets were recorded or added yet.
+- No frontend build or runtime behavior changed in this pass.
+
 ## v0.3.1
 
 **Date:** July 26, 2026

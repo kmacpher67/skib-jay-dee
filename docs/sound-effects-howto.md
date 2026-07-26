@@ -9,10 +9,11 @@ Nothing here has been implemented; it's the "how do I even start" doc.
 No, not for a first pass. Two options, and you can mix both:
 
 1. **Record it yourself.** Best for anything with your/Jayden's voice
-   (the dialogue lines already scripted in the PDF — "SKIBIDI SKIBIDI!",
+   (the dialogue lines already scripted in the PDF - "SKIBIDI SKIBIDI!",
    "I gotta go! I gotta go!", etc.) since a real voice reading the actual
    jokes is funnier than any stock clip. Your phone's voice memo app is
-   fine; see prep steps below.
+   fine, and if you have access to a nicer mic/interface setup, use that
+   for cleaner takes.
 2. **Use free sound-effect libraries** for ambience, the flush sound, the
    bass-boost loop, and other non-dialogue effects. A few well-known
    sources with usable free/CC-licensed effects:
@@ -29,18 +30,23 @@ No, not for a first pass. Two options, and you can mix both:
 
 ## Recording your own (quick path)
 
-1. Record with your phone (voice memo app) or a laptop mic. A short quiet
-   room take is fine — this game's tone is chaotic and lo-fi on purpose,
-   it doesn't need studio quality.
-2. Trim and export with **Audacity** (free, cross-platform):
+1. Record with your phone (voice memo app), a laptop mic, or a better
+   local setup if you have one. A short quiet room take is fine - this
+   game's tone is chaotic and lo-fi on purpose, it doesn't need studio
+   quality.
+2. Keep the raw recording in a lossless format while editing if you can:
+   - `.wav` is the simplest choice.
+   - `.m4a` or `.aac` is okay for quick capture if that's what your device
+     produces.
+3. Trim and export with **Audacity** (free, cross-platform):
    - Trim dead air from the start/end.
    - Normalize volume (`Effect > Volume > Normalize`) so all your clips
      are roughly the same loudness.
-   - Export as `.mp3` or `.ogg`, mono, 44.1kHz — keeps file size small.
-3. Keep clips short. Jump-scare stings and one-liners should be under two
+   - Export as `.ogg` or `.mp3`, mono, 44.1kHz for the game build.
+4. Keep clips short. Jump-scare stings and one-liners should be under two
    seconds; even the "chase loop" ambience should be a short loop (a few
    seconds) rather than a long recording, so it can repeat cheaply.
-4. Aim for small files — a few hundred KB at most per clip. This is a
+5. Aim for small files - a few hundred KB at most per clip. This is a
    mobile game; nobody wants a multi-MB audio payload on a cellular
    connection.
 

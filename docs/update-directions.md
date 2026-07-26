@@ -11,6 +11,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - Default faces are randomly shuffled from the local gallery each time the user presses play, unless they upload custom faces.
 - User id, sheeb balance, purchased items, death count, and highest cleared level persist in cookies.
 - The deployment helper now takes an iteration label and short slug, then commits only the `skib-jay-dee-toilet-game/` subtree in the website repo.
+- The audio how-to now spells out local recording guidance: capture however is convenient, keep raw edits lossless if possible, and export game-ready clips as mono `.ogg` or `.mp3` at 44.1kHz.
 
 ## Files to check first
 
@@ -58,7 +59,7 @@ Use this as the handoff doc for the next agent working in the repo.
 
 - Add the scripted World Star intro cinematic.
 - Add sound effects and background audio.
-- Use [docs/sound-effects-howto.md](docs/sound-effects-howto.md) as the starting point for the audio pass.
+- Use [docs/sound-effects-howto.md](docs/sound-effects-howto.md) as the starting point for the audio pass; it now includes local recording and export-format guidance.
 - Crop or mask uploaded faces instead of stretching the raw image.
 - Add more character roles or abilities from the PDF roster.
 - Extract level data out of hardcoded map-builder functions before hand-authoring more levels — see the level/map plan in [docs/roadmap.md](docs/roadmap.md).
