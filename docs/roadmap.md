@@ -30,6 +30,10 @@ build-iteration badge tied to a shared frontend constant plus the
 deploy-commit helper. All in-game text now lives in one place,
 `frontend/src/dialog.js` (`CAPTURE_LINES`, `CHASER_LINES`,
 `TIRED_LINES`) — edit lines there without touching `GameEngine.js`.
+As of v0.4.29, players can also keep multiple cookie-backed save slots in
+one browser and switch between them from the menu — see
+[docs/profiles-and-identity.md](profiles-and-identity.md) for the full
+profile data model and the Phase 6 server-sync path.
 Chaser speed is now rubber-banded across a run: each capture mellows it
 out (`CHASER_SPEED_MOD_DEATH_STEP`), each level cleared ramps it back up
 (`CHASER_SPEED_MOD_LEVEL_STEP`), clamped between `CHASER_SPEED_MOD_MIN`/
@@ -56,7 +60,7 @@ for the full session write-up and
 | 3 | More characters/abilities per PDF roster, role-swapping | Not started |
 | 4 | Oval/masked face-crop on upload instead of stretch | Done (v0.4.14) |
 | 5 | FastAPI WebSocket multiplayer, server-authoritative roles | Backend scaffolded only |
-| 6 | Mongo-backed profile (replaces cookies) | Not started |
+| 6 | Mongo-backed profile (replaces cookies) | Not started — local multi-profile groundwork (registry, `label`/`updatedAt`) landed v0.4.29; open decisions on identity/auth, sync strategy, and migration written up in [docs/profiles-and-identity.md](profiles-and-identity.md) |
 | 7 | Risk/reward escalation for experienced players (negative sheebs, losable shop items past level 3/4) | Debt economy + item loss landed v0.4.26; difficulty transition screen and badges/awards still pending — see incremental backlog below |
 
 ## Plan: handling levels and new maps (plan only — not implemented)
@@ -262,13 +266,19 @@ and chaser-bark voice clips, 1:1 with text.
   `GAME_ITERATION` (`frontend/src/version.js`) plus a short changelog
   mirrored from the recent shipped notes. Front-end only, no new
   persistence needed.
-- [ ] **Game identity & new profiles (multiple save slots).** Let a
-  player keep their existing cookie-backed profile and also start a new
-  one, still cookie-only (no backend) — e.g. a small slot picker on the
-  menu that swaps which `sjdt_profile_v1`-style cookie is active. Needs
-  a bit of design thought on how slot switching interacts with
-  `frontend/src/lib/cookies.js`'s single-cookie assumption before
-  coding.
+- [x] **Game identity & new profiles (multiple save slots).** Landed
+  v0.4.29 — clicking the "User `<name>`" pill on the menu opens
+  `ProfileSwitcherModal.jsx`, listing every profile ever active in this
+  browser (mirrored to a new `localStorage` registry alongside the
+  existing cookie), with "Play as this profile" to switch and a
+  nickname field + "+ NEW PROFILE" to create one. `frontend/src/lib/cookies.js`
+  gained `listProfiles()`/`switchProfile()`/`createProfile()` plus a
+  `label`/`updatedAt` field on the profile shape; the single-active-profile
+  cookie contract is unchanged so nothing else reading `loadProfile()`
+  needed touching. Full attribute map, related backlog, and the Phase 6
+  server-sync path are written up in
+  [docs/profiles-and-identity.md](profiles-and-identity.md). See
+  [roadmap-handoff-v0.4.29.md](handoffs/roadmap-handoff-v0.4.29.md).
 - [x] **Audio 1: SFX plumbing.** Landed v0.4.0 — real clips wired for
   menu loop, capture sting, chase ambience, boost/tired stingers, chaser
   barks, and level start/clear, plus a cookie-persisted mute toggle. See

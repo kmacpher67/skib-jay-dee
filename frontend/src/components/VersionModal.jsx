@@ -1,5 +1,20 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.29',
+    title: 'Multiple save slots',
+    description: 'Tap your username on the menu to see every profile saved in this browser, switch between them, or start a new one.',
+  },
+  {
+    version: 'v0.4.28',
+    title: 'Level 4 warning screen lands',
+    description: 'The game now pauses and displays a warning overlay the first time a player reaches The Ramen Aisle, explaining debt and item loss mechanics.',
+  },
+  {
+    version: 'v0.4.26',
+    title: 'Sheebs debt and item loss risk',
+    description: 'Sheebs can now go negative (debt) on capture once past level 3, and captures above level 4 can strip a purchased shop item.',
+  },
+  {
     version: 'v0.4.25',
     title: 'Post-kill profile pages land',
     description: 'Captures now pause on a reusable profile card, the deaths log shows killer IDs as clickable chips, and profiles can be reopened from history.',

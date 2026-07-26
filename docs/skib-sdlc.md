@@ -182,6 +182,9 @@ Every session that lands a meaningful change updates:
   yet). Remove items from here once they actually land in a future
   session — the ledger and version-log are the permanent record, this
   file is just a parking lot.
+- **`frontend/src/components/VersionModal.jsx`** — append the new version and
+  a short summary to the `PAST_VERSION_NOTES` array so the in-game
+  'What shipped lately' modal stays up to date.
 - **Key feature documentation (e.g. `docs/dialog_content_chasing.md`)** — 
   when building out content-heavy features (like dialog pools, level layouts, 
   or overarching themes), refine and document the content in a dedicated `.md` file. 

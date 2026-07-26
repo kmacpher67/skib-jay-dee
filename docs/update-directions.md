@@ -19,7 +19,7 @@ Use this as the handoff doc for the next agent working in the repo.
   (`thinkpad-local`, `desktop-gaming`) so the cheap local box can stay
   the default.
 - Default faces are randomly shuffled from the local gallery each time the user presses play, unless they upload custom faces.
-- User id, sheeb balance (can be negative), purchased items, death count, deaths history (now with killer IDs), and highest cleared level persist in cookies.
+- User id, sheeb balance (can be negative), purchased items, death count, deaths history (now with killer IDs), and highest cleared level persist in cookies. As of v0.4.29 a browser can hold multiple named save slots — see the profile switcher note below and [docs/profiles-and-identity.md](profiles-and-identity.md) for the full field-by-field data model.
 - The deployment helper now takes an iteration label and short slug, then commits only the `skib-jay-dee-toilet-game/` subtree in the website repo.
 - The audio how-to now spells out local recording guidance: capture however is convenient, keep raw edits lossless if possible, and export game-ready clips as mono `.ogg` or `.mp3` at 44.1kHz.
 - The frontend now has a starter audio loop in `frontend/src/assets/audio/jayden-skreem-loop.m4a`; the menu primes it on first interaction and the caught transition reuses the same clip as a quick sting.
@@ -48,6 +48,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - **v0.4.24 (real code, landed):** implemented the "Subway Surfers-style resume countdown" from `docs/handoffs/roadmap-handoff-v0.4.24-plan.md`. After the jump-scare finishes, `GameEngine.js` now enters a new `'resume-countdown'` phase (`_updateResumeCountdown`/`_drawResumeCountdown`) that freezes the world at the reset spawn points for 3 seconds and shows a pulsing centered "3… 2… 1…" (no flashing) before resuming the chase, instead of the old instant teleport back into a moving chase. `frontend/e2e/resume-countdown.spec.js` covers the phase transitions and timing. `GAME_ITERATION` is now `v0.4.24`. See `docs/handoffs/roadmap-handoff-v0.4.24.md`.
 - **v0.4.25-plan (docs-only, still open — oldest unfinished handoff):** expands the superseded v0.4.23-plan into a full post-kill profile system — logs `chaserId` in `deathsHistory`, adds a `CHASER_PROFILES` content map and a `ProfileModal.jsx` shown automatically after a capture's shake finishes, and makes the Deaths log clickable to reopen any past killer's profile. This was scoped in an earlier session but never got its ledger/version-log/update-directions entries until this session backfilled them. Fully unblocked, ready for Mode B. See `docs/handoffs/roadmap-handoff-v0.4.25-plan.md`.
 - **v0.4.26-plan (docs-only):** scoped two new "stakes go up for experienced players" backlog items (Phase 7 in `docs/roadmap.md`) prompted by Ken's screenshot reaction to seeing 240 sheebs alongside 2048 lifetime deaths — (1) let sheebs go negative on capture once `profile.highestLevel > 3` instead of always flooring at 0, and (2) let captures above level 4 have a chance to strip a previously purchased shop item back out of the profile. **Both items are blocked on product decisions from Ken** (debt-display styling; item-loss eligibility/chance/warning/rebuy rules) — do not dispatch to Code Monkey until those are answered. See `docs/handoffs/roadmap-handoff-v0.4.26-plan.md`. Queued behind v0.4.25-plan, which is still the oldest unfinished handoff.
+- **v0.4.29 (real code):** implemented the **profile switcher / multiple save slots** item, the next unclaimed backlog item after v0.4.28. Clicking the "User `<name>`" pill on the menu now opens `ProfileSwitcherModal.jsx`, listing every profile ever active in this browser (a new `localStorage` registry mirrors the existing cookie-backed active profile), with "Play as this profile" to switch and a nickname field to create a new one. `frontend/src/lib/cookies.js` gained `listProfiles()`/`switchProfile()`/`createProfile()` and `label`/`updatedAt` profile fields; the single-active-profile cookie contract everything else relies on (`loadProfile()`/`persistProfile()`) is unchanged. Also wrote `docs/profiles-and-identity.md`, a full profile attribute table plus a Phase 6 (server-side/Mongo) planning writeup — identity/auth, sync strategy, and local-data migration are the open decisions there, nothing coded. `GAME_ITERATION` is now `v0.4.29`. See `docs/handoffs/roadmap-handoff-v0.4.29.md`.
 - **v0.4.29-plan refinement (docs-only):** the current difficulty-ramp framing is now explicit: later levels should stay interactive, and the Schleimy Potion is documented as a tradeoff tool rather than a skip button. The separate Micro-Skib counterpressure remains a standalone backlog line so enemy-AI work stays decoupled from the item pickup slice.
 
 ## Files to check first
@@ -75,6 +76,8 @@ Use this as the handoff doc for the next agent working in the repo.
 - `docs/handoffs/roadmap-handoff-v0.4.17.md`
 - `docs/handoffs/roadmap-handoff-v0.4.18.md`
 - `docs/handoffs/roadmap-handoff-v0.4.18-plan.md`
+- `docs/profiles-and-identity.md`
+- `frontend/src/components/ProfileSwitcherModal.jsx`
 - `scripts/run_code_monkey.sh`
 - `scripts/code_monkey_direct.py`
 
@@ -128,7 +131,9 @@ manually:
 
 - Oldest unfinished handoff is **v0.4.26-plan (sheebs debt above level 3, losable shop items above level 4)**, but it is explicitly **blocked on product decisions from Ken** — see the "Flag for Ken" section of `docs/handoffs/roadmap-handoff-v0.4.26-plan.md`. Don't start coding it until those are answered.
 - `v0.4.25` is now shipped: the post-kill profile card, killer-ID logging, and clickable deaths log are in production.
-- After those, the next unclaimed item from the backlog is **game identity / multiple cookie-backed save slots**. See `docs/roadmap.md`.
+- **Game identity / multiple cookie-backed save slots landed in v0.4.29** — the profile switcher, `localStorage` registry, and `docs/profiles-and-identity.md` are all in place. No longer on this list.
+- Next unclaimed, unblocked items from the backlog: **cosmetic shop item (sink)** and **menu brag stat (best level + fewest deaths)** are both small and open. The badges/rewards system and the Schleimy Potion/Micro-Skib items are still blocked on product decisions from Ken — see their entries in `docs/roadmap.md`.
+- Phase 6 (server-side/Mongo profile persistence) now has a starting point — `docs/profiles-and-identity.md` lays out the open identity/auth and sync-strategy decisions a future session needs answered before coding it. Still queued behind Phase 5 (multiplayer) in `docs/roadmap.md`, still planning-only.
 - The newest planning thread is **v0.4.29-plan**: Schleimy Potion plus the separate Micro-Skib counterpressure. It still needs Ken's answer on acquisition and numeric tuning before it can move to Mode B.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it

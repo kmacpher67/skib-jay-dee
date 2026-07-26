@@ -10,6 +10,22 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.29 — 2026-07-26
+
+- Added a `localStorage`-backed profile registry (`sjdt_profiles_v1`) in
+  `frontend/src/lib/cookies.js` alongside the existing cookie pair, with
+  `listProfiles()`/`switchProfile()`/`createProfile()` exports and new
+  `label`/`updatedAt` profile fields.
+- Added `frontend/src/components/ProfileSwitcherModal.jsx`; the menu's
+  "User `<name>`" pill is now clickable and opens it.
+- Added `frontend/e2e/profile-switcher.spec.js`.
+- Fixed a `safeParse()`/`JSON.parse(null)` landmine in the new
+  `readRegistry()` path (`localStorage.getItem()` returning `null` wasn't
+  falling back to `{}`).
+- Wrote `docs/profiles-and-identity.md` (full profile attribute table,
+  related backlog, Phase 6 server-sync planning notes).
+- Bumped `GAME_ITERATION` to `v0.4.29` and deployed.
+
 ## v0.4.29-plan — 2026-07-26 (docs-only)
 
 - Scoped a new Phase 7 backlog item in `docs/roadmap.md`: a "Schleimy

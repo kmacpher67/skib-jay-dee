@@ -6,6 +6,74 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.29 — profile switcher / multiple save slots (2026-07-26)
+
+### What changed
+
+- Picked up the oldest unclaimed backlog item, "Game identity & new
+  profiles (multiple save slots)," per Ken's ask to review the roadmap
+  for user/profile attributes and land the switcher.
+- `frontend/src/lib/cookies.js` gained a `localStorage`-backed profile
+  registry (`sjdt_profiles_v1`, `{ [userId]: profileJSON }`) mirrored
+  alongside the existing single-active-profile cookie pair, plus
+  `listProfiles()`, `switchProfile(userId)`, and `createProfile(label)`.
+  The profile shape gained `label` (optional nickname) and `updatedAt`
+  (sort key for the switcher list).
+- New `frontend/src/components/ProfileSwitcherModal.jsx`, opened by
+  clicking the "User `<name>`" pill on the main menu (now a button, was a
+  plain `<span>`). Lists every profile ever active in this browser with
+  level/sheebs/deaths, badges the active one, offers "Play as this
+  profile" to switch, and a nickname field + "+ NEW PROFILE" button to
+  create a new save slot.
+- Added `frontend/e2e/profile-switcher.spec.js` covering list → create →
+  switch-back; full 18-test Playwright suite (1 pre-existing skip)
+  passes.
+- Wrote `docs/profiles-and-identity.md`: the full profile attribute
+  table (every field, who reads/writes it), the related backlog items
+  (badges, brag stat, debt/item-loss), and a planning-only writeup of
+  what Phase 6 (server-side/Mongo persistence) still needs decided
+  before it can be coded — identity/auth, sync strategy, and migration
+  of existing local data.
+- Bumped `GAME_ITERATION` to `v0.4.29` and deployed.
+
+### Design decisions
+
+- Kept the existing cookie contract (`sjdt_user_id` / `sjdt_profile_v1`)
+  completely unchanged for "which profile is active right now" — every
+  other place in the codebase that calls `loadProfile()`/`persistProfile()`
+  needed zero changes. The registry is additive, not a replacement.
+- Chose `localStorage` over trying to cram multiple profiles into cookies
+  — no clean multi-value cookie convention exists, and `deathsHistory`
+  alone makes a single profile blob push against the ~4KB cookie budget
+  well before a second profile would fit.
+- `switchProfile()` falls back to `createProfile()` for an unregistered
+  id defensively, even though the UI only ever offers ids it already
+  listed from the same registry — cheap safety net, not expected to fire.
+- Deliberately did not cap how many profiles a browser can hold. This is
+  local-only opt-in data; a ceiling is easy to add later if it ever
+  becomes a real problem, not worth guessing a number now.
+- Docs-heavy session by design (Ken's ask): `docs/profiles-and-identity.md`
+  exists specifically so the next Phase 6 session doesn't have to
+  re-derive the current data model from scratch, and so future sessions
+  update one table instead of leaving `deathsHistory`'s `chaserId`
+  addition undocumented the way this session found it.
+
+### Known non-goals for this pass
+
+- No backend/Mongo work — Phase 6 stays planning-only, per the
+  front-end-only constraint in `docs/skib-sdlc.md`.
+- No cap on profile count, no delete-a-profile action, no cross-device
+  linking — all flagged as open follow-ups in
+  `docs/profiles-and-identity.md`, not silently skipped.
+- Found and fixed a pre-existing landmine while building this:
+  `safeParse(localStorage.getItem(key), fallback)` didn't fall back
+  correctly because `JSON.parse(null)` returns JS `null` instead of
+  throwing (it coerces `null` to the string `"null"`) — `readRegistry()`
+  now guards against that explicitly. Scoped to the new registry read
+  path only; the existing cookie-based `safeParse()` calls were never
+  affected since `readCookie()` returns `''` (which does throw) instead
+  of `null` for a missing cookie.
+
 ## v0.4.29-plan — Schleimy Potion planning + stamina audit (2026-07-26)
 
 ### What changed

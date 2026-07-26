@@ -1,6 +1,7 @@
 const USER_ID_COOKIE = 'sjdt_user_id'
 const PROFILE_COOKIE = 'sjdt_profile_v1'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365
+const PROFILES_REGISTRY_KEY = 'sjdt_profiles_v1'
 
 function readCookie(name) {
   if (typeof document === 'undefined') return ''
@@ -40,6 +41,23 @@ function safeParse(json, fallback) {
   }
 }
 
+function readRegistry() {
+  if (typeof localStorage === 'undefined') return {}
+  return safeParse(localStorage.getItem(PROFILES_REGISTRY_KEY) ?? '', {}) || {}
+}
+
+function writeRegistry(registry) {
+  if (typeof localStorage === 'undefined') return
+  localStorage.setItem(PROFILES_REGISTRY_KEY, JSON.stringify(registry))
+}
+
+function saveToRegistry(profile) {
+  const registry = readRegistry()
+  registry[profile.userId] = profile
+  writeRegistry(registry)
+  return registry
+}
+
 export function normalizeProfile(profile = {}) {
   const ownedItems = Array.isArray(profile.ownedItems)
     ? [...new Set(profile.ownedItems.filter(Boolean))]
@@ -63,20 +81,26 @@ export function normalizeProfile(profile = {}) {
         .slice(-50)
     : []
 
+  const userId = typeof profile.userId === 'string' && profile.userId ? profile.userId : createUserId()
+
   return {
-    userId: typeof profile.userId === 'string' && profile.userId ? profile.userId : createUserId(),
+    userId,
+    label: typeof profile.label === 'string' && profile.label.trim() ? profile.label.trim().slice(0, 24) : '',
     sheebs: Number.isFinite(profile.sheebs) ? Math.floor(profile.sheebs) : 0,
     ownedItems,
     highestLevel: Number.isFinite(profile.highestLevel) ? Math.max(1, Math.floor(profile.highestLevel)) : 1,
     deaths: Number.isFinite(profile.deaths) ? Math.max(0, Math.floor(profile.deaths)) : 0,
     deathsHistory,
     muted: profile.muted === true,
+    updatedAt: Number.isFinite(profile.updatedAt) ? Math.floor(profile.updatedAt) : Date.now(),
   }
 }
 
 export function loadProfile() {
   const storedUserId = readCookie(USER_ID_COOKIE)
-  const storedProfile = safeParse(readCookie(PROFILE_COOKIE), {})
+  const registry = readRegistry()
+  const registered = storedUserId ? registry[storedUserId] : null
+  const storedProfile = registered || safeParse(readCookie(PROFILE_COOKIE), {})
 
   const profile = normalizeProfile({
     ...storedProfile,
@@ -91,5 +115,35 @@ export function persistProfile(profile) {
   const normalized = normalizeProfile(profile)
   writeCookie(USER_ID_COOKIE, normalized.userId)
   writeCookie(PROFILE_COOKIE, JSON.stringify(normalized))
+  saveToRegistry(normalized)
   return normalized
+}
+
+// Every profile ever active on this browser, newest-touched first. Each
+// entry is a full normalized profile (not just a summary) so switching is a
+// pure read with no re-fetch step.
+export function listProfiles() {
+  const registry = readRegistry()
+  return Object.values(registry).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+}
+
+// Makes `userId` the active profile (writes the pointer + profile cookies)
+// and returns it. No-ops into `createProfile()` if the id isn't registered.
+export function switchProfile(userId) {
+  const registry = readRegistry()
+  const found = registry[userId]
+  if (!found) return createProfile()
+
+  const normalized = normalizeProfile({ ...found, updatedAt: Date.now() })
+  writeCookie(USER_ID_COOKIE, normalized.userId)
+  writeCookie(PROFILE_COOKIE, JSON.stringify(normalized))
+  saveToRegistry(normalized)
+  return normalized
+}
+
+// Creates and activates a brand-new save slot in this browser, optionally
+// with a display label (shown in the switcher instead of the raw id).
+export function createProfile(label = '') {
+  const profile = normalizeProfile({ userId: createUserId(), label })
+  return persistProfile(profile)
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import FaceUpload from './components/FaceUpload.jsx'
 import GameCanvas from './components/GameCanvas.jsx'
 import ProfileModal from './components/ProfileModal.jsx'
+import ProfileSwitcherModal from './components/ProfileSwitcherModal.jsx'
 import DeathsModal from './components/DeathsModal.jsx'
 import ShopModal from './components/ShopModal.jsx'
 import VersionModal from './components/VersionModal.jsx'
@@ -29,7 +30,7 @@ import {
   randomFaces,
 } from './gameContent.js'
 import { GAME_ITERATION } from './version.js'
-import { loadProfile, persistProfile } from './lib/cookies.js'
+import { loadProfile, persistProfile, listProfiles, switchProfile, createProfile } from './lib/cookies.js'
 import { LEVEL_4_RULES } from './dialog.js'
 import './App.css'
 
@@ -58,6 +59,7 @@ export default function App() {
   const hasSeenLevel4WarningRef = useRef(false)
   const [profileModal, setProfileModal] = useState(null)
   const [profileModalMode, setProfileModalMode] = useState(null)
+  const [profileSwitcherOpen, setProfileSwitcherOpen] = useState(false)
   const loadout = buildLoadout(profile.ownedItems)
   const engineRef = useRef(null)
   const muted = profile.muted
@@ -306,6 +308,23 @@ export default function App() {
     setDeathsOpen(true)
   }
 
+  const handleOpenProfileSwitcher = () => {
+    setShopOpen(false)
+    setVersionOpen(false)
+    setDeathsOpen(false)
+    setProfileSwitcherOpen(true)
+  }
+
+  const handleSwitchProfile = (userId) => {
+    setProfile(switchProfile(userId))
+    setProfileSwitcherOpen(false)
+  }
+
+  const handleCreateProfile = (label) => {
+    setProfile(createProfile(label))
+    setProfileSwitcherOpen(false)
+  }
+
   const getAmbientAudio = () => getAudio(ambientAudioRef, chaseAmbientUrl, true, 0.14)
 
   useEffect(() => {
@@ -401,6 +420,7 @@ export default function App() {
                 setVersionOpen(true)
               }}
               onOpenDeaths={handleOpenDeaths}
+              onOpenProfileSwitcher={handleOpenProfileSwitcher}
               onPrimeAudio={startMenuAudio}
               muted={muted}
               onToggleMuted={toggleMuted}
@@ -424,6 +444,16 @@ export default function App() {
                 deathsHistory={profile.deathsHistory}
                 onViewProfile={handleViewDeathProfile}
                 onClose={() => setDeathsOpen(false)}
+              />
+            )}
+
+            {profileSwitcherOpen && (
+              <ProfileSwitcherModal
+                profiles={listProfiles()}
+                activeUserId={profile.userId}
+                onSwitch={handleSwitchProfile}
+                onCreate={handleCreateProfile}
+                onClose={() => setProfileSwitcherOpen(false)}
               />
             )}
           </>
@@ -515,6 +545,7 @@ function MainMenu({
   onOpenShop,
   onOpenVersion,
   onOpenDeaths,
+  onOpenProfileSwitcher,
   onPrimeAudio,
   muted,
   onToggleMuted,
@@ -537,7 +568,16 @@ function MainMenu({
       <p className="tagline">"Run like hell." — Screeeeming Kid</p>
 
       <div className="status-row">
-        <span>User {profile.userId}</span>
+        <button
+          type="button"
+          className="status-pill user-pill"
+          onClick={(e) => {
+            e.stopPropagation()
+            onOpenProfileSwitcher()
+          }}
+        >
+          User {profile.label || profile.userId}
+        </button>
         {profile.sheebs < 0 ? (
           <span className="debt-badge" style={{ backgroundColor: '#ff2e2e', color: 'white', padding: '0 6px', borderRadius: '4px' }}>DEBT: {profile.sheebs}</span>
         ) : (
