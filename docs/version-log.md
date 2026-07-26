@@ -6,6 +6,23 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.17 — Dad Case Environmental Traps (2026-07-26)
+
+### What changed
+
+- `frontend/src/GameEngine.js`: `_maybeSpawnExtraChaser()` now resolves and passes `faceId` via `onExtraChaserSpawn`.
+- `frontend/src/App.jsx` & `frontend/src/index.css`: Added a state `dadCaseSpawned` that listens for the `dad-case` faceId from the extra chaser spawn event. When triggered, it mounts a `.dad-case-darkness` overlay with a text placeholder for a door slam sound.
+- Bumped `GAME_ITERATION` to `v0.4.17` in `frontend/src/version.js` and deployed.
+
+### Design decisions
+
+- Decided to use a text placeholder on screen for the sound effect per the user's explicit instruction to "stub out locations for audio sounds to be dropped in later, right now just put the sounds on screen as overlay text when the sould should happen," superseding the plan's instruction to check for an audio asset.
+- The `dadCaseSpawned` state resets on caught, play, or level change to ensure the trap resets cleanly.
+
+### Explicitly not done
+
+- **Version page** and **Game Identity & New Profiles** (from the backlog) were left for the next natural steps.
+
 ## v0.4.16 — Sheebs default fix + menu skreem-loop fix (2026-07-26)
 
 ### What changed

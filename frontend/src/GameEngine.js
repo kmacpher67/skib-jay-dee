@@ -865,11 +865,13 @@ export class GameEngine {
     ]
     const spawn = corners[Math.floor(Math.random() * corners.length)]
     let extraFace = this.chaser.face
-    const randomSrc = randomFrom(CHASER_FACE_POOL)?.src
-    if (randomSrc) {
+    let extraFaceId = null
+    const randomItem = randomFrom(CHASER_FACE_POOL)
+    if (randomItem) {
       const img = new Image()
-      img.src = randomSrc
+      img.src = randomItem.src
       extraFace = img
+      extraFaceId = randomItem.id
     }
 
     this.chasers.push({
@@ -881,10 +883,12 @@ export class GameEngine {
       joinRamp: 0,
       color: this.chaser.color,
       face: extraFace,
+      faceId: extraFaceId,
     })
     this.onExtraChaserSpawn({
       count: this.chasers.length,
       index: this.chasers.length - 1,
+      faceId: extraFaceId,
     })
   }
 

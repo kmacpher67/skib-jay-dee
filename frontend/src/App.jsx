@@ -42,6 +42,7 @@ export default function App() {
   const [chaserIsCustom, setChaserIsCustom] = useState(false)
   const [lastCaptureLine, setLastCaptureLine] = useState('')
   const [showLvl2Transition, setShowLvl2Transition] = useState(false)
+  const [dadCaseSpawned, setDadCaseSpawned] = useState(false)
   const loadout = buildLoadout(profile.ownedItems)
   const muted = profile.muted
   const mutedRef = useRef(muted)
@@ -146,6 +147,7 @@ export default function App() {
     setShopOpen(false)
     setLastCaptureLine('')
     setShowLvl2Transition(false)
+    setDadCaseSpawned(false)
     setScreen('playing')
   }
 
@@ -182,16 +184,21 @@ export default function App() {
       highestLevel: Math.max(current.highestLevel, index),
     }))
     handleLevelChangeAudio()
+    setDadCaseSpawned(false)
   }
 
   const hideLvl2Transition = () => setShowLvl2Transition(false)
 
-  const handleExtraChaserSpawn = () => {
+  const handleExtraChaserSpawn = ({ faceId }) => {
     armAmbientAudio()
+    if (faceId === 'dad-case') {
+      setDadCaseSpawned(true)
+    }
   }
 
   const handleCaught = (captureLine) => {
     setShowLvl2Transition(false)
+    setDadCaseSpawned(false)
     setLastCaptureLine(captureLine)
     playCaughtAudio()
   }
@@ -326,6 +333,11 @@ export default function App() {
                 onEnded={hideLvl2Transition}
                 onError={hideLvl2Transition}
               />
+            )}
+            {dadCaseSpawned && (
+              <div className="dad-case-darkness">
+                <div className="dad-case-sound-text">*DOOR SLAM SOUND*</div>
+              </div>
             )}
             <button className="exit-btn" onClick={() => setScreen('menu')}>
               ✕

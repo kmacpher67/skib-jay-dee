@@ -114,7 +114,7 @@ and chaser-bark voice clips, 1:1 with text.
   autoplay. `startMenuAudio()` in `frontend/src/App.jsx` now primes at
   `volume: 0`/`loop: false` and pauses itself once `play()` resolves.
   Covered by `frontend/e2e/menu-audio-prime.spec.js`.
-- [ ] **Dad Case Environmental Traps.** Implement a visual darkening overlay and a sound effect when the "Dad Case" chaser spawns via the multi-chaser mechanic. Needs a sound effect asset from Ken (e.g., slamming door or light switch).
+- [x] **Dad Case Environmental Traps.** Landed in v0.4.17 — visual darkening overlay and a text-stubbed sound effect when the "Dad Case" chaser spawns via the multi-chaser mechanic.
 - [ ] **Deaths history log.** The menu's "Deaths" pill (`App.jsx`) is
   read-only display of a lifetime counter with no click handler — tapping
   it does nothing today. Add a per-death record (timestamp, level, maybe
