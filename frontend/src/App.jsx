@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import FaceUpload from './components/FaceUpload.jsx'
 import GameCanvas from './components/GameCanvas.jsx'
 import ShopModal from './components/ShopModal.jsx'
+import skreemLoopUrl from './assets/audio/jayden-skreem-loop.m4a'
 import {
   buildLoadout,
   SHOP_ITEMS,
@@ -21,6 +22,8 @@ export default function App() {
   const [chaserIsCustom, setChaserIsCustom] = useState(false)
   const [lastCaptureLine, setLastCaptureLine] = useState('')
   const loadout = buildLoadout(profile.ownedItems)
+  const menuAudioRef = useRef(null)
+  const catchAudioRef = useRef(null)
 
   const syncProfile = (updater) => {
     setProfile((current) => {
@@ -29,6 +32,33 @@ export default function App() {
       )
       return nextProfile
     })
+  }
+
+  const getAudio = (ref, loop) => {
+    if (!ref.current) {
+      const audio = new Audio(skreemLoopUrl)
+      audio.preload = 'auto'
+      audio.loop = loop
+      audio.volume = loop ? 0.22 : 0.35
+      ref.current = audio
+    }
+
+    return ref.current
+  }
+
+  const playAudio = (audio, restart = true) => {
+    if (!audio) return
+    if (!restart && !audio.paused) return
+    audio.currentTime = 0
+    audio.play().catch(() => {})
+  }
+
+  const startMenuAudio = () => {
+    playAudio(getAudio(menuAudioRef, true), false)
+  }
+
+  const playCaughtAudio = () => {
+    playAudio(getAudio(catchAudioRef, false))
   }
 
   const handlePlay = () => {
@@ -76,7 +106,23 @@ export default function App() {
 
   const handleCaught = (captureLine) => {
     setLastCaptureLine(captureLine)
+    playCaughtAudio()
   }
+
+  useEffect(() => {
+    if (screen !== 'menu' && menuAudioRef.current) {
+      menuAudioRef.current.pause()
+      menuAudioRef.current.currentTime = 0
+    }
+  }, [screen])
+
+  useEffect(
+    () => () => {
+      menuAudioRef.current?.pause()
+      catchAudioRef.current?.pause()
+    },
+    [],
+  )
 
   const handleRunnerFace = (src) => {
     setRunnerIsCustom(true)
@@ -103,6 +149,7 @@ export default function App() {
               onChaserFace={handleChaserFace}
               onPlay={handlePlay}
               onOpenShop={() => setShopOpen(true)}
+              onPrimeAudio={startMenuAudio}
             />
 
             {shopOpen && (
@@ -157,9 +204,10 @@ function MainMenu({
   onChaserFace,
   onPlay,
   onOpenShop,
+  onPrimeAudio,
 }) {
   return (
-    <div className="menu">
+    <div className="menu" onPointerDown={onPrimeAudio}>
       <div className="menu-sheen" />
       <div className="menu-worldstar">● WORLD STAR!!! ●</div>
       <h1>SKIB-JAY-DEE-TOILET</h1>

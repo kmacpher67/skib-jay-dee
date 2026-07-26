@@ -12,6 +12,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - User id, sheeb balance, purchased items, death count, and highest cleared level persist in cookies.
 - The deployment helper now takes an iteration label and short slug, then commits only the `skib-jay-dee-toilet-game/` subtree in the website repo.
 - The audio how-to now spells out local recording guidance: capture however is convenient, keep raw edits lossless if possible, and export game-ready clips as mono `.ogg` or `.mp3` at 44.1kHz.
+- The frontend now has a starter audio loop in `frontend/src/assets/audio/jayden-skreem-loop.m4a`; the menu primes it on first interaction and the caught transition reuses the same clip as a quick sting.
 
 ## Files to check first
 
@@ -58,8 +59,8 @@ Use this as the handoff doc for the next agent working in the repo.
 ## Natural follow-up work
 
 - Add the scripted World Star intro cinematic.
-- Add sound effects and background audio.
-- Use [docs/sound-effects-howto.md](docs/sound-effects-howto.md) as the starting point for the audio pass; it now includes local recording and export-format guidance.
+- Finish the audio pass: split the current starter clip into a real menu loop plus separate catch/line clips, add a mute toggle, and keep using [docs/sound-effects-howto.md](docs/sound-effects-howto.md) as the starting point for naming and export guidance.
+- Add the scripted World Star intro cinematic, including the later transition-video beat for the "YOU DIED" meme screen.
 - Crop or mask uploaded faces instead of stretching the raw image.
 - Add more character roles or abilities from the PDF roster.
 - Extract level data out of hardcoded map-builder functions before hand-authoring more levels — see the level/map plan in [docs/roadmap.md](docs/roadmap.md).

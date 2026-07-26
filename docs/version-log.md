@@ -3,6 +3,37 @@
 This file memorializes the design and plan decisions made during the
 front-end upgrade pass.
 
+## v0.3.3
+
+**Date:** July 26, 2026
+
+### What changed
+
+- Added a starter audio loop to `frontend/src/assets/audio/` and wired it
+  into the menu in `frontend/src/App.jsx` so the main page can start a
+  looping vocal clip on first interaction.
+- Reused the same clip as the caught transition sting so the "YOU DIED"
+  beat now has an audible hook while the richer audio pass is still in
+  progress.
+- Updated `docs/sound-effects-howto.md`, `docs/update-directions.md`, and
+  `docs/roadmap.md` so the new asset path, naming convention, and
+  remaining audio backlog are visible to the next agent.
+
+### Design / plan note
+
+- The starter audio is intentionally a single reusable clip so the game
+  can prove the browser-audio plumbing before we spend time separating it
+  into a proper menu loop, line library, and death sting.
+- Keeping the raw scratch audio in `/audio/` while copying the playable
+  asset into `frontend/src/assets/audio/` lets us move between editor
+  source and game-ready output without changing the code path.
+
+### Known non-goals for this version
+
+- No dedicated menu theme has been composed yet.
+- No mute toggle or cookie-backed audio preference was added yet.
+- No transition video was generated yet.
+
 ## v0.3.2
 
 **Date:** July 26, 2026

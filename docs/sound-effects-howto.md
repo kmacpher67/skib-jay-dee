@@ -52,9 +52,12 @@ No, not for a first pass. Two options, and you can mix both:
 
 ## Where files go / how to wire them in (when this gets built)
 
+- Keep raw captures in `/audio/` if you want a scratchpad, then copy the
+  final version into `frontend/src/assets/audio/` before wiring it in.
 - Put finished clips in `frontend/src/assets/audio/` (new folder), named
-  by what they're for: `flush.mp3`, `chase-loop.mp3`, `jumpscare-sting.mp3`,
-  `sonic-shriek.mp3`, etc.
+  by what they're for: `jayden-skreem-loop.m4a` for the current menu
+  loop / death sting starter, `menu-loop.ogg`, `flush.mp3`,
+  `chase-loop.mp3`, `jumpscare-sting.mp3`, `sonic-shriek.mp3`, etc.
 - Browsers require a **user gesture** before audio can autoplay — the
   first tap of "QUICK PLAY" is a good place to unlock/preload the audio
   context, not page load.

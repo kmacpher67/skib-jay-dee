@@ -76,10 +76,10 @@ Each item below is scoped to fit in one agent session. Pull the next
 open one, or reorder if something else is more urgent — just keep items
 this small.
 
-- [ ] **Audio 1: SFX plumbing.** Add an `Audio`-preload pattern to
-  `GameEngine.js`, a mute toggle in the menu persisted via cookies, and
-  wire a single jump-scare sting to `_triggerCaught()`. No other sounds
-  yet — prove the plumbing works with one clip first. See
+- [ ] **Audio 1: SFX plumbing.** Starter menu/caught audio is now wired
+  in `App.jsx` with `frontend/src/assets/audio/jayden-skreem-loop.m4a`;
+  still to do: a proper mute toggle in cookies and a cleaner split
+  between menu music, line clips, and the caught sting. See
   [sound-effects-howto.md](sound-effects-howto.md).
 - [ ] **Audio 2: capture-line and chaser-bark voice clips.** Record/collect
   one clip per `CAPTURE_LINES` and `CHASER_LINES` entry, play the matching
