@@ -102,6 +102,10 @@ Each item below is scoped to fit in one agent session. Pull the next
 open one, or reorder if something else is more urgent — just keep items
 this small.
 
+The current difficulty-ramp direction is to keep progression
+interactive: each new level should add a decision, a tradeoff, or a
+counterpressure the player can feel in motion, not just a bigger number.
+
 - [x] **URGENT — live prod bug: broken runner/chaser face preview images.** Landed in the `v0.4.25` deploy. The deployed menu now correctly unwraps the `.src` string instead of coercing the pool object to `[object Object]`. Full RCA in [roadmap-handoff-v0.4.27-plan.md](handoffs/roadmap-handoff-v0.4.27-plan.md).
 
 Recommended next-session order, if we want the tightest handoff:
@@ -230,14 +234,15 @@ and chaser-bark voice clips, 1:1 with text.
 - [ ] **Schleimy Potion.** New collectible that temporarily shrinks the
   runner's hitbox so it can slip through the map's tight wall gaps/corner
   chokepoints (Ken confirmed these traps are "cool map design" and wants
-  to keep them, just give players a tool to counter-play them). Designed
-  as risk/reward, not a free pass: while active, movement speed drops
-  ~20% and the chaser speed modifier gets a temporary bump, so using it
-  mid-chase trades "get through this gap" for "get caught faster
-  everywhere else" for a few seconds. Proposed defaults: 65% hitbox
-  shrink, 4s duration, HUD timer bar next to the stamina bar. Needs a
-  call from Ken on acquisition (map pickup vs. Shleeb Shop item —
-  recommending map pickup) and the exact percentages before coding. See
+  to keep them, just give players a tool to counter-play them). This is
+  a deliberate difficulty-ramp item, not a skip button: while active,
+  movement speed drops ~20% and the chaser speed modifier gets a
+  temporary bump, so using it mid-chase trades "get through this gap"
+  for "get caught faster everywhere else" for a few seconds. Proposed
+  defaults: 65% hitbox shrink, 4s duration, HUD timer bar next to the
+  stamina bar. Needs a call from Ken on acquisition (map pickup vs.
+  Shleeb Shop item — recommending map pickup) and the exact percentages
+  before coding. See
   [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
 - [ ] **Micro-Skib chaser (challenge counterweight to the potion).** A
   smaller chaser variant sized to also fit through the tight cracks the

@@ -5,7 +5,10 @@
 Scopes one new Phase 7 backlog item in `docs/roadmap.md`: a "Schleimy
 Potion" collectible that lets a player squeeze through the map's tight
 wall gaps, paired with a challenge-escalation counterweight so the item
-is a risk/reward tool rather than a free pass. Also closes out a stray
+is a risk/reward tool rather than a free pass. The broader goal is to
+make later levels feel more interactive, not just numerically harsher:
+every new survival tool should create a new decision point, and every
+new decision point should keep the chases tense. Also closes out a stray
 audit question from Ken's message (stamina/hit-and-keep-running already
 shipped). No code changed this session; `GAME_ITERATION` stays unbumped.
 
@@ -53,6 +56,10 @@ Refined from Ken's brainstorm down to one concrete, buildable shape
 (picking specific answers instead of listing every option — flagged
 below wherever a call is still Ken's to make):
 
+- This is a progressive-difficulty item, not a skip button. The potion
+  should preserve the map's tight-gap skill checks while adding a
+  visible tradeoff the player can feel immediately in the chase.
+
 - **What it does:** for a short duration, shrinks the runner's collision
   box so it fits through wall gaps that are normally solid blockers.
   Mechanically clean to build: `_hitsWall`/`_moveWithCollision`
@@ -96,6 +103,10 @@ below wherever a call is still Ken's to make):
 
 Kept distinct from the potion item above because it's map/enemy design
 work, not a single mechanic:
+
+- This is the matching counterpressure for the potion item. The point
+  is to keep the new mobility option honest once players learn to lean
+  on it.
 
 - **Micro-Skib chaser variant:** a new, smaller chaser type sized to fit
   through the same tight cracks the potion opens up, so a "safe" crack

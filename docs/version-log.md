@@ -36,6 +36,9 @@ focused on *why*, those two are the *what* and *when*.
 - Kept the Micro-Skib chaser counterweight as its own backlog line
   instead of bundling it with the potion — new enemy-AI work shouldn't
   ride along with a single item pickup's scope.
+- Reframed the ask as a progression problem: later levels should stay
+  interactive, so the potion is documented as a tradeoff tool rather
+  than a route to bypass the map.
 
 ## v0.4.28 — Level 4 transition screen (2026-07-26)
 

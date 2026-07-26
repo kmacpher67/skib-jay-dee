@@ -20,6 +20,8 @@ update `docs/version-log.md`.
   for a "Micro-Skib" chaser variant sized to fit through the same
   cracks. Closed out Ken's stamina/hit-and-keep-running audit request —
   already shipped in the existing sprint/stamina system, no code needed.
+  Clarified the item as a progression-ramp tradeoff rather than a skip
+  button, so later levels stay interactive.
   See `docs/handoffs/roadmap-handoff-v0.4.29-plan.md`.
 
 ## v0.4.28-plan — 2026-07-26 (docs-only)
