@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.25',
+    title: 'Post-kill profile pages land',
+    description: 'Captures now pause on a reusable profile card, the deaths log shows killer IDs as clickable chips, and profiles can be reopened from history.',
+  },
+  {
     version: 'v0.4.21',
     title: 'Deaths history log lands',
     description: 'The Deaths pill now opens a modal that shows the latest capture records with timestamps and level names.',

@@ -51,12 +51,14 @@ export function normalizeProfile(profile = {}) {
             entry &&
             typeof entry === 'object' &&
             Number.isFinite(entry.timestamp) &&
-            typeof entry.levelName === 'string' &&
-            entry.levelName,
+            (typeof entry.levelName === 'string' && entry.levelName) ||
+            Number.isFinite(entry.level),
         )
         .map((entry) => ({
           timestamp: Math.max(0, Math.floor(entry.timestamp)),
-          levelName: entry.levelName,
+          level: Number.isFinite(entry.level) ? Math.max(1, Math.floor(entry.level)) : null,
+          levelName: typeof entry.levelName === 'string' && entry.levelName ? entry.levelName : null,
+          chaserId: typeof entry.chaserId === 'string' && entry.chaserId ? entry.chaserId : null,
         }))
         .slice(-50)
     : []

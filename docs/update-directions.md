@@ -5,8 +5,9 @@ Use this as the handoff doc for the next agent working in the repo.
 ## Current state
 
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
-- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, a 3-second resume-countdown phase post-capture, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), a 20-sheebs capture penalty, and the discreet iteration badge in the HUD.
-- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, and the lvl2 transition overlay lifecycle. The lvl2 video now only mounts after Pipeworks is cleared *and* the engine reports the new hall-coverage / 4-skib survival gate as ready.
+- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, the separate resume-countdown phase, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), a 20-sheebs capture penalty, and the discreet iteration badge in the HUD.
+- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, the lvl2 transition overlay lifecycle, and the post-kill profile modal / clickable deaths log. The lvl2 video now only mounts after Pipeworks is cleared *and* the engine reports the new hall-coverage / 4-skib survival gate as ready.
+- `frontend/src/components/ProfileModal.jsx` now renders the shared killer profile card for both fresh kills and log reopens, while `frontend/src/components/DeathsModal.jsx` shows clickable killer-ID pills.
 - `frontend/src/App.jsx` also owns the new menu version log panel, which shows `GAME_ITERATION` plus a short shipped changelog.
 - `frontend/src/version.js` is the single place to bump the visible iteration number.
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
@@ -17,7 +18,7 @@ Use this as the handoff doc for the next agent working in the repo.
   (`thinkpad-local`, `desktop-gaming`) so the cheap local box can stay
   the default.
 - Default faces are randomly shuffled from the local gallery each time the user presses play, unless they upload custom faces.
-- User id, sheeb balance, purchased items, death count, deaths history, and highest cleared level persist in cookies.
+- User id, sheeb balance, purchased items, death count, deaths history (now with killer IDs), and highest cleared level persist in cookies.
 - The deployment helper now takes an iteration label and short slug, then commits only the `skib-jay-dee-toilet-game/` subtree in the website repo.
 - The audio how-to now spells out local recording guidance: capture however is convenient, keep raw edits lossless if possible, and export game-ready clips as mono `.ogg` or `.mp3` at 44.1kHz.
 - The frontend now has a starter audio loop in `frontend/src/assets/audio/jayden-skreem-loop.m4a`; the menu primes it on first interaction and the caught transition reuses the same clip as a quick sting.
@@ -59,12 +60,16 @@ Use this as the handoff doc for the next agent working in the repo.
 - `frontend/src/GameEngine.js`
 - `frontend/src/dialog.js`
 - `frontend/src/App.jsx`
+- `frontend/src/components/ProfileModal.jsx`
+- `frontend/src/components/DeathsModal.jsx`
 - `frontend/src/components/VersionModal.jsx`
 - `frontend/src/gameContent.js`
 - `frontend/src/version.js`
 - `frontend/src/lib/cookies.js`
 - `frontend/src/components/GameCanvas.jsx`
 - `frontend/src/components/ShopModal.jsx`
+- `docs/handoffs/roadmap-handoff-v0.4.25.md`
+- `docs/handoffs/roadmap-handoff-v0.4.25-plan.md`
 - `docs/handoffs/roadmap-handoff-v0.4.17.md`
 - `docs/handoffs/roadmap-handoff-v0.4.18.md`
 - `docs/handoffs/roadmap-handoff-v0.4.18-plan.md`
@@ -119,8 +124,8 @@ manually:
 
 ## Natural follow-up work
 
-- Oldest unfinished handoff is **v0.4.25-plan (post-kill chaser profile screen + kill history + clickable Deaths log)** — pick this up first under Mode B ordering; it supersedes the older v0.4.23-plan file, which is now marked superseded. Resume countdown (v0.4.24-plan) already landed as real code in v0.4.24.
-- After v0.4.25-plan, **v0.4.26-plan (sheebs debt above level 3, losable shop items above level 4)** is queued next but explicitly **blocked on product decisions from Ken** — see the "Flag for Ken" section of `docs/handoffs/roadmap-handoff-v0.4.26-plan.md`. Don't start coding it until those are answered.
+- Oldest unfinished handoff is **v0.4.26-plan (sheebs debt above level 3, losable shop items above level 4)**, but it is explicitly **blocked on product decisions from Ken** — see the "Flag for Ken" section of `docs/handoffs/roadmap-handoff-v0.4.26-plan.md`. Don't start coding it until those are answered.
+- `v0.4.25` is now shipped: the post-kill profile card, killer-ID logging, and clickable deaths log are in production.
 - After those, the next unclaimed item from the backlog is **game identity / multiple cookie-backed save slots**. See `docs/roadmap.md`.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it

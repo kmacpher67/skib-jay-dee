@@ -21,24 +21,26 @@ Done: core chase loop, jump-scare capture, face upload + random default
 faces, five levels (Porcelain Palace → Pipeworks → Flooded Annex → The
 Ramen Aisle → World Star Parking Lot), desktop keyboard controls, sprint,
 Shleeb shop, cookie-backed profile (user id, sheebs, owned items, highest
-level, lifetime deaths, deaths history), skreem-on-proximity, skreem-penalty + death count
-on capture, a 20-sheebs capture penalty, a multi-chaser mechanic (extra toilets join in if a level runs
-long, with Pipeworks tuned for five simultaneous chasers), and a discreet build-iteration badge tied to a shared
-frontend constant plus the deploy-commit helper. All in-game text now
-lives in one place, `frontend/src/dialog.js` (`CAPTURE_LINES`,
-`CHASER_LINES`, `TIRED_LINES`) — edit lines there without touching
-`GameEngine.js`. Chaser speed is now rubber-banded across a run: each
-capture mellows it out (`CHASER_SPEED_MOD_DEATH_STEP`), each level
-cleared ramps it back up (`CHASER_SPEED_MOD_LEVEL_STEP`), clamped between
-`CHASER_SPEED_MOD_MIN`/`MAX` in `GameEngine.js`. Levels also run longer
-now (raised `advanceAt` thresholds) and proximity skreem gain/chaser-bark
-frequency were bumped up. As of v0.4.0 the game also has a first real
-audio pass — chase ambience (now layered in later), capture sting, chaser
-barks, boost/tired stingers, a cookie-persisted mute toggle — plus an
-experimental (rough) lvl2 video transition whose trigger now waits for
-Pipeworks clear and an additional hall-coverage / 4-skib survival gate.
-Still front-end only — no backend, no multiplayer, no full scripted intro
-cinematic. See
+level, lifetime deaths, deaths history with killer IDs), post-kill
+profile pages with a clickable deaths log, skreem-on-proximity,
+skreem-penalty + death count on capture, a 20-sheebs capture penalty, a
+multi-chaser mechanic (extra toilets join in if a level runs long, with
+Pipeworks tuned for five simultaneous chasers), and a discreet
+build-iteration badge tied to a shared frontend constant plus the
+deploy-commit helper. All in-game text now lives in one place,
+`frontend/src/dialog.js` (`CAPTURE_LINES`, `CHASER_LINES`,
+`TIRED_LINES`) — edit lines there without touching `GameEngine.js`.
+Chaser speed is now rubber-banded across a run: each capture mellows it
+out (`CHASER_SPEED_MOD_DEATH_STEP`), each level cleared ramps it back up
+(`CHASER_SPEED_MOD_LEVEL_STEP`), clamped between `CHASER_SPEED_MOD_MIN`/
+`MAX` in `GameEngine.js`. Levels also run longer now (raised `advanceAt`
+thresholds) and proximity skreem gain/chaser-bark frequency were bumped
+up. As of v0.4.0 the game also has a first real audio pass — chase
+ambience (now layered in later), capture sting, chaser barks, boost/tired
+stingers, a cookie-persisted mute toggle — plus an experimental (rough)
+lvl2 video transition whose trigger now waits for Pipeworks clear and an
+additional hall-coverage / 4-skib survival gate. Still front-end only —
+no backend, no multiplayer, no full scripted intro cinematic. See
 [docs/handoffs/roadmap-handoff-v0.4.0.md](handoffs/roadmap-handoff-v0.4.0.md)
 for the full session write-up and
 [docs/future-versions.md](future-versions.md) for what's parked next.
@@ -144,13 +146,8 @@ and chaser-bark voice clips, 1:1 with text.
   specced in [docs/resume-countdown.md](resume-countdown.md); coding
   brief in
   [roadmap-handoff-v0.4.24-plan.md](handoffs/roadmap-handoff-v0.4.24-plan.md).
-- [ ] **Post-kill screen and kill logging.** When a kill occurs, after the kill skreem
-  is done shaking, record who did the kill in the profile history, and then display
-  a profile page for that chaser. The profile page should include humorous profile
-  info about their "toilet cleanup killen". Superseded/absorbed by the fuller scope
-  in [roadmap-handoff-v0.4.25-plan.md](handoffs/roadmap-handoff-v0.4.25-plan.md) —
-  code that item, not the older [roadmap-handoff-v0.4.23-plan.md](handoffs/roadmap-handoff-v0.4.23-plan.md).
-- [ ] **Profile Pages and clickable Killz log.** The killz log should display the `chaserId` (who killed the player). Add the ability to click on the skib-chaser killer profile in the log to open their full Profile Page. Introduce a Profile Pages system accessible from the menu or log. Fully scoped in [roadmap-handoff-v0.4.25-plan.md](handoffs/roadmap-handoff-v0.4.25-plan.md) — this is the oldest unfinished handoff, pick it up first.
+- [x] **Post-kill screen and kill logging.** Landed v0.4.25 — when a kill occurs, after the kill skreem is done shaking, the game now records who did the kill in the profile history, then shows a reusable profile page for that chaser before returning to the menu. The profile card uses the `CHASER_PROFILES` content map, and the cookie-backed `deathsHistory` entries now carry `chaserId` alongside the timestamp and level.
+- [x] **Profile Pages and clickable Killz log.** Landed v0.4.25 — the killz log now displays a clickable killer-ID pill for each capture, and selecting it reopens the same profile page on top of the log. The profile page can be dismissed back to the log, or from a fresh kill back to the menu.
 - [ ] **Sheebs debt economy: allow negative balance above level 3.** Right now
   `GameEngine.js` clamps `this.sheebs` to `Math.max(0, ...)` everywhere it's
   touched (constructor, capture penalty, shop spend), so a player can never go

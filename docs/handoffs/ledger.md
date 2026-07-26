@@ -10,6 +10,14 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.25 — 2026-07-26
+
+- Shipped the post-kill profile system: captures now pause on a reusable
+  `ProfileModal`, `deathsHistory` entries now store `chaserId`, and the
+  deaths log opens the same profile card from clickable killer-ID pills.
+- Bumped `GAME_ITERATION` to `v0.4.25` and updated the shipped changelog
+  / docs trail to match.
+
 ## v0.4.26-plan — 2026-07-26 (docs-only)
 
 - Scoped two new Phase 7 "risk goes up for experienced players" backlog

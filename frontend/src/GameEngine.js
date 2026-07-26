@@ -1067,8 +1067,6 @@ export class GameEngine {
       this.extraChaserTimer = EXTRA_CHASER_INTERVAL
       this.zoom = 1
       this.stamina = this.maxStamina
-      this.phase = 'resume-countdown'
-      this.countdownTimer = 3.0
       this.phaseTimer = 0
       this.chaserLineTimer = 0
       this.runnerLineTimer = 0

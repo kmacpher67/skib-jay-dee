@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import FaceUpload from './components/FaceUpload.jsx'
 import GameCanvas from './components/GameCanvas.jsx'
+import ProfileModal from './components/ProfileModal.jsx'
 import DeathsModal from './components/DeathsModal.jsx'
 import ShopModal from './components/ShopModal.jsx'
 import VersionModal from './components/VersionModal.jsx'
@@ -20,7 +21,9 @@ import lvl2TransitionUrl from './assets/video/lvl2-transition.mp4'
 import dadCaseDoorUrl from './assets/audio/door-sounds.m4a'
 import dadCaseLightsUrl from './assets/audio/lights.m4a'
 import {
+  CHASER_FACE_POOL,
   buildLoadout,
+  getChaserProfile,
   SHOP_ITEMS,
   randomFaces,
 } from './gameContent.js'
@@ -42,14 +45,17 @@ export default function App() {
   const [shopOpen, setShopOpen] = useState(false)
   const [versionOpen, setVersionOpen] = useState(false)
   const [deathsOpen, setDeathsOpen] = useState(false)
-  const [runnerFace, setRunnerFace] = useState(() => randomFaces().runnerFace)
-  const [chaserFace, setChaserFace] = useState(() => randomFaces().chaserFace)
+  const [runnerFaceSelection, setRunnerFaceSelection] = useState(() => randomFaces().runnerFace)
+  const [chaserFaceSelection, setChaserFaceSelection] = useState(() => randomFaces().chaserFace)
   const [runnerIsCustom, setRunnerIsCustom] = useState(false)
   const [chaserIsCustom, setChaserIsCustom] = useState(false)
   const [lastCaptureLine, setLastCaptureLine] = useState('')
   const [showLvl2Transition, setShowLvl2Transition] = useState(false)
   const [dadCaseSpawned, setDadCaseSpawned] = useState(false)
+  const [profileModal, setProfileModal] = useState(null)
+  const [profileModalMode, setProfileModalMode] = useState(null)
   const loadout = buildLoadout(profile.ownedItems)
+  const engineRef = useRef(null)
   const muted = profile.muted
   const mutedRef = useRef(muted)
   mutedRef.current = muted
@@ -148,14 +154,16 @@ export default function App() {
 
   const handlePlay = () => {
     const nextFaces = randomFaces()
-    if (!runnerIsCustom) setRunnerFace(nextFaces.runnerFace)
-    if (!chaserIsCustom) setChaserFace(nextFaces.chaserFace)
+    if (!runnerIsCustom) setRunnerFaceSelection(nextFaces.runnerFace)
+    if (!chaserIsCustom) setChaserFaceSelection(nextFaces.chaserFace)
     setShopOpen(false)
     setVersionOpen(false)
     setDeathsOpen(false)
     setLastCaptureLine('')
     setShowLvl2Transition(false)
     setDadCaseSpawned(false)
+    setProfileModal(null)
+    setProfileModalMode(null)
     setScreen('playing')
   }
 
@@ -184,11 +192,17 @@ export default function App() {
     const levelName = typeof payload === 'object' && payload && typeof payload.levelName === 'string'
       ? payload.levelName
       : 'Unknown level'
+    const level = typeof payload === 'object' && payload && Number.isFinite(payload.level)
+      ? payload.level
+      : null
+    const chaserId = typeof payload === 'object' && payload && typeof payload.chaserId === 'string'
+      ? payload.chaserId
+      : null
 
     syncProfile((current) => {
       const nextHistory = [
         ...(Array.isArray(current.deathsHistory) ? current.deathsHistory : []),
-        { timestamp: Date.now(), levelName },
+        { timestamp: Date.now(), level, levelName, chaserId },
       ]
 
       return {
@@ -219,11 +233,45 @@ export default function App() {
     }
   }
 
-  const handleCaught = (captureLine) => {
+  const handleCaught = (payload) => {
+    const captureLine =
+      typeof payload === 'object' && payload
+        ? payload.captureLine
+        : payload
     setShowLvl2Transition(false)
     setDadCaseSpawned(false)
+    setProfileModal(null)
+    setProfileModalMode(null)
     setLastCaptureLine(captureLine)
     playCaughtAudio()
+  }
+
+  const handleCaughtProfileReady = (payload) => {
+    setProfileModal(payload)
+    setProfileModalMode('caught')
+  }
+
+  const handleContinueAfterProfile = () => {
+    if (profileModalMode === 'caught') {
+      setProfileModal(null)
+      setProfileModalMode(null)
+      setScreen('menu')
+      return
+    }
+
+    setProfileModal(null)
+    setProfileModalMode(null)
+  }
+
+  const handleViewDeathProfile = (chaserId) => {
+    const face = CHASER_FACE_POOL.find((entry) => entry.id === chaserId) ?? null
+    setProfileModal({
+      chaserId,
+      chaserName: getChaserProfile(chaserId).name,
+      chaserFaceSrc: face?.src ?? null,
+      source: 'log',
+    })
+    setProfileModalMode('log')
   }
 
   const handleOpenDeaths = () => {
@@ -292,13 +340,17 @@ export default function App() {
 
   const handleRunnerFace = (src) => {
     setRunnerIsCustom(true)
-    setRunnerFace(src)
+    setRunnerFaceSelection({ id: 'custom-runner', label: 'Custom Runner', src })
   }
 
   const handleChaserFace = (src) => {
     setChaserIsCustom(true)
-    setChaserFace(src)
+    setChaserFaceSelection({ id: 'custom-chaser', label: 'Custom Chaser', src })
   }
+
+  const runnerFace = runnerFaceSelection?.src ?? null
+  const chaserFace = chaserFaceSelection?.src ?? null
+  const chaserFaceId = chaserFaceSelection?.id ?? null
 
   return (
     <div className="stage">
@@ -342,7 +394,11 @@ export default function App() {
             )}
 
             {deathsOpen && (
-              <DeathsModal deathsHistory={profile.deathsHistory} onClose={() => setDeathsOpen(false)} />
+              <DeathsModal
+                deathsHistory={profile.deathsHistory}
+                onViewProfile={handleViewDeathProfile}
+                onClose={() => setDeathsOpen(false)}
+              />
             )}
           </>
         )}
@@ -352,6 +408,7 @@ export default function App() {
             <GameCanvas
               runnerFace={runnerFace}
               chaserFace={chaserFace}
+              chaserFaceId={chaserFaceId}
               runnerIsCustom={runnerIsCustom}
               loadoutSpeedBonus={loadout.speedBonus}
               loadoutStaminaBonus={loadout.staminaBonus}
@@ -367,6 +424,10 @@ export default function App() {
               onChaserBark={handleChaserBark}
               onLevelClear={handleLevelClear}
               onExtraChaserSpawn={handleExtraChaserSpawn}
+              onCaughtProfileReady={handleCaughtProfileReady}
+              onEngineReady={(engine) => {
+                engineRef.current = engine
+              }}
             />
             {showLvl2Transition && (
               <video
@@ -391,6 +452,15 @@ export default function App() {
               {muted ? '🔇' : '🔊'}
             </button>
           </>
+        )}
+
+        {profileModal && (
+          <ProfileModal
+            profile={profileModal}
+            mode={profileModalMode}
+            onPrimary={handleContinueAfterProfile}
+            onClose={handleContinueAfterProfile}
+          />
         )}
       </div>
 

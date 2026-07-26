@@ -1,10 +1,12 @@
+import { getChaserProfile } from '../gameContent.js'
+
 const MAX_DEATHS = 10
 
 function formatDeathTime(timestamp) {
   return new Date(timestamp).toLocaleString()
 }
 
-export default function DeathsModal({ deathsHistory, onClose }) {
+export default function DeathsModal({ deathsHistory, onViewProfile, onClose }) {
   const recentDeaths = [...(Array.isArray(deathsHistory) ? deathsHistory : [])].slice(-MAX_DEATHS).reverse()
 
   return (
@@ -30,7 +32,17 @@ export default function DeathsModal({ deathsHistory, onClose }) {
                   <time className="death-time" dateTime={new Date(entry.timestamp).toISOString()}>
                     {formatDeathTime(entry.timestamp)}
                   </time>
-                  <p className="death-level">Level: {entry.levelName}</p>
+                  <p className="death-level">Level: {entry.levelName || `#${entry.level || '?'}`}</p>
+                  {entry.chaserId && (
+                    <button
+                      type="button"
+                      className="death-killer-pill"
+                      onClick={() => onViewProfile?.(entry.chaserId)}
+                    >
+                      Killer ID: {entry.chaserId}
+                      <span className="death-killer-name">{getChaserProfile(entry.chaserId).name}</span>
+                    </button>
+                  )}
                 </div>
               </article>
             ))}

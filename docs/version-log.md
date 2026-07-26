@@ -6,6 +6,46 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.25 — Post-kill profile pages shipped (2026-07-26)
+
+### What changed
+
+- `frontend/src/GameEngine.js` now captures the exact chaser that made
+  contact, logs its `faceId` into the capture payload, and pauses the
+  game in a post-kill profile state after the jump-scare shake finishes.
+- `frontend/src/gameContent.js` now exports `CHASER_PROFILES`, so the
+  post-kill card and the deaths log can render per-chaser flavor text
+  from one shared content map instead of duplicating the prose in the UI.
+- `frontend/src/lib/cookies.js` now preserves `chaserId` in
+  `deathsHistory`, and `frontend/src/App.jsx` stores it when a capture is
+  recorded.
+- `frontend/src/components/ProfileModal.jsx` provides the reusable
+  profile card used both after a fresh kill and when a player reopens a
+  killer from the deaths log. `frontend/src/components/DeathsModal.jsx`
+  now shows killer-ID pills that reopen the same profile page.
+- `frontend/src/version.js` bumped the visible build tag to `v0.4.25`.
+
+### Design decisions
+
+- Kept the profile page and the deaths-log reopen path on one shared
+  modal so the killer portrait/name/flavor text stays consistent no
+  matter how the player opens it.
+- Stored the killer identity in the existing cookie-backed death history
+  instead of adding a second persistence layer, because the history
+  remained comfortably small and the repo already had the right profile
+  cookie in place.
+- Let the fresh-kill profile card dismiss back to the menu, while the
+  deaths-log version dismisses back to the log. That keeps the capture
+  beat quick and the historical browse path non-destructive.
+
+### Explicitly not done
+
+- Did not remove the separate `resume-countdown` code path in
+  `GameEngine.js`; it remains in the tree as a separate gameplay feature
+  and is not used by the new post-kill profile flow.
+- Did not start the negative-sheebs / item-loss escalation work in
+  v0.4.26-plan.
+
 ## v0.4.26-plan — Risk/reward escalation planning pass (2026-07-26)
 
 ### What changed

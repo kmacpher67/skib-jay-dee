@@ -1,11 +1,10 @@
 import { test, expect } from '@playwright/test'
 
-// Verifies the runner pose-to-state mapping (docs/roadmap.md "Runner
-// pose-to-state mapping"): Jayden's face should swap to the
-// jayden-getting-captured pose the instant a capture happens, hold on
-// jayden-captured once the jump-scare zoom finishes, then restore the
-// run's original face once the caught beat ends and the chase resumes.
-test('runner face swaps through getting-captured/captured poses on capture, then restores', async ({ page }) => {
+// Verifies the runner pose-to-state mapping and the new post-kill profile
+// beat: Jayden should swap to the getting-captured pose the instant a
+// capture happens, hold on the captured pose once the jump-scare zoom
+// finishes, then show the chaser profile card before returning to the menu.
+test('runner face swaps through getting-captured/captured poses on capture, then shows the chaser profile', async ({ page }) => {
   await page.goto('./')
   await page.locator('.play-btn').click()
   await expect(page.locator('canvas')).toBeVisible()
@@ -40,9 +39,16 @@ test('runner face swaps through getting-captured/captured poses on capture, then
     () => window.__skibEngine.runner.face === window.__skibEngine.runner.capturedFace,
   )
 
-  // The caught beat lasts 2.6s; wait for phase to return to 'chase' and
-  // confirm the runner's original face comes back.
-  await page.waitForFunction(() => window.__skibEngine.phase === 'chase', null, { timeout: 10000 })
-  const restoredFaceSrc = await page.evaluate(() => window.__skibEngine.runner.face.src)
-  expect(restoredFaceSrc).toBe(originalFaceSrc)
+  // The caught beat now hands off to the profile screen instead of
+  // auto-resuming immediately.
+  await page.waitForFunction(() => window.__skibEngine.phase === 'caught-profile', null, { timeout: 10000 })
+  const profileDialog = page.getByRole('dialog', { name: 'Chaser profile' })
+  await expect(profileDialog).toBeVisible()
+  await expect(profileDialog.getByText('Main scare')).toBeVisible()
+  await expect(profileDialog.getByText('Killing tricks')).toBeVisible()
+
+  await profileDialog.getByRole('button', { name: 'CONTINUE' }).click()
+  await expect(page.locator('.play-btn')).toBeVisible()
+  await expect(page.locator('canvas')).toHaveCount(0)
+  await expect(page.getByText('SKIB-JAY-DEE-TOILET')).toBeVisible()
 })

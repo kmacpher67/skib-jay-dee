@@ -70,6 +70,7 @@ export default function GameCanvas({
     engine.start()
     return () => {
       onEngineReady?.(null)
+      window.__skibEngine = null
       engine.stop()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -42,8 +42,8 @@ test('deaths history modal opens and shows saved entries', async ({ page }) => {
     highestLevel: 1,
     deaths: 2,
     deathsHistory: [
-      { timestamp: Date.parse(olderDeathTimestamp), levelName: 'Porcelain Palace' },
-      { timestamp: Date.parse(latestDeathTimestamp), levelName: 'Pipeworks' },
+      { timestamp: Date.parse(olderDeathTimestamp), levelName: 'Porcelain Palace', chaserId: 'skib-default' },
+      { timestamp: Date.parse(latestDeathTimestamp), levelName: 'Pipeworks', chaserId: 'dad-case' },
     ],
     muted: false,
   }
@@ -61,6 +61,13 @@ test('deaths history modal opens and shows saved entries', async ({ page }) => {
   await expect(deathsDialog).toBeVisible()
   await expect(deathsDialog.getByText('Level: Pipeworks')).toBeVisible()
   await expect(deathsDialog.getByText('Level: Porcelain Palace')).toBeVisible()
+  await expect(deathsDialog.getByRole('button', { name: /Killer ID: dad-case/i })).toBeVisible()
+  await deathsDialog.getByRole('button', { name: /Killer ID: dad-case/i }).click()
+  const profileDialog = page.getByRole('dialog', { name: 'Chaser profile' })
+  await expect(profileDialog).toBeVisible()
+  await expect(profileDialog.getByText('Dad Case')).toBeVisible()
+  await profileDialog.getByRole('button', { name: 'BACK TO LOG' }).click()
+  await expect(deathsDialog).toBeVisible()
   await expect(deathsDialog.locator('time')).toHaveCount(2)
   await expect(deathsDialog.locator('time').first()).toHaveAttribute('datetime', latestDeathTimestamp)
 })
