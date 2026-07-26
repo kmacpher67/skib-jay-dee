@@ -10,6 +10,12 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.9 — 2026-07-26
+
+- Implemented Pipeworks's 4-chaser/max-speed clear condition (Session 2 of the v0.4.3-plan backlog): bumped `MAX_CHASERS` to 4, and made Pipeworks only advance when a separate `pipeworksSkreems` counter reaches `PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL = 68` while all 4 chasers are active and fully ramped (`joinRamp >= 1`).
+- Fixed a pre-existing game crash caused by `_maybeSpawnExtraChaser` assigning a string URL to `chaser.face` instead of an `HTMLImageElement`.
+- Added `frontend/e2e/pipeworks-clear.spec.js`; full 6-test Playwright suite passes.
+
 ## v0.4.8 — 2026-07-26
 
 - Implemented extra-chaser speed ramp (Session 1 of the v0.4.3-plan

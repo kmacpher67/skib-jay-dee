@@ -6,6 +6,26 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.9 — Pipeworks clear condition pass (2026-07-26)
+
+### What changed
+
+- Implemented Session 2 of the three-session backlog: Pipeworks now only advances when all 4 chasers are active, fully ramped, and a separate `pipeworksSkreems` counter reaches 68.
+- Fixed a pre-existing crash in `_maybeSpawnExtraChaser` that stored a string URL in `chaser.face` instead of an `HTMLImageElement`, breaking `ctx.drawImage`.
+- Added an e2e test (`frontend/e2e/pipeworks-clear.spec.js`) to verify the new clear condition logic.
+
+### Design decisions
+
+- Decided to completely bypass the original `advanceAt` check for Pipeworks and use the custom clear logic in `GameEngine.js`.
+- Bypassing avoids conflating `levelSkreems` (which increments whenever `dist < 300`) with `pipeworksSkreems` (which strictly requires `chasers.length >= 4` and all `joinRamp`s at 1).
+- Applied the same death penalty logic to `pipeworksSkreems` as the main `skreems` pool to keep gameplay consistent.
+
+### Known non-goals for this pass
+
+- No fixes for lvl2 transition timing or death-visual verification (left for Session 3).
+- No new death videos.
+- No `GAME_ITERATION` bump or deploy.
+
 ## Code Monkey orchestration pass — 2026-07-26
 
 ### What changed

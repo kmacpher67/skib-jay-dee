@@ -303,8 +303,9 @@ const LEVELS = [
   },
 ]
 
-const MAX_CHASERS = 3
+const MAX_CHASERS = 4
 const EXTRA_CHASER_INTERVAL = 14 // seconds of uninterrupted chase before another toilet joins
+const PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL = 68
 const DEATH_SKREEM_PENALTY = 0.3 // fraction of skreems lost on capture
 
 // Rubber-band chaser speed: each KILLZ (capture) mellows the toilet out a
@@ -660,6 +661,7 @@ export class GameEngine {
     this.runnerLine = ''
     this.runnerLineTimer = 0
     this.levelSkreems = 0
+    this.pipeworksSkreems = 0
     this.chasers = [this.chaser]
     this.extraChaserTimer = EXTRA_CHASER_INTERVAL
 
@@ -773,6 +775,13 @@ export class GameEngine {
         const gain = dt * (300 - dist) * 0.06
         this.skreems += gain
         this.levelSkreems += gain
+        if (
+          this.level.name === 'Pipeworks' && 
+          this.chasers.length >= MAX_CHASERS && 
+          this.chasers.every(c => (c.joinRamp ?? 1) >= 1)
+        ) {
+          this.pipeworksSkreems += gain
+        }
       }
       if (dist < closestDist) closestDist = dist
       if (rectsIntersect(this.runner, chaser)) caught = true
@@ -780,7 +789,12 @@ export class GameEngine {
 
     if (this.chasers.length > 0) this.onSkreem(Math.floor(this.skreems))
 
-    if (this.level.advanceAt && this.levelSkreems >= this.level.advanceAt) {
+    if (this.level.name === 'Pipeworks') {
+      if (this.pipeworksSkreems >= PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL) {
+        this._startLevelAdvance()
+        return
+      }
+    } else if (this.level.advanceAt && this.levelSkreems >= this.level.advanceAt) {
       this._startLevelAdvance()
       return
     }
@@ -811,6 +825,14 @@ export class GameEngine {
       { x: WORLD.width - 84, y: WORLD.height - 84 },
     ]
     const spawn = corners[Math.floor(Math.random() * corners.length)]
+    let extraFace = this.chaser.face
+    const randomSrc = randomFrom(CHASER_FACE_POOL)?.src
+    if (randomSrc) {
+      const img = new Image()
+      img.src = randomSrc
+      extraFace = img
+    }
+
     this.chasers.push({
       x: spawn.x,
       y: spawn.y,
@@ -819,7 +841,7 @@ export class GameEngine {
       baseSpeed: this.chaser.baseSpeed,
       joinRamp: 0,
       color: this.chaser.color,
-      face: randomFrom(CHASER_FACE_POOL)?.src ?? this.chaser.face,
+      face: extraFace,
     })
   }
 
@@ -853,6 +875,7 @@ export class GameEngine {
     const skreemsLost = Math.round(this.skreems * DEATH_SKREEM_PENALTY)
     this.skreems = Math.max(0, this.skreems - skreemsLost)
     this.levelSkreems = Math.max(0, this.levelSkreems - skreemsLost)
+    this.pipeworksSkreems = Math.max(0, (this.pipeworksSkreems || 0) - skreemsLost)
     this.chaserSpeedMod = clamp(
       this.chaserSpeedMod + CHASER_SPEED_MOD_DEATH_STEP,
       CHASER_SPEED_MOD_MIN,

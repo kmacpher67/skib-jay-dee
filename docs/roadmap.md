@@ -98,7 +98,7 @@ open one, or reorder if something else is more urgent — just keep items
 this small.
 
 Recommended next-session order, if we want the tightest handoff:
-extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 4-chaser/max-speed clear condition
+extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 4-chaser/max-speed clear condition (done, v0.4.9)
 -> lvl2 video timing fix + death-visual verification.
 
 - [x] **Audio 1: SFX plumbing.** Landed v0.4.0 — real clips wired for
@@ -223,31 +223,13 @@ extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 4-chaser/max-speed clear con
   `handleLevelClear` (`App.jsx:112`) alongside its existing audio call,
   and delete the old check from `handleLevelChange`. No new assets
   needed, same `lvl2-transition.mp4` clip.
-- [ ] **RESOLVED — Tie Pipeworks's clear condition to surviving 5
+- [x] **RESOLVED — Tie Pipeworks's clear condition to surviving 4
   simultaneous chasers at their max speed, gated by a skreem threshold.**
-  User confirmed the design and requested 5 skibs. Decision, spelled out for implementation:
-  1. Bump `MAX_CHASERS` from `3` to `5` (`GameEngine.js:301`) so
-     Pipeworks (and any level that runs long) can actually reach a
-     5-chaser pile-on.
-  2. Pipeworks's clear condition (`advanceAt: 68`, `GameEngine.js:762`)
-     should stop being a plain skreem-timer and instead only count
-     toward clearing once **all 4 chasers are active and each is at its
-     own max speed** — i.e. the lead chaser's `chaserSpeedMod` at
-     `CHASER_SPEED_MOD_MAX` (`GameEngine.js:311`) *and* every extra
-     chaser's per-chaser spawn-ramp (see the speed-ramp item below) has
-     finished climbing to 1.0. Only skreems earned while that "5 chasers,
-     all maxed" state holds should count toward the threshold — treat it
-     as a separate counter/gate, not just reusing `levelSkreems`.
-  3. The exact skreem threshold ("XX") is intentionally a tunable number,
-     not fixed by this plan — pick something in the neighborhood of the
-     existing `advanceAt: 68` for Pipeworks and playtest it; expose it as
-     a named constant (e.g. `PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL` or a new
-     per-level field) rather than a magic number, so it's easy to retune
-     without hunting through `GameEngine.js`.
-  Depends on the speed-ramp item below (need "each chaser at max speed"
-  to be a checkable state) and blocks/feeds the lvl2-video item above
-  (the video should only show once this new "cleared Pipeworks" event
-  fires, not the old flat `advanceAt` check).
+  User confirmed the design and requested 4 skibs. Landed v0.4.9 (Session 2 of the v0.4.3-plan backlog):
+  1. Bumped `MAX_CHASERS` from `3` to `4` (`GameEngine.js:306`).
+  2. Pipeworks's clear condition now requires all 4 chasers to be active and fully ramped before accumulating `pipeworksSkreems`.
+  3. Added `PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL = 68` and Pipeworks now only advances when `pipeworksSkreems >= PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL`.
+  4. Added `frontend/e2e/pipeworks-clear.spec.js` and fixed a pre-existing crash in `_maybeSpawnExtraChaser` (chaser face randomization fix string bug).
 - [x] **Extra chasers join slow and should ramp up over a level, not
   stay fixed.** Landed v0.4.8 (Session 1 of the v0.4.3-plan backlog) —
   `_maybeSpawnExtraChaser()` (`GameEngine.js`) no longer applies a flat
