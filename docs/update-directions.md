@@ -4,6 +4,17 @@ Use this as the handoff doc for the next agent working in the repo.
 
 ## Current state
 
+- **URGENT, code fixed but not deployed:** the live production menu
+  (still serving `v0.4.24`) has broken runner/chaser face preview images
+  on every load — `App.jsx`'s `runnerFace`/`chaserFace` state held the
+  pool entry object instead of its `.src` string, so `<img src>` rendered
+  `"[object Object]"` and 404'd. Full RCA:
+  `docs/handoffs/roadmap-handoff-v0.4.27-plan.md`. The fix landed at
+  `HEAD` as a side effect of the `v0.4.25` post-kill-profile commit
+  (`8339417`) and is verified working (build + full Playwright suite
+  pass, fresh `dist/` serves real images) — **the only remaining step is
+  `./scripts/deploy-static.sh`**, no more coding needed. Do this before
+  anything else.
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
 - `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, the separate resume-countdown phase, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), a 20-sheebs capture penalty, and the discreet iteration badge in the HUD.
 - `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, the lvl2 transition overlay lifecycle, and the post-kill profile modal / clickable deaths log. The lvl2 video now only mounts after Pipeworks is cleared *and* the engine reports the new hall-coverage / 4-skib survival gate as ready.
