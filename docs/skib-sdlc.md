@@ -24,6 +24,17 @@ the next chunk" / "no code yet" → Mode A; "build it" / "let's ship this"
 different blast radius (Mode A touches only `docs/`, Mode B touches code
 and can push to prod).
 
+**No code-cowboy sessions.** Don't discover a bug or a design gap while
+in Mode A and just fix/implement it inline in the same breath. A bug
+found during planning gets its own real Mode B session (own commit, own
+version, own ledger/version-log entry) — don't bury a code fix inside a
+`-plan.md` edit. And don't flip a backlog item's open design question
+from "needs a decision" to "unblocked, go implement" unless the user
+actually answered it in this conversation — a recommendation you wrote
+yourself is not a decision Ken made. If a plan doc's copy-paste block
+tells a coding session to treat something as settled, it must be
+settled by the user, not assumed.
+
 ### Mode A — Planning / arch / goals refinement
 
 1. **Plan only, no code.** Don't touch anything under `frontend/src/` or

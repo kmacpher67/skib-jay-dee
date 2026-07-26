@@ -46,6 +46,12 @@ You can stub these in as placeholder tasks so the developer knows what to expect
 * **Concept:** Beating the odds.
 * **Description:** A stylized number "4" in a bold, metallic font. Tucked behind the '4' is a slightly crumpled green five-dollar bill.
 
+**Asset 5: "Lucky" Badge**
+
+* **Trigger:** The "Lucky Charm" Shleeb Shop item's luck bonus actually procs — i.e. it causes an extra positive map pickup (Jayden Gun, Schleimy Potion, or future good item) to spawn that wouldn't have otherwise. Not awarded just for buying the item — see the open design item in `docs/roadmap.md` (Ken to confirm before coding).
+* **Concept:** A lucky break paying off.
+* **Description:** A four-leaf clover with a small sparkle/shine burst behind it, in the same simple/legible style as the other badges.
+
 ---
 
-*Note to Dev: Please use simple grey box placeholders for these four items (`earnedBadges[0]` through `earnedBadges[3]`) until the final art assets are attached to this ticket.*
+*Note to Dev: Please use simple grey box placeholders for these five items (`earnedBadges[0]` through `earnedBadges[4]`) until the final art assets are attached to this ticket.*

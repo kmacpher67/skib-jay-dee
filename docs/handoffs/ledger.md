@@ -10,6 +10,18 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.31-plan — 2026-07-26 (docs-only)
+
+- Finalized design for two backlog items: the "Jayden" Gun (randomized
+  1-2/6 ammo, dedicated-key fire in facing direction, 3-5s stun on hit,
+  disappears at 0 ammo, map-pickup acquisition) and a new "Lucky Charm"
+  Shleeb Shop item + "Lucky" badge (biases positive-pickup spawn odds).
+  All open questions answered directly by Ken. Added the reworded
+  process rule to `docs/skib-sdlc.md` ("no code-cowboy sessions" — a
+  bug found during planning gets its own Mode B session; don't
+  auto-unblock a design decision without the user actually answering
+  it). See `docs/handoffs/roadmap-handoff-v0.4.31-plan.md`.
+
 ## v0.4.30.1 — 2026-07-26
 
 - **URGENT HOTFIX:** Fixed a `ReferenceError` on boot caused by missing `onBadgeEarned` in the `GameEngine` constructor parameter destructuring. This crash broke the entire game (`<canvas>` failed to mount).

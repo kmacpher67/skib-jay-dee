@@ -218,21 +218,44 @@ and chaser-bark voice clips, 1:1 with text.
     in case the asset path ever changes, but it's no longer blocking.
   - Landed in v0.4.28.
 - [x] **Rewards/badges system.** Landed v0.4.30 — added `earnedBadges` to cookie persistence, defined `BADGES` array with four initial badges (Financial Wizardry, Glutton for Punishment, Slippery When Wet, Devs Owe Me Five Bucks). Badges render as toasts in-game when earned, in the menu next to the status pills, and at the bottom of the level-clear banner.
-- [ ] **Feature: The "Jayden" Gun.** Jayden wants a gun feature added to the game.
-  Ken's refined design goal (2026-07-26): a funny/cool/challenging gun for the
-  runner that keeps the game difficult, fun, and interesting — explicitly
-  **not** a power fantasy or an "I win" button. Key constraint: **extremely
-  limited capacity**, randomized each time it's picked up — only 1-2 usable
-  shots, max 3 out of a 6-round cylinder (i.e. mostly empty chambers), and
-  once ammo runs out the gun disappears (single-use pickup, not a permanent
-  inventory item). Still needs a design pass before coding on: aiming/fire
-  input (desktop-only so far — click/key to fire in facing direction? auto-aim
-  at nearest chaser?), what a "hit" does to a chaser (stun/slow/instant
-  despawn?), spawn/acquisition (map pickup vs. Shleeb Shop item — precedent
-  from the Schleimy Potion item below leans map pickup), cooldown between
-  shots, and comedic flavor (sound/visual gag fitting the game's tone). See
-  next-session plan pointer in
-  [roadmap-handoff-v0.4.30.md](handoffs/roadmap-handoff-v0.4.30.md).
+- [ ] **Feature: The "Jayden" Gun.** Design finalized (Ken, 2026-07-26) —
+  ready for a Mode B coding session. Goal: a funny/cool/challenging gun for
+  the runner that keeps the game difficult, fun, and interesting —
+  explicitly **not** a power fantasy or an "I win" button.
+  - **Capacity:** randomized on pickup, only 1-2 usable shots out of a
+    6-round cylinder (mostly empty chambers). Single-use — the gun
+    disappears once ammo runs out, it is not a permanent inventory item.
+  - **Fire input (confirmed):** a dedicated key, fires in the runner's
+    current facing/movement direction. Skill-based, no auto-aim.
+  - **Hit effect (confirmed):** temporary stun, 3-5s — chaser freezes and
+    plays a dazed animation/sound, then resumes at normal speed
+    (no permanent despawn — keeps difficulty intact long-term).
+  - **Acquisition (confirmed):** map pickup by default, same pattern as
+    the Schleimy Potion below — **plus** a new Shleeb Shop item (see
+    "Lucky Charm" item below) that raises the odds of the gun (and other
+    positive pickups) spawning, rather than being a guaranteed
+    every-run purchase.
+  - Still open (small, non-blocking — flag for Ken during coding, don't
+    guess): exact fire cooldown, and comedic flavor details (cap-gun
+    "click" on an empty chamber, "ouch" reaction on a hit).
+  - See [roadmap-handoff-v0.4.31-plan.md](handoffs/roadmap-handoff-v0.4.31-plan.md)
+    for the full design writeup and Mode B copy-paste block.
+- [ ] **Feature: "Lucky Charm" Shleeb Shop item + "Lucky" badge.** New
+  backlog item, surfaced 2026-07-26 while finalizing the Jayden Gun's
+  acquisition design. A purchasable shop item (alongside `turbo-clogs`,
+  `deep-breath-tank`, `sheeb-magnet` — see
+  [gameplay-mechanics.md](gameplay-mechanics.md#loadout-attributes-speed--stamina--rewards))
+  that increases the likelihood of positive map pickups spawning (the
+  Jayden Gun, the Schleimy Potion once it exists, and future good-item
+  pickups) — a luck stat, not a guaranteed spawn. Pairs with a new
+  "Lucky" badge (5th badge, alongside the existing four in
+  [awards-badges-descriptions.md](profiles/awards-badges-descriptions.md))
+  awarded the first time the item's luck actually triggers an extra
+  positive pickup spawn. Needs before coding: the item's sheebs cost, the
+  exact luck-odds bump it grants, and confirming the badge trigger is
+  "luck procs once" rather than "item purchased" (recommended: procs
+  once, since that's the moment that actually feels lucky) — flag for
+  Ken in the next planning pass alongside the Gun.
 - [ ] **Feature: Rolling Pickups (Mario-Style).** Items rolling around the map that the player can pick up or capture. Must be a mix of good items (buffs/points) and bad items (debuffs/damage).
 - [x] **Stamina / take-a-hit-and-keep-running.** Ken asked for a "Call of
   Duty style" stamina feature and guessed it might already exist — it

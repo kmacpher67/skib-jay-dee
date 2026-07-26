@@ -1,52 +1,105 @@
 # Roadmap Handoff — v0.4.31-plan
 
-**Session mode:** Mode A (Planning)
+**Session mode:** Mode A (Planning — docs only, no code changes in this doc's scope)
 
-This handoff prepares the next set of work for the codebase. It addresses two primary goals: fixing a newly introduced regression causing widespread test failures, and designing the "Jayden Gun" feature from the backlog.
+Note on process: the canvas-boot crash originally investigated alongside
+this plan was fixed, verified (18/18 Playwright tests), and shipped as
+its own real code session — **v0.4.30.1**, see `docs/handoffs/ledger.md`
+/ `docs/version-log.md`. It is not part of this plan doc. Going forward,
+a bug found during planning gets its own Mode B session and its own
+version — this doc stays plan-only.
 
-## Part 1: Test Regression Investigation (FIXED)
+This handoff finalizes the design for the two backlog items queued in
+v0.4.30 (`docs/roadmap.md`): the "Jayden" Gun and the new "Lucky Charm"
+shop item that surfaced while designing the Gun's acquisition path.
+**All open questions below were answered directly by Ken on 2026-07-26.**
 
-A recent change from v0.4.30's Badges system integration broke the core game boot sequence. The Playwright test suite was failing with 12 errors related to the `<canvas>` failing to mount.
+## Feature 1: The "Jayden" Gun
 
-**Root Cause:** The `onBadgeEarned` callback was passed from `GameCanvas.jsx` to `GameEngine.js`, but it was missing from the destructured parameter list in the `GameEngine` constructor. This caused `onBadgeEarned || (() => {})` to throw a `ReferenceError` on boot, crashing the React tree before the canvas could mount.
+Goal: a funny, cool, challenging gun for the runner that keeps the game
+difficult and interesting. Explicitly **not** a power fantasy or an "I
+win" button — the constraints below exist specifically to keep it from
+trivializing the chase.
 
-**Resolution:** Added `onBadgeEarned` to the constructor arguments in `GameEngine.js`. All 18 tests now pass successfully.
+### Confirmed design
 
----
+- **Capacity:** randomized on pickup — only 1-2 usable shots out of a
+  6-round cylinder (mostly empty chambers). Single-use pickup: once
+  ammo runs out, the gun disappears rather than persisting as inventory.
+- **Fire input:** a dedicated key fires a shot in the runner's current
+  facing/movement direction. Skill-based, no auto-aim.
+- **Hit effect:** a 3-5 second stun — the chaser freezes and plays a
+  dazed animation/sound, then resumes at normal speed. No permanent
+  despawn (would make the game meaningfully easier, against the goal).
+- **Acquisition:** map pickup by default (same pattern as the Schleimy
+  Potion), **plus** the new Lucky Charm shop item below raises the odds
+  it (and other positive pickups) spawn — buying luck, not buying
+  guaranteed guns.
 
-## Part 2: Feature Design — The "Jayden" Gun
+### Still open (small, non-blocking — decide during coding, don't guess)
 
-The user requested a new item for the runner: a funny, cool, challenging gun that keeps the game difficult and interesting. It is explicitly **not** a power fantasy or an "I win" button.
+- Exact fire cooldown between shots (if the player somehow gets a
+  second usable round).
+- Comedic flavor specifics: a cap-gun "click" sound on an empty
+  chamber, and a small "ouch"/dazed reaction (sound or text bubble) on
+  the chaser when hit.
 
-### Key Constraints & Requirements
-- **Extremely Limited Capacity:** Randomized each time it's picked up (1-2 usable shots, max 3 out of a 6-round cylinder). Mostly empty chambers.
-- **Single-use Pickup:** Once ammo runs out, the gun disappears. It is not a permanent inventory item.
-- **Tone:** Must fit the comedic, slightly unhinged tone of the game.
+## Feature 2: "Lucky Charm" Shleeb Shop item + "Lucky" badge
 
-### Design Decisions to Finalize (Flag for Ken):
-Before writing code for the gun, we need product alignment on the following:
+Surfaced directly from the Gun's acquisition design — Ken's answer was
+"both": the Gun spawns as a random map pickup, *and* there's a shop item
+that increases the likelihood of positive pickups (Gun, Schleimy
+Potion, future good items) showing up on the map. Pairs with a new
+5th badge for "getting lucky."
 
-1. **Aiming / Fire Input:**
-   - *Options:* Click/key to fire in the direction the runner is facing, or auto-aim at the nearest chaser?
-   - *Recommendation:* Spacebar or a specific key (e.g., 'F') to fire in the direction of movement. This keeps it skill-based rather than auto-aim (which leans toward a "power fantasy").
-2. **Hit Effect:**
-   - *Options:* Stun, slow, or instant despawn?
-   - *Recommendation:* A 3-5 second "stun" where the chaser stops moving and plays a dazed animation/sound. Despawning permanently might make the game too easy, violating the core constraint.
-3. **Acquisition:**
-   - *Options:* Map pickup vs. Shleeb Shop item.
-   - *Recommendation:* Map pickup (like the upcoming Schleimy Potion). It makes map traversal more dynamic and rewards risky pathing.
-4. **Comedic Flavor:**
-   - *Idea:* A "cap gun" sound effect. If it fires an empty chamber, it plays a pathetic *click*. If it hits, the chaser could show a funny "ouch" face or text bubble.
+### Confirmed design
 
-## Execution Order
+- New Shleeb Shop item (alongside `turbo-clogs`, `deep-breath-tank`,
+  `sheeb-magnet` in `frontend/src/gameContent.js` /
+  `docs/gameplay-mechanics.md`) that raises the spawn odds of positive
+  map pickups. A luck stat, not a guaranteed-spawn-per-run item.
+- New badge, "Lucky" — 5th entry in `BADGES`, asset spec added to
+  `docs/profiles/awards-badges-descriptions.md` (Asset 5, four-leaf
+  clover + sparkle).
+
+### Still open (flag for Ken before/during coding)
+
+- The item's sheebs cost and the exact odds bump it grants (e.g. +X%
+  positive-pickup spawn chance).
+- Badge trigger: recommended to fire the first time the luck bonus
+  actually *procs* (causes an extra positive pickup to spawn) rather
+  than just on purchase — that's the moment that actually feels lucky.
+  Needs Ken's explicit confirmation, same as the two items above, before
+  a coding session treats it as settled.
+
+## Execution order
+
+Rolling Pickups (Mario-style) is a separate, still-undesigned backlog
+item (`docs/roadmap.md`) — not in scope for this plan or its copy-paste
+block below.
 
 ```text
 code_monkey_model: default
 code_monkey_backend: default
 
 You are a Code Monkey agent working on Skib-Jay-Dee-Toilet in Mode B.
-Read `docs/skib-sdlc.md` and `docs/roadmap.md` before starting.
+Read `docs/skib-sdlc.md` and `docs/roadmap.md` before starting. This is
+a Mode B (code) session picking up an already-finalized Mode A plan —
+do not re-litigate the confirmed decisions above, but do stop and ask
+before guessing on anything still listed "open" above.
 
-Scope for this pass:
-1. **Implement the Gun:** Following the design parameters outlined in this document (and approved by the user), implement the Jayden Gun pickup mechanic.
+Scope for this pass — size to one session; if both don't fit, ship the
+Gun first and leave Lucky Charm as the next handoff's opening item:
+1. **The Jayden Gun:** map-pickup item, randomized 1-2/6 ammo, dedicated
+   fire key in facing direction, 3-5s stun on hit, disappears at 0 ammo.
+2. **Lucky Charm shop item + Lucky badge:** new shop entry that biases
+   positive-pickup spawn odds; wire the "Lucky" badge to fire on the
+   first actual proc (confirm this trigger call with Ken if it wasn't
+   already settled by the time you start).
+
+Verify with `npm run build` and the full Playwright suite before
+calling it done. Update `docs/roadmap.md`, `docs/handoffs/ledger.md`,
+`docs/version-log.md`, `docs/update-directions.md`, and a new
+`docs/handoffs/roadmap-handoff-vX.Y.Z.md` per the SDLC checklist, and
+commit before ending the session.
 ```

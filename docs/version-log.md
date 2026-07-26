@@ -6,6 +6,37 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.31-plan — Jayden Gun + Lucky Charm design finalized (2026-07-26)
+
+### What changed
+
+- Locked in the design for the "Jayden" Gun: randomized 1-2/6 ammo,
+  single-use map pickup, dedicated-key fire in the runner's facing
+  direction (skill-based, no auto-aim), 3-5s stun on hit (not a
+  despawn — keeps difficulty intact). All four open questions
+  (fire input, hit effect, acquisition, comedic flavor direction)
+  answered directly by Ken.
+- Ken's acquisition answer surfaced a new backlog item: a "Lucky
+  Charm" Shleeb Shop item that raises the spawn odds of positive map
+  pickups (Gun, Schleimy Potion, future good items), paired with a new
+  5th "Lucky" badge. Spec added to
+  `docs/profiles/awards-badges-descriptions.md`.
+- Still open, non-blocking: Gun fire cooldown and exact comedic-flavor
+  sound/text; Lucky Charm's sheebs cost, odds bump, and the badge's
+  exact trigger (recommended: fires on the luck bonus's first actual
+  proc, not on purchase) — flagged for Ken to confirm during coding
+  rather than guessed at.
+- Added a "no code-cowboy sessions" rule to `docs/skib-sdlc.md`: a bug
+  found mid-planning gets its own real Mode B session instead of being
+  patched inline in a `-plan.md`, and a design item can't be marked
+  "unblocked" for a coding session unless the user actually answered
+  it (not just a recommendation the agent wrote itself). This was
+  prompted by this session's own earlier deviation — the canvas-boot
+  hotfix (v0.4.30.1) was a legitimate fix, but it was applied and
+  partially documented inside the Mode A plan doc instead of as its
+  own clean Mode B delivery.
+- No code changed in this session; `GAME_ITERATION` stays `v0.4.30.1`.
+
 ## v0.4.30.1 — Hotfix: Canvas Boot Crash (2026-07-26)
 
 ### What changed
