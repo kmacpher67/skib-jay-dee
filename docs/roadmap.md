@@ -133,8 +133,8 @@ and chaser-bark voice clips, 1:1 with text.
   already requires 5 simultaneous chasers (stricter than 2) so it needs
   no change; the final level has no `advanceAt` and is also unaffected.
   See [gameplay-mechanics.md](gameplay-mechanics.md#round--level-advancement-why-does-the-round).
-- [ ] **Resume countdown after capture (Subway Surfers-style revive
-  beat).** After the jump-scare capture beat finishes, instead of
+- [x] **Resume countdown after capture (Subway Surfers-style revive
+  beat).** Landed v0.4.24 — After the jump-scare capture beat finishes, instead of
   instantly teleporting the player back into a moving chase, freeze the
   action at the reset spawn points and show a large, pulsing centered
   "3… 2… 1…" countdown before resuming. No flashing/red overlay in this

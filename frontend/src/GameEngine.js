@@ -769,6 +769,10 @@ export class GameEngine {
       return
     }
 
+    if (this.phase === 'caught-profile') {
+      return
+    }
+
     if (this.phase === 'resume-countdown') {
       this._updateResumeCountdown(dt)
       return
@@ -989,10 +993,11 @@ export class GameEngine {
     return this.map.walls.some((wall) => rectsIntersect(entity, wall))
   }
 
-  _triggerCaught() {
+  _triggerCaught(caughtBy = null) {
     this.phase = 'caught'
     this.phaseTimer = 2.6
     this.zoom = 1
+    this._caughtChaser = caughtBy
     this.captureLine = CAPTURE_LINES[Math.floor(Math.random() * CAPTURE_LINES.length)]
 
     // Swap to the poses shot for this exact beat, unless the player
@@ -1020,9 +1025,21 @@ export class GameEngine {
       CHASER_SPEED_MOD_MAX,
     )
 
-    this.onDeath({ deaths: this.deaths, levelName: this.level.name })
+    this.onDeath({
+      deaths: this.deaths,
+      level: this.levelIndex + 1,
+      levelName: this.level.name,
+      chaserId: caughtBy?.faceId ?? null,
+    })
     this.onSkreem(Math.floor(this.skreems))
-    this.onCaught(this.captureLine)
+    this.onCaught({
+      captureLine: this.captureLine,
+      chaserId: caughtBy?.faceId ?? null,
+      chaserName: caughtBy?.faceId ? getChaserProfile(caughtBy.faceId).name : null,
+      chaserFaceSrc: caughtBy?.face?.src ?? null,
+      level: this.levelIndex + 1,
+      levelName: this.level.name,
+    })
   }
 
   _updateCaught(dt) {
@@ -1059,7 +1076,23 @@ export class GameEngine {
       if (this._preCaughtRunnerFace) this.runner.face = this._preCaughtRunnerFace
       this._preCaughtRunnerFace = null
       this._caughtFaceStage = null
+      this.phase = 'caught-profile'
+      this.onCaughtProfileReady({
+        chaserId: this._caughtChaser?.faceId ?? null,
+        chaserName: this._caughtChaser?.faceId ? getChaserProfile(this._caughtChaser.faceId).name : null,
+        chaserFaceSrc: this._caughtChaser?.face?.src ?? null,
+        level: this.levelIndex + 1,
+        levelName: this.level.name,
+        captureLine: this.captureLine,
+      })
     }
+  }
+
+  beginResumeCountdown() {
+    if (this.phase !== 'caught-profile') return
+    this.phase = 'resume-countdown'
+    this.countdownTimer = 3.0
+    this._clearHeldInput()
   }
 
   _updateResumeCountdown(dt) {

@@ -42,7 +42,7 @@ test('runner face swaps through getting-captured/captured poses on capture, then
 
   // The caught beat lasts 2.6s; wait for phase to return to 'chase' and
   // confirm the runner's original face comes back.
-  await page.waitForFunction(() => window.__skibEngine.phase === 'chase', null, { timeout: 5000 })
+  await page.waitForFunction(() => window.__skibEngine.phase === 'chase', null, { timeout: 10000 })
   const restoredFaceSrc = await page.evaluate(() => window.__skibEngine.runner.face.src)
   expect(restoredFaceSrc).toBe(originalFaceSrc)
 })

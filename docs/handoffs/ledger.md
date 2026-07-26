@@ -10,6 +10,10 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.24 — 2026-07-26
+
+- Implemented the 3-second `resume-countdown` phase after jump-scares in `GameEngine.js`.
+
 ## v0.4.24-plan — 2026-07-26 (docs-only)
 
 - Scoped the "Subway Surfers-style resume countdown" feature requested by

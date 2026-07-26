@@ -6,6 +6,15 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.24 — Resume countdown implementation (2026-07-26)
+
+### What changed
+
+- Implemented the "resume countdown" feature planned in `v0.4.24-plan`.
+- Replaced the direct transition from `'caught'` to `'chase'` with a new 3-second `'resume-countdown'` phase in `GameEngine.js`.
+- Added a visual 3-second countdown digit overlay with a light scale-pulse effect over a translucent backdrop.
+- Added Playwright test coverage `frontend/e2e/resume-countdown.spec.js`.
+
 ## v0.4.24-plan — Resume countdown planning pass (2026-07-26)
 
 ### What changed
