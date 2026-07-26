@@ -10,6 +10,10 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.12 — 2026-07-26
+
+- Implemented the near-capture interlude (pause card + parody captions) when a skib gets too close.
+
 ## v0.4.11 — 2026-07-26
 
 - Dismissed the lvl2 overlay on capture and reset it on play so the jump-scare cannot be hidden behind the transition video.

@@ -6,6 +6,26 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.12 — near-capture interlude pass (2026-07-26)
+
+### What changed
+
+- Implemented the near-capture interlude from the v0.4.5-plan backlog. When a skib gets too close (`dist < 100`), the game pauses the chase and shows `jayden-getting-captured.jpg` full-screen with a random parody caption.
+- Added `NEAR_CAPTURE_LINES` to `frontend/src/dialog.js` to serve as the caption pool.
+- Added `nearCaptureCooldown` to `GameEngine.js` so the interlude doesn't trigger repeatedly in quick succession.
+- Verified in the browser that the card appears at the right time and the chase resumes correctly.
+
+### Design decisions
+
+- Kept the interlude as a separate beat from the actual caught/jump-scare path, as requested. It uses its own `near-capture` phase and renders the full-screen image overlaid with the text.
+- Added a 15-second cooldown to `nearCaptureCooldown` to prevent the interlude from firing repeatedly if the player remains barely ahead of the chaser after unpausing.
+
+### Known non-goals for this pass
+
+- No `GAME_ITERATION` bump or deploy (as requested).
+- No new death clip or actual capture changes.
+- Did not tackle 1:1 voice clips or custom runner face logic for the interlude.
+
 ## v0.4.10 — 5-skib Pipeworks + delayed ambient pass (2026-07-26)
 
 ### What changed

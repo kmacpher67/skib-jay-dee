@@ -103,25 +103,16 @@ manually:
 
 ## Natural follow-up work
 
-- The v0.4.3-plan three-session backlog landed (v0.4.8-v0.4.11), and the
-  follow-up overlay-verification pass is done too. Next clean increment:
-  the near-capture interlude (`docs/handoffs/roadmap-handoff-v0.4.5-plan.md`)
-  — pauses the chase and shows `jayden-getting-captured.jpg` with parody
-  captions. Its own increment, not folded into the runner pose mapping.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it
   needs Ken to record real voice clips first, it's not a pure coding
   task. Ask him before treating it as unblocked.
+- The v0.4.5-plan near-capture interlude landed in v0.4.12 — no longer on this list.
 - Runner pose-to-state mapping landed in v0.4.6 — no longer on this list.
   Its one loose end is a Ken-only ask, not a coding task: supply real
   distinct photos for `jayden-getting-captured`/`jayden-uncaring-4029`
   (currently byte-identical duplicates of `jayden-captured`/
   `jayden-default`), or confirm the pool should collapse to 3 unique
   poses. See `docs/roadmap.md` and `docs/characters.md`.
-- The near-capture pause-card item from v0.4.5-plan
-  (`docs/handoffs/roadmap-handoff-v0.4.5-plan.md`) is now the best next
-  coding pick — pause the chase, show `jayden-getting-captured.jpg`
-  full-screen with a random parody caption when a skib gets too close,
-  distinct from the real caught/jump-scare path.
 - Also still open: the 1:1 audio clip work, the World Star intro
   cinematic, the face-crop upload pass, and the other smaller future
   items parked in `docs/roadmap.md`.

@@ -164,13 +164,13 @@ and chaser-bark voice clips, 1:1 with text.
   or Raman-Aunt-Toilet Lady) and give it a distinct ability, not just a
   reskin — e.g. Skib-Daddy's Plunger Launch as a periodic speed burst.
   Depends on nothing above; can happen anytime.
-- [ ] **Funny near-capture interlude.** When a skib gets too close, pause
+- [x] **Funny near-capture interlude.** When a skib gets too close, pause
   the chase, pop `jayden-getting-captured.jpg` full-screen, and stamp the
   user's parody captions over it as a short meme card. Start with the
   supplied "Noob-noob no no!!!" / "Thanks, Noob-Noob. This guy gets it."
   style lines, then pick one at random from a small caption pool. This is
   a separate beat from the actual caught/jump-scare state, not a new
-  death screen.
+  death screen. Landed in v0.4.12.
 - [x] **New chaser: Sky-Diver (Motor Killer).** Landed in the current worktree —
   `frontend/src/assets/sky-diver-motor-killer.png` copied in, imported in
   `frontend/src/gameContent.js`, and added to `CHASER_FACE_POOL` as

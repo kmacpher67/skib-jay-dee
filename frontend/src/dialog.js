@@ -33,3 +33,12 @@ export const TIRED_LINES = [
   'NO MORE JUICE!',
   "I'M SO TIE-RED, BRO!",
 ]
+
+// Shown full-screen during a near-capture interlude.
+export const NEAR_CAPTURE_LINES = [
+  'Noob-noob no no!!!',
+  'Thanks, Noob-Noob. This guy gets it.',
+  'Oh lawd he comin!',
+  'Too close for comfort!',
+  'Skib is right behind you!',
+]

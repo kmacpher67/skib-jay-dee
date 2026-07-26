@@ -3,7 +3,7 @@
 // Keeps the action in one place so React stays out of the hot path.
 
 import { GAME_ITERATION } from './version.js'
-import { CAPTURE_LINES, CHASER_LINES, TIRED_LINES } from './dialog.js'
+import { CAPTURE_LINES, CHASER_LINES, TIRED_LINES, NEAR_CAPTURE_LINES } from './dialog.js'
 import { CHASER_FACE_POOL, randomFrom } from './gameContent.js'
 
 export const WORLD = {
@@ -414,6 +414,8 @@ export class GameEngine {
     this.wasSprinting = false
     this.staminaExhaustedFired = false
     this.chaserSpeedMod = 1
+    this.nearCaptureCooldown = 15
+    this.nearCaptureLine = ''
 
     this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0 }
 
@@ -666,6 +668,7 @@ export class GameEngine {
     this.pipeworksSkreems = 0
     this.chasers = [this.chaser]
     this.extraChaserTimer = EXTRA_CHASER_INTERVAL
+    this.nearCaptureCooldown = 15
 
     if (resetPositions) {
       this.runner.x = this.level.runnerSpawn.x
@@ -735,6 +738,11 @@ export class GameEngine {
       return
     }
 
+    if (this.phase === 'near-capture') {
+      this._updateNearCapture(dt)
+      return
+    }
+
     const sprinting = (this.sprintBtn.active || this.keys.sprint) && this.stamina > 0
     if (sprinting) {
       if (!this.wasSprinting) this.onBoostStart()
@@ -751,6 +759,7 @@ export class GameEngine {
     }
     this.wasSprinting = sprinting
     this.runnerLineTimer = Math.max(0, this.runnerLineTimer - dt)
+    this.nearCaptureCooldown = Math.max(0, this.nearCaptureCooldown - dt)
 
     const speed = this.runner.baseSpeed * (sprinting ? 1.8 : 1)
     const move = this._getMoveVector()
@@ -760,6 +769,7 @@ export class GameEngine {
 
     let closestDist = Infinity
     let caught = false
+    let nearCapture = false
 
     for (const chaser of this.chasers) {
       const dx = this.runner.x - chaser.x
@@ -786,7 +796,11 @@ export class GameEngine {
         }
       }
       if (dist < closestDist) closestDist = dist
-      if (rectsIntersect(this.runner, chaser)) caught = true
+      if (rectsIntersect(this.runner, chaser)) {
+        caught = true
+      } else if (dist < 100 && this.nearCaptureCooldown <= 0) {
+        nearCapture = true
+      }
     }
 
     if (this.chasers.length > 0) this.onSkreem(Math.floor(this.skreems))
@@ -810,6 +824,8 @@ export class GameEngine {
 
     if (caught) {
       this._triggerCaught()
+    } else if (nearCapture) {
+      this._triggerNearCapture()
     }
   }
 
@@ -929,6 +945,22 @@ export class GameEngine {
     }
   }
 
+  _triggerNearCapture() {
+    this.phase = 'near-capture'
+    this.phaseTimer = 2.5
+    this.zoom = 1
+    this.nearCaptureLine = NEAR_CAPTURE_LINES[Math.floor(Math.random() * NEAR_CAPTURE_LINES.length)]
+    this.nearCaptureCooldown = 15
+  }
+
+  _updateNearCapture(dt) {
+    this.phaseTimer -= dt
+    if (this.phaseTimer <= 0) {
+      this.phase = 'chase'
+      this.phaseTimer = 0
+    }
+  }
+
   draw() {
     const ctx = this.ctx
     ctx.clearRect(0, 0, VIEW_W, VIEW_H)
@@ -945,6 +977,7 @@ export class GameEngine {
     if (this.phase === 'intro') this._drawBanner(ctx, 'RUN LIKE HELL')
     if (this.phase === 'level-up') this._drawBanner(ctx, this.bannerText)
     if (this.phase === 'caught') this._drawJumpscare(ctx)
+    if (this.phase === 'near-capture') this._drawNearCapture(ctx)
     if (this.phase === 'chase') this._drawControls(ctx)
     if (this.chaserLineTimer > 0 && this.phase === 'chase') {
       this._drawSpeechBubble(ctx, this.chaserLine)
@@ -1141,5 +1174,55 @@ export class GameEngine {
       ctx.fillText(this.captureLine, VIEW_W / 2 + jitter, VIEW_H / 2 + jitter)
     }
     ctx.restore()
+  }
+
+  _drawNearCapture(ctx) {
+    ctx.save()
+    ctx.fillStyle = '#000'
+    ctx.fillRect(0, 0, VIEW_W, VIEW_H)
+
+    if (this.runner.gettingCapturedFace) {
+      const img = this.runner.gettingCapturedFace
+      const scale = Math.max(VIEW_W / img.width, VIEW_H / img.height)
+      const w = img.width * scale
+      const h = img.height * scale
+      const x = (VIEW_W - w) / 2
+      const y = (VIEW_H - h) / 2
+      ctx.drawImage(img, x, y, w, h)
+    }
+
+    ctx.fillStyle = 'rgba(0,0,0,0.7)'
+    ctx.fillRect(0, VIEW_H - 120, VIEW_W, 120)
+
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.font = 'bold 20px sans-serif'
+    ctx.fillStyle = '#fff'
+    
+    this._wrapText(ctx, this.nearCaptureLine, VIEW_W / 2, VIEW_H - 60, VIEW_W - 40, 26)
+
+    ctx.restore()
+  }
+
+  _wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(' ')
+    let line = ''
+    let lines = []
+    for (let n = 0; n < words.length; n++) {
+      const testLine = line + words[n] + ' '
+      const metrics = ctx.measureText(testLine)
+      if (metrics.width > maxWidth && n > 0) {
+        lines.push(line)
+        line = words[n] + ' '
+      } else {
+        line = testLine
+      }
+    }
+    lines.push(line)
+
+    const startY = y - ((lines.length - 1) * lineHeight) / 2
+    for (let i = 0; i < lines.length; i++) {
+      ctx.fillText(lines[i], x, startY + (i * lineHeight))
+    }
   }
 }
