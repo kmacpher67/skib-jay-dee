@@ -138,6 +138,7 @@ export default function App() {
     if (!chaserIsCustom) setChaserFace(nextFaces.chaserFace)
     setShopOpen(false)
     setLastCaptureLine('')
+    setShowLvl2Transition(false)
     setScreen('playing')
   }
 
@@ -183,6 +184,7 @@ export default function App() {
   }
 
   const handleCaught = (captureLine) => {
+    setShowLvl2Transition(false)
     setLastCaptureLine(captureLine)
     playCaughtAudio()
   }

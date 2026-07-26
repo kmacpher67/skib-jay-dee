@@ -10,6 +10,12 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.11 — 2026-07-26
+
+- Dismissed the lvl2 overlay on capture and reset it on play so the jump-scare cannot be hidden behind the transition video.
+- Updated the Pipeworks e2e description/spawn count to match the real 5-chaser gate.
+- Added `frontend/e2e/lvl2-transition-clears-on-caught.spec.js` and verified the fix in-browser.
+
 ## v0.4.11-plan — 2026-07-26 (docs-only)
 
 - Reviewed docs/roadmap.md and docs/handoffs/ against the actual code; confirmed the full v0.4.3-plan three-session backlog (speed ramp, Pipeworks clear condition, lvl2 timing + audio delay) is genuinely landed and passing.

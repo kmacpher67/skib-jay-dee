@@ -6,7 +6,7 @@ Use this as the handoff doc for the next agent working in the repo.
 
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
 - `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), and the discreet iteration badge in the HUD.
-- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, the lvl2 transition timing, and the matching menu build tag.
+- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, the lvl2 transition timing/overlay-dismiss behavior, and the matching menu build tag.
 - `frontend/src/version.js` is the single place to bump the visible iteration number.
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
   can dispatch a bounded handoff to local Ollama using the shell's
@@ -103,18 +103,11 @@ manually:
 
 ## Natural follow-up work
 
-- The v0.4.3-plan three-session backlog landed (v0.4.8-v0.4.10), but a
-  v0.4.11-plan doc review found its death-visual verification was
-  incomplete: the jump-scare can still be hidden behind the lvl2 video
-  for several seconds after a Pipeworks clear (not just on arrival, which
-  is what was actually fixed/verified). Reopened in `docs/roadmap.md` as
-  the top pick for the next coding session — see
-  `docs/handoffs/roadmap-handoff-v0.4.11-plan.md` for the exact trace and
-  copy-paste fix.
-- After that: the near-capture interlude (`docs/handoffs/roadmap-handoff-v0.4.5-plan.md`)
-  is already fully scoped and unblocked — pauses the chase and shows
-  `jayden-getting-captured.jpg` with parody captions. Its own increment,
-  not folded into the runner pose mapping.
+- The v0.4.3-plan three-session backlog landed (v0.4.8-v0.4.11), and the
+  follow-up overlay-verification pass is done too. Next clean increment:
+  the near-capture interlude (`docs/handoffs/roadmap-handoff-v0.4.5-plan.md`)
+  — pauses the chase and shows `jayden-getting-captured.jpg` with parody
+  captions. Its own increment, not folded into the runner pose mapping.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it
   needs Ken to record real voice clips first, it's not a pure coding
   task. Ask him before treating it as unblocked.
@@ -125,11 +118,10 @@ manually:
   `jayden-default`), or confirm the pool should collapse to 3 unique
   poses. See `docs/roadmap.md` and `docs/characters.md`.
 - The near-capture pause-card item from v0.4.5-plan
-  (`docs/handoffs/roadmap-handoff-v0.4.5-plan.md`) is still fully
-  unblocked and ready as its own single increment — pause the chase, show
-  `jayden-getting-captured.jpg` full-screen with a random parody caption
-  when a skib gets too close, distinct from the real caught/jump-scare
-  path.
+  (`docs/handoffs/roadmap-handoff-v0.4.5-plan.md`) is now the best next
+  coding pick — pause the chase, show `jayden-getting-captured.jpg`
+  full-screen with a random parody caption when a skib gets too close,
+  distinct from the real caught/jump-scare path.
 - Also still open: the 1:1 audio clip work, the World Star intro
   cinematic, the face-crop upload pass, and the other smaller future
   items parked in `docs/roadmap.md`.

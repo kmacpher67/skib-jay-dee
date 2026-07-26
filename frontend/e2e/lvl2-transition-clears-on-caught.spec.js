@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-test('Pipeworks only clears when 5 chasers are active and fully ramped', async ({ page }) => {
+test('lvl2 transition overlay is dismissed when a capture starts', async ({ page }) => {
   await page.goto('./')
   await page.locator('.play-btn').click()
   await expect(page.locator('canvas')).toBeVisible()
@@ -10,7 +10,7 @@ test('Pipeworks only clears when 5 chasers are active and fully ramped', async (
     window.__skibEngine._syncLevelState({ resetPositions: true })
     window.__skibEngine.phase = 'chase'
   })
-  
+
   await page.waitForFunction(() => window.__skibEngine.level.name === 'Pipeworks')
 
   await page.evaluate(() => {
@@ -27,21 +27,22 @@ test('Pipeworks only clears when 5 chasers are active and fully ramped', async (
   await page.waitForFunction(() => window.__skibEngine.chasers.length === 5)
 
   await page.evaluate(() => {
-    window.__skibEngine.chasers.forEach(c => { c.joinRamp = 1 })
+    window.__skibEngine.chasers.forEach((chaser) => {
+      chaser.joinRamp = 1
+    })
     window.__skibEngine.pipeworksSkreems = 100
   })
 
-  await page.waitForTimeout(500)
-  
-  const state = await page.evaluate(() => {
-    const e = window.__skibEngine
-    return {
-      phase: e.phase,
-      levelIndex: e.levelIndex,
-      pipeworksSkreems: e.pipeworksSkreems,
-      chasers: e.chasers.length,
-      levelName: e.level.name
-    }
+  await page.waitForFunction(() => window.__skibEngine.phase === 'level-up')
+  await expect(page.locator('.lvl2-transition')).toBeVisible()
+
+  await page.waitForFunction(() => window.__skibEngine.phase === 'chase', null, { timeout: 5000 })
+  await page.evaluate(() => {
+    const engine = window.__skibEngine
+    engine.chaser.x = engine.runner.x
+    engine.chaser.y = engine.runner.y
   })
-  expect(state.phase).toBe('level-up')
+
+  await page.waitForFunction(() => window.__skibEngine.phase === 'caught')
+  await expect(page.locator('.lvl2-transition')).toHaveCount(0)
 })

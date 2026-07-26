@@ -48,6 +48,39 @@ focused on *why*, those two are the *what* and *when*.
   fix itself.
 - No audio ducking or 1:1 bark/capture voice clip work yet.
 
+## v0.4.11 — lvl2 overlay dismissal pass (2026-07-26)
+
+### What changed
+
+- Made the lvl2 transition overlay dismiss as soon as a capture starts
+  (`frontend/src/App.jsx`: `handleCaught()` now clears
+  `showLvl2Transition` before playing the capture sting), and reset the
+  same state on `handlePlay()` so a stale overlay cannot leak into a new
+  run.
+- Updated the stale Pipeworks e2e description to match the real 5-chaser
+  gate and added a new
+  `frontend/e2e/lvl2-transition-clears-on-caught.spec.js` Playwright
+  check that forces the clear, confirms the video appears, then forces a
+  capture and asserts the overlay unmounts.
+- Verified the behavior in-browser: the transition overlay is present
+  during Pipeworks clear and gone by the time the engine reaches
+  `caught`, so the jump-scare is unobstructed.
+
+### Design decisions
+
+- Kept the timing fix in `GameEngine.js` alone and handled the overlap
+  issue entirely in `App.jsx`, because the problem was not when Pipeworks
+  clears, but how long the video stayed mounted after a later capture.
+- Reset the overlay on `handlePlay()` as well as `handleCaught()` so a
+  run that exits early cannot resurrect an old lvl2 overlay on the next
+  quick-play session.
+
+### Known non-goals for this pass
+
+- No `GAME_ITERATION` bump or deploy.
+- No new death clip.
+- No near-capture interlude yet.
+
 ## v0.4.9 — Pipeworks clear condition pass (2026-07-26)
 
 ### What changed
