@@ -29,7 +29,40 @@ test('version log opens from the menu', async ({ page }) => {
   const versionDialog = page.getByRole('dialog', { name: 'Version log' })
   await expect(versionDialog).toBeVisible()
   await expect(versionDialog.getByText(`Current build: ${GAME_ITERATION}`)).toBeVisible()
-  await expect(versionDialog.getByText('Version page lands')).toBeVisible()
+  await expect(versionDialog.getByText('GameEngine cleanup and Sheebs penalty')).toBeVisible()
+})
+
+test('deaths history modal opens and shows saved entries', async ({ page }) => {
+  const latestDeathTimestamp = new Date('2026-07-26T14:40:00.000Z').toISOString()
+  const olderDeathTimestamp = new Date('2026-07-26T13:40:00.000Z').toISOString()
+  const seededProfile = {
+    userId: 'sjdt-test',
+    sheebs: 0,
+    ownedItems: [],
+    highestLevel: 1,
+    deaths: 2,
+    deathsHistory: [
+      { timestamp: Date.parse(olderDeathTimestamp), levelName: 'Porcelain Palace' },
+      { timestamp: Date.parse(latestDeathTimestamp), levelName: 'Pipeworks' },
+    ],
+    muted: false,
+  }
+
+  await page.addInitScript((profileJson) => {
+    document.cookie = 'sjdt_user_id=sjdt-test; Path=/; SameSite=Lax'
+    document.cookie = `sjdt_profile_v1=${encodeURIComponent(profileJson)}; Path=/; SameSite=Lax`
+  }, JSON.stringify(seededProfile))
+  await page.goto('./')
+
+  await expect(page.locator('.deaths-pill')).toHaveText('Deaths 2')
+  await page.locator('.deaths-pill').click()
+
+  const deathsDialog = page.getByRole('dialog', { name: 'Deaths history' })
+  await expect(deathsDialog).toBeVisible()
+  await expect(deathsDialog.getByText('Level: Pipeworks')).toBeVisible()
+  await expect(deathsDialog.getByText('Level: Porcelain Palace')).toBeVisible()
+  await expect(deathsDialog.locator('time')).toHaveCount(2)
+  await expect(deathsDialog.locator('time').first()).toHaveAttribute('datetime', latestDeathTimestamp)
 })
 
 test('mute toggle switches icon on menu and in game', async ({ page }) => {

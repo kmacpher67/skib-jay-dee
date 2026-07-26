@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.20',
+    title: 'GameEngine cleanup and Sheebs penalty',
+    description: 'The dead initialSheebs default is gone, and captures now subtract a flat 20 sheebs alongside the skreem loss.',
+  },
+  {
     version: 'v0.4.19',
     title: 'Dad Case gets real sound',
     description: 'The door-slam text stub is gone — Dad Case now plays real door-slam and lights-out audio when it joins the chase.',
