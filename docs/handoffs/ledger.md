@@ -10,6 +10,32 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.29-plan — 2026-07-26 (docs-only)
+
+- Scoped a new Phase 7 backlog item in `docs/roadmap.md`: a "Schleimy
+  Potion" collectible that temporarily shrinks the runner's hitbox to
+  slip through tight map wall gaps, balanced with a risk/reward cost
+  (speed penalty + temporary chaser speed-mod bump while active) rather
+  than a free escape tool. Also scoped a separate future backlog line
+  for a "Micro-Skib" chaser variant sized to fit through the same
+  cracks. Closed out Ken's stamina/hit-and-keep-running audit request —
+  already shipped in the existing sprint/stamina system, no code needed.
+  See `docs/handoffs/roadmap-handoff-v0.4.29-plan.md`.
+
+## v0.4.28-plan — 2026-07-26 (docs-only)
+
+- Scoped two new Phase 7 backlog items in `docs/roadmap.md` from Ken's
+  follow-up requests: (1) a Level 4 "Stakes Are Real" full-screen
+  transition overlay (header, three rule lines, "I ACCEPT MY FATE"
+  button, using the `level-4-warning-transition-screen.jpeg` asset Ken
+  supplied) that fires once per run on the level 3→4 transition, and (2) a
+  new persistent rewards/badges system, blocked on Ken picking an initial
+  badge list and persistence/render design. Recorded Ken's answers to the
+  v0.4.26-plan product questions (debt badge, all items eligible, rolled
+  25% chance, buy-back yes) for the paper trail, and flagged an
+  unverified buy-back behavior for the next Mode B session to spot-check.
+  See `docs/handoffs/roadmap-handoff-v0.4.28-plan.md`.
+
 ## v0.4.26 — 2026-07-26
 
 - Shipped sheebs debt and item loss risk for experienced players (`highestLevel > 3` and `highestLevel > 4` respectively).

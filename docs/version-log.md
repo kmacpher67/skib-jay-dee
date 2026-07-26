@@ -6,6 +6,64 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.29-plan — Schleimy Potion planning + stamina audit (2026-07-26)
+
+### What changed
+
+- No code — docs-only planning pass.
+- Wrote `docs/handoffs/roadmap-handoff-v0.4.29-plan.md` scoping a new
+  "Schleimy Potion" collectible (temporary hitbox shrink so the runner
+  can pass through tight wall gaps) with a risk/reward cost (speed
+  penalty + temporary chaser speed-mod bump while active) instead of a
+  free escape tool, plus a separate future backlog line for a
+  "Micro-Skib" chaser variant that would also fit through those cracks.
+- Closed out Ken's stamina/"take a hit and keep running" ask as already
+  shipped — `GameEngine.js` already has a full stamina/sprint system;
+  no code needed, just documented and checked off in `docs/roadmap.md`.
+- Refined Ken's forwarded AI-brainstormed list of challenge-escalation
+  ideas down to one buildable mechanic (mobility/speed trade-off) plus
+  one separately-scoped future idea (micro-enemy), rather than copying
+  the full brainstorm into the backlog verbatim.
+
+### Design decisions
+
+- Chose a **cost while active** (speed penalty + chaser speed-mod bump)
+  over the brainstormed "combat lockout," since the game has no combat
+  to lock out — the mobility trade-off is the direct equivalent.
+- Cut the brainstormed "moving/pulsing wall geometry" idea entirely (new
+  animation system, bigger scope than a single item) rather than fold it
+  into this slice.
+- Kept the Micro-Skib chaser counterweight as its own backlog line
+  instead of bundling it with the potion — new enemy-AI work shouldn't
+  ride along with a single item pickup's scope.
+
+## v0.4.28-plan — Level 4 transition screen and badges planning (2026-07-26)
+
+### What changed
+
+- No code — docs-only planning pass.
+- Wrote `docs/handoffs/roadmap-handoff-v0.4.28-plan.md` scoping the Level
+  4 "Stakes Are Real" transition overlay (full copy, trigger point, file
+  locations, and the real image asset Ken supplied,
+  `frontend/src/assets/level-4-warning-transition-screen.jpeg`) and a new
+  rewards/badges backlog item.
+- Fleshed out the two placeholder Phase 7 roadmap lines in
+  `docs/roadmap.md` (previously bare one-liners) with the full spec, and
+  updated the Phase 7 status row to reflect that debt/item-loss shipped
+  in v0.4.26 while the transition screen and badges are still open.
+
+### Design decisions
+
+- Transition screen is unblocked and ready for Mode B — copy and trigger
+  point are fully specified. Badges system is explicitly held back from
+  Mode B until Ken picks an initial badge list and where they persist/
+  render; shipping a half-designed badges feature would just create
+  rework.
+- Kept the transition screen and badges as two separate backlog items
+  rather than one bundled slice — the transition screen is
+  small/self-contained and ready now, the badges system needs another
+  product round first.
+
 ## v0.4.26 — Sheebs debt and item loss (2026-07-26)
 
 ### What changed

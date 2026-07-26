@@ -57,7 +57,7 @@ for the full session write-up and
 | 4 | Oval/masked face-crop on upload instead of stretch | Done (v0.4.14) |
 | 5 | FastAPI WebSocket multiplayer, server-authoritative roles | Backend scaffolded only |
 | 6 | Mongo-backed profile (replaces cookies) | Not started |
-| 7 | Risk/reward escalation for experienced players (negative sheebs, losable shop items past level 3/4) | Not started — see incremental backlog below |
+| 7 | Risk/reward escalation for experienced players (negative sheebs, losable shop items past level 3/4) | Debt economy + item loss landed v0.4.26; difficulty transition screen and badges/awards still pending — see incremental backlog below |
 
 ## Plan: handling levels and new maps (plan only — not implemented)
 
@@ -178,8 +178,74 @@ and chaser-bark voice clips, 1:1 with text.
   sheebs-debt item above as a single "stakes go up past level 4" backlog
   slice, but scope and ship them separately. See
   [roadmap-handoff-v0.4.26-plan.md](handoffs/roadmap-handoff-v0.4.26-plan.md).
-- [ ] **Difficulty Transition Screens:** When the level changes (specifically heading into Level 4 and beyond), implement a gameplay transition screen that updates the user on the difficulty spike (e.g., warning about losing sheebs/items, Shop Slop changes).
-- [ ] **Rewards/Badges:** Add a roadmap item to design and implement persistent awards/badges for high-level achievements.
+- [ ] **Level 4 "Stakes Are Real" transition screen.** Debt (v0.4.26) and
+  item loss (v0.4.26) are both live now but currently land as a surprise —
+  Ken's design call was "big red warning after dying past level 4," not a
+  silent mechanic. When a player clears Level 3 and arrives at Level 4,
+  pause the game and show a full-screen overlay before the level starts:
+  - **Header:** "WARNING: WELCOME TO LEVEL 4. THE STAKES ARE REAL." —
+    bold/flashing red retro font, matching the game's existing jump-scare
+    styling language.
+  - **Body (three rule lines):**
+    - "DEBT IS REAL: Your Sheebs no longer stop at zero. Get caught, and
+      you go into the red. You owe the Toilet."
+    - "SHOP SLOP AT RISK: Every time you are captured, there is a 25%
+      chance the Skibs will steal one of your hard-earned stat upgrades."
+    - "BUY IT BACK: Stolen items are returned to the Shleeb Shop. Pay off
+      your debt and buy them back... if you survive."
+  - **Action:** single button, "I ACCEPT MY FATE," dismisses the overlay
+    and starts Level 4 (pause/resume should reuse whatever pattern
+    `GameEngine.js` already uses for the level-clear/level-up beat).
+  - **Trigger:** fires once per run the first time `highestLevel`/current
+    level crosses into 4, not on every subsequent level-4 replay in the
+    same session — needs a small state flag so it doesn't nag on every
+    level transition once past 4.
+  - **Text location:** add the copy to `frontend/src/dialog.js` as a new
+    `LEVEL_4_RULES` constant (matching how `CAPTURE_LINES`/`CHASER_LINES`
+    are organized), overlay component lives in `frontend/src/App.jsx`.
+  - **Image asset:** overlay should reference
+    `frontend/src/assets/level-4-warning-transition-screen.jpeg` — Ken
+    has dropped this in (572x1024, portrait). Still worth keeping a
+    guarded import with a `[LEVEL 4 ARTWORK PENDING]` black-box fallback
+    in case the asset path ever changes, but it's no longer blocking.
+  - See [roadmap-handoff-v0.4.28-plan.md](handoffs/roadmap-handoff-v0.4.28-plan.md).
+- [ ] **Rewards/badges system.** New persistent-achievement layer, separate
+  from the risk/reward economy above. Ken confirmed the "debt badge" idea
+  is funny and wants a real badges/awards system for high-level
+  milestones (e.g. first time surviving level 4+, paying off debt from
+  negative back to positive, clearing all five levels in one run). No
+  scope/persistence design done yet — needs a follow-up planning pass to
+  pick badge triggers and where they render (menu? profile modal?) before
+  coding; cookie profile (`frontend/src/lib/cookies.js`) is the natural
+  place to persist earned badge IDs, consistent with how `ownedItems` and
+  `deathsHistory` already work. See
+  [roadmap-handoff-v0.4.28-plan.md](handoffs/roadmap-handoff-v0.4.28-plan.md).
+- [x] **Stamina / take-a-hit-and-keep-running.** Ken asked for a "Call of
+  Duty style" stamina feature and guessed it might already exist — it
+  does. `GameEngine.js` already has a full stamina system (`maxStamina`,
+  drain on sprint, regen otherwise, HUD bar) that lets the runner outrun
+  a chaser without dying on first contact. No build needed; closed as an
+  audit item. See
+  [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
+- [ ] **Schleimy Potion.** New collectible that temporarily shrinks the
+  runner's hitbox so it can slip through the map's tight wall gaps/corner
+  chokepoints (Ken confirmed these traps are "cool map design" and wants
+  to keep them, just give players a tool to counter-play them). Designed
+  as risk/reward, not a free pass: while active, movement speed drops
+  ~20% and the chaser speed modifier gets a temporary bump, so using it
+  mid-chase trades "get through this gap" for "get caught faster
+  everywhere else" for a few seconds. Proposed defaults: 65% hitbox
+  shrink, 4s duration, HUD timer bar next to the stamina bar. Needs a
+  call from Ken on acquisition (map pickup vs. Shleeb Shop item —
+  recommending map pickup) and the exact percentages before coding. See
+  [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
+- [ ] **Micro-Skib chaser (challenge counterweight to the potion).** A
+  smaller chaser variant sized to also fit through the tight cracks the
+  Schleimy Potion opens up, so a "safe" crack isn't unconditionally safe.
+  Deliberately scoped separate from the potion item above — this is new
+  enemy-AI/pathing work, not a single mechanic. No design pass done yet
+  (spawn conditions, which levels, additive vs. replacement chaser). See
+  [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
 - [ ] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,
   left over from before the v0.4.16 cookie-default fix. `App.jsx` always
