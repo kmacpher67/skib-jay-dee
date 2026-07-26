@@ -56,6 +56,19 @@ is a parking lot, not an archive).
   meant for real phones held in landscape, not desktop browser windows)
   before touching it for real.
 
+## Test coverage gap (follow-up to the chaser face randomization fix)
+
+- No automated test exercises `_maybeSpawnExtraChaser()`
+  (`frontend/src/GameEngine.js`) — it only fires after 14s of
+  uninterrupted chase, which is too slow for the existing Playwright
+  smoke suite, and there's no unit-test harness for `GameEngine` outside
+  the browser/canvas. The chaser-face-randomization fix (landed
+  v0.4.2-plan) was verified by code inspection instead of a test. If
+  more `GameEngine` logic needs fast, deterministic tests going forward,
+  consider either a test-only time-skip/seam on the chaser-spawn timer,
+  or a lightweight unit-test setup (e.g. vitest + jsdom) that can
+  instantiate `GameEngine` without a real animation loop.
+
 ## Still-open items carried from docs/roadmap.md
 
 These were already tracked before this version and remain open — see
