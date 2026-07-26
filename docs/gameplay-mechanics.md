@@ -1,10 +1,8 @@
 # Gameplay Mechanics Reference
 
 Answers to "how does X actually work" questions about the live build,
-written against the code as of `v0.4.16`. This is a reference doc, not a
-plan — see `docs/roadmap.md` for open work and
-`docs/handoffs/roadmap-handoff-v0.4.18-plan.md` for the backlog this doc
-fed into.
+written against the code as of `v0.4.22`. This is a reference doc, not a
+plan — see `docs/roadmap.md` for open work.
 
 ## Profile & currency (sheebs)
 
@@ -17,31 +15,22 @@ fed into.
   to start over or manage multiple identities. See the "Game identity &
   new profiles" backlog item in `docs/roadmap.md` — unclaimed.
 - New-profile sheebs default is `0` (`normalizeProfile()`,
-  `frontend/src/lib/cookies.js:50`) — fixed in v0.4.16 (previously fell
-  back to `200`). `frontend/src/GameEngine.js` still has a stray
-  `initialSheebs = 200` default parameter on the `GameEngine` constructor
-  (line ~345), but it's dead in practice: `App.jsx` always passes
-  `initialSheebs={profile.sheebs}` explicitly, so the class default never
-  fires. Worth deleting for clarity — see backlog.
+  `frontend/src/lib/cookies.js:50`). The old `initialSheebs = 200`
+  default in `GameEngine.js` was removed in v0.4.20.
 - Sheebs are earned on level clear: `this.sheebs += reward` where
   `reward` is the per-level `LEVELS[i].reward` value (40/60/90/120/160),
   scaled by `1 + loadout.rewardBonus` (`GameEngine.js:712-716`).
-- **Sheebs are never lost on capture today.** Only `skreems` (the
-  in-run proximity meter, a different number from `sheebs`) take a
-  penalty on death — see "Death penalty" below. A sheebs penalty on
-  death (e.g. -20) is not implemented; see backlog.
+- **Sheebs are lost on capture.** As of v0.4.20, `DEATH_SHEEBS_PENALTY = 20`
+  is applied on death (floored at zero) alongside the skreems penalty.
 
-## Deaths counter (no history log)
+## Deaths history log
 
 - `profile.deaths` is a single lifetime integer, persisted in the cookie
   profile. It only ever increases (`handleDeath` in `App.jsx` takes
   `Math.max(current.deaths, nextDeaths)`).
-- The "Deaths" pill on the main menu (`App.jsx`'s `<span>Deaths
-  {profile.deaths}</span>`) is a plain `<span>`, not a button — it has no
-  click handler and nothing happens when it's tapped. There is no
-  per-death record anywhere (no timestamp, no level, no cause) — only
-  the running total. A tap-to-see-history feature would be new work, not
-  a bug fix; see backlog.
+- The "Deaths" pill on the main menu opens a modal that displays the
+  latest capture records with timestamps and level names. This is backed by
+  a `deathsHistory` array in the cookie profile, introduced in v0.4.21.
 
 ## Death penalty (what actually happens on capture)
 
@@ -60,10 +49,8 @@ fed into.
   shouldn't immediately die again). Each level cleared instead nudges it
   back up by `CHASER_SPEED_MOD_LEVEL_STEP = 0.06`, so a long clean run
   gets harder over time and a rough run gets a bit of mercy.
-- So "slow down chasers on death" is already the existing design intent
-  — what's missing relative to the ask is a **sheebs** penalty (e.g.
-  -20) on top of the skreems penalty. That's a small, additive change;
-  see backlog.
+- **Sheebs penalty:** `sheebsLost = Math.min(this.sheebs, DEATH_SHEEBS_PENALTY)`
+  where `DEATH_SHEEBS_PENALTY = 20` is applied (never letting balance go negative).
 
 ## Loadout attributes (Speed / Stamina / Rewards)
 
@@ -100,7 +87,7 @@ here.)
 
 ## Extra chasers (multi-chaser pressure mechanic)
 
-- `EXTRA_CHASER_INTERVAL = 14` seconds: if the runner survives 14
+- `EXTRA_CHASER_INTERVAL = 20` seconds: if the runner survives 20
   uninterrupted seconds without being caught, `_maybeSpawnExtraChaser()`
   (`GameEngine.js:854`) adds another toilet to `this.chasers[]`, up to
   `MAX_CHASERS = 5` for Pipeworks (other levels currently share the same
@@ -143,15 +130,14 @@ Every level has an `advanceAt` skreem threshold in the `LEVELS` array
 runner: `gain = dt * (300 - dist) * 0.06` (`GameEngine.js:807-810`).
 Concretely, at `dist = 100` that's `~12/sec`; at `dist = 50` it's
 `~15/sec`. Level 1's threshold of `26` can be crossed in under 2-3
-seconds of close pursuit, which reads as "the level-up (into Pipeworks)
-happens almost instantly" if the chaser gets close early — because n
-this gain is proximity-based, not time-based, a player who's chased hard
-right out of the gate levels up far faster than one who stays evasive.
-**This is the mechanism behind "LVL2 Pipeworks upgrade comes too
-quick"** — it's the level-1-exit threshold, not a Pipeworks-specific
-setting. Tuning it (raising `advanceAt` for level 1, or changing the
-skreem-gain formula to be less proximity-front-loaded) is unstarted
-work — see backlog.
+seconds of close pursuit.
+
+**To fix "LVL2 Pipeworks upgrade comes too quick"**, v0.4.22 added two
+additional requirements for every non-Pipeworks level to advance:
+- `this.levelElapsed >= MIN_LEVEL_SECONDS_BEFORE_ADVANCE` (`30` seconds)
+- `this.chasers.length >= 2`
+All three conditions (skreems, time, and chaser count) must be met before
+the level clears.
 
 ### 2. Clearing Pipeworks (the lvl2 cinematic gate)
 
@@ -180,10 +166,8 @@ numbers above), that's the open item.**
 ## Version display
 
 `frontend/src/version.js` exports `GAME_ITERATION` (currently
-`'v0.4.16'`). It's rendered as a small `<p className="build-tag">` at
-the very bottom of the main menu (`App.jsx`'s `MainMenu` component,
-`aria-label="Game iteration {iteration}"`) — deliberately understated
-(small/muted styling in `App.css`), not a dedicated screen. There is no
-in-game changelog/version panel yet — that's the open "Version page"
-backlog item (show `GAME_ITERATION` plus a short changelog mirroring
-`docs/handoffs/ledger.md`).
+`'v0.4.22'`). It's rendered in two places:
+1. As a small `<p className="build-tag">` at the very bottom of the main
+   menu (`App.jsx`'s `MainMenu` component).
+2. Inside the "WHAT'S NEW" version log modal (`VersionModal.jsx`), which
+   shows the iteration string plus a short shipped changelog.
