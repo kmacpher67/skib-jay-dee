@@ -4,7 +4,7 @@
 
 import { GAME_ITERATION } from './version.js'
 import { CAPTURE_LINES, CHASER_LINES, TIRED_LINES, NEAR_CAPTURE_LINES } from './dialog.js'
-import { CHASER_FACE_POOL, randomFrom } from './gameContent.js'
+import { CHASER_FACE_POOL, getChaserProfile, randomFrom } from './gameContent.js'
 
 export const WORLD = {
   width: 900,
@@ -344,6 +344,7 @@ export class GameEngine {
       onChaserBark,
       onLevelClear,
       onExtraChaserSpawn,
+      onCaughtProfileReady,
       initialSheebs,
       initialDeaths = 0,
       loadout = {},
@@ -368,6 +369,7 @@ export class GameEngine {
     this.onChaserBark = onChaserBark || (() => {})
     this.onLevelClear = onLevelClear || (() => {})
     this.onExtraChaserSpawn = onExtraChaserSpawn || (() => {})
+    this.onCaughtProfileReady = onCaughtProfileReady || (() => {})
 
     this.runner = {
       x: WORLD.width / 2 - 20,
@@ -413,6 +415,7 @@ export class GameEngine {
     this.captureLine = CAPTURE_LINES[0]
     this._preCaughtRunnerFace = null
     this._caughtFaceStage = null
+    this._caughtChaser = null
     this.chaserLine = ''
     this.chaserLineTimer = 0
     this.runnerLine = ''
@@ -447,9 +450,14 @@ export class GameEngine {
     this._bindInput()
   }
 
-  setFaces({ runnerFace, chaserFace, runnerIsCustom, runnerGettingCapturedFace, runnerCapturedFace }) {
+  setFaces({ runnerFace, chaserFace, chaserFaceId, runnerIsCustom, runnerGettingCapturedFace, runnerCapturedFace }) {
     if (runnerFace) this.runner.face = runnerFace
-    if (chaserFace) this.chasers.forEach((c) => { c.face = chaserFace })
+    if (chaserFace) {
+      this.chasers.forEach((c) => {
+        c.face = chaserFace
+        c.faceId = chaserFaceId ?? null
+      })
+    }
     this.runner.isCustom = !!runnerIsCustom
     if (runnerGettingCapturedFace) this.runner.gettingCapturedFace = runnerGettingCapturedFace
     if (runnerCapturedFace) this.runner.capturedFace = runnerCapturedFace
@@ -761,6 +769,11 @@ export class GameEngine {
       return
     }
 
+    if (this.phase === 'resume-countdown') {
+      this._updateResumeCountdown(dt)
+      return
+    }
+
     if (this.phase === 'near-capture') {
       this._updateNearCapture(dt)
       return
@@ -794,6 +807,7 @@ export class GameEngine {
 
     let closestDist = Infinity
     let caught = false
+    let caughtBy = null
     let nearCapture = false
 
     for (const chaser of this.chasers) {
@@ -823,6 +837,7 @@ export class GameEngine {
       if (dist < closestDist) closestDist = dist
       if (rectsIntersect(this.runner, chaser)) {
         caught = true
+        caughtBy = chaser
       } else if (dist < 100 && this.nearCaptureCooldown <= 0) {
         nearCapture = true
       }
@@ -853,7 +868,7 @@ export class GameEngine {
     this.chaserLineTimer = Math.max(0, this.chaserLineTimer - dt)
 
     if (caught) {
-      this._triggerCaught()
+      this._triggerCaught(caughtBy)
     } else if (nearCapture) {
       this._triggerNearCapture()
     }
@@ -1035,7 +1050,8 @@ export class GameEngine {
       this.extraChaserTimer = EXTRA_CHASER_INTERVAL
       this.zoom = 1
       this.stamina = this.maxStamina
-      this.phase = 'chase'
+      this.phase = 'resume-countdown'
+      this.countdownTimer = 3.0
       this.phaseTimer = 0
       this.chaserLineTimer = 0
       this.runnerLineTimer = 0
@@ -1043,6 +1059,14 @@ export class GameEngine {
       if (this._preCaughtRunnerFace) this.runner.face = this._preCaughtRunnerFace
       this._preCaughtRunnerFace = null
       this._caughtFaceStage = null
+    }
+  }
+
+  _updateResumeCountdown(dt) {
+    this.countdownTimer -= dt
+    if (this.countdownTimer <= 0) {
+      this.phase = 'chase'
+      this.phaseTimer = 0
     }
   }
 
@@ -1078,6 +1102,7 @@ export class GameEngine {
     if (this.phase === 'intro') this._drawBanner(ctx, 'RUN LIKE HELL')
     if (this.phase === 'level-up') this._drawBanner(ctx, this.bannerText)
     if (this.phase === 'caught') this._drawJumpscare(ctx)
+    if (this.phase === 'resume-countdown') this._drawResumeCountdown(ctx)
     if (this.phase === 'near-capture') this._drawNearCapture(ctx)
     if (this.phase === 'chase') this._drawControls(ctx)
     if (this.chaserLineTimer > 0 && this.phase === 'chase') {
@@ -1085,6 +1110,27 @@ export class GameEngine {
     }
     if (this.runnerLineTimer > 0 && this.phase === 'chase') {
       this._drawSpeechBubble(ctx, this.runnerLine, 74)
+    }
+  }
+
+  _drawResumeCountdown(ctx) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'
+    ctx.fillRect(0, 0, VIEW_W, VIEW_H)
+
+    const num = Math.ceil(this.countdownTimer)
+    if (num > 0) {
+      ctx.save()
+      ctx.translate(VIEW_W / 2, VIEW_H / 2)
+      const frac = this.countdownTimer - Math.floor(this.countdownTimer)
+      const scale = 1.0 + 0.5 * frac
+      ctx.scale(scale, scale)
+
+      ctx.fillStyle = '#ffffff'
+      ctx.font = 'bold 120px sans-serif'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(num.toString(), 0, 0)
+      ctx.restore()
     }
   }
 

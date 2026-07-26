@@ -15,6 +15,7 @@ function loadImage(src) {
 export default function GameCanvas({
   runnerFace,
   chaserFace,
+  chaserFaceId,
   runnerIsCustom,
   loadoutSpeedBonus,
   loadoutStaminaBonus,
@@ -31,6 +32,8 @@ export default function GameCanvas({
   onChaserBark,
   onLevelClear,
   onExtraChaserSpawn,
+  onCaughtProfileReady,
+  onEngineReady,
 }) {
   const canvasRef = useRef(null)
   const engineRef = useRef(null)
@@ -49,6 +52,7 @@ export default function GameCanvas({
       onChaserBark,
       onLevelClear,
       onExtraChaserSpawn,
+      onCaughtProfileReady,
       initialSheebs,
       initialDeaths,
       loadout: {
@@ -58,12 +62,16 @@ export default function GameCanvas({
       },
     })
     engineRef.current = engine
+    onEngineReady?.(engine)
     // Exposed for e2e verification (see e2e/caught-face.spec.js) — lets a
     // test force a capture and inspect phase/face state directly instead
     // of relying on real-time movement/collision timing.
     window.__skibEngine = engine
     engine.start()
-    return () => engine.stop()
+    return () => {
+      onEngineReady?.(null)
+      engine.stop()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -79,6 +87,7 @@ export default function GameCanvas({
       engineRef.current.setFaces({
         runnerFace: runnerImg,
         chaserFace: chaserImg,
+        chaserFaceId,
         runnerIsCustom: !!runnerIsCustom,
         runnerGettingCapturedFace: gettingCapturedImg,
         runnerCapturedFace: capturedImg,
@@ -87,7 +96,7 @@ export default function GameCanvas({
     return () => {
       cancelled = true
     }
-  }, [runnerFace, chaserFace, runnerIsCustom])
+  }, [runnerFace, chaserFace, chaserFaceId, runnerIsCustom])
 
   useEffect(() => {
     if (!engineRef.current) return

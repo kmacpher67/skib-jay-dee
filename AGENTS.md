@@ -12,6 +12,7 @@ or launching an automated coding run.
 
 ## Working rules
 
+- **PLANNING ONLY BY DEFAULT:** All chat interactions related to this project should be considered planning, architecture, or goal setting. You MUST follow the `docs/skib-sdlc.md` process. DO NOT WRITE CODE unless specified by a specific handoff and work order. Only when a handoff implementation is explicitly provided should you write code.
 - Keep gameplay work in `frontend/` unless the user explicitly asks for
   backend changes.
 - Preserve the portrait 9:16 layout, cookie-backed profile state, and the

@@ -1,7 +1,7 @@
 # Yoodelling Unc Alex
 
 **Name:** Yoodelling Unc Alex
-**Vibe:** The yodeling uncle bit; an Alpine-adjacent gag.
+**Vibe:** The yodeling uncle bit; an Alpine-adjacent gag and x-lax explosive diarriha touchdown celebration, he's a sore winner or looser.
 
 ### Parody Attributes
 *   **Panic Index:** 6 (A casual, jaunty walking pace. He's in no rush, which is somehow scarier.)

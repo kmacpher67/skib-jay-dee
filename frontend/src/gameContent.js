@@ -35,6 +35,73 @@ export const CHASER_FACE_POOL = [
   { id: 'sky-diver-motor-killer', label: 'Sky-Diver (Motor Killer)', src: skyDiverMotorKiller },
 ]
 
+export const CHASER_PROFILES = {
+  'skib-default': {
+    name: 'Skib Default',
+    vibe: 'The baseline Skibidty Toilet Guy.',
+    tricks: 'The Royal Flush. He closes distance like the map owes him rent.',
+    mainScare: 'Busts out of a stall with zero subtlety and maximum confidence.',
+  },
+  'toiletman-wet': {
+    name: 'Toiletman Wet',
+    vibe: 'Drenched, furious, and impossible to keep upright.',
+    tricks: 'The Wipeout. Leaves a slick puddle trail that turns every corner into a bad idea.',
+    mainScare: 'Drops in with a gross splash and keeps sliding like physics quit.',
+  },
+  'skib-killn': {
+    name: 'Skibbidy Killn',
+    vibe: 'Feral, loud, and absolutely unhinged.',
+    tricks: 'The Feral Lunge. He commits to the straight line and dares the wall to matter.',
+    mainScare: 'A bass-boosted shriek followed by a sprint that looks illegal.',
+  },
+  'dad-case': {
+    name: 'Dad Case',
+    vibe: 'Deadpan dad energy with a thermostat in one hand and judgment in the other.',
+    tricks: 'The Grounded. He weaponizes lights, doors, and disappointment.',
+    mainScare: 'Steps out like he’s about to ask who touched the thermostat.',
+  },
+  'yoodelling-unc-alex': {
+    name: 'Yoodelling Unc Alex',
+    vibe: 'Unreasonably cheerful, in the most threatening way.',
+    tricks: 'The Yodel Echo. He scrambles your controls and lets the echo do the rest.',
+    mainScare: 'Falls from nowhere and fills the hallway with alpine nonsense.',
+  },
+  'ant-k-raman': {
+    name: 'Ant K Raman',
+    vibe: 'Raman-aunt chaos in a toilet-sized package.',
+    tricks: 'The Hot Plate Hustle. She comes in hot and never really slows down.',
+    mainScare: 'Appears with the kind of speed that makes the floor feel smaller.',
+  },
+  'anti-k-raman-2': {
+    name: 'Anti K Raman 2',
+    vibe: 'The sequel nobody had the traction for.',
+    tricks: 'The Second Serving. Same headache, different angle, more panic.',
+    mainScare: 'Materializes like a rerun the runner definitely did not ask for.',
+  },
+  'ded-dad': {
+    name: 'Ded Dad',
+    vibe: 'A haunted-parent echo with bad timing and worse manners.',
+    tricks: 'The After-Call. He always arrives right after the runner thinks it is safe.',
+    mainScare: 'Haunts the hallway like unfinished homework with a pulse.',
+  },
+  'crazy-jack-chaser': {
+    name: 'Crazy Jack',
+    vibe: 'Chaotic enough to make every chase feel one bad joke away from collapse.',
+    tricks: 'The Sink-or-Slide. He swings wide, then somehow still lands the catch.',
+    mainScare: 'Cuts through the map like he’s been personally offended by your ankles.',
+  },
+  'sky-diver-motor-killer': {
+    name: 'Sky-Diver',
+    vibe: 'Motor-killer energy with zero regard for personal airspace.',
+    tricks: 'The Drop-In. He enters from above like a bad idea with a helmet.',
+    mainScare: 'Falls in fast, loud, and somehow already annoyed when he lands.',
+  },
+}
+
+export function getChaserProfile(faceId) {
+  return CHASER_PROFILES[faceId] ?? CHASER_PROFILES['skib-default']
+}
+
 export const SHOP_ITEMS = [
   {
     id: 'turbo-clogs',
@@ -66,8 +133,8 @@ export function randomFrom(items) {
 
 export function randomFaces() {
   return {
-    runnerFace: randomFrom(RUNNER_FACE_POOL)?.src ?? null,
-    chaserFace: randomFrom(CHASER_FACE_POOL)?.src ?? null,
+    runnerFace: randomFrom(RUNNER_FACE_POOL) ?? null,
+    chaserFace: randomFrom(CHASER_FACE_POOL) ?? null,
   }
 }
 
@@ -91,4 +158,3 @@ export function buildLoadout(ownedItems = []) {
 
   return { speedBonus, staminaBonus, rewardBonus }
 }
-
