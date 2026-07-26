@@ -69,6 +69,18 @@ is a parking lot, not an archive).
   or a lightweight unit-test setup (e.g. vitest + jsdom) that can
   instantiate `GameEngine` without a real animation loop.
 
+## Test coverage gap: pipeworks-clear.spec.js description is stale
+
+- `frontend/e2e/pipeworks-clear.spec.js` still titles itself "Pipeworks
+  only clears when 4 chasers are active" and forces 3 extra spawns (4
+  total), left over from when `MAX_CHASERS` was `4` (v0.4.9). It still
+  passes after the v0.4.10 bump to `MAX_CHASERS = 5` only because the
+  test sets `pipeworksSkreems` directly rather than asserting an exact
+  chaser count — harmless today, but the title/body should be updated to
+  say 5 so the test reads accurately and actually exercises the real
+  5-chaser gate (`this.chasers.length >= MAX_CHASERS`) instead of relying
+  on a bypass.
+
 ## Still-open items carried from docs/roadmap.md
 
 These were already tracked before this version and remain open — see

@@ -103,18 +103,21 @@ manually:
 
 ## Natural follow-up work
 
-- The v0.4.3-plan three-session backlog is now fully resolved:
-  extra-chaser speed ramp landed in v0.4.8, Pipeworks's 4-chaser/max-speed
-  clear condition landed in v0.4.9, and the lvl2 video timing fix plus
-  death-visual verification landed in v0.4.10.
-- A separate docs-only planning pass now adds a funny near-capture
-  interlude item to `docs/roadmap.md` that pauses the chase and shows
-  `jayden-getting-captured.jpg` with parody captions. That item is its
-  own increment, not folded into the runner pose mapping.
-- Pick up the remaining open items queued in `docs/roadmap.md` in the
-  order that best fits a single session. The smallest clear follow-ups
-  right now are the 1:1 audio clip work, the World Star intro cinematic,
-  and the face-crop upload pass.
+- The v0.4.3-plan three-session backlog landed (v0.4.8-v0.4.10), but a
+  v0.4.11-plan doc review found its death-visual verification was
+  incomplete: the jump-scare can still be hidden behind the lvl2 video
+  for several seconds after a Pipeworks clear (not just on arrival, which
+  is what was actually fixed/verified). Reopened in `docs/roadmap.md` as
+  the top pick for the next coding session — see
+  `docs/handoffs/roadmap-handoff-v0.4.11-plan.md` for the exact trace and
+  copy-paste fix.
+- After that: the near-capture interlude (`docs/handoffs/roadmap-handoff-v0.4.5-plan.md`)
+  is already fully scoped and unblocked — pauses the chase and shows
+  `jayden-getting-captured.jpg` with parody captions. Its own increment,
+  not folded into the runner pose mapping.
+- Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it
+  needs Ken to record real voice clips first, it's not a pure coding
+  task. Ask him before treating it as unblocked.
 - Runner pose-to-state mapping landed in v0.4.6 — no longer on this list.
   Its one loose end is a Ken-only ask, not a coding task: supply real
   distinct photos for `jayden-getting-captured`/`jayden-uncaring-4029`

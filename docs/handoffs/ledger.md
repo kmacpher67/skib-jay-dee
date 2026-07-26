@@ -10,6 +10,13 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.11-plan — 2026-07-26 (docs-only)
+
+- Reviewed docs/roadmap.md and docs/handoffs/ against the actual code; confirmed the full v0.4.3-plan three-session backlog (speed ramp, Pipeworks clear condition, lvl2 timing + audio delay) is genuinely landed and passing.
+- Found and reopened one item closed with incomplete verification: the jump-scare can still be hidden behind the lvl2 video for several seconds after a Pipeworks clear, not just on arrival. Logged as its own roadmap item.
+- Flagged `pipeworks-clear.spec.js`'s stale "4 chasers" description as a minor coverage gap (test still passes, just inaccurate).
+- Re-triaged the backlog: reprioritized away from "Audio 2" (needs Ken to record real voice clips, not a coding task) toward the overlap fix and the already-scoped near-capture interlude.
+
 ## v0.4.10 — 2026-07-26
 
 - Bumped Pipeworks to 5 simultaneous chasers, kept the pressure goal at 68, and confirmed the level still clears with all five ramped up.

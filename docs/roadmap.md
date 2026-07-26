@@ -245,6 +245,25 @@ and chaser-bark voice clips, 1:1 with text.
   verification for the lvl2 timing fix confirmed the video only appears
   after Pipeworks clears, so it no longer overlaps the catch state on
   arrival.
+- [ ] **Found during v0.4.10 doc review — the jump-scare/lvl2-video
+  overlap is still structurally possible, just not on arrival anymore.**
+  The item above verified the video no longer shows the instant a run
+  *reaches* Pipeworks — real fix. But that's not the same as "can never
+  overlap the jump-scare": `_startLevelAdvance()` (`GameEngine.js:688`)
+  sets `phase = 'level-up'` for a fixed `phaseTimer = 1.25s`, and only
+  the `level-up` phase blocks the capture/collision check. Once
+  `phaseTimer` runs out, `phase` flips back to `'chase'` and captures can
+  happen immediately — while the `<video>` overlay (`.lvl2-transition`,
+  `frontend/src/App.css`, `z-index: 15`, stacked above `GameCanvas`)
+  keeps rendering until it fires `onEnded` or hits App.jsx's 11s safety
+  timeout. A capture in that window (roughly 1.25s-11s into Flooded
+  Annex) would still visually hide the canvas-drawn jump-scare behind the
+  video. Not fixed, not actually re-verified against this specific
+  window — pick one: hide/pause the video the instant `phase` becomes
+  `'caught'` (cheapest fix, e.g. an effect on `phase` in `App.jsx`/
+  `GameCanvas.jsx`), or confirm the real clip is short enough that this
+  window can't practically be hit and document why. Small, self-
+  contained, front-end only.
 
 ## Session rules
 
