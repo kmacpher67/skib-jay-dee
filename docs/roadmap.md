@@ -218,7 +218,21 @@ and chaser-bark voice clips, 1:1 with text.
     in case the asset path ever changes, but it's no longer blocking.
   - Landed in v0.4.28.
 - [x] **Rewards/badges system.** Landed v0.4.30 — added `earnedBadges` to cookie persistence, defined `BADGES` array with four initial badges (Financial Wizardry, Glutton for Punishment, Slippery When Wet, Devs Owe Me Five Bucks). Badges render as toasts in-game when earned, in the menu next to the status pills, and at the bottom of the level-clear banner.
-- [ ] **Feature: The "Jayden" Gun.** Jayden wants a gun feature added to the game. Needs mechanics design (ammo, aiming, etc.) in a future design session before coding.
+- [ ] **Feature: The "Jayden" Gun.** Jayden wants a gun feature added to the game.
+  Ken's refined design goal (2026-07-26): a funny/cool/challenging gun for the
+  runner that keeps the game difficult, fun, and interesting — explicitly
+  **not** a power fantasy or an "I win" button. Key constraint: **extremely
+  limited capacity**, randomized each time it's picked up — only 1-2 usable
+  shots, max 3 out of a 6-round cylinder (i.e. mostly empty chambers), and
+  once ammo runs out the gun disappears (single-use pickup, not a permanent
+  inventory item). Still needs a design pass before coding on: aiming/fire
+  input (desktop-only so far — click/key to fire in facing direction? auto-aim
+  at nearest chaser?), what a "hit" does to a chaser (stun/slow/instant
+  despawn?), spawn/acquisition (map pickup vs. Shleeb Shop item — precedent
+  from the Schleimy Potion item below leans map pickup), cooldown between
+  shots, and comedic flavor (sound/visual gag fitting the game's tone). See
+  next-session plan pointer in
+  [roadmap-handoff-v0.4.30.md](handoffs/roadmap-handoff-v0.4.30.md).
 - [ ] **Feature: Rolling Pickups (Mario-Style).** Items rolling around the map that the player can pick up or capture. Must be a mix of good items (buffs/points) and bad items (debuffs/damage).
 - [x] **Stamina / take-a-hit-and-keep-running.** Ken asked for a "Call of
   Duty style" stamina feature and guessed it might already exist — it

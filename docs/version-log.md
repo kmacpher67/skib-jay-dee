@@ -6,6 +6,13 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.30.1 — Hotfix: Canvas Boot Crash (2026-07-26)
+
+### What changed
+
+- **URGENT:** Fixed a `ReferenceError` on boot caused by missing `onBadgeEarned` in the `GameEngine` constructor parameter destructuring. This error crashed the React tree before the `<canvas>` could mount, breaking the game completely (discovered via 12 failing tests).
+- Bumped `GAME_ITERATION` to `v0.4.30.1` and deployed to production.
+
 ## v0.4.30 — Badges System (2026-07-27)
 
 ### What changed

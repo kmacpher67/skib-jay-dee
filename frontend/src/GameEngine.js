@@ -345,6 +345,7 @@ export class GameEngine {
       onLevelClear,
       onExtraChaserSpawn,
       onCaughtProfileReady,
+      onBadgeEarned,
       initialSheebs,
       initialDeaths = 0,
       highestLevel = 0,

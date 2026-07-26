@@ -10,6 +10,16 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.30.1 — 2026-07-26
+
+- **URGENT HOTFIX:** Fixed a `ReferenceError` on boot caused by missing `onBadgeEarned` in the `GameEngine` constructor parameter destructuring. This crash broke the entire game (`<canvas>` failed to mount).
+
+## v0.4.30 — 2026-07-27
+
+- Added persistent Badges system with `earnedBadges` array.
+- Defined initial four badges and wired them to trigger on paying off debt, reaching 50 deaths, and clearing level 4.
+- Rendered badges as toasts, in the menu, and on the level-clear banner.
+
 ## v0.4.29 — 2026-07-26
 
 - Added a `localStorage`-backed profile registry (`sjdt_profiles_v1`) in
