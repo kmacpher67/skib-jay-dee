@@ -21,7 +21,7 @@ Done: core chase loop, jump-scare capture, face upload + random default
 faces, five levels (Porcelain Palace → Pipeworks → Flooded Annex → The
 Ramen Aisle → World Star Parking Lot), desktop keyboard controls, sprint,
 Shleeb shop, cookie-backed profile (user id, sheebs, owned items, highest
-level, lifetime deaths), skreem-on-proximity, skreem-penalty + death count
+level, lifetime deaths, deaths history), skreem-on-proximity, skreem-penalty + death count
 on capture, a 20-sheebs capture penalty, a multi-chaser mechanic (extra toilets join in if a level runs
 long, with Pipeworks tuned for five simultaneous chasers), and a discreet build-iteration badge tied to a shared
 frontend constant plus the deploy-commit helper. All in-game text now
@@ -116,12 +116,9 @@ and chaser-bark voice clips, 1:1 with text.
   Covered by `frontend/e2e/menu-audio-prime.spec.js`.
 - [x] **Dad Case Environmental Traps.** Landed in v0.4.17 — visual darkening overlay and a text-stubbed sound effect when the "Dad Case" chaser spawns via the multi-chaser mechanic. Real audio wired in v0.4.19 (`door-sounds.m4a` + `lights.m4a` play together, placeholder text/CSS removed) — see below.
 - [x] **Dad Case Environmental Traps: real audio.** Landed v0.4.19 — replaced the `*DOOR SLAM SOUND*` text placeholder with real `playOneShot()` calls for `door-sounds.m4a` and `lights.m4a` (both fire together) in `handleExtraChaserSpawn` (`App.jsx`). Removed the now-unused `.dad-case-sound-text` CSS class.
-- [ ] **Deaths history log.** The menu's "Deaths" pill (`App.jsx`) is
-  read-only display of a lifetime counter with no click handler — tapping
-  it does nothing today. Add a per-death record (timestamp, level, maybe
-  which chaser caught you) to the cookie profile and a small
-  modal/panel that opens on tap to show it. See
-  [gameplay-mechanics.md](gameplay-mechanics.md#deaths-counter-no-history-log).
+- [x] **Deaths history log.** Landed v0.4.21 — the menu's "Deaths" pill
+  now opens a modal that shows the latest capture records with
+  timestamps and level names, stored in the cookie profile.
 - [x] **Sheebs penalty on capture.** Landed v0.4.20 — dying now deducts a
   flat 20 sheebs on capture, floored at 0, in addition to the existing
   skreem penalty. The "slow the chasers down on death" half of this ask

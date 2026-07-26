@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.21',
+    title: 'Deaths history log lands',
+    description: 'The Deaths pill now opens a modal that shows the latest capture records with timestamps and level names.',
+  },
+  {
     version: 'v0.4.20',
     title: 'GameEngine cleanup and Sheebs penalty',
     description: 'The dead initialSheebs default is gone, and captures now subtract a flat 20 sheebs alongside the skreem loss.',

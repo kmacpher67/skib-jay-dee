@@ -29,7 +29,7 @@ test('version log opens from the menu', async ({ page }) => {
   const versionDialog = page.getByRole('dialog', { name: 'Version log' })
   await expect(versionDialog).toBeVisible()
   await expect(versionDialog.getByText(`Current build: ${GAME_ITERATION}`)).toBeVisible()
-  await expect(versionDialog.getByText('GameEngine cleanup and Sheebs penalty')).toBeVisible()
+  await expect(versionDialog.getByText('Deaths history log lands')).toBeVisible()
 })
 
 test('deaths history modal opens and shows saved entries', async ({ page }) => {

@@ -10,6 +10,16 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.21 — 2026-07-26 (real code)
+
+- Added the deaths history log UI: menu Deaths pill now opens a modal
+  showing the most recent capture records with timestamps and level
+  names.
+- Persisted `deathsHistory` in the cookie profile and wired capture
+  events to append `{ timestamp, levelName }` records.
+- Added Playwright smoke coverage for the seeded history path and bumped
+  `GAME_ITERATION` to `v0.4.21`.
+
 ## v0.4.20 — 2026-07-26 (real code)
 
 - Removed the stale `initialSheebs = 200` default from

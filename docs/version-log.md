@@ -6,6 +6,45 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.21 — Deaths history log UI (2026-07-26)
+
+### What changed
+
+- `frontend/src/App.jsx`: the menu's `Deaths` pill is now clickable and
+  opens a new `DeathsModal` panel. When the game reports a capture, the
+  app appends `{ timestamp, levelName }` to the cookie-backed
+  `deathsHistory` array.
+- `frontend/src/lib/cookies.js`: `normalizeProfile()` now includes a
+  sanitized `deathsHistory` array in the persisted profile shape.
+- `frontend/src/components/DeathsModal.jsx`: new modal that shows the
+  latest 10 capture records with timestamps and level names.
+- `frontend/src/components/VersionModal.jsx`: added a v0.4.21 changelog
+  note for the new deaths history log UI.
+- `frontend/e2e/smoke.spec.js`: added coverage that seeds a profile with
+  death history, opens the modal, and checks the saved entries render.
+- `frontend/src/version.js`: bumped the visible build tag to
+  `v0.4.21`.
+
+### Design decisions
+
+- Kept the history format deliberately small: timestamp plus level name,
+  since the user asked for a small modal and the menu doesn't need a
+  bigger profile timeline yet.
+- Trimmed the visible list to the most recent 10 entries so the panel
+  stays compact on the portrait menu.
+- Reused the existing cookie profile path instead of introducing a
+  second persistence layer.
+
+### Explicitly not done
+
+- The broader **game identity / multiple save slots** backlog item is
+  still open for a future session.
+
+### Verification
+
+- `cd frontend && npm run build`
+- `cd frontend && npx playwright test` (12/12 pass)
+
 ## v0.4.20 — GameEngine cleanup and Sheebs penalty (2026-07-26)
 
 ### What changed
