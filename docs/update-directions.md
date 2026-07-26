@@ -13,6 +13,7 @@ Use this as the handoff doc for the next agent working in the repo.
 ## Files to check first
 
 - `README.md`
+- `docs/version-log.md`
 - `docs/dev-notes.md`
 - `frontend/src/GameEngine.js`
 - `frontend/src/App.jsx`
@@ -49,10 +50,14 @@ Use this as the handoff doc for the next agent working in the repo.
 - Add more level variants once the current three feel tuned.
 - Wire up backend persistence or multiplayer only after the front-end loop feels solid.
 
+## Version record
+
+- The current upgrade checkpoint is documented in [docs/version-log.md](docs/version-log.md).
+- When future agents make a meaningful change, append a new version section there so the design and plan trail stays durable.
+
 ## Constraints to keep respecting
 
 - Keep the app front-end only unless the user explicitly asks for backend work.
 - Keep the portrait 9:16 layout.
 - Do not break the cookie profile flow when touching the shop or the level rewards.
 - Preserve the local image gallery behavior so random defaults still change between plays.
-

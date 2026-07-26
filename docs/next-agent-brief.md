@@ -1,7 +1,8 @@
 # Next-Agent Brief — Skib-Jay-Dee-Toilet
 
 This brief is now a legacy handoff. For the current upgrade state, start
-with [docs/update-directions.md](docs/update-directions.md).
+with [docs/update-directions.md](docs/update-directions.md) and the
+version record in [docs/version-log.md](docs/version-log.md).
 
 Copy everything below this line into a fresh agent session only if you need
 the older Phase 1-era context.

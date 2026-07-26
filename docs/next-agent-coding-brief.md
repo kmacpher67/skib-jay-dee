@@ -10,11 +10,12 @@ Read these first:
 
 1. `README.md`
 2. `docs/update-directions.md`
-3. `docs/dev-notes.md`
-4. `frontend/src/App.jsx`
-5. `frontend/src/GameEngine.js`
-6. `frontend/src/gameContent.js`
-7. `frontend/src/lib/cookies.js`
+3. `docs/version-log.md`
+4. `docs/dev-notes.md`
+5. `frontend/src/App.jsx`
+6. `frontend/src/GameEngine.js`
+7. `frontend/src/gameContent.js`
+8. `frontend/src/lib/cookies.js`
 
 Current state:
 
@@ -58,6 +59,6 @@ Constraints:
 - Preserve the random default face rotation.
 - Keep the 9:16 portrait layout.
 - Avoid touching unrelated git changes that are already present in the workspace.
+- Keep the version log updated in `docs/version-log.md` whenever a meaningful change lands.
 
 When you finish a step, run `npm run build` in `frontend/` and report the result.
-

@@ -82,5 +82,7 @@ the backend actually gets wired up in a later phase.
 
 Full detail in the source design doc and [docs/code-seed-initial.md](docs/code-seed-initial.md).
 
+Versioned design and plan notes live in [docs/version-log.md](docs/version-log.md).
+
 For a ready-to-paste brief on what to do next, see
 [docs/update-directions.md](docs/update-directions.md).
