@@ -10,6 +10,14 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.18 — 2026-07-26 (real code)
+
+- Added a new menu `WHAT'S NEW` button and a `VersionModal` panel that
+  shows the current `GAME_ITERATION` plus a short shipped changelog.
+- Styled the version panel to match the existing shop modal treatment.
+- Added a Playwright smoke check for the version panel and bumped
+  `GAME_ITERATION` to `v0.4.18` for deployment.
+
 ## v0.4.18-plan — 2026-07-26 (docs-only)
 
 - Answered a batch of "how does this work" menu/gameplay questions by

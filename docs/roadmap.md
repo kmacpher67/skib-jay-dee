@@ -144,10 +144,11 @@ and chaser-bark voice clips, 1:1 with text.
   passes the real profile value so this never fires in practice, but it's
   misleading to read. Small cleanup, bundle with another GameEngine
   session rather than its own.
-- [ ] **Version page.** Add a simple page/panel to the menu that shows
-  the current `GAME_ITERATION` (`frontend/src/version.js`) plus a short
-  changelog pulled from or mirroring `docs/handoffs/ledger.md`. Front-end
-  only, no new persistence needed.
+- [x] **Version page.** Landed v0.4.18 — the menu now has a
+  `WHAT'S NEW` button that opens a version log panel showing the current
+  `GAME_ITERATION` (`frontend/src/version.js`) plus a short changelog
+  mirrored from the recent shipped notes. Front-end only, no new
+  persistence needed.
 - [ ] **Game identity & new profiles (multiple save slots).** Let a
   player keep their existing cookie-backed profile and also start a new
   one, still cookie-only (no backend) — e.g. a small slot picker on the

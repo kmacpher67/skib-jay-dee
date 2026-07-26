@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import FaceUpload from './components/FaceUpload.jsx'
 import GameCanvas from './components/GameCanvas.jsx'
 import ShopModal from './components/ShopModal.jsx'
+import VersionModal from './components/VersionModal.jsx'
 import skreemLoopUrl from './assets/audio/jayden-skreem-loop.m4a'
 import captureStingUrl from './assets/audio/capture-sting-final.mp3'
 import levelStartUrl from './assets/audio/level-start-igottago.mp3'
@@ -36,6 +37,7 @@ export default function App() {
   const [profile, setProfile] = useState(() => loadProfile())
   const [screen, setScreen] = useState('menu')
   const [shopOpen, setShopOpen] = useState(false)
+  const [versionOpen, setVersionOpen] = useState(false)
   const [runnerFace, setRunnerFace] = useState(() => randomFaces().runnerFace)
   const [chaserFace, setChaserFace] = useState(() => randomFaces().chaserFace)
   const [runnerIsCustom, setRunnerIsCustom] = useState(false)
@@ -145,6 +147,7 @@ export default function App() {
     if (!runnerIsCustom) setRunnerFace(nextFaces.runnerFace)
     if (!chaserIsCustom) setChaserFace(nextFaces.chaserFace)
     setShopOpen(false)
+    setVersionOpen(false)
     setLastCaptureLine('')
     setShowLvl2Transition(false)
     setDadCaseSpawned(false)
@@ -285,7 +288,14 @@ export default function App() {
               onRunnerFace={handleRunnerFace}
               onChaserFace={handleChaserFace}
               onPlay={handlePlay}
-              onOpenShop={() => setShopOpen(true)}
+              onOpenShop={() => {
+                setVersionOpen(false)
+                setShopOpen(true)
+              }}
+              onOpenVersion={() => {
+                setShopOpen(false)
+                setVersionOpen(true)
+              }}
               onPrimeAudio={startMenuAudio}
               muted={muted}
               onToggleMuted={toggleMuted}
@@ -298,6 +308,10 @@ export default function App() {
                 onPurchase={handlePurchase}
                 onClose={() => setShopOpen(false)}
               />
+            )}
+
+            {versionOpen && (
+              <VersionModal iteration={GAME_ITERATION} onClose={() => setVersionOpen(false)} />
             )}
           </>
         )}
@@ -372,6 +386,7 @@ function MainMenu({
   onChaserFace,
   onPlay,
   onOpenShop,
+  onOpenVersion,
   onPrimeAudio,
   muted,
   onToggleMuted,
@@ -411,6 +426,9 @@ function MainMenu({
         </button>
         <button className="shop-btn" onClick={onOpenShop}>
           OPEN SHLEEB SHOP
+        </button>
+        <button className="version-btn" onClick={onOpenVersion}>
+          WHAT&apos;S NEW
         </button>
       </div>
 

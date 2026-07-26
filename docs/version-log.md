@@ -23,6 +23,27 @@ focused on *why*, those two are the *what* and *when*.
 
 - **Version page** and **Game Identity & New Profiles** (from the backlog) were left for the next natural steps.
 
+## v0.4.18 — Version page (2026-07-26)
+
+### What changed
+
+- `frontend/src/App.jsx`: added a new `WHAT'S NEW` button to the main menu and a `VersionModal` overlay that shows the current `GAME_ITERATION` plus a short shipped changelog.
+- `frontend/src/components/VersionModal.jsx`: added the new version panel content, including the current build tag and a compact recent-changes list.
+- `frontend/src/App.css`: added the version modal styling so it matches the existing shop panel treatment.
+- `frontend/e2e/smoke.spec.js`: added a Playwright smoke check that opens the version log and verifies it shows the live iteration string.
+- Bumped `GAME_ITERATION` to `v0.4.18` in `frontend/src/version.js` and deployed.
+
+### Design decisions
+
+- Kept the changelog intentionally short and static, mirroring the recent shipped notes instead of adding new runtime parsing or persistence. This keeps the feature front-end only and cheap to maintain.
+- Reused the shop modal's general look and feel so the menu gains a new panel without introducing a second visual language.
+- Kept the version notes tied to the live iteration prop for the current-release entry so the panel stays aligned with the visible build tag after future bumps.
+
+### Explicitly not done
+
+- **Game identity & new profiles** is still open and remains the next natural backlog item.
+- Did not add any new persistence or runtime docs parsing for the changelog.
+
 ## v0.4.16 — Sheebs default fix + menu skreem-loop fix (2026-07-26)
 
 ### What changed

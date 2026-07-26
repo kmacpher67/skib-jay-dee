@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { GAME_ITERATION } from '../src/version.js'
 
 test('menu loads and quick play boots the canvas', async ({ page }) => {
   await page.goto('./')
@@ -18,6 +19,17 @@ test('shop modal opens and closes', async ({ page }) => {
   await page.locator('.shop-btn').click()
   await expect(page.getByText('Spend the stash.')).toBeVisible()
   await expect(page.locator('.close-pill')).toBeVisible()
+})
+
+test('version log opens from the menu', async ({ page }) => {
+  await page.goto('./')
+
+  await page.locator('.version-btn').click()
+
+  const versionDialog = page.getByRole('dialog', { name: 'Version log' })
+  await expect(versionDialog).toBeVisible()
+  await expect(versionDialog.getByText(`Current build: ${GAME_ITERATION}`)).toBeVisible()
+  await expect(versionDialog.getByText('Version page lands')).toBeVisible()
 })
 
 test('mute toggle switches icon on menu and in game', async ({ page }) => {

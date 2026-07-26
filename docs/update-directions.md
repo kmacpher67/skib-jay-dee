@@ -7,6 +7,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
 - `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), and the discreet iteration badge in the HUD.
 - `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, and the lvl2 transition overlay lifecycle. The lvl2 video now only mounts after Pipeworks is cleared *and* the engine reports the new hall-coverage / 4-skib survival gate as ready.
+- `frontend/src/App.jsx` also owns the new menu version log panel, which shows `GAME_ITERATION` plus a short shipped changelog.
 - `frontend/src/version.js` is the single place to bump the visible iteration number.
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
   can dispatch a bounded handoff to local Ollama using the shell's
@@ -50,12 +51,14 @@ Use this as the handoff doc for the next agent working in the repo.
 - `frontend/src/GameEngine.js`
 - `frontend/src/dialog.js`
 - `frontend/src/App.jsx`
+- `frontend/src/components/VersionModal.jsx`
 - `frontend/src/gameContent.js`
 - `frontend/src/version.js`
 - `frontend/src/lib/cookies.js`
 - `frontend/src/components/GameCanvas.jsx`
 - `frontend/src/components/ShopModal.jsx`
 - `docs/handoffs/roadmap-handoff-v0.4.17.md`
+- `docs/handoffs/roadmap-handoff-v0.4.18.md`
 - `docs/handoffs/roadmap-handoff-v0.4.18-plan.md`
 - `scripts/run_code_monkey.sh`
 - `scripts/code_monkey_direct.py`
@@ -108,11 +111,14 @@ manually:
 
 ## Natural follow-up work
 
-- Next unclaimed items from the v0.4.18-plan copy-paste block: **Version page** (show `GAME_ITERATION` + changelog in the menu) and **game identity / multiple cookie-backed save slots**. See `docs/roadmap.md`.
+- Next unclaimed item from the v0.4.18-plan copy-paste block: **game identity / multiple cookie-backed save slots**. See `docs/roadmap.md`.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it
   needs Ken to record real voice clips first, it's not a pure coding
   task. Ask him before treating it as unblocked.
+- The version page is now shipped in v0.4.18 — don't spend another
+  session on it unless you want to redesign the panel or expand the
+  changelog.
 - The v0.4.5-plan near-capture interlude landed in v0.4.12 — no longer on this list.
 - Runner pose-to-state mapping landed in v0.4.6 — no longer on this list.
   Its one loose end is a Ken-only ask, not a coding task: supply real
