@@ -33,6 +33,10 @@ gate so the lvl2 transition can only mount after Pipeworks has earned it.
    - Refreshed `docs/update-directions.md`, `docs/roadmap.md`,
      `docs/version-log.md`, and `docs/handoffs/ledger.md` to match the
      new state.
+6. **Pushed the live site.**
+   - Ran `./scripts/deploy-static.sh lvl2-gate`, which rebuilt the
+     frontend, synced the website subtree, and pushed the production
+     commit for `v0.4.15`.
 
 ## Verification
 
@@ -48,7 +52,6 @@ gate so the lvl2 transition can only mount after Pipeworks has earned it.
 - No skip button for the lvl2 transition.
 - No `GAME_ITERATION` bump beyond the visible release tag in
   `frontend/src/version.js`.
-- No deploy yet from this note alone.
 
 ## Copy-paste: next natural steps for the next agent
 
