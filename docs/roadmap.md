@@ -114,7 +114,8 @@ and chaser-bark voice clips, 1:1 with text.
   autoplay. `startMenuAudio()` in `frontend/src/App.jsx` now primes at
   `volume: 0`/`loop: false` and pauses itself once `play()` resolves.
   Covered by `frontend/e2e/menu-audio-prime.spec.js`.
-- [x] **Dad Case Environmental Traps.** Landed in v0.4.17 — visual darkening overlay and a text-stubbed sound effect when the "Dad Case" chaser spawns via the multi-chaser mechanic.
+- [x] **Dad Case Environmental Traps.** Landed in v0.4.17 — visual darkening overlay and a text-stubbed sound effect when the "Dad Case" chaser spawns via the multi-chaser mechanic. Real audio wired in v0.4.19 (`door-sounds.m4a` + `lights.m4a` play together, placeholder text/CSS removed) — see below.
+- [x] **Dad Case Environmental Traps: real audio.** Landed v0.4.19 — replaced the `*DOOR SLAM SOUND*` text placeholder with real `playOneShot()` calls for `door-sounds.m4a` and `lights.m4a` (both fire together) in `handleExtraChaserSpawn` (`App.jsx`). Removed the now-unused `.dad-case-sound-text` CSS class.
 - [ ] **Deaths history log.** The menu's "Deaths" pill (`App.jsx`) is
   read-only display of a lifetime counter with no click handler — tapping
   it does nothing today. Add a per-death record (timestamp, level, maybe
@@ -191,15 +192,13 @@ and chaser-bark voice clips, 1:1 with text.
   `frontend/src/version.js` constant, a discreet iteration label in the
   menu/HUD, and a deploy helper that builds, syncs, and commits only the
   `skib-jay-dee-toilet-game/` subtree with a short iteration slug.
-- [ ] **Code Monkey: host-profile routing.** Make the bounded code-monkey
-  lane understand named Ollama host profiles so it can switch between
-  the cheap `thinkpad-local` T2000 box and the remote `desktop-gaming`
-  host without editing URLs or restarting anything. Keep the cheap
-  ThinkPad profile as the default, use `OLLAMA_HOST` as the shell-level
-  fallback, and support profile-specific env vars like
-  `JUICY_LLM_LOCAL_OLLAMA_BASE_URL` /
-  `JUICY_LLM_DESKTOP_GAMING_OLLAMA_BASE_URL`. This is a tooling slice,
-  not gameplay.
+- [x] **Code Monkey: host-profile routing.** Landed in the "Code Monkey
+  host-profile routing pass" — `scripts/code_monkey_resolve_backend.py`
+  normalizes named Ollama host profiles (`thinkpad-local`,
+  `desktop-gaming`) with `thinkpad-local` as the default, and
+  `scripts/code_monkey_direct.py` exposes a CLI override. Checkbox was
+  stale; ledger already had this marked done. Tooling slice, not
+  gameplay.
 - [x] **Face crop on upload.** Landed v0.4.14 — `FaceUpload.jsx` now
   center-crops each uploaded photo to a square on an offscreen canvas,
   clips it with an ellipse mask, and re-exports it as a PNG data URL

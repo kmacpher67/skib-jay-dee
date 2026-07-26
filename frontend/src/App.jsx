@@ -16,6 +16,8 @@ import chaserBarkMissBUrl from './assets/audio/chaser-bark-miss-getoutofhere.mp3
 import chaserScreamUrl from './assets/audio/chaser-scream-freakout.mp3'
 import chaserTauntUrl from './assets/audio/chaser-taunt-skibidforever.mp3'
 import lvl2TransitionUrl from './assets/video/lvl2-transition.mp4'
+import dadCaseDoorUrl from './assets/audio/door-sounds.m4a'
+import dadCaseLightsUrl from './assets/audio/lights.m4a'
 import {
   buildLoadout,
   SHOP_ITEMS,
@@ -196,6 +198,8 @@ export default function App() {
     armAmbientAudio()
     if (faceId === 'dad-case') {
       setDadCaseSpawned(true)
+      playOneShot(dadCaseDoorUrl, 0.6)
+      playOneShot(dadCaseLightsUrl, 0.6)
     }
   }
 
@@ -348,11 +352,7 @@ export default function App() {
                 onError={hideLvl2Transition}
               />
             )}
-            {dadCaseSpawned && (
-              <div className="dad-case-darkness">
-                <div className="dad-case-sound-text">*DOOR SLAM SOUND*</div>
-              </div>
-            )}
+            {dadCaseSpawned && <div className="dad-case-darkness" />}
             <button className="exit-btn" onClick={() => setScreen('menu')}>
               ✕
             </button>

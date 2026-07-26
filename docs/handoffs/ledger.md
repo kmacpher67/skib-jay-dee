@@ -10,6 +10,22 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.19 — 2026-07-26 (real code)
+
+- Wired real audio for Dad Case Environmental Traps: `handleExtraChaserSpawn`
+  in `frontend/src/App.jsx` now plays `door-sounds.m4a` and `lights.m4a`
+  together via `playOneShot()` when the `dad-case` chaser spawns, replacing
+  the `*DOOR SLAM SOUND*` text placeholder.
+- Removed the now-unused `.dad-case-sound-text` CSS class from `index.css`.
+- Refreshed `VersionModal.jsx`'s changelog list with a v0.4.19 entry and
+  dropped the old hardcoded "current iteration" stub entry in favor of a
+  single static list (was duplicating the v0.4.18 note).
+- Full 11-test Playwright suite passes. Bumped `GAME_ITERATION` to
+  `v0.4.19`.
+- Also corrected a stale roadmap checkbox: **Code Monkey host-profile
+  routing** was already implemented (`scripts/code_monkey_resolve_backend.py`)
+  but still showed unchecked in `docs/roadmap.md`.
+
 ## v0.4.18 — 2026-07-26 (real code)
 
 - Added a new menu `WHAT'S NEW` button and a `VersionModal` panel that

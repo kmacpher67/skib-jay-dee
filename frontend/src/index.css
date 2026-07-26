@@ -70,11 +70,3 @@ body {
   align-items: center;
   justify-content: center;
 }
-
-.dad-case-sound-text {
-  color: #fff;
-  font-size: 24px;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px #000;
-  z-index: 1001;
-}

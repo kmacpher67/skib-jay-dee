@@ -6,6 +6,43 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.19 — Dad Case Environmental Traps: real audio (2026-07-26)
+
+### What changed
+
+- `frontend/src/App.jsx`: imported `door-sounds.m4a` and `lights.m4a`;
+  `handleExtraChaserSpawn` now calls `playOneShot(dadCaseDoorUrl, 0.6)`
+  and `playOneShot(dadCaseLightsUrl, 0.6)` together when `faceId ===
+  'dad-case'`, replacing the `*DOOR SLAM SOUND*` text placeholder. The
+  `.dad-case-darkness` overlay div no longer wraps any child text.
+- `frontend/src/index.css`: removed the now-unused `.dad-case-sound-text`
+  class.
+- `frontend/src/components/VersionModal.jsx`: added a v0.4.19 changelog
+  entry and simplified the component to render `PAST_VERSION_NOTES`
+  directly instead of injecting a separately hardcoded "current
+  iteration" entry that would have gone stale every bump.
+- Bumped `GAME_ITERATION` to `v0.4.19` in `frontend/src/version.js`.
+
+### Design decisions
+
+- Picked up the fully-specced v0.4.19-plan implementation plan as-is —
+  the audio assets (`door-sounds.m4a`, `lights.m4a`) were already
+  uploaded to `frontend/src/assets/audio/`, so this was a small,
+  unblocked, single-session slice.
+- Reused the existing `playOneShot()` pool instead of adding new audio
+  plumbing, matching how every other one-shot SFX in `App.jsx` is
+  played.
+
+### Explicitly not done
+
+- No new gameplay/backlog items scoped this session; picked the oldest
+  fully-unblocked item off the plan queue per Mode B ordering.
+
+### Verification
+
+- `cd frontend && npm run build`
+- `cd frontend && npx playwright test` (11/11 pass)
+
 ## v0.4.17 — Dad Case Environmental Traps (2026-07-26)
 
 ### What changed

@@ -1,5 +1,15 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.19',
+    title: 'Dad Case gets real sound',
+    description: 'The door-slam text stub is gone — Dad Case now plays real door-slam and lights-out audio when it joins the chase.',
+  },
+  {
+    version: 'v0.4.18',
+    title: 'Version page lands',
+    description: 'Menu now opens a small build log showing the current GAME_ITERATION and recent shipped changes.',
+  },
+  {
     version: 'v0.4.17',
     title: 'Dad Case traps',
     description: 'The Dad Case chaser now darkens the screen and stubs a door-slam sound in text when it joins the chase.',
@@ -22,14 +32,7 @@ const PAST_VERSION_NOTES = [
 ]
 
 export default function VersionModal({ iteration, onClose }) {
-  const versionNotes = [
-    {
-      version: iteration,
-      title: 'Version page lands',
-      description: 'Menu now opens a small build log showing the current GAME_ITERATION and recent shipped changes.',
-    },
-    ...PAST_VERSION_NOTES,
-  ]
+  const versionNotes = PAST_VERSION_NOTES
 
   return (
     <div className="version-modal" role="dialog" aria-modal="true" aria-label="Version log">
