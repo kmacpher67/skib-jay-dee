@@ -22,6 +22,10 @@ function clamp(v, min, max) {
   return Math.max(min, Math.min(max, v))
 }
 
+function lerp(a, b, t) {
+  return a + (b - a) * t
+}
+
 function makeBoundaryWalls(walls) {
   const t = 24
   walls.push({ x: 0, y: 0, w: WORLD.width, h: t })
@@ -312,6 +316,12 @@ const CHASER_SPEED_MOD_MIN = 0.62
 const CHASER_SPEED_MOD_MAX = 1.35
 const CHASER_SPEED_MOD_DEATH_STEP = -0.1
 const CHASER_SPEED_MOD_LEVEL_STEP = 0.06
+
+// A freshly spawned extra chaser joins at a discount and climbs to full
+// speed over a few seconds, instead of a flat discount for its whole
+// lifetime. Layered on top of chaserSpeedMod, not a replacement for it.
+const CHASER_JOIN_RAMP_START = 0.7
+const CHASER_JOIN_RAMP_SECONDS = 5
 
 export class GameEngine {
   constructor(
@@ -751,7 +761,9 @@ export class GameEngine {
       const dx = this.runner.x - chaser.x
       const dy = this.runner.y - chaser.y
       const dist = Math.hypot(dx, dy) || 1
-      const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod
+      chaser.joinRamp = Math.min(1, (chaser.joinRamp ?? 1) + dt / CHASER_JOIN_RAMP_SECONDS)
+      const joinRampMod = lerp(CHASER_JOIN_RAMP_START, 1, chaser.joinRamp)
+      const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod
       chaser.x += (dx / dist) * chaserSpeed * dt
       chaser.y += (dy / dist) * chaserSpeed * dt
       chaser.x = clamp(chaser.x, 24, WORLD.width - 24 - chaser.w)
@@ -804,7 +816,8 @@ export class GameEngine {
       y: spawn.y,
       w: 44,
       h: 44,
-      baseSpeed: this.chaser.baseSpeed * 0.92,
+      baseSpeed: this.chaser.baseSpeed,
+      joinRamp: 0,
       color: this.chaser.color,
       face: randomFrom(CHASER_FACE_POOL)?.src ?? this.chaser.face,
     })

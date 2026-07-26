@@ -23,8 +23,9 @@ backlog below.
 You're continuing work on **Skib-Jay-Dee-Toilet** in
 `/mnt/data/projects/skib-jay-dee`. The latest planning pass tightened
 the backlog into a three-session sequence:
-1. extra-chaser speed ramp
-2. Pipeworks 4-chaser/max-speed clear condition
+1. extra-chaser speed ramp — **done, landed in v0.4.8**, see
+   `docs/handoffs/roadmap-handoff-v0.4.8.md`
+2. Pipeworks 4-chaser/max-speed clear condition — **start here**
 3. lvl2 video timing fix, then death-visual verification
 
 Follow `docs/skib-sdlc.md`'s process: read the docs it lists, work in
@@ -43,15 +44,14 @@ Read first:
 4. `frontend/src/App.jsx`
 5. `frontend/src/GameEngine.js`
 
-## Session 1: extra-chaser speed ramp
+## Session 1: extra-chaser speed ramp — DONE (v0.4.8)
 
-`_maybeSpawnExtraChaser()` (`GameEngine.js:780-803`) still gives extra
-chasers a flat spawn discount forever. Add a per-chaser ramp so newly
-joined chasers start slower and climb to full speed over a few seconds,
-layered on top of the existing `chaserSpeedMod` rubber-band
-(`CHASER_SPEED_MOD_*`, `GameEngine.js:310-314`). Verify by surviving
-long enough for a second/third chaser to spawn and confirming the fresh
-one visibly lags before matching the pack.
+`_maybeSpawnExtraChaser()` now gives each new chaser a `joinRamp: 0`
+field that climbs to `1` over `CHASER_JOIN_RAMP_SECONDS` (5s), layered on
+top of the existing `chaserSpeedMod` rubber-band via a new `lerp()`
+helper. Verified with `frontend/e2e/chaser-join-ramp.spec.js` plus the
+existing Playwright suite (5/5 pass) and `npm run build`. See
+`docs/handoffs/roadmap-handoff-v0.4.8.md` for the full write-up.
 
 ## Session 2: Pipeworks clear condition
 

@@ -853,7 +853,7 @@ accurate summary of where the code actually ended up this session:
 - No crop or oval face mask was added yet.
 - No multiplayer or server authority changes were added yet.
 
-## v0.4.7 — 2026-07-26 (real code)
+## v0.4.8 — 2026-07-26 (real code)
 
 Picked up **Session 1** of the three-session backlog documented in
 `docs/handoffs/roadmap-handoff-v0.4.3-plan.md`/`docs/next-agent-coding-brief.md` —

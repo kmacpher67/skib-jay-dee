@@ -10,6 +10,21 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.8 — 2026-07-26
+
+- Implemented extra-chaser speed ramp (Session 1 of the v0.4.3-plan
+  backlog, oldest open/unfinished handoff): `_maybeSpawnExtraChaser()`
+  spawns new chasers with `joinRamp: 0` instead of a flat `* 0.92`
+  discount; the chase loop ramps `joinRamp` to `1` over
+  `CHASER_JOIN_RAMP_SECONDS` (5s) and layers it on top of the existing
+  `chaserSpeedMod` rubber-band via a new `lerp()` helper.
+- Tried the code-monkey lane per the user's ask first; confirmed
+  operational but a real dispatch returned a non-matching diff
+  (hallucinated line numbers/constants) — implemented directly instead.
+- Added `frontend/e2e/chaser-join-ramp.spec.js`; full 5-test Playwright
+  suite passes.
+- Added `docs/handoffs/roadmap-handoff-v0.4.8.md`.
+
 ## Code Monkey orchestration pass — 2026-07-26
 
 - Added `AGENTS.md` plus the `scripts/run_code_monkey.sh` /

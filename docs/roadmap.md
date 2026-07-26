@@ -98,7 +98,7 @@ open one, or reorder if something else is more urgent — just keep items
 this small.
 
 Recommended next-session order, if we want the tightest handoff:
-extra-chaser speed ramp (done, v0.4.7) -> Pipeworks 4-chaser/max-speed clear condition
+extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 4-chaser/max-speed clear condition
 -> lvl2 video timing fix + death-visual verification.
 
 - [x] **Audio 1: SFX plumbing.** Landed v0.4.0 — real clips wired for
@@ -248,7 +248,7 @@ extra-chaser speed ramp (done, v0.4.7) -> Pipeworks 4-chaser/max-speed clear con
   (the video should only show once this new "cleared Pipeworks" event
   fires, not the old flat `advanceAt` check).
 - [x] **Extra chasers join slow and should ramp up over a level, not
-  stay fixed.** Landed v0.4.7 (Session 1 of the v0.4.3-plan backlog) —
+  stay fixed.** Landed v0.4.8 (Session 1 of the v0.4.3-plan backlog) —
   `_maybeSpawnExtraChaser()` (`GameEngine.js`) no longer applies a flat
   `* 0.92` discount; new chasers spawn with a `joinRamp: 0` field that
   climbs to `1` over `CHASER_JOIN_RAMP_SECONDS` (5s), and the chase-update
@@ -257,7 +257,7 @@ extra-chaser speed ramp (done, v0.4.7) -> Pipeworks 4-chaser/max-speed clear con
   of, not replacing, the run-level rubber-band. Lead chaser has no
   `joinRamp` field (`?? 1` keeps it always fully ramped). Covered by
   `frontend/e2e/chaser-join-ramp.spec.js`. See
-  `docs/handoffs/roadmap-handoff-v0.4.7.md`.
+  `docs/handoffs/roadmap-handoff-v0.4.8.md`.
 - [ ] **RESOLVED — no new death video, keep the original jump-scare
   working.** User confirmed: "my bad the ded is still the original" —
   there is no new death-specific video wanted; option (a) from the
