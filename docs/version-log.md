@@ -6,6 +6,44 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.24-plan — Resume countdown planning pass (2026-07-26)
+
+### What changed
+
+- Scoped a new backlog item requested by x-lax (relayed by Ken via a text
+  thread with Alexander): after the jump-scare capture beat finishes,
+  freeze the action at the reset spawn points and show a large, pulsing
+  centered "3… 2… 1…" countdown before resuming the chase, instead of
+  today's instant teleport straight back into a moving chase.
+- Wrote `docs/resume-countdown.md`: the current flow
+  (`_triggerCaught()`/`_updateCaught()`/`_drawJumpscare()` in
+  `frontend/src/GameEngine.js`), the proposed new flow (a distinct
+  `'resume-countdown'` phase, not an extension of `'caught'`), and why a
+  new phase is cleaner than overloading the existing one.
+- Added the item to `docs/roadmap.md`'s incremental backlog and a fully
+  specced coding brief in
+  `docs/handoffs/roadmap-handoff-v0.4.24-plan.md`.
+
+### Design decisions
+
+- Refined the user's raw ask (which came through a "remove the flash"
+  suggestion from an unrelated chat transcript) to clarify that the
+  jump-scare's flash/zoom/capture-line beat is a separate, liked feature
+  and should stay untouched — only the abrupt reset-and-resume *after*
+  it is the actual complaint, so the fix targets that transition, not
+  the jump-scare itself.
+- Chose a brand-new `'resume-countdown'` phase over extending `'caught'`
+  so existing phase-gated code (HUD, controls, `_drawJumpscare`) doesn't
+  need special-casing for "which sub-beat of caught is this."
+- No audio requested for the countdown ticks in the original ask; parked
+  as a possible follow-up, not scoped into this pass.
+
+### Known non-goals for this pass
+
+- No gameplay code changed, no build/test run, no `GAME_ITERATION` bump.
+- Doesn't touch the near-capture interlude or the still-open v0.4.23-plan
+  post-kill profile screen — those are separate, unrelated backlog items.
+
 ## v0.4.21 — Deaths history log UI (2026-07-26)
 
 ### What changed

@@ -10,6 +10,23 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.24-plan — 2026-07-26 (docs-only)
+
+- Scoped the "Subway Surfers-style resume countdown" feature requested by
+  x-lax (relayed via Ken/Alexander): after the jump-scare finishes,
+  freeze the world at the reset spawn points and show a pulsing centered
+  "3… 2… 1…" (no flashing overlay) before resuming the chase, instead of
+  today's instant teleport back into a moving chase.
+- Added `docs/resume-countdown.md` with the full before/after code
+  walkthrough (exact `GameEngine.js` call sites) and design rationale —
+  notably, this keeps the existing jump-scare flash/zoom intact; only the
+  beat *after* it changes.
+- Added the backlog item to `docs/roadmap.md` and a coding brief in
+  `docs/handoffs/roadmap-handoff-v0.4.24-plan.md`.
+- No code changed, no build run, `GAME_ITERATION` unbumped. This is a
+  separate item from the still-open v0.4.23-plan (post-kill chaser
+  profile screen), which remains the oldest unfinished handoff.
+
 ## v0.4.22 — 2026-07-26 (real code)
 
 - Implemented level-advance pacing: for every non-Pipeworks level with an `advanceAt` threshold (1, 3, 4), required *all three* of the existing skreem threshold, a new elapsed-in-level time floor (`MIN_LEVEL_SECONDS_BEFORE_ADVANCE` set to `30`s), and `this.chasers.length >= 2` before the level can clear.

@@ -133,6 +133,16 @@ and chaser-bark voice clips, 1:1 with text.
   already requires 5 simultaneous chasers (stricter than 2) so it needs
   no change; the final level has no `advanceAt` and is also unaffected.
   See [gameplay-mechanics.md](gameplay-mechanics.md#round--level-advancement-why-does-the-round).
+- [ ] **Resume countdown after capture (Subway Surfers-style revive
+  beat).** After the jump-scare capture beat finishes, instead of
+  instantly teleporting the player back into a moving chase, freeze the
+  action at the reset spawn points and show a large, pulsing centered
+  "3… 2… 1…" countdown before resuming. No flashing/red overlay in this
+  new beat — that stays part of the jump-scare only. Fixes cheap
+  immediate re-deaths caused by disorienting instant respawns. Fully
+  specced in [docs/resume-countdown.md](resume-countdown.md); coding
+  brief in
+  [roadmap-handoff-v0.4.24-plan.md](handoffs/roadmap-handoff-v0.4.24-plan.md).
 - [ ] **Post-kill screen and kill logging.** When a kill occurs, after the kill skreem
   is done shaking, record who did the kill in the profile history, and then display
   a profile page for that chaser. The profile page should include humorous profile

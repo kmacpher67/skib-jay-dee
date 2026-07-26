@@ -42,6 +42,8 @@ Use this as the handoff doc for the next agent working in the repo.
 - **v0.4.19 (real code):** implemented the **Dad Case Environmental Traps: real audio** slice queued by `docs/handoffs/roadmap-handoff-v0.4.19-plan.md` — Ken had already uploaded `door-sounds.m4a` and `lights.m4a` to `frontend/src/assets/audio/`, so this session wired them in and removed the old text stub. `handleExtraChaserSpawn` in `App.jsx` now calls `playOneShot()` for both clips together when the `dad-case` chaser spawns; the `*DOOR SLAM SOUND*` placeholder `<div>` and its `.dad-case-sound-text` CSS class are gone. Also refreshed `VersionModal.jsx`'s changelog (added v0.4.19, simplified away a hardcoded "current iteration" entry that would've gone stale every bump) and fixed a stale roadmap checkbox — **Code Monkey host-profile routing** was already implemented but still showed unchecked. Full 11-test Playwright suite passes. Bumped `GAME_ITERATION` to `v0.4.19`. See `docs/handoffs/roadmap-handoff-v0.4.19.md`.
 - **v0.4.21 (real code):** the Deaths pill now opens a modal that shows the latest capture records with timestamps and level names, backed by a new `deathsHistory` array in the cookie profile. `GAME_ITERATION` is now `v0.4.21`, and the current version log/smoke suite were updated to reflect it.
 - **v0.4.22 (real code):** the level-advance pacing for non-Pipeworks levels is now gated by an elapsed time floor (`MIN_LEVEL_SECONDS_BEFORE_ADVANCE = 30`) and a minimum chaser count (`this.chasers.length >= 2`), AND'd with the existing skreem threshold. The extra chaser spawn interval was also bumped to 20 seconds. The next open backlog item is the game identity / multiple save slots work.
+- **v0.4.23-plan (docs-only, still open):** scoped a post-kill chaser profile screen and kill-history logging. See `docs/handoffs/roadmap-handoff-v0.4.23-plan.md`. This is currently the oldest unfinished handoff — pick it up first under Mode B's oldest-first rule unless told otherwise.
+- **v0.4.24-plan (docs-only):** scoped a "Subway Surfers-style resume countdown" — after the jump-scare finishes, freeze the world and show a pulsing centered "3… 2… 1…" (no flashing) before resuming the chase, instead of today's instant teleport back into a moving chase. The jump-scare itself (flash/zoom/capture-line) is unchanged; only the beat after it changes, via a new `'resume-countdown'` phase. Full design in `docs/resume-countdown.md`, coding brief in `docs/handoffs/roadmap-handoff-v0.4.24-plan.md`. No code changed, `GAME_ITERATION` unbumped. Unrelated to and independent of v0.4.23-plan.
 
 ## Files to check first
 
@@ -115,7 +117,8 @@ manually:
 
 ## Natural follow-up work
 
-- Next unclaimed item from the backlog is **game identity / multiple cookie-backed save slots**. See `docs/roadmap.md`.
+- Oldest unfinished handoff is **v0.4.23-plan (post-kill chaser profile screen + kill history)** — pick this up first under Mode B ordering. **v0.4.24-plan (resume countdown)** is next after that, and both are fully unblocked/ready to code. See `docs/handoffs/roadmap-handoff-v0.4.23-plan.md` and `docs/handoffs/roadmap-handoff-v0.4.24-plan.md`.
+- After those two, the next unclaimed item from the backlog is **game identity / multiple cookie-backed save slots**. See `docs/roadmap.md`.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it
   needs Ken to record real voice clips first, it's not a pure coding
