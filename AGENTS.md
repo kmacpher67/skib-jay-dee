@@ -21,6 +21,7 @@ or launching an automated coding run.
   and a `code_monkey_backend` / `code_monkey_model` hint.
 - Do not bump `GAME_ITERATION` or deploy unless the user explicitly asks to
   publish.
+- NEVER use the built-in `implementation_plan.md` artifact system for planning. ALWAYS use the `skib-sdlc.md` process and write handoff documents to `docs/handoffs/`.
 
 ## Code Monkey lane
 
