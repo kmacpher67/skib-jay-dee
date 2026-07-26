@@ -10,6 +10,19 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.3-plan — 2026-07-26 (docs-only planning)
+
+- Re-verified the chaser-face-randomization fix (v0.4.2-plan) is live and
+  correct in `frontend/src/GameEngine.js:801` — nothing further needed.
+- Turned two of v0.4.2-plan's four queued items into fully-specced
+  implementation plans (exact lines, exact constants, exact edits): the
+  lvl2-video arrival-vs-clear timing fix (move the trigger from
+  `onLevelChange` to a data-carrying `onLevelClear`), and the extra-chaser
+  join-speed ramp (new `CHASER_JOIN_RAMP_START`/`CHASER_JOIN_RAMP_SECONDS`
+  constants, per-chaser `joinRamp` field, layered on top of the existing
+  `chaserSpeedMod`).
+- Added `docs/handoffs/roadmap-handoff-v0.4.3-plan.md`.
+
 ## v0.4.2-plan — 2026-07-26 (docs-only planning + one pre-existing code fix)
 
 - Committed a chaser-face-randomization fix

@@ -178,20 +178,18 @@ this small.
   item in the whole backlog — expect it to span multiple sessions, and
   explicitly plan the sub-increments before writing code.
 - [ ] **Lvl2 transition video fires too early — gate it to clearing
-  Pipeworks, not arriving at it.** `App.jsx:156-166` (`handleLevelChange`)
+  Pipeworks, not arriving at it.** **Fully planned as of v0.4.3-plan, ready
+  to implement** — see `docs/handoffs/roadmap-handoff-v0.4.3-plan.md` for
+  the exact edits. Summary: `App.jsx:156-166` (`handleLevelChange`)
   triggers `setShowLvl2Transition(true)` when `index === 2`, which is the
   *arrival* index reported by `GameEngine.onLevelChange` the moment the
   runner reaches Pipeworks (Level 2) — i.e. right after clearing Level 1.
-  User-flagged bug: the clip should instead play once Pipeworks itself
-  has been survived/cleared (the transition *into* Level 3, Flooded
-  Annex), not the transition into Level 2. Fix means moving the trigger
-  off `onLevelChange`'s arrival index and onto the level-*clear* event for
-  Pipeworks specifically — check whether `onLevelClear`
-  (`GameEngine.js` constructor option, already wired for the level-clear
-  audio stinger) fires with enough info to detect "just cleared index 2,"
-  or whether `handleLevelChange`'s `index` needs to be checked against
-  "the level *after* Pipeworks" instead. Small, self-contained once
-  picked up — no new assets needed, same `lvl2-transition.mp4` clip.
+  Fix: make `onLevelClear()` (`GameEngine.js:685`) pass
+  `{ index: this.levelIndex + 1, name: this.level.name }` instead of
+  firing with no arguments, move the `index === 2` check into
+  `handleLevelClear` (`App.jsx:112`) alongside its existing audio call,
+  and delete the old check from `handleLevelChange`. No new assets
+  needed, same `lvl2-transition.mp4` clip.
 - [ ] **RESOLVED — Tie Pipeworks's clear condition to surviving 4
   simultaneous chasers at their max speed, gated by a skreem threshold.**
   User confirmed the design: "YES. for XX amount of SKREEM points and
@@ -219,23 +217,22 @@ this small.
   (the video should only show once this new "cleared Pipeworks" event
   fires, not the old flat `advanceAt` check).
 - [ ] **Extra chasers join slow and should ramp up over a level, not
-  stay fixed.** `_maybeSpawnExtraChaser()` (`GameEngine.js:779-802`)
-  spawns each new chaser at a flat `this.chaser.baseSpeed * 0.92` — a
-  one-time discount that never changes for that chaser's remaining
-  lifetime, even as the chase drags on. `chaserSpeedMod`
-  (`CHASER_SPEED_MOD_*` constants, `GameEngine.js:310-313`) already
-  ramps *all* chasers together across level-clears/deaths, but within a
-  single level, extras never speed up relative to when they joined.
-  User wants newly-joined skibs to start noticeably slower than the lead
-  chaser and then speed up as that level's chase continues, giving the
-  player a brief window to adapt to each new chaser instead of an
-  instant fixed handicap. Plan: track a per-chaser spawn timestamp or a
-  small ramping multiplier that climbs from ~0.7-0.8 toward 1.0 over a
-  few seconds after that chaser spawns, applied on top of (not instead
-  of) the existing `chaserSpeedMod`. Self-contained to
-  `_maybeSpawnExtraChaser()` and the per-chaser speed calc in
-  `_updateChase()`/wherever `chaser.baseSpeed * this.chaserSpeedMod` is
-  read (`GameEngine.js:745`).
+  stay fixed.** **Fully planned as of v0.4.3-plan, ready to implement** —
+  see `docs/handoffs/roadmap-handoff-v0.4.3-plan.md` for the exact edits.
+  Summary: `_maybeSpawnExtraChaser()` (`GameEngine.js:779-802`) spawns
+  each new chaser at a flat `this.chaser.baseSpeed * 0.92` — a one-time
+  discount that never changes for that chaser's remaining lifetime, even
+  as the chase drags on. `chaserSpeedMod` (`CHASER_SPEED_MOD_*`
+  constants, `GameEngine.js:310-313`) already ramps *all* chasers
+  together across level-clears/deaths, but within a single level, extras
+  never speed up relative to when they joined. Fix: add
+  `CHASER_JOIN_RAMP_START = 0.7` / `CHASER_JOIN_RAMP_SECONDS = 5`
+  constants, give each newly-pushed chaser a `joinRamp: 0` field (lead
+  chaser has none, defaults to fully-ramped), advance it toward 1 each
+  frame in the chase-update loop, and multiply the resulting
+  `lerp(CHASER_JOIN_RAMP_START, 1, joinRamp)` into the existing
+  `chaser.baseSpeed * this.chaserSpeedMod` calc (`GameEngine.js:746`) —
+  layered on top of, not replacing, the run-level rubber-band.
 - [ ] **RESOLVED — no new death video, keep the original jump-scare
   working.** User confirmed: "my bad the ded is still the original" —
   there is no new death-specific video wanted; option (a) from the
@@ -253,10 +250,6 @@ this small.
   arrival), double check the two states genuinely can't overlap, then
   check this item off — no code changes expected beyond that
   verification unless a real overlap is found.
-  during the `caught` phase. Don't build a new clip's plumbing without
-  that confirmation; the safe first step either way is auditing that the
-  jump-scare and the lvl2-video overlay can never trigger at the same
-  time and stomp each other.
 
 ## Session rules
 

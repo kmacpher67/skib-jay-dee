@@ -6,6 +6,63 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.3-plan (docs-only planning)
+
+**Date:** July 26, 2026
+
+### What changed
+
+`GAME_ITERATION` stays `v0.4.0` — this session was explicitly docs/plan
+only. It started from a request to work the "chaser face randomization
+fix" backlog item, but that item had already shipped in v0.4.2-plan
+(committed as `6c388a6`) — re-checked directly against the current
+`frontend/src/GameEngine.js:801` and confirmed still correct, so there
+was nothing left to plan or build there. Redirected (per the user) to
+turning two of v0.4.2-plan's four queued, unblocked items into concrete,
+ready-to-type implementation plans instead of leaving them at the
+investigation stage:
+
+- **Lvl2-video timing fix**, fully planned: move the transition trigger
+  off `onLevelChange`'s arrival index (`App.jsx:156-166`, fires on
+  *arriving* at Pipeworks) onto the existing `onLevelClear()` hook
+  (`GameEngine.js:685`), which needs to start carrying `{ index, name }`
+  data about the level just cleared instead of firing with no arguments.
+  Exact edits for both files are in
+  `docs/handoffs/roadmap-handoff-v0.4.3-plan.md`.
+- **Extra-chaser speed-ramp fix**, fully planned: replace the flat
+  `baseSpeed * 0.92` discount in `_maybeSpawnExtraChaser()`
+  (`GameEngine.js:794-802`) with a per-chaser `joinRamp` field that
+  climbs from a new `CHASER_JOIN_RAMP_START` (0.7) to 1.0× over
+  `CHASER_JOIN_RAMP_SECONDS` (5s), applied as a multiplier layered on top
+  of the existing run-level `chaserSpeedMod` rubber-band, not replacing
+  it. Exact edits in the same handoff file.
+
+### Design / plan note
+
+- Chose `0.7`/`5s` as the join-ramp starting point and duration as a
+  concrete default so the next coding session doesn't have to invent
+  tuning numbers mid-implementation — cheap to retune after a real
+  playtest, but a placeholder anywhere in `[0.6, 0.8]` / `[3, 6]`s would
+  have been an equally reasonable guess, so picking one now and writing
+  down *why* (give the player a visible adjustment window, not an
+  invisible instant discount) beats leaving it as an open question.
+- Deliberately did not touch the two still-blocked v0.4.2-plan items
+  (Pipeworks's 4-chaser clear condition, the death-video confirmation) —
+  both still need a one-line product decision from the user before any
+  planning beyond what v0.4.2-plan already wrote up would be productive.
+- Re-verified file/line references directly against current source
+  rather than trusting v0.4.2-plan's numbers from memory — cheap
+  insurance against drift now that two sessions have passed since they
+  were first recorded.
+
+### Known non-goals for this version
+
+- No `GameEngine.js`/`App.jsx` changes — both plans are plan-only.
+- No new tuning constants actually added to code yet (`CHASER_JOIN_RAMP_START`/
+  `CHASER_JOIN_RAMP_SECONDS` are specified in the plan, not written).
+- No decision made on the two still-blocked v0.4.2-plan items.
+- No `GAME_ITERATION` bump, no build, no deploy.
+
 ## v0.4.2-plan (docs-only planning + one pre-existing code fix found uncommitted)
 
 **Date:** July 26, 2026
