@@ -110,11 +110,14 @@ and chaser-bark voice clips, 1:1 with text.
   [future-versions.md](future-versions.md) for what's still rough
   (volume ducking, a real menu theme).
 - [ ] **Audio 2: capture-line and chaser-bark voice clips, 1:1 with text.**
+  **Note: This is an optional enhancement.** The dialog is fully playable 
+  as non-audio visual popups (speech bubbles/text), so audio is not 100% 
+  required for those playing muted (e.g. at work/church).
   v0.4.0 wired a themed *pool* of chaser-bark/scream/taunt clips that
   plays alongside the random `CHASER_LINES` text, but it's not a matched
-  pair per line yet. Record one clip per `CAPTURE_LINES` and
+  pair per line yet. If desired, record one clip per `CAPTURE_LINES` and
   `CHASER_LINES` entry for a real 1:1 match. See
-  [future-versions.md](future-versions.md).
+  [future-versions.md](future-versions.md) and [dialog_content_chasing.md](dialog_content_chasing.md).
 - [x] **Audio 3: ambient chase loop.** Landed v0.4.10 —
   `chase-ambient-bopbop.mp3` now stays quiet on chase start and only
   arms after roughly 15 seconds or the first extra chaser spawn,

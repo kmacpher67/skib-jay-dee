@@ -5,10 +5,15 @@ It exists as a human-AI documentation trail to track what lines exist, where the
 
 All active text is implemented in `frontend/src/dialog.js`. If you add a line here, make sure it gets added there (and vice versa).
 
+- these lines should be non-audio popup also. 
+
 ## Audio Recording To-Do List (For Ken)
 
-For the "Audio 2" roadmap item, we want the voice clips to perfectly match the on-screen text bubbles 1:1. 
-Below are the lines currently in the game. Please record them according to the `docs/sound-effects-howto.md` guidelines and save them with the suggested filenames in `frontend/src/assets/audio/`.
+**Note:** All of the dialog below is *already fully functional* in the game as visual, non-audio popups (speech bubbles and full-screen text). This means the audio is **not 100% required** — players can still fully enjoy the dialog while playing at work or church with the sound muted!
+
+The voice clips are purely an optional enhancement for the "Audio 2" roadmap item to make the voice clips match the on-screen text bubbles 1:1. 
+
+If/when you decide to record them, please follow the `docs/sound-effects-howto.md` guidelines and save them with the suggested filenames in `frontend/src/assets/audio/`.
 
 ### Chaser Lines
 *Shown in a speech bubble above the chaser when it's closing in.*
@@ -30,7 +35,7 @@ Below are the lines currently in the game. Please record them according to the `
 - [ ] "SKIBIDI DOP DOP DOP YES YES!"
   - **Suggested filename:** `chaser-bark-dopdop.mp3`
 
-### Capture Lines
+### Capture Lines by SKIB.
 *Shown full-screen, jump-scare style, when the runner gets caught.*
 
 - [ ] "JAYDEN CAPTURED!"
@@ -44,7 +49,7 @@ Below are the lines currently in the game. Please record them according to the `
 - [ ] "THAT'S A TOTAL WIPEOUT!"
   - **Suggested filename:** `capture-sting-wipeout.mp3`
 
-### Tired Lines
+### Tired Lines by Runner
 *Shown near the runner the moment stamina bottoms out mid-sprint.*
 
 - [ ] "AHHH, I'M TIE-RED!"
