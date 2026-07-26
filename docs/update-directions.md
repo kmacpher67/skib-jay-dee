@@ -13,7 +13,10 @@ Use this as the handoff doc for the next agent working in the repo.
 ## Files to check first
 
 - `README.md`
+- `docs/skib-sdlc.md`
 - `docs/version-log.md`
+- `docs/roadmap.md`
+- `docs/sound-effects-howto.md`
 - `docs/dev-notes.md`
 - `frontend/src/GameEngine.js`
 - `frontend/src/App.jsx`
@@ -46,6 +49,7 @@ Use this as the handoff doc for the next agent working in the repo.
 
 - Add the scripted World Star intro cinematic.
 - Add sound effects and background audio.
+- Use [docs/sound-effects-howto.md](docs/sound-effects-howto.md) as the starting point for the audio pass.
 - Crop or mask uploaded faces instead of stretching the raw image.
 - Add more character roles or abilities from the PDF roster.
 - Add more level variants once the current three feel tuned.
@@ -55,6 +59,7 @@ Use this as the handoff doc for the next agent working in the repo.
 
 - The current upgrade checkpoint is documented in [docs/version-log.md](docs/version-log.md).
 - When future agents make a meaningful change, append a new version section there so the design and plan trail stays durable.
+- Follow the session process in [docs/skib-sdlc.md](docs/skib-sdlc.md) and pull the next increment from [docs/roadmap.md](docs/roadmap.md).
 
 ## Constraints to keep respecting
 

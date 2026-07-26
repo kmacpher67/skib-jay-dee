@@ -3,6 +3,52 @@
 This file memorializes the design and plan decisions made during the
 front-end upgrade pass.
 
+## v0.2.4
+
+**Date:** July 26, 2026
+
+### What changed
+
+- Added `docs/skib-sdlc.md` to codify the session workflow for future
+  agents.
+- Added `docs/roadmap.md` as the session-sized backlog to pull from.
+- Added `docs/sound-effects-howto.md` as a starter guide for the upcoming
+  audio pass.
+
+### Design / plan note
+
+- The repo now has a clearer docs stack for iterative development:
+  - `README.md` for project overview
+  - `docs/version-log.md` for durable version history
+  - `docs/update-directions.md` for the next handoff
+  - `docs/skib-sdlc.md` for process rules
+  - `docs/roadmap.md` for the next increment queue
+  - `docs/sound-effects-howto.md` for the audio subtask kickoff
+- This pass intentionally did not change gameplay code; it only tightened
+  the documentation trail so the next coding session starts with less
+  guessing.
+
+## v0.2.3
+
+**Date:** July 26, 2026
+
+### What changed
+
+- Added the repo-wide session process doc in `docs/skib-sdlc.md`.
+- Added a working backlog file in `docs/roadmap.md` so the new session
+  process has a concrete increment list to pull from.
+- Reinforced the docs-first workflow for iterative development and review.
+
+### Design / plan note
+
+- Documentation now has three layers:
+  - `docs/version-log.md` for durable versioned decisions.
+  - `docs/update-directions.md` for the immediate handoff to the next agent.
+  - `docs/roadmap.md` for the next single-session increments.
+- The new `docs/skib-sdlc.md` process doc is intentionally explicit about
+  reading order, build verification, and committing every meaningful
+  increment.
+
 ## v0.2.2
 
 **Date:** July 26, 2026
