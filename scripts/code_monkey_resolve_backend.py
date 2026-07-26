@@ -141,17 +141,25 @@ def resolve_backend_model(
         ).strip()
     else:
         profile_base_url, profile_model = _resolve_profile_default(profile)
-        model = (
-            fm_model
-            or (env_model if env_model is not None else os.environ.get("SKIB_CODE_MONKEY_MODEL", ""))
-            or _resolve_profile_env(profile, suffix="OLLAMA_MODEL")
-            or profile_model
-        ).strip()
+        if _normalize_profile(profile) == "desktop-gaming":
+            model = (
+                _resolve_profile_env(profile, suffix="OLLAMA_MODEL")
+                or profile_model
+                or fm_model
+                or (env_model if env_model is not None else os.environ.get("SKIB_CODE_MONKEY_MODEL", ""))
+            ).strip()
+        else:
+            model = (
+                fm_model
+                or _resolve_profile_env(profile, suffix="OLLAMA_MODEL")
+                or profile_model
+                or (env_model if env_model is not None else os.environ.get("SKIB_CODE_MONKEY_MODEL", ""))
+            ).strip()
         base_url = _resolve_ollama_base_url(
             fm_base_url
-            or (env_base_url if env_base_url is not None else os.environ.get("SKIB_CODE_MONKEY_BASE_URL", ""))
             or _resolve_profile_env(profile, suffix="OLLAMA_BASE_URL")
             or profile_base_url
+            or (env_base_url if env_base_url is not None else os.environ.get("SKIB_CODE_MONKEY_BASE_URL", ""))
         )
 
     return backend, profile, model, base_url

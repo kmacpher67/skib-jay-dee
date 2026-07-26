@@ -24,11 +24,25 @@ def dry_run(handoff_path: Path, backend: str, profile: str, model: str, base_url
     print("──────────────────────────────────────────────────────────────────────────")
     print(prompt)
     print("──────────────────────────────────────────────────────────────────────────")
-    print(f"[code-monkey] Would POST to {base_url.rstrip('/')}/chat/completions")
+    endpoint = ollama_chat_endpoint(base_url) if backend == "ollama" else openrouter_chat_endpoint(base_url)
+    print(f"[code-monkey] Would POST to {endpoint}")
     return 0
 
 
-def call_chat_completions(base_url: str, api_key: str | None, model: str, prompt: str) -> str:
+def openrouter_chat_endpoint(base_url: str) -> str:
+    return base_url.rstrip("/") + "/chat/completions"
+
+
+def ollama_chat_endpoint(base_url: str) -> str:
+    root = base_url.rstrip("/")
+    if root.endswith("/v1"):
+        root = root[:-3]
+    if root.endswith("/api"):
+        return root + "/chat"
+    return root + "/api/chat"
+
+
+def call_openrouter_chat(base_url: str, api_key: str | None, model: str, prompt: str) -> str:
     payload = {
         "model": model,
         "messages": [{"role": "user", "content": prompt}],
@@ -39,7 +53,7 @@ def call_chat_completions(base_url: str, api_key: str | None, model: str, prompt
         headers["Authorization"] = f"Bearer {api_key}"
 
     req = urllib.request.Request(
-        base_url.rstrip("/") + "/chat/completions",
+        openrouter_chat_endpoint(base_url),
         data=json.dumps(payload).encode("utf-8"),
         headers=headers,
         method="POST",
@@ -47,6 +61,28 @@ def call_chat_completions(base_url: str, api_key: str | None, model: str, prompt
     with urllib.request.urlopen(req, timeout=300) as resp:
         body = json.loads(resp.read())
     return body["choices"][0]["message"]["content"]
+
+
+def call_ollama_chat(base_url: str, model: str, prompt: str) -> str:
+    payload = {
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
+        "stream": False,
+    }
+    req = urllib.request.Request(
+        ollama_chat_endpoint(base_url),
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    with urllib.request.urlopen(req, timeout=300) as resp:
+        body = json.loads(resp.read())
+    message = body.get("message") or {}
+    content = message.get("content")
+    if content:
+        return content
+    # Some Ollama builds may still wrap the reply in a "response" field.
+    return body.get("response", "")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -91,7 +127,11 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     try:
-        print(call_chat_completions(base_url, api_key if backend == "openrouter" else None, model, prompt))
+        if backend == "openrouter":
+            output = call_openrouter_chat(base_url, api_key, model, prompt)
+        else:
+            output = call_ollama_chat(base_url, model, prompt)
+        print(output)
     except urllib.error.HTTPError as exc:
         print(f"[code-monkey] HTTP error from {base_url}: {exc}", file=sys.stderr)
         return 1
