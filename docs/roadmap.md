@@ -287,7 +287,7 @@ and chaser-bark voice clips, 1:1 with text.
 - [ ] **Game Identity & New Profiles.** Allow the user to keep their existing game identity and create a new game profile, still using front-end cookies only.
 - [ ] **Fix Initial Sheebs.** The game currently starts off with 200 sheebs (in cookies.js, some users see 240 somehow). This should start at 0 sheebs.
 - [ ] **Setup Version Page.** Create a version page in the frontend to display current iteration and changelog info.
-- [ ] **Track Chaser Kills (Who Killed Who).** Add to the roadmap/gameplay: Track which Skib-chaser got the kill. Each chaser should have their specific name pop up.
+- [ ] **Track Chaser Kills (Who Killed Who).** Add to the roadmap/gameplay: Track which Skib-chaser got the kill and when. The "Deaths ##" text on the main menu should become clickable, opening a history/log modal of who killed the player and when.
 - [ ] **Skib Profile Reviewer (Nintendo Style).** Add a UI screen that rotates the skib character and tells the profile of the skib-killer-chaser (their main scare and toilet killing tricks). (Needs Ken's input on `docs/profiles/`).
 - [ ] **Fix Skreem Loop.** After any amount of interaction with the main screen, we only get a loop of the player skreeem! Less of that.
 - [ ] **New Chase Map Layout.** Need to vibe and expand upon a new chase map layout for a future level.
