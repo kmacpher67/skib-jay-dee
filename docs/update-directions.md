@@ -54,8 +54,8 @@ Use this as the handoff doc for the next agent working in the repo.
 - `frontend/src/lib/cookies.js`
 - `frontend/src/components/GameCanvas.jsx`
 - `frontend/src/components/ShopModal.jsx`
-- `docs/handoffs/roadmap-handoff-v0.4.13-plan.md`
-- `docs/handoffs/roadmap-handoff-v0.4.14.md`
+- `docs/handoffs/roadmap-handoff-v0.4.16.md`
+- `docs/handoffs/roadmap-handoff-v0.4.17-plan.md`
 - `scripts/run_code_monkey.sh`
 - `scripts/code_monkey_direct.py`
 
@@ -107,7 +107,7 @@ manually:
 
 ## Natural follow-up work
 
-- Next unclaimed items from the v0.4.15-plan copy-paste block: a **Version page** (show `GAME_ITERATION` + changelog in the menu) and **game identity / multiple cookie-backed save slots**. See `docs/roadmap.md`.
+- Next unclaimed items from the v0.4.17-plan copy-paste block: **Dad Case Environmental Traps** (darkening overlay and sound effect), followed by a **Version page** (show `GAME_ITERATION` + changelog in the menu) and **game identity / multiple cookie-backed save slots**. See `docs/roadmap.md`.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it
   needs Ken to record real voice clips first, it's not a pure coding

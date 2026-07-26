@@ -114,6 +114,7 @@ and chaser-bark voice clips, 1:1 with text.
   autoplay. `startMenuAudio()` in `frontend/src/App.jsx` now primes at
   `volume: 0`/`loop: false` and pauses itself once `play()` resolves.
   Covered by `frontend/e2e/menu-audio-prime.spec.js`.
+- [ ] **Dad Case Environmental Traps.** Implement a visual darkening overlay and a sound effect when the "Dad Case" chaser spawns via the multi-chaser mechanic. Needs a sound effect asset from Ken (e.g., slamming door or light switch).
 - [ ] **Version page.** Add a simple page/panel to the menu that shows
   the current `GAME_ITERATION` (`frontend/src/version.js`) plus a short
   changelog pulled from or mirroring `docs/handoffs/ledger.md`. Front-end

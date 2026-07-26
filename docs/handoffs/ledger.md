@@ -10,6 +10,12 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.17-plan — 2026-07-26 (docs-only)
+
+- Scoped the Dad Case environmental trap feature (visual darkening overlay and sound effect).
+- Created the implementation plan in `docs/handoffs/roadmap-handoff-v0.4.17-plan.md`.
+- Added the feature to the `docs/roadmap.md` incremental backlog.
+
 ## v0.4.16 — 2026-07-26 (real code)
 
 - Fixed the initial Sheebs default: new profiles now start at `0` sheebs instead of `200` (`normalizeProfile()` in `frontend/src/lib/cookies.js`).
