@@ -6,6 +6,36 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.20 — GameEngine cleanup and Sheebs penalty (2026-07-26)
+
+### What changed
+
+- `frontend/src/GameEngine.js`: removed the stale `initialSheebs = 200`
+  default from the constructor signature so the engine now relies on the
+  caller's real value, and added `DEATH_SHEEBS_PENALTY = 20` alongside
+  the existing skreem-loss penalty.
+- `frontend/src/GameEngine.js`: `_triggerCaught()` now subtracts up to
+  20 sheebs on capture, floored at `0`, without letting the persistent
+  balance go negative.
+- `frontend/src/version.js`: bumped the visible build tag to
+  `v0.4.20`.
+
+### Design decisions
+
+- Kept the sheebs penalty in `GameEngine.js` next to the existing death
+  skreem penalty so the capture economics stay in one place.
+- Used a flat `20` sheebs loss, matching the handoff's bounded scope and
+  leaving tuning to a later balance pass if needed.
+
+### Explicitly not done
+
+- The deaths history log UI is still queued for the next versioned
+  increment.
+
+### Verification
+
+- `cd frontend && npm run build`
+
 ## v0.4.19 — Dad Case Environmental Traps: real audio (2026-07-26)
 
 ### What changed

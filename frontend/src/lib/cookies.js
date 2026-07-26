@@ -44,6 +44,22 @@ export function normalizeProfile(profile = {}) {
   const ownedItems = Array.isArray(profile.ownedItems)
     ? [...new Set(profile.ownedItems.filter(Boolean))]
     : []
+  const deathsHistory = Array.isArray(profile.deathsHistory)
+    ? profile.deathsHistory
+        .filter(
+          (entry) =>
+            entry &&
+            typeof entry === 'object' &&
+            Number.isFinite(entry.timestamp) &&
+            typeof entry.levelName === 'string' &&
+            entry.levelName,
+        )
+        .map((entry) => ({
+          timestamp: Math.max(0, Math.floor(entry.timestamp)),
+          levelName: entry.levelName,
+        }))
+        .slice(-50)
+    : []
 
   return {
     userId: typeof profile.userId === 'string' && profile.userId ? profile.userId : createUserId(),
@@ -51,6 +67,7 @@ export function normalizeProfile(profile = {}) {
     ownedItems,
     highestLevel: Number.isFinite(profile.highestLevel) ? Math.max(1, Math.floor(profile.highestLevel)) : 1,
     deaths: Number.isFinite(profile.deaths) ? Math.max(0, Math.floor(profile.deaths)) : 0,
+    deathsHistory,
     muted: profile.muted === true,
   }
 }

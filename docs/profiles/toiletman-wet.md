@@ -1,7 +1,7 @@
 # Toiletman Wet
 
-**Name:** Toiletman Wet
-**Vibe:** Drenched, straight out of the bowl.
+**Name:** Toiletman Wet Farm Grandpa 
+**Vibe:** Drenched, straight out of the bowl. Mad as hell.
 
 ### Parody Attributes
 * **Panic Index:** 18 (Flailing, thrashing, and rushing at terrifying speeds.)

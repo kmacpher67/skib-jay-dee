@@ -39,13 +39,13 @@ Ramen Aisle):
    `_syncLevelState()` (`GameEngine.js:664-702`) alongside the existing
    `this.levelSkreems = 0` reset. Add a new constant near
    `EXTRA_CHASER_INTERVAL` (`GameEngine.js:306-313`), e.g.
-   `const MIN_LEVEL_SECONDS_BEFORE_ADVANCE = 20`.
+   `const MIN_LEVEL_SECONDS_BEFORE_ADVANCE = 30`. Also update `EXTRA_CHASER_INTERVAL = 20` (from 14).
 2. **Two-simultaneous-chasers floor.** Require
    `this.chasers.length >= 2` at the moment of the check — i.e. the
    extra-chaser mechanic (`_maybeSpawnExtraChaser()`,
-   `EXTRA_CHASER_INTERVAL = 14`s) must have already spawned at least one
+   `EXTRA_CHASER_INTERVAL = 20`s) must have already spawned at least one
    extra toilet before the level can clear. This is a natural pairing
-   with the time floor since 14s of uninterrupted chase is roughly when
+   with the time floor since 20s of uninterrupted chase is roughly when
    the second chaser shows up anyway, but make it an explicit condition,
    not an implicit side effect of the timer, so it holds even if a
    capture/respawn resets the extra-chaser timer mid-level.
@@ -64,8 +64,8 @@ Ramen Aisle):
      this.chasers.length >= 2
    ) {
    ```
-4. **Tunable, not fixed.** `MIN_LEVEL_SECONDS_BEFORE_ADVANCE = 20` is a
-   starting guess (roughly 1.4x `EXTRA_CHASER_INTERVAL`) — playtest and
+4. **Tunable, not fixed.** `MIN_LEVEL_SECONDS_BEFORE_ADVANCE = 30` is a
+   starting guess (roughly 1.5x `EXTRA_CHASER_INTERVAL`) — playtest and
    adjust; name it clearly so a future session can retune without
    re-deriving the mechanism. Do **not** touch Pipeworks's separate gate
    constants (`PIPEWORKS_*`) — those are already tuned and solve a
@@ -88,7 +88,7 @@ pacing in `frontend/src/GameEngine.js`, per Ken's direct feedback that
 level upgrades are still too fast.
 
 1. **Add a new constant** near `EXTRA_CHASER_INTERVAL` (around line 307):
-   `const MIN_LEVEL_SECONDS_BEFORE_ADVANCE = 20`.
+   `const MIN_LEVEL_SECONDS_BEFORE_ADVANCE = 30`, and change `const EXTRA_CHASER_INTERVAL = 20`.
 
 2. **Track elapsed time per level.** In `_syncLevelState()` (around line
    664-702), add `this.levelElapsed = 0` alongside the existing

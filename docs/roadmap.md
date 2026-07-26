@@ -22,7 +22,7 @@ faces, five levels (Porcelain Palace → Pipeworks → Flooded Annex → The
 Ramen Aisle → World Star Parking Lot), desktop keyboard controls, sprint,
 Shleeb shop, cookie-backed profile (user id, sheebs, owned items, highest
 level, lifetime deaths), skreem-on-proximity, skreem-penalty + death count
-on capture, a multi-chaser mechanic (extra toilets join in if a level runs
+on capture, a 20-sheebs capture penalty, a multi-chaser mechanic (extra toilets join in if a level runs
 long, with Pipeworks tuned for five simultaneous chasers), and a discreet build-iteration badge tied to a shared
 frontend constant plus the deploy-commit helper. All in-game text now
 lives in one place, `frontend/src/dialog.js` (`CAPTURE_LINES`,
@@ -122,15 +122,10 @@ and chaser-bark voice clips, 1:1 with text.
   which chaser caught you) to the cookie profile and a small
   modal/panel that opens on tap to show it. See
   [gameplay-mechanics.md](gameplay-mechanics.md#deaths-counter-no-history-log).
-- [ ] **Sheebs penalty on capture.** Dying currently only costs `skreems`
-  (30% of the in-run proximity meter, `DEATH_SKREEM_PENALTY` in
-  `GameEngine.js`) — sheebs (the persistent shop currency) are untouched.
-  Add a flat sheebs penalty on capture (e.g. `-20`, floored at `0`) as its
-  own constant next to `DEATH_SKREEM_PENALTY`. Note the "slow the chasers
-  down on death" half of this ask is already implemented
-  (`CHASER_SPEED_MOD_DEATH_STEP`) — this item is only the missing sheebs
-  half. See
-  [gameplay-mechanics.md](gameplay-mechanics.md#death-penalty-what-actually-happens-on-capture).
+- [x] **Sheebs penalty on capture.** Landed v0.4.20 — dying now deducts a
+  flat 20 sheebs on capture, floored at 0, in addition to the existing
+  skreem penalty. The "slow the chasers down on death" half of this ask
+  was already implemented (`CHASER_SPEED_MOD_DEATH_STEP`).
 - [ ] **RESOLVED — level-advance pacing is still too fast; add a
   time floor and a two-simultaneous-chasers floor.** Ken: "level
   upgrades are still too fast, maybe more time running by the player
@@ -138,8 +133,9 @@ and chaser-bark voice clips, 1:1 with text.
   simulatenously chasing." Confirmed design: for every non-Pipeworks
   level with an `advanceAt` threshold (1, 3, 4), require *all three* of
   the existing skreem threshold, a new elapsed-in-level time floor
-  (`MIN_LEVEL_SECONDS_BEFORE_ADVANCE`, starting guess `20`s), and
-  `this.chasers.length >= 2` before the level can clear. Pipeworks
+  (`MIN_LEVEL_SECONDS_BEFORE_ADVANCE`, set to `30`s), and
+  `this.chasers.length >= 2` before the level can clear. Also, change
+  the extra chaser spawn interval to 20 seconds. Pipeworks
   already requires 5 simultaneous chasers (stricter than 2) so it needs
   no change; the final level has no `advanceAt` and is also unaffected.
   Ready to code — see
@@ -147,6 +143,10 @@ and chaser-bark voice clips, 1:1 with text.
   for the exact diff and copy-paste block. Previously this item only
   covered level 1's threshold in isolation; superseded by the above. See
   [gameplay-mechanics.md](gameplay-mechanics.md#round--level-advancement-why-does-the-round).
+- [ ] **Post-kill screen and kill logging.** When a kill occurs, after the kill skreem
+  is done shaking, record who did the kill in the profile history, and then display
+  a profile page for that chaser. The profile page should include humorous profile
+  info about their "toilet cleanup killen". See [roadmap-handoff-v0.4.23-plan.md](handoffs/roadmap-handoff-v0.4.23-plan.md).
 - [ ] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,
   left over from before the v0.4.16 cookie-default fix. `App.jsx` always

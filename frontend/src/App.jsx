@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import FaceUpload from './components/FaceUpload.jsx'
 import GameCanvas from './components/GameCanvas.jsx'
+import DeathsModal from './components/DeathsModal.jsx'
 import ShopModal from './components/ShopModal.jsx'
 import VersionModal from './components/VersionModal.jsx'
 import skreemLoopUrl from './assets/audio/jayden-skreem-loop.m4a'
@@ -40,6 +41,7 @@ export default function App() {
   const [screen, setScreen] = useState('menu')
   const [shopOpen, setShopOpen] = useState(false)
   const [versionOpen, setVersionOpen] = useState(false)
+  const [deathsOpen, setDeathsOpen] = useState(false)
   const [runnerFace, setRunnerFace] = useState(() => randomFaces().runnerFace)
   const [chaserFace, setChaserFace] = useState(() => randomFaces().chaserFace)
   const [runnerIsCustom, setRunnerIsCustom] = useState(false)
@@ -150,6 +152,7 @@ export default function App() {
     if (!chaserIsCustom) setChaserFace(nextFaces.chaserFace)
     setShopOpen(false)
     setVersionOpen(false)
+    setDeathsOpen(false)
     setLastCaptureLine('')
     setShowLvl2Transition(false)
     setDadCaseSpawned(false)
@@ -176,11 +179,24 @@ export default function App() {
     syncProfile((current) => ({ ...current, sheebs: nextSheebs }))
   }
 
-  const handleDeath = (nextDeaths) => {
-    syncProfile((current) => ({
-      ...current,
-      deaths: Number.isFinite(nextDeaths) ? Math.max(current.deaths, nextDeaths) : current.deaths + 1,
-    }))
+  const handleDeath = (payload) => {
+    const nextDeaths = typeof payload === 'number' ? payload : payload?.deaths
+    const levelName = typeof payload === 'object' && payload && typeof payload.levelName === 'string'
+      ? payload.levelName
+      : 'Unknown level'
+
+    syncProfile((current) => {
+      const nextHistory = [
+        ...(Array.isArray(current.deathsHistory) ? current.deathsHistory : []),
+        { timestamp: Date.now(), levelName },
+      ]
+
+      return {
+        ...current,
+        deaths: Number.isFinite(nextDeaths) ? Math.max(current.deaths, nextDeaths) : current.deaths + 1,
+        deathsHistory: nextHistory.slice(-50),
+      }
+    })
   }
 
   const handleLevelChange = ({ index }) => {
@@ -208,6 +224,12 @@ export default function App() {
     setDadCaseSpawned(false)
     setLastCaptureLine(captureLine)
     playCaughtAudio()
+  }
+
+  const handleOpenDeaths = () => {
+    setShopOpen(false)
+    setVersionOpen(false)
+    setDeathsOpen(true)
   }
 
   const getAmbientAudio = () => getAudio(ambientAudioRef, chaseAmbientUrl, true, 0.14)
@@ -300,6 +322,7 @@ export default function App() {
                 setShopOpen(false)
                 setVersionOpen(true)
               }}
+              onOpenDeaths={handleOpenDeaths}
               onPrimeAudio={startMenuAudio}
               muted={muted}
               onToggleMuted={toggleMuted}
@@ -316,6 +339,10 @@ export default function App() {
 
             {versionOpen && (
               <VersionModal iteration={GAME_ITERATION} onClose={() => setVersionOpen(false)} />
+            )}
+
+            {deathsOpen && (
+              <DeathsModal deathsHistory={profile.deathsHistory} onClose={() => setDeathsOpen(false)} />
             )}
           </>
         )}
@@ -387,6 +414,7 @@ function MainMenu({
   onPlay,
   onOpenShop,
   onOpenVersion,
+  onOpenDeaths,
   onPrimeAudio,
   muted,
   onToggleMuted,
@@ -412,7 +440,9 @@ function MainMenu({
         <span>User {profile.userId}</span>
         <span>{profile.sheebs} sheebs</span>
         <span>Best level {profile.highestLevel}</span>
-        <span>Deaths {profile.deaths}</span>
+        <button className="status-pill deaths-pill" onClick={onOpenDeaths} type="button">
+          Deaths {profile.deaths}
+        </button>
       </div>
 
       <div className="face-row">

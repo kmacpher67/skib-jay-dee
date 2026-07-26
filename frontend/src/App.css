@@ -81,6 +81,7 @@
 }
 
 .status-row span,
+.status-row button,
 .perk-strip span {
   display: inline-flex;
   align-items: center;
@@ -94,6 +95,12 @@
   font-size: 11px;
   line-height: 1.1;
   backdrop-filter: blur(6px);
+}
+
+.status-row button {
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
 }
 
 @media (max-width: 360px) {
@@ -227,7 +234,8 @@
 }
 
 .shop-modal,
-.version-modal {
+.version-modal,
+.deaths-modal {
   position: absolute;
   inset: 0;
   z-index: 30;
@@ -240,7 +248,8 @@
 }
 
 .shop-panel,
-.version-panel {
+.version-panel,
+.deaths-panel {
   width: min(100%, 330px);
   max-height: 100%;
   overflow: auto;
@@ -255,7 +264,8 @@
 }
 
 .shop-header,
-.version-header {
+.version-header,
+.deaths-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -306,13 +316,15 @@
 }
 
 .shop-grid,
-.version-list {
+.version-list,
+.deaths-list {
   display: grid;
   gap: 10px;
 }
 
 .shop-card,
-.version-card {
+.version-card,
+.death-card {
   padding: 12px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.05);
@@ -393,6 +405,34 @@
   line-height: 1.45;
 }
 
+.death-card-top {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.death-time {
+  margin: 0;
+  color: #60ff72;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.death-level {
+  margin: 0;
+  color: #c7cdd2;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.deaths-empty {
+  margin: 0;
+  color: #c9ced3;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
 .shop-buy-btn {
   width: 100%;
   margin-top: 10px;
@@ -424,6 +464,17 @@
   font-weight: 800;
   font-size: 14px;
   letter-spacing: 0.4px;
+}
+
+.deaths-pill {
+  border: 1px solid rgba(255, 207, 63, 0.22);
+  background: rgba(255, 207, 63, 0.12);
+  color: #ffcf3f;
+}
+
+.deaths-pill:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 207, 63, 0.45);
 }
 
 .exit-btn {

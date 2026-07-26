@@ -10,6 +10,16 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.20 — 2026-07-26 (real code)
+
+- Removed the stale `initialSheebs = 200` default from
+  `frontend/src/GameEngine.js` so the engine always uses the caller's
+  value.
+- Added `DEATH_SHEEBS_PENALTY = 20` and now subtract up to 20 sheebs on
+  capture, floored at zero, without letting the persistent balance go
+  negative.
+- Bumped `GAME_ITERATION` to `v0.4.20`.
+
 ## v0.4.20-plan / v0.4.21-plan / v0.4.22-plan — 2026-07-26 (docs-only)
 
 - Reviewed `roadmap-handoff-v0.4.20-plan.md` and `roadmap-handoff-v0.4.21-plan.md`

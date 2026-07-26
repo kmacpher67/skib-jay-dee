@@ -5,7 +5,7 @@ Use this as the handoff doc for the next agent working in the repo.
 ## Current state
 
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
-- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), and the discreet iteration badge in the HUD.
+- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), a 20-sheebs capture penalty, and the discreet iteration badge in the HUD.
 - `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, and the lvl2 transition overlay lifecycle. The lvl2 video now only mounts after Pipeworks is cleared *and* the engine reports the new hall-coverage / 4-skib survival gate as ready.
 - `frontend/src/App.jsx` also owns the new menu version log panel, which shows `GAME_ITERATION` plus a short shipped changelog.
 - `frontend/src/version.js` is the single place to bump the visible iteration number.
@@ -17,7 +17,7 @@ Use this as the handoff doc for the next agent working in the repo.
   (`thinkpad-local`, `desktop-gaming`) so the cheap local box can stay
   the default.
 - Default faces are randomly shuffled from the local gallery each time the user presses play, unless they upload custom faces.
-- User id, sheeb balance, purchased items, death count, and highest cleared level persist in cookies.
+- User id, sheeb balance, purchased items, death count, deaths history, and highest cleared level persist in cookies.
 - The deployment helper now takes an iteration label and short slug, then commits only the `skib-jay-dee-toilet-game/` subtree in the website repo.
 - The audio how-to now spells out local recording guidance: capture however is convenient, keep raw edits lossless if possible, and export game-ready clips as mono `.ogg` or `.mp3` at 44.1kHz.
 - The frontend now has a starter audio loop in `frontend/src/assets/audio/jayden-skreem-loop.m4a`; the menu primes it on first interaction and the caught transition reuses the same clip as a quick sting.
@@ -114,7 +114,8 @@ manually:
 
 ## Natural follow-up work
 
-- Next unclaimed item from the v0.4.18-plan copy-paste block: **game identity / multiple cookie-backed save slots**. See `docs/roadmap.md`.
+- Next unclaimed item from the v0.4.21-plan copy-paste block: **deaths history log**. See `docs/roadmap.md`.
+- After that, the next older backlog item is **game identity / multiple cookie-backed save slots**.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it
   needs Ken to record real voice clips first, it's not a pure coding

@@ -311,6 +311,7 @@ const PIPEWORKS_GATE_REQUIRED_CHASERS = 4
 const PIPEWORKS_GATE_REQUIRED_SECONDS = 15
 const PIPEWORKS_HALL_GRID_SIZE = 30
 const DEATH_SKREEM_PENALTY = 0.3 // fraction of skreems lost on capture
+const DEATH_SHEEBS_PENALTY = 20
 
 // Rubber-band chaser speed: each KILLZ (capture) mellows the toilet out a
 // bit since a fresh spawn right after dying is the least fun way to lose
@@ -342,7 +343,7 @@ export class GameEngine {
       onChaserBark,
       onLevelClear,
       onExtraChaserSpawn,
-      initialSheebs = 200,
+      initialSheebs,
       initialDeaths = 0,
       loadout = {},
     } = {},
@@ -981,9 +982,11 @@ export class GameEngine {
 
     this.deaths += 1
     const skreemsLost = Math.round(this.skreems * DEATH_SKREEM_PENALTY)
+    const sheebsLost = Math.min(this.sheebs, DEATH_SHEEBS_PENALTY)
     this.skreems = Math.max(0, this.skreems - skreemsLost)
     this.levelSkreems = Math.max(0, this.levelSkreems - skreemsLost)
     this.pipeworksSkreems = Math.max(0, (this.pipeworksSkreems || 0) - skreemsLost)
+    this.sheebs = Math.max(0, this.sheebs - sheebsLost)
     if (this.level.name === 'Pipeworks') {
       this.pipeworksFourSkibSeconds = 0
       this.pipeworksTransitionReady = false
@@ -994,7 +997,7 @@ export class GameEngine {
       CHASER_SPEED_MOD_MAX,
     )
 
-    this.onDeath(this.deaths)
+    this.onDeath({ deaths: this.deaths, levelName: this.level.name })
     this.onSkreem(Math.floor(this.skreems))
     this.onCaught(this.captureLine)
   }
