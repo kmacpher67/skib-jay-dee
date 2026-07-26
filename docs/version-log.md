@@ -59,6 +59,22 @@ feedback after playing v0.4.0:
   concrete, copy-pasteable brief scoped to just these four items.
 - Added `docs/handoffs/roadmap-handoff-v0.4.2-plan.md` and a matching
   `docs/handoffs/ledger.md` entry.
+- **Follow-up, same session:** the user answered both open design
+  questions directly. (1) Pipeworks's clear condition: "YES. for XX
+  amount of SKREEM points and max speed of the chasers" — confirmed as
+  bump `MAX_CHASERS` 3→4, plus require all 4 chasers at their own max
+  speed before a skreem threshold (a tunable constant, not fixed here)
+  gates the level clear. (2) Death video: "my bad the ded is still the
+  original" — no new clip wanted, the existing canvas jump-scare stays
+  as the only death feedback; the remaining task is verification, not
+  a build. Updated both `docs/roadmap.md` items to `RESOLVED` with the
+  full implementation direction, extended
+  `docs/handoffs/roadmap-handoff-v0.4.2-plan.md` with a "Follow-up"
+  section and a rewritten copy-paste block reflecting the new
+  dependency order (speed-ramp → clear-condition → video-timing →
+  death-visual verification), and rewrote
+  `docs/next-agent-coding-brief.md` so all four items are coding-ready
+  with no outstanding questions.
 
 ### Design / plan note
 

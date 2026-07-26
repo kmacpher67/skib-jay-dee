@@ -28,6 +28,14 @@ update `docs/version-log.md`.
 - Rewrote the stale `docs/next-agent-coding-brief.md` into a concrete
   brief scoped to these four items.
 - Added `docs/handoffs/roadmap-handoff-v0.4.2-plan.md`.
+- **Follow-up:** user resolved both open design questions in the same
+  session. Pipeworks's clear condition confirmed as MAX_CHASERS 3→4 plus
+  a skreem threshold gated on all 4 chasers being at max speed; death
+  video confirmed as "no new clip, keep the original jump-scare."
+  Updated both `docs/roadmap.md` items to `RESOLVED`, extended the
+  handoff's copy-paste block with the new dependency order, and updated
+  `docs/next-agent-coding-brief.md` so all four items are fully
+  unblocked for the next coding session.
 
 ## v0.4.1-plan — 2026-07-26 (docs-only, no code shipped)
 

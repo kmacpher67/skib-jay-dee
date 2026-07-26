@@ -192,22 +192,32 @@ this small.
   or whether `handleLevelChange`'s `index` needs to be checked against
   "the level *after* Pipeworks" instead. Small, self-contained once
   picked up — no new assets needed, same `lvl2-transition.mp4` clip.
-- [ ] **Tie Pipeworks's clear condition to surviving 4 simultaneous
-  chasers, not just a skreem timer.** Today every level (including
-  Pipeworks) advances purely on `levelSkreems >= level.advanceAt`
-  (`GameEngine.js:762`, `advanceAt: 68` for Pipeworks) — chaser count is
-  unrelated to clearing a level. `MAX_CHASERS` is currently `3`
-  (`GameEngine.js:301`). User wants Level 2's clear condition to
-  specifically be "the player outran 4 skibs at once" — this needs a
-  product decision, not just a number bump: (a) bump `MAX_CHASERS` to 4
-  globally (affects all levels once multi-chaser pressure ramps up, not
-  just Pipeworks), and/or (b) add a per-level chaser-count clear
-  condition alongside/instead of `advanceAt` so Pipeworks specifically
-  requires 4 active chasers survived for some duration before advancing.
-  Confirm which with the user before implementing — this changes core
-  level-pacing, not just a constant. Depends on/blocks the lvl2-video
-  item above (the video should only show once whatever the real "cleared
-  Pipeworks" condition becomes is met).
+- [ ] **RESOLVED — Tie Pipeworks's clear condition to surviving 4
+  simultaneous chasers at their max speed, gated by a skreem threshold.**
+  User confirmed the design: "YES. for XX amount of SKREEM points and
+  max speed of the chasers." Decision, spelled out for implementation:
+  1. Bump `MAX_CHASERS` from `3` to `4` (`GameEngine.js:301`) so
+     Pipeworks (and any level that runs long) can actually reach a
+     4-chaser pile-on.
+  2. Pipeworks's clear condition (`advanceAt: 68`, `GameEngine.js:762`)
+     should stop being a plain skreem-timer and instead only count
+     toward clearing once **all 4 chasers are active and each is at its
+     own max speed** — i.e. the lead chaser's `chaserSpeedMod` at
+     `CHASER_SPEED_MOD_MAX` (`GameEngine.js:311`) *and* every extra
+     chaser's per-chaser spawn-ramp (see the speed-ramp item below) has
+     finished climbing to 1.0. Only skreems earned while that "4 chasers,
+     all maxed" state holds should count toward the threshold — treat it
+     as a separate counter/gate, not just reusing `levelSkreems`.
+  3. The exact skreem threshold ("XX") is intentionally a tunable number,
+     not fixed by this plan — pick something in the neighborhood of the
+     existing `advanceAt: 68` for Pipeworks and playtest it; expose it as
+     a named constant (e.g. `PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL` or a new
+     per-level field) rather than a magic number, so it's easy to retune
+     without hunting through `GameEngine.js`.
+  Depends on the speed-ramp item below (need "each chaser at max speed"
+  to be a checkable state) and blocks/feeds the lvl2-video item above
+  (the video should only show once this new "cleared Pipeworks" event
+  fires, not the old flat `advanceAt` check).
 - [ ] **Extra chasers join slow and should ramp up over a level, not
   stay fixed.** `_maybeSpawnExtraChaser()` (`GameEngine.js:779-802`)
   spawns each new chaser at a flat `this.chaser.baseSpeed * 0.92` — a
@@ -226,22 +236,23 @@ this small.
   `_maybeSpawnExtraChaser()` and the per-chaser speed calc in
   `_updateChase()`/wherever `chaser.baseSpeed * this.chaserSpeedMod` is
   read (`GameEngine.js:745`).
-- [ ] **Keep the death/capture visual working regardless of the lvl2
-  video overlay.** The existing jump-scare zoom (`_drawJumpscare()`,
-  canvas-drawn when `phase === 'caught'`, see `GameEngine.js:873`) is the
-  only death feedback that exists today — there is no separate "player
-  ded" video clip anywhere in this repo's history (checked via `git log`
-  across all branches). User referred to restoring "the old player ded"
-  playing on death — confirm with the user whether they mean (a) the
-  existing canvas jump-scare should keep firing unobstructed on every
-  capture (it already does, independent of the lvl2 overlay — verify
-  this hasn't regressed, since `showLvl2Transition`'s `<video>`
+- [ ] **RESOLVED — no new death video, keep the original jump-scare
+  working.** User confirmed: "my bad the ded is still the original" —
+  there is no new death-specific video wanted; option (a) from the
+  original writeup is correct. The existing jump-scare zoom
+  (`_drawJumpscare()`, canvas-drawn when `phase === 'caught'`, see
+  `GameEngine.js:873`) is and stays the only death feedback — don't add
+  any new asset or plumbing for this. The one remaining task is
+  verification, not a decision: confirm the jump-scare still fires
+  unobstructed on every capture and isn't visually blocked by the lvl2
+  transition overlay, since `showLvl2Transition`'s `<video>`
   (`App.jsx:281-291`) is an absolutely-positioned overlay stacked on top
-  of `GameCanvas` and could visually block the jump-scare if a capture
-  and the lvl2 transition ever became simultaneous), or (b) they want a
-  *new*, distinct death-specific video clip (separate from
-  `lvl2-transition.mp4`) added the same way the lvl2 clip was — dropped
-  in `frontend/src/assets/video/`, imported, and shown as an overlay
+  of `GameCanvas` and could obscure the jump-scare if a capture and the
+  lvl2 transition ever became simultaneous. Once the lvl2-video timing
+  fix above lands (video only shows after Pipeworks clears, not on
+  arrival), double check the two states genuinely can't overlap, then
+  check this item off — no code changes expected beyond that
+  verification unless a real overlap is found.
   during the `caught` phase. Don't build a new clip's plumbing without
   that confirmation; the safe first step either way is auditing that the
   jump-scare and the lvl2-video overlay can never trigger at the same

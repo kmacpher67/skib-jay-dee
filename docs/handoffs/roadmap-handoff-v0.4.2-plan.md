@@ -76,6 +76,34 @@ playing, plus a docs cleanup — without re-deriving the investigation.
    files/lines and the open questions a coding agent needs answered
    before starting item 2 and (possibly) item 4.
 
+## Follow-up (same session, continued): both open decisions resolved
+
+After the writeup above, the user answered both blocking questions
+directly:
+
+- **Pipeworks clear condition (item 2):** "YES. for XX amount of SKREEM
+  points and max speed of the chasers." Confirmed design: bump
+  `MAX_CHASERS` from 3 to 4, and change Pipeworks's clear condition so it
+  only counts toward advancing once all 4 chasers are active *and* each
+  is at its own max speed (lead chaser's `chaserSpeedMod` at
+  `CHASER_SPEED_MOD_MAX`, extras' per-spawn ramp — see item 3 below —
+  finished climbing to 1.0), gated by a skreem threshold earned during
+  that "4-up, all maxed" state specifically (not just reusing
+  `levelSkreems` as-is). The exact threshold number is left as a tunable
+  constant, not fixed by this plan. Written up in full in
+  `docs/roadmap.md` (now marked `RESOLVED`).
+- **Death video (item 4):** "my bad the ded is still the original." No
+  new video is wanted — the existing canvas jump-scare
+  (`_drawJumpscare()`) stays as the only death feedback. The only
+  remaining task is verifying it isn't visually blocked by the lvl2
+  overlay once item 1's timing fix lands; no new asset or plumbing.
+  Written up in full in `docs/roadmap.md` (now marked `RESOLVED`).
+
+Both items in `docs/roadmap.md` are now unblocked for a coding session.
+Item 2 (the 4-chaser/max-speed clear condition) now explicitly depends
+on item 3 (the per-chaser speed ramp) landing first, since "max speed"
+needs to be a checkable state on each chaser.
+
 ## Verification performed
 
 - No code changed, so no build was run.
@@ -91,64 +119,78 @@ playing, plus a docs cleanup — without re-deriving the investigation.
 
 ## What's explicitly not done
 
-- No `GameEngine.js` or `App.jsx` changes — all four items are
-  plan-only, per explicit user instruction this session.
+- No `GameEngine.js` or `App.jsx` changes — all items stay plan-only,
+  per explicit user instruction this session ("no code yet" / "wrap up
+  this plan"). The one exception is the pre-existing chaser-face fix
+  found already-written and committed (see the version-log entry above),
+  which was not new work from this session.
 - No `MAX_CHASERS` change, no per-chaser speed-ramp logic, no
   video-trigger fix, no new video asset added.
-- No decision was made on the `MAX_CHASERS`/clear-condition ambiguity
-  (item 2) or the jump-scare-vs-new-clip question (item 4) — both need a
-  one-line answer from the user before a coding session should start on
-  them.
 - No prod deploy — none was requested, and none should happen until the
   user asks.
+- All four backlog items are now fully unblocked for the next coding
+  session — both decisions the user needed to make (items 2 and 4) were
+  resolved in this same session (see "Follow-up" above).
 
 ## Copy-paste: next natural steps for the next agent
 
 ```
 Read docs/skib-sdlc.md, then docs/update-directions.md, then this file
 (docs/handoffs/roadmap-handoff-v0.4.2-plan.md) — the previous session
-was docs/plan-only, so there's no new code to catch up on beyond v0.4.0.
-Four items are queued in docs/roadmap.md's "Incremental backlog," all
-added this session:
+was docs/plan-only, so there's no new code to catch up on beyond v0.4.0
+plus the one already-committed chaser-face fix. Four items are queued
+in docs/roadmap.md's "Incremental backlog," all fully unblocked — the
+user has answered every open design question, so a coding session can
+start on any of them without asking anything further. Recommended order:
 
-1. Lvl2 transition video timing fix — App.jsx:156-166
-   (handleLevelChange) currently shows the video on *arriving* at
-   Pipeworks (index === 2) instead of on *clearing* it. Move the trigger
-   to fire once Pipeworks is actually cleared instead. No new assets
-   needed, no blockers — start here first.
-
-2. Pipeworks clear condition tied to 4 simultaneous chasers — BLOCKED
-   on a one-line product decision from the user first. Today level
-   advancement is purely `levelSkreems >= advanceAt`
-   (GameEngine.js:762), unrelated to chaser count, and MAX_CHASERS is 3
-   (GameEngine.js:301). Ask the user: should MAX_CHASERS become 4
-   globally, or should Pipeworks specifically require surviving 4
-   chasers as its clear condition (separate from the skreem timer)? Do
-   not guess — this changes core level pacing.
-
-3. Extra-chaser speed ramp — _maybeSpawnExtraChaser()
+1. Extra-chaser speed ramp — _maybeSpawnExtraChaser()
    (GameEngine.js:779-802) spawns each new chaser at a flat
    baseSpeed * 0.92 forever. Add a per-chaser ramp (e.g. climbs from
    ~0.75 to 1.0 over a few seconds after spawn) layered on top of the
    existing chaserSpeedMod rubber-band (GameEngine.js:310-313), not
-   replacing it. Self-contained, no blockers.
+   replacing it, and expose a way to check "has this chaser finished
+   ramping to max speed" (item 2 depends on this state). Do this first
+   since item 2 needs it.
 
-4. Death-video confirmation — BLOCKED on a one-line answer from the
-   user first. No "player ded" video has ever existed in this repo
-   (verified via git log --all) — the only death feedback is the
-   canvas jump-scare (_drawJumpscare(), fires on phase === 'caught').
-   Ask the user: do they mean (a) just make sure the existing
-   jump-scare still fires and isn't visually blocked by the lvl2 video
-   overlay (App.jsx:281-291 stacks a <video> on top of GameCanvas), or
-   (b) add a genuinely new, separate death-video clip the same way
-   lvl2-transition.mp4 was wired? Don't build new video plumbing
-   without that answer.
+2. Pipeworks clear condition tied to 4 simultaneous chasers at max
+   speed, gated by a skreem threshold — RESOLVED design, ready to code.
+   User confirmed: bump MAX_CHASERS from 3 to 4 (GameEngine.js:301), and
+   change Pipeworks's clear condition (advanceAt: 68, GameEngine.js:762)
+   so it only counts once all 4 chasers are active and each has reached
+   its own max speed (lead chaser's chaserSpeedMod at
+   CHASER_SPEED_MOD_MAX, every extra chaser's spawn-ramp from item 1
+   finished). Only skreems earned during that "4-up, all maxed" state
+   should count toward the threshold — track it as a separate
+   counter/gate rather than reusing levelSkreems outright. The exact
+   skreem-goal number is a tunable constant, not fixed by this plan —
+   pick something near the existing advanceAt: 68 and playtest/adjust;
+   name it clearly (e.g. a new per-level field or
+   PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL) so it's easy to retune later.
+   Depends on item 1 landing first.
 
-Item 1 and 3 can start immediately. Items 2 and 4 need a quick answer
-from the user first — ask before writing code for those two. Follow
-docs/skib-sdlc.md: build (npm run build), test, update
-docs/version-log.md + docs/update-directions.md + docs/roadmap.md + a
-new docs/handoffs/roadmap-handoff-vX.Y.Z.md + ledger entry, then commit.
+3. Lvl2 transition video timing fix — App.jsx:156-166
+   (handleLevelChange) currently shows the video on *arriving* at
+   Pipeworks (index === 2) instead of on *clearing* it. Once item 2
+   redefines what "cleared Pipeworks" means, move the video trigger onto
+   that new clear event instead of the arrival index. No new assets
+   needed.
+
+4. Death-visual verification — RESOLVED, no new asset wanted. User
+   confirmed the original canvas jump-scare (_drawJumpscare(), fires on
+   phase === 'caught') is correct and should stay as the only death
+   feedback — don't add a new video. Once item 3 lands, just verify the
+   jump-scare can't be visually blocked by the lvl2 <video> overlay
+   (App.jsx:281-291, absolutely positioned on top of GameCanvas) — if
+   the two states genuinely can't overlap, there's likely nothing left
+   to change here beyond confirming it.
+
+Do these as one session if they fit together cleanly (1→2→3 are a single
+connected mechanic), or split across sessions per docs/skib-sdlc.md's
+single-session sizing guidance — just don't land 2 or 3 without 1's
+ramp-state already in place. Follow docs/skib-sdlc.md: build
+(npm run build), test, update docs/version-log.md +
+docs/update-directions.md + docs/roadmap.md + a new
+docs/handoffs/roadmap-handoff-vX.Y.Z.md + ledger entry, then commit.
 Only bump GAME_ITERATION and run ./scripts/deploy-static.sh <short-name>
 if the user asks to publish — no prod deploy without that ask.
 ```
