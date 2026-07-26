@@ -100,8 +100,15 @@ export default function App() {
     playOneShot(urls[Math.floor(Math.random() * urls.length)], volume)
   }
 
+  // Primes the audio element on the first user gesture so browsers allow
+  // playback later; must stay silent and non-looping or it becomes an
+  // unwanted permanent scream loop on the menu screen.
   const startMenuAudio = () => {
-    playAudio(getAudio(menuAudioRef, skreemLoopUrl, true, 0.22), false)
+    if (mutedRef.current) return
+    const audio = getAudio(menuAudioRef, skreemLoopUrl, false, 0)
+    if (!audio.paused) return
+    audio.currentTime = 0
+    audio.play().then(() => audio.pause()).catch(() => {})
   }
 
   const playCaughtAudio = () => {

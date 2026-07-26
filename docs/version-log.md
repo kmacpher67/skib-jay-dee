@@ -6,6 +6,56 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.16 — Sheebs default fix + menu skreem-loop fix (2026-07-26)
+
+### What changed
+
+- `frontend/src/lib/cookies.js`: `normalizeProfile()`'s fallback starting
+  `sheebs` balance is now `0` instead of `200`, per the oldest unclaimed
+  item in `docs/handoffs/roadmap-handoff-v0.4.15-plan.md`'s copy-paste
+  block.
+- `frontend/src/App.jsx`: fixed the "skreem loop" bug where the first
+  pointerdown anywhere on the menu started `jayden-skreem-loop.m4a`
+  playing audibly (`volume: 0.22`) and looping forever (`loop: true`).
+  `startMenuAudio()` was written as an autoplay-unlock "priming" hook
+  (`onPrimeAudio`) but actually played the clip for real instead of just
+  unlocking it. It now primes the same `<Audio>` element silently
+  (`loop: false`, `volume: 0`) and immediately pauses it once the
+  browser's `play()` promise resolves, so later real playback (e.g. a
+  future dedicated menu-music track) is still unlocked without the
+  scream looping in the background.
+- Added `frontend/e2e/menu-audio-prime.spec.js`, which monkey-patches
+  `window.Audio` to record `play`/`pause` calls and their `loop`/`volume`
+  values, clicks the menu, and asserts the priming call is silent,
+  non-looping, and self-pausing. Verified this test fails against the
+  pre-fix code (reproduced by stashing the fix and serving a standalone
+  build) before confirming it passes with the fix.
+- Merged `docs/handoffs/dad_case_handoff.md` (Ken's filled-in content for
+  the Dad Case profile stub) into `docs/profiles/dad-case.md`, the
+  correct location per the v0.4.15-plan handoff, and removed the
+  misplaced duplicate from `docs/handoffs/`.
+
+### Design decisions
+
+- Kept the Sheebs fallback as a plain constant change rather than adding
+  a migration — cookies already parse missing/invalid values through
+  `Number.isFinite`, so existing players with a real persisted `sheebs`
+  value are unaffected; only fresh profiles get `0` instead of `200`.
+- Fixed the skreem-loop bug at the priming call site instead of adding a
+  broader "auto-stop after N seconds" safety net — the root cause was
+  that priming was never supposed to produce audible, looping playback
+  in the first place.
+
+### Explicitly not done
+
+- **Version page** (display `GAME_ITERATION` + changelog in the menu) —
+  next unclaimed item from the v0.4.15-plan copy-paste block.
+- **Game Identity & New Profiles** (multiple cookie-backed save slots) —
+  last unclaimed item from the same block; bigger than a single-session
+  increment, needs its own scoping pass.
+- The Parody Attribute System (Panic/Grip/Scream/Sus) addendum is still
+  plan-only, not broken into sub-increments yet.
+
 ## v0.4.15 — lvl2 hall-coverage gate + playback crash RCA (2026-07-26)
 
 ### What changed

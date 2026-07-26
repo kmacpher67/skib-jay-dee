@@ -19,6 +19,32 @@ This was a Mode A planning session to scope out new game profile management, res
 ## Required Action from Ken
 - **Content Creation:** Please review the stubbed Markdown files inside `docs/profiles/` (e.g. `skib-default.md`) and fill in the missing details (`Main Scare`, `Killing Tricks`, `Best Dialogs`). This content will be used to build the Nintendo-style "Skib Profile Reviewer" in a future update.
 
+## Addendum (same session, docs-only): Parody Attribute System
+
+Added a new backlog item to `docs/roadmap.md` — **Feature: Parody
+Attribute System (Panic, Grip, Scream, Sus)** — a four-stat parody
+attribute block:
+
+- **Panic Index** — replaces traditional speed stats. High panic
+  massively boosts speed but randomly inverts screen controls.
+- **Grip Control** — models slippery mechanics. Low grip causes the
+  runner to over-slide past grid corners and drift into enemies.
+- **Scream Volume** — controls audio-based traps. High scream forces
+  screen shake and alerts all map enemies when antagonists get close.
+- **Sus Level** — borrows from social deduction mechanics. High
+  suspicion causes friendly NPCs to attack, lock doors, or call
+  emergency map votes.
+
+This is plan-only — no code changed. Once scoped further, it will touch
+the `_updateCaught` and `update(dt)` loops in `frontend/src/GameEngine.js`
+to account for momentum, inverted steering, and audio trigger radii. It's
+a bigger item than the usual single-session increment (four
+interdependent stats touching movement, controls, audio, and AI/NPC
+behavior) — the next planning pass should break it into ordered
+sub-increments (e.g. Panic/speed+control-inversion first, since it's the
+most self-contained, before Grip/sliding, Scream/audio-alert radius, and
+Sus/NPC-turn last) before any coding session picks it up.
+
 ## Copy-paste: natural next steps for new agent
 
 ```text

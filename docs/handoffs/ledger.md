@@ -10,6 +10,14 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.16 — 2026-07-26 (real code)
+
+- Fixed the initial Sheebs default: new profiles now start at `0` sheebs instead of `200` (`normalizeProfile()` in `frontend/src/lib/cookies.js`).
+- Fixed the skreem-loop bug: `startMenuAudio()` in `frontend/src/App.jsx` was actually playing `jayden-skreem-loop.m4a` at real volume on a loop instead of silently priming it for later autoplay; it now primes silently (`volume: 0`, `loop: false`) and self-pauses.
+- Added `frontend/e2e/menu-audio-prime.spec.js`; verified it fails against the pre-fix code and passes with the fix. Full 10-test Playwright suite passes.
+- Merged `docs/handoffs/dad_case_handoff.md` (Ken's Dad Case profile content, saved to the wrong folder) into `docs/profiles/dad-case.md`; removed the misplaced duplicate.
+- Bumped `GAME_ITERATION` to `v0.4.16` and deployed.
+
 ## v0.4.15-plan addendum — 2026-07-26 (docs-only)
 
 - Added a new backlog item to `docs/roadmap.md`: **Feature: Parody

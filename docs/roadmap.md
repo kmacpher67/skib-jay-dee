@@ -104,6 +104,27 @@ extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 5-chaser clear +
 lvl2 timing + ambient layering (done, v0.4.10) -> Audio 2: capture-line
 and chaser-bark voice clips, 1:1 with text.
 
+- [x] **Fix initial Sheebs balance.** Landed v0.4.16 — new profiles now
+  start at `0` sheebs instead of `200` (`normalizeProfile()` in
+  `frontend/src/lib/cookies.js`). Existing persisted profiles are
+  unaffected.
+- [x] **Fix skreem-loop bug on the menu.** Landed v0.4.16 — the first
+  pointerdown on the menu was starting `jayden-skreem-loop.m4a` playing
+  audibly and looping forever instead of silently priming it for later
+  autoplay. `startMenuAudio()` in `frontend/src/App.jsx` now primes at
+  `volume: 0`/`loop: false` and pauses itself once `play()` resolves.
+  Covered by `frontend/e2e/menu-audio-prime.spec.js`.
+- [ ] **Version page.** Add a simple page/panel to the menu that shows
+  the current `GAME_ITERATION` (`frontend/src/version.js`) plus a short
+  changelog pulled from or mirroring `docs/handoffs/ledger.md`. Front-end
+  only, no new persistence needed.
+- [ ] **Game identity & new profiles (multiple save slots).** Let a
+  player keep their existing cookie-backed profile and also start a new
+  one, still cookie-only (no backend) — e.g. a small slot picker on the
+  menu that swaps which `sjdt_profile_v1`-style cookie is active. Needs
+  a bit of design thought on how slot switching interacts with
+  `frontend/src/lib/cookies.js`'s single-cookie assumption before
+  coding.
 - [x] **Audio 1: SFX plumbing.** Landed v0.4.0 — real clips wired for
   menu loop, capture sting, chase ambience, boost/tired stingers, chaser
   barks, and level start/clear, plus a cookie-persisted mute toggle. See
