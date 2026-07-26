@@ -46,3 +46,14 @@ export const NEAR_CAPTURE_LINES = [
   'Too close for comfort!',
   'Skib is right behind you!',
 ]
+
+// Level 4 "Stakes Are Real" transition screen text.
+export const LEVEL_4_RULES = {
+  header: 'WARNING: WELCOME TO LEVEL 4. THE STAKES ARE REAL.',
+  body: [
+    'DEBT IS REAL: Your Sheebs no longer stop at zero. Get caught, and you go into the red. You owe the Toilet.',
+    'SHOP SLOP AT RISK: Every time you are captured, there is a 25% chance the Skibs will steal one of your hard-earned stat upgrades.',
+    'BUY IT BACK: Stolen items are returned to the Shleeb Shop. Pay off your debt and buy them back... if you survive.',
+  ],
+  button: 'I ACCEPT MY FATE',
+}

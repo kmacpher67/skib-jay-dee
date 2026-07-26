@@ -178,7 +178,7 @@ and chaser-bark voice clips, 1:1 with text.
   sheebs-debt item above as a single "stakes go up past level 4" backlog
   slice, but scope and ship them separately. See
   [roadmap-handoff-v0.4.26-plan.md](handoffs/roadmap-handoff-v0.4.26-plan.md).
-- [ ] **Level 4 "Stakes Are Real" transition screen.** Debt (v0.4.26) and
+- [x] **Level 4 "Stakes Are Real" transition screen.** Debt (v0.4.26) and
   item loss (v0.4.26) are both live now but currently land as a surprise —
   Ken's design call was "big red warning after dying past level 4," not a
   silent mechanic. When a player clears Level 3 and arrives at Level 4,
@@ -208,7 +208,7 @@ and chaser-bark voice clips, 1:1 with text.
     has dropped this in (572x1024, portrait). Still worth keeping a
     guarded import with a `[LEVEL 4 ARTWORK PENDING]` black-box fallback
     in case the asset path ever changes, but it's no longer blocking.
-  - See [roadmap-handoff-v0.4.28-plan.md](handoffs/roadmap-handoff-v0.4.28-plan.md).
+  - Landed in v0.4.28.
 - [ ] **Rewards/badges system.** New persistent-achievement layer, separate
   from the risk/reward economy above. Ken confirmed the "debt badge" idea
   is funny and wants a real badges/awards system for high-level

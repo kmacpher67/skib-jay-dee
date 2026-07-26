@@ -37,6 +37,25 @@ focused on *why*, those two are the *what* and *when*.
   instead of bundling it with the potion — new enemy-AI work shouldn't
   ride along with a single item pickup's scope.
 
+## v0.4.28 — Level 4 transition screen (2026-07-26)
+
+### What changed
+
+- `frontend/src/dialog.js` now exports a `LEVEL_4_RULES` constant containing the text for the new Level 4 transition screen.
+- `frontend/src/App.jsx` now mounts a `Level4WarningOverlay` (using the `level-4-warning-transition-screen.jpeg` background) the first time a run hits level index 4 (The Ramen Aisle). The overlay pauses the game engine using `engineRef.current?.stop()` and resumes it on dismissal.
+- Added `frontend/e2e/level-4-warning.spec.js` to assert the overlay appears once per run, correctly pauses/unpauses the game engine, and doesn't appear on subsequent level 4 triggers.
+- Bumped `GAME_ITERATION` to `v0.4.28` and deployed to production.
+
+### Design decisions
+
+- Decided to pause the game using `engineRef.current?.stop()` and `start()` inside `App.jsx`, rather than extending the `GameEngine`'s phase state. This allows the modal to be entirely front-end driven without complicating the engine loop.
+- The badges system is explicitly held back as it is still waiting on product decisions (which badges to include, UI location, persistence design).
+
+### Verification
+
+- `cd frontend && npm run build`
+- `cd frontend && npx playwright test` (all 18 pass)
+
 ## v0.4.28-plan — Level 4 transition screen and badges planning (2026-07-26)
 
 ### What changed

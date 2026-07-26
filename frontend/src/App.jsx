@@ -20,6 +20,7 @@ import chaserTauntUrl from './assets/audio/chaser-taunt-skibidforever.mp3'
 import lvl2TransitionUrl from './assets/video/lvl2-transition.mp4'
 import dadCaseDoorUrl from './assets/audio/door-sounds.m4a'
 import dadCaseLightsUrl from './assets/audio/lights.m4a'
+import warningBgUrl from './assets/level-4-warning-transition-screen.jpeg'
 import {
   CHASER_FACE_POOL,
   buildLoadout,
@@ -29,6 +30,7 @@ import {
 } from './gameContent.js'
 import { GAME_ITERATION } from './version.js'
 import { loadProfile, persistProfile } from './lib/cookies.js'
+import { LEVEL_4_RULES } from './dialog.js'
 import './App.css'
 
 const CHASER_BARK_URLS = [
@@ -52,6 +54,8 @@ export default function App() {
   const [lastCaptureLine, setLastCaptureLine] = useState('')
   const [showLvl2Transition, setShowLvl2Transition] = useState(false)
   const [dadCaseSpawned, setDadCaseSpawned] = useState(false)
+  const [showLevel4Warning, setShowLevel4Warning] = useState(false)
+  const hasSeenLevel4WarningRef = useRef(false)
   const [profileModal, setProfileModal] = useState(null)
   const [profileModalMode, setProfileModalMode] = useState(null)
   const loadout = buildLoadout(profile.ownedItems)
@@ -161,6 +165,8 @@ export default function App() {
     setDeathsOpen(false)
     setLastCaptureLine('')
     setShowLvl2Transition(false)
+    setShowLevel4Warning(false)
+    hasSeenLevel4WarningRef.current = false
     setDadCaseSpawned(false)
     setProfileModal(null)
     setProfileModalMode(null)
@@ -220,6 +226,17 @@ export default function App() {
     }))
     handleLevelChangeAudio()
     setDadCaseSpawned(false)
+
+    if (index === 4 && !hasSeenLevel4WarningRef.current) {
+      hasSeenLevel4WarningRef.current = true
+      setShowLevel4Warning(true)
+      engineRef.current?.stop()
+    }
+  }
+
+  const handleAcceptLevel4Warning = () => {
+    setShowLevel4Warning(false)
+    engineRef.current?.start()
   }
 
   const hideLvl2Transition = () => setShowLvl2Transition(false)
@@ -451,6 +468,9 @@ export default function App() {
               />
             )}
             {dadCaseSpawned && <div className="dad-case-darkness" />}
+            {showLevel4Warning && (
+              <Level4WarningOverlay onAccept={handleAcceptLevel4Warning} />
+            )}
             <button className="exit-btn" onClick={() => setScreen('menu')}>
               ✕
             </button>
@@ -569,3 +589,56 @@ function MainMenu({
     </div>
   )
 }
+
+function Level4WarningOverlay({ onAccept }) {
+  return (
+    <div className="modal-overlay level-4-warning">
+      <div 
+        className="modal-content warning-content" 
+        style={{ 
+          backgroundImage: `url(${warningBgUrl})`, 
+          backgroundSize: 'cover', 
+          backgroundPosition: 'center', 
+          color: 'white',
+          textShadow: '1px 1px 2px black',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '80%'
+        }}
+      >
+        <h2 
+          className="warning-header" 
+          style={{ color: '#ff2e2e', textShadow: '2px 2px black', textAlign: 'center', fontSize: '1.5rem', marginBottom: '20px' }}
+        >
+          {LEVEL_4_RULES.header}
+        </h2>
+        
+        <div className="warning-body" style={{ display: 'flex', flexDirection: 'column', gap: '16px', backgroundColor: 'rgba(0,0,0,0.6)', padding: '16px', borderRadius: '8px' }}>
+          {LEVEL_4_RULES.body.map((line, i) => (
+            <p key={i} style={{ margin: 0, lineHeight: 1.4, fontSize: '1.1rem' }}>{line}</p>
+          ))}
+        </div>
+        
+        <button 
+          className="accept-btn" 
+          onClick={onAccept} 
+          style={{ 
+            backgroundColor: '#ff2e2e', 
+            color: 'white', 
+            padding: '16px 20px', 
+            fontWeight: 'bold', 
+            fontSize: '1.2rem',
+            border: 'none',
+            borderRadius: '8px',
+            marginTop: 'auto',
+            cursor: 'pointer'
+          }}
+        >
+          {LEVEL_4_RULES.button}
+        </button>
+      </div>
+    </div>
+  )
+}
+

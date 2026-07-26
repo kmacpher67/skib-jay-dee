@@ -36,6 +36,11 @@ update `docs/version-log.md`.
   unverified buy-back behavior for the next Mode B session to spot-check.
   See `docs/handoffs/roadmap-handoff-v0.4.28-plan.md`.
 
+## v0.4.28 — 2026-07-26
+
+- Shipped the Level 4 "Stakes Are Real" transition screen. The game now pauses and displays a warning overlay the first time a player reaches The Ramen Aisle (Level 4) per run, explaining the debt and item loss mechanics.
+- Bumped `GAME_ITERATION` to `v0.4.28` and deployed to production.
+
 ## v0.4.26 — 2026-07-26
 
 - Shipped sheebs debt and item loss risk for experienced players (`highestLevel > 3` and `highestLevel > 4` respectively).
