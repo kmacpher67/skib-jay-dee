@@ -48,6 +48,5 @@ You are a Code Monkey agent working on Skib-Jay-Dee-Toilet in Mode B.
 Read `docs/skib-sdlc.md` and `docs/roadmap.md` before starting.
 
 Scope for this pass:
-1. **Fix the Tests:** Root cause the canvas boot failures (12 failing tests) and get the build green.
-2. **Implement the Gun (If approved):** Once the design questions above are answered by the user, build out the Jayden Gun feature as specced.
+1. **Implement the Gun:** Following the design parameters outlined in this document (and approved by the user), implement the Jayden Gun pickup mechanic.
 ```
