@@ -3,7 +3,9 @@
 A mobile-first, vertical-portrait ("WORLD STAR!!!") 2D chase game — a
 satirical Skibidi Toilet parody. Skibidty Toilet Guy hunts Jayden through
 "The Porcelain Palace." See [`Skib-jay-dee-toilet game-init-v1.pdf`](Skib-jay-dee-toilet%20game-init-v1.pdf)
-for the full design doc, characters, and dialogue script.
+for the full design doc, characters, and dialogue script. See
+[docs/characters.md](docs/characters.md) for the current in-game roster
+and planned new chasers.
 
 **Status: Phase 2** — core engine, movement, chase mechanic, jump-scare,
 face upload, five playable levels, desktop key support, Shleeb shop,

@@ -141,6 +141,44 @@ this small.
   or Raman-Aunt-Toilet Lady) and give it a distinct ability, not just a
   reskin — e.g. Skib-Daddy's Plunger Launch as a periodic speed burst.
   Depends on nothing above; can happen anytime.
+- [ ] **New chaser: Sky-Diver (Motor Killer).** Source photo already
+  dropped at `images/sky-diver-motor-killer.png` (repo-root scratch).
+  Copy into `frontend/src/assets/`, import, and add one
+  `CHASER_FACE_POOL` entry in `frontend/src/gameContent.js` per the
+  existing pattern (see `crazy-jack-chaser` for reference). See
+  `docs/characters.md` for the character note.
+- [ ] **New chaser: Yoodeling Unc, second pose.** A second costume photo
+  for the existing "Yoodelling Unc Alex" bit was shared but **not yet
+  saved to the repo** — ask the user to drop it in `images/` (e.g.
+  `images/yoodelling-unc-alex-2.png`) before starting this item. Once on
+  disk, wire it as an *additional* `CHASER_FACE_POOL` entry alongside the
+  existing `yoodelling-unc-alex` one, not a replacement. See
+  `docs/characters.md`.
+- [ ] **Chaser face randomization fix.** Today `randomFaces()`
+  (`frontend/src/gameContent.js`) picks one chaser face per *run* at menu
+  time, and `GameEngine.setFaces()`
+  (`frontend/src/GameEngine.js:419-421`) assigns that single face to
+  every entry in `this.chasers` — including extras spawned later by the
+  multi-chaser mechanic (`frontend/src/GameEngine.js:786-800`). Net
+  effect: when 2-3 toilets are on screen at once, they all wear an
+  identical face instead of each rolling independently from
+  `CHASER_FACE_POOL`. Plan: give each chaser its own random face at
+  spawn time (menu-selected face for the first chaser is fine to keep as
+  today's default/upload behavior, but each *extra* chaser spawned via
+  the multi-chaser mechanic should roll its own `CHASER_FACE_POOL` entry
+  instead of copying `this.chaser.face`). Small, self-contained change
+  once picked up — no new assets required.
+- [ ] **Runner pose-to-state mapping.** `RUNNER_FACE_POOL` has five
+  Jayden poses (default, uncaring, skibby, getting-captured, captured)
+  that read as if they were shot for specific in-game moments, but today
+  the engine only ever picks one at random for the whole run
+  (`randomFaces()` in `frontend/src/gameContent.js`, applied once via
+  `setFaces()`). Plan: keep the random *default* pick for whichever run
+  starts, but additionally swap the runner's face for
+  `jayden-getting-captured` on the jump-scare beat and
+  `jayden-captured` on the "YOU DIED" screen, falling back to the
+  player's uploaded face unchanged if they've set a custom one. See
+  `docs/characters.md` for the pose table this maps from.
 - [ ] **Multiplayer spike (Phase 5).** Only after everything above feels
   solid. Make the frontend actually connect to `/ws/match`, sync two
   browser tabs, server decides who's Chaser. This is the biggest single

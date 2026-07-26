@@ -6,6 +6,59 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.1-plan (docs-only, no code shipped)
+
+**Date:** July 26, 2026
+
+### What changed
+
+No code changed this session — `GAME_ITERATION` stays `v0.4.0`. This was
+a planning/docs pass:
+
+- Rewrote `docs/characters.md` with real content: a runner pose table, a
+  chaser roster table, and a "planned new chasers" section instead of
+  the old bare image list.
+- Documented two new chasers as plan-only additions to
+  `docs/roadmap.md`'s incremental backlog: **Sky-Diver (Motor Killer)**
+  (source photo already at `images/sky-diver-motor-killer.png`, a repo-
+  root scratch file, not yet copied into `frontend/src/assets/` or
+  wired) and a **second pose for Yoodeling Unc** (photo shared in
+  conversation but not yet saved to the repo — needs the user to drop it
+  in `images/` before a coding session can pick up the item).
+- Reviewed the existing face-randomization logic
+  (`randomFaces()`/`setFaces()` in `frontend/src/gameContent.js` and
+  `frontend/src/GameEngine.js`) and found two gaps, both written up as
+  roadmap backlog items rather than fixed in code this session:
+  1. All simultaneous chasers spawned by the multi-chaser mechanic share
+     one identical face instead of each rolling independently from
+     `CHASER_FACE_POOL`.
+  2. The five `RUNNER_FACE_POOL` poses look purpose-shot for specific
+     game states (idle, jump-scare, caught) but are only ever picked
+     once at random per run — no pose-to-state mapping exists yet.
+- Added `docs/handoffs/roadmap-handoff-v0.4.1-plan.md` and a matching
+  `docs/handoffs/ledger.md` entry for this planning session.
+
+### Design / plan note
+
+- Kept this pass strictly docs — the user explicitly asked for a plan,
+  not code, so the two new-chaser items and the two randomization-logic
+  fixes are written up as ready-to-pick-up roadmap items (file paths,
+  line numbers, and the exact behavior change) rather than implemented,
+  so the next coding session can start immediately without re-deriving
+  the investigation.
+- Treated the `images/` folder note the same way `audio/` and `video/`
+  were treated in earlier sessions: raw source photos land there first,
+  and get promoted into `frontend/src/assets/` only when a chaser/runner
+  entry is actually wired.
+
+### Known non-goals for this version
+
+- No `CHASER_FACE_POOL`/`RUNNER_FACE_POOL` entries were added — both new
+  chasers are plan-only (one is also blocked on the user saving a file).
+- No change to `GameEngine.js`'s spawn/face logic — the randomization
+  review is a backlog item, not a fix.
+- No `GAME_ITERATION` bump — nothing shipped to build/deploy.
+
 ## v0.4.0
 
 **Date:** July 26, 2026

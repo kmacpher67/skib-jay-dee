@@ -19,6 +19,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - **v0.4.0 audio pass:** the 11 recorded voice clips from `/audio/` (scratch, now removed) were transcoded to mono 44.1kHz mp3 and moved into `frontend/src/assets/audio/` with names describing their in-game role. They're wired into `App.jsx`: chase ambience loop, capture sting, chaser bark/scream/taunt pool, boost stinger, tired groan, level-start/level-clear stings. A cookie-persisted mute toggle (`profile.muted`) has a button on the menu and in-game HUD.
 - **Lvl2 video transition:** `frontend/src/assets/video/lvl2-transition.mp4` (moved from repo-root `/video/`) plays once as a full-screen overlay the first time a run reaches level 2. User-flagged as a rough clip — treat as a proof of concept, see `docs/future-versions.md`.
 - Full session detail: `docs/handoffs/roadmap-handoff-v0.4.0.md`. Flat change history: `docs/handoffs/ledger.md`. Scoped-out work: `docs/future-versions.md`.
+- **v0.4.1-plan (docs-only, most recent session):** no code changed, `GAME_ITERATION` is still `v0.4.0`. `docs/characters.md` was rewritten with real content (runner pose table, chaser roster table, planned-new-chasers section). Two new chasers are queued as plan-only roadmap items — Sky-Diver (Motor Killer), source photo already at `images/sky-diver-motor-killer.png`; and a second Yoodeling Unc pose, photo not yet saved to the repo. Also reviewed (not fixed) two randomization gaps: all simultaneous chasers share one face (`frontend/src/GameEngine.js:419-421`), and the five `RUNNER_FACE_POOL` poses are never mapped to game state. See `docs/handoffs/roadmap-handoff-v0.4.1-plan.md` for the copy-paste next-steps block.
 
 ## Files to check first
 
@@ -65,6 +66,13 @@ Use this as the handoff doc for the next agent working in the repo.
 
 ## Natural follow-up work
 
+- Pick up one of the four items queued in `docs/roadmap.md` from the
+  v0.4.1-plan session: add the Sky-Diver chaser (asset already on disk),
+  add the second Yoodeling Unc pose (blocked on the user saving the
+  file), fix the shared-chaser-face randomization bug, or wire runner
+  poses to game state. See
+  `docs/handoffs/roadmap-handoff-v0.4.1-plan.md` for exact file/line
+  references and a copy-paste starting prompt.
 - Do a real sound-on playthrough of the v0.4.0 audio pass — it was wired and tested (build + Playwright) but never actually listened to in this sandbox (no speakers). Check volume balance before building more on top of it.
 - Audio polish: volume ducking, a real composed menu theme, 1:1 capture-line/chaser-bark clips instead of a themed pool. See [docs/future-versions.md](docs/future-versions.md).
 - Add a skip button to the lvl2 video transition, and/or replace the clip (user-flagged as rough).

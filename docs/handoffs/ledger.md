@@ -10,6 +10,17 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.1-plan — 2026-07-26 (docs-only, no code shipped)
+
+- Rewrote `docs/characters.md` with real content (runner pose table,
+  chaser roster table, planned-new-chasers section).
+- Added two new-chaser plan items to `docs/roadmap.md`: Sky-Diver (Motor
+  Killer) and a second Yoodeling Unc pose (photo not yet saved to repo).
+- Reviewed and documented two face-randomization gaps as roadmap items:
+  simultaneous chasers sharing one face, and runner poses never mapped
+  to game state.
+- Added `docs/handoffs/roadmap-handoff-v0.4.1-plan.md`.
+
 ## v0.4.0 — 2026-07-26
 
 - Moved the 11 raw voice clips out of `/audio/` (scratch) into
