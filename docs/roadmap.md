@@ -146,7 +146,8 @@ and chaser-bark voice clips, 1:1 with text.
 - [ ] **Post-kill screen and kill logging.** When a kill occurs, after the kill skreem
   is done shaking, record who did the kill in the profile history, and then display
   a profile page for that chaser. The profile page should include humorous profile
-  info about their "toilet cleanup killen". See [roadmap-handoff-v0.4.23-plan.md](handoffs/roadmap-handoff-v0.4.23-plan.md).
+  info about their "toilet cleanup killen". See [roadmap-handoff-v0.4.24-plan.md](handoffs/roadmap-handoff-v0.4.24-plan.md).
+- [ ] **Profile Pages and clickable Killz log.** The killz log should display the `chaserId` (who killed the player). Add the ability to click on the skib-chaser killer profile in the log to open their full Profile Page. Introduce a Profile Pages system accessible from the menu or log.
 - [ ] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,
   left over from before the v0.4.16 cookie-default fix. `App.jsx` always
