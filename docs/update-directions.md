@@ -34,6 +34,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - **v0.4.5-plan (docs-only):** scoped a new "funny near-capture interlude" backlog item (pause-card + parody captions using `jayden-getting-captured.jpg`, deliberately kept separate from the real caught/jump-scare state). No code changed. See `docs/handoffs/roadmap-handoff-v0.4.5-plan.md`.
 - **v0.4.8 (real code, most recent session):** picked up Session 1 of the v0.4.3-plan three-session backlog (the oldest unfinished handoff, older than v0.4.5-plan's near-capture interlude) — **extra-chaser speed ramp**. `frontend/src/GameEngine.js`'s `_maybeSpawnExtraChaser()` no longer gives new chasers a flat `* 0.92` speed discount forever; each now gets a `joinRamp: 0` field that climbs to `1` over `CHASER_JOIN_RAMP_SECONDS` (5s), multiplied into the existing `chaser.baseSpeed * this.chaserSpeedMod` calc via a new `lerp()` helper — layered on top of the run-level rubber-band, not replacing it. Tried the code-monkey lane first per the user's ask: confirmed operational (Ollama reachable on `thinkpad-local`/`desktop-gaming`), but a real dispatch on a session-1-scoped prompt returned a diff with wrong line numbers, an invented `MAX_CHASERS = 5`, and a duplicate declaration — not usable, so implemented directly instead. Added `frontend/e2e/chaser-join-ramp.spec.js` (forces an immediate extra-chaser spawn and asserts the ramp behavior); full 5-test Playwright suite passes. `GAME_ITERATION` stays `v0.4.0`, no deploy requested. See `docs/handoffs/roadmap-handoff-v0.4.8.md`.
 - **v0.4.6 (real code):** finished clearing the v0.4.1-plan backlog by implementing **runner pose-to-state mapping**, the item flagged as the next natural step in v0.4.4. `frontend/src/GameEngine.js` now swaps Jayden's face to `jayden-getting-captured` the instant a capture happens, holds `jayden-captured` once the jump-scare zoom finishes (`zoom >= 3`), and restores the run's original face once the chase resumes — skipped entirely if the player uploaded a custom face (new `runnerIsCustom` flag threaded `App.jsx` → `GameCanvas.jsx` → `GameEngine.setFaces()`). Added `RUNNER_STATE_FACES` to `frontend/src/gameContent.js` and a new Playwright test, `frontend/e2e/caught-face.spec.js`, that forces an immediate capture (teleporting the chaser onto the runner via a new debug hook, `window.__skibEngine`, exposed from `GameCanvas.jsx`) and asserts the face swaps by object identity through both states, then restores; full 4-test suite passes. **Found and flagged, did not fix:** `md5sum` confirms `jayden-getting-captured.jpg` == `jayden-captured.jpg` and `jayden-uncaring-4029.jpg` == `jayden-default.jpg`, byte-for-byte — only 3 of the 5 documented runner poses are actually distinct photos. The swap logic is correct and ready, but the capture beat will visibly show the same photo twice until Ken supplies real distinct shots (or confirms the pool should collapse to 3 poses) — flagged in `docs/roadmap.md` and `docs/characters.md`, not guessed at, per the "real family photos" constraint in `docs/skib-sdlc.md`. `GAME_ITERATION` stays `v0.4.0`, no deploy requested. See `docs/handoffs/roadmap-handoff-v0.4.6.md` for the copy-paste next-steps block.
+- **v0.4.14 (real code, most recent session):** picked up the **face crop on upload** item from the roadmap's incremental backlog (user picked it from a shortlist of three unblocked candidates: intro cinematic, face crop, level-data extraction). `frontend/src/components/FaceUpload.jsx` now runs every uploaded photo through a new `cropToOval()` helper — center-crop to a square on an offscreen 256x256 canvas, clip with an ellipse path, re-export as a PNG data URL — before handing it to `onFace()`, so both the Runner and Chaser upload slots stop rendering as a stretched raw square. No `GameEngine.js` changes needed since `_drawEntity()` already just `drawImage()`s `entity.face` into the entity's square box; the transparency now baked into the uploaded image does the rest. Added `frontend/e2e/face-crop-verify.spec.js` (uploads a real asset, decodes the resulting PNG on an in-page canvas, asserts a transparent corner pixel vs. an opaque center pixel) — full 8-test Playwright suite passes. Also took a manual in-game screenshot after uploading a real photo to confirm the oval renders correctly on the sprite, not just in the isolated crop check. Default/gallery faces are untouched by design — the roadmap item scoped this to uploads only. `GAME_ITERATION` stays unbumped, no deploy requested. See `docs/handoffs/roadmap-handoff-v0.4.14.md`.
 
 ## Files to check first
 
@@ -53,6 +54,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - `frontend/src/components/GameCanvas.jsx`
 - `frontend/src/components/ShopModal.jsx`
 - `docs/handoffs/roadmap-handoff-v0.4.13-plan.md`
+- `docs/handoffs/roadmap-handoff-v0.4.14.md`
 - `scripts/run_code_monkey.sh`
 - `scripts/code_monkey_direct.py`
 
@@ -115,15 +117,16 @@ manually:
   (currently byte-identical duplicates of `jayden-captured`/
   `jayden-default`), or confirm the pool should collapse to 3 unique
   poses. See `docs/roadmap.md` and `docs/characters.md`.
+- Face crop on upload landed in v0.4.14 — no longer on this list.
 - Also still open: the 1:1 audio clip work, the World Star intro
-  cinematic, the face-crop upload pass, and the other smaller future
+  cinematic, level data extraction, and the other smaller future
   items parked in `docs/roadmap.md`.
 - Do a real sound-on playthrough of the v0.4.0 audio pass — it was wired and tested (build + Playwright) but never actually listened to in this sandbox (no speakers). Check volume balance before building more on top of it.
 - Audio polish: volume ducking, a real composed menu theme, 1:1 capture-line/chaser-bark clips instead of a themed pool. See [docs/future-versions.md](docs/future-versions.md).
 - Add a skip button to the lvl2 video transition, and/or replace the clip (user-flagged as rough).
 - Fix the `.portrait-frame` wide-viewport CSS bug found during v0.4.0 testing (see [docs/future-versions.md](docs/future-versions.md)) — worked around in the test, not fixed in the app.
 - Add the scripted World Star intro cinematic (full script from the PDF, not the standalone lvl2 video clip).
-- Crop or mask uploaded faces instead of stretching the raw image.
+- Crop or mask uploaded faces instead of stretching the raw image — landed v0.4.14.
 - Add more character roles or abilities from the PDF roster.
 - Extract level data out of hardcoded map-builder functions before hand-authoring more levels — see the level/map plan in [docs/roadmap.md](docs/roadmap.md).
 - Wire up backend persistence or multiplayer only after the front-end loop feels solid.

@@ -10,6 +10,10 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.14 — 2026-07-26 (real code)
+
+- Face crop on upload: `FaceUpload.jsx` now oval-masks every uploaded photo (offscreen canvas, square center-crop, ellipse clip, PNG re-export) instead of handing the raw file through, so uploaded faces stop rendering as a stretched square. No `GameEngine.js` changes needed. Added `frontend/e2e/face-crop-verify.spec.js`; full 8-test suite passes.
+
 ## v0.4.13-plan — 2026-07-26 (docs-only)
 
 - Re-scoped the lvl2 transition as an RCA item because playtesting says it still fires too early and can crash shortly after playback starts.

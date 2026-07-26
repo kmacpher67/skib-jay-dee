@@ -6,6 +6,56 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.14 — face crop on upload (2026-07-26)
+
+### What changed
+
+- `frontend/src/components/FaceUpload.jsx` no longer hands the raw uploaded
+  image straight to the parent. A new `cropToOval()` helper loads the file
+  into an offscreen `<canvas>`, center-crops it to a square, clips it with
+  an ellipse path, and re-exports it as a PNG data URL before calling
+  `onFace()`. Both the Runner and Chaser upload slots go through the same
+  path since `App.jsx` wires both through the same `FaceUpload` component.
+- `_drawEntity()` in `GameEngine.js` needed no changes — it already draws
+  `entity.face` with `ctx.drawImage()` into the entity's square bounding
+  box, so once the uploaded image itself carries a transparent oval mask,
+  the corners render through to the background automatically.
+- Added `frontend/e2e/face-crop-verify.spec.js`: uploads a real asset
+  through the actual file input, confirms the preview `<img>` is a
+  `data:image/png` (not the original raw file), then decodes that PNG on
+  an in-page canvas and asserts a corner pixel is fully transparent
+  (`alpha === 0`) while the center pixel is opaque — proof the mask
+  actually clipped the image rather than just changing the encoding.
+
+### Design decisions
+
+- Cropped at upload time, not at draw time, matching the existing roadmap
+  wording ("oval crop/mask step at upload time") — this keeps
+  `_drawEntity()`/`GameEngine.js` untouched and means the cost of masking
+  is paid once per upload, not every frame.
+- Used a fixed `CROP_SIZE = 256` offscreen canvas regardless of the
+  entity's on-screen size, since the sprite is later stretched to whatever
+  `entity.w`/`entity.h` are anyway — this keeps the stored data URL
+  resolution-independent of gameplay tuning.
+- Left the default (non-uploaded) gallery faces alone — the roadmap item
+  specifically scoped this to *uploaded* faces, and the shipped
+  `RUNNER_FACE_POOL`/`CHASER_FACE_POOL` defaults are curated crops already
+  handled outside this component.
+- Verified visually, not just by unit-style pixel assertion: took an
+  in-game screenshot after uploading a real photo and confirmed the sprite
+  renders an oval face inside its square colored border instead of a
+  stretched raw square.
+
+### Known non-goals for this pass
+
+- Default gallery/random faces are unchanged — still raw square draws, by
+  design (see above).
+- No change to the stroke/border drawn around each entity in
+  `_drawEntity()` — the square colored outline stays, only the photo
+  inside it is now oval.
+- `GAME_ITERATION` stays unbumped, no deploy, per the user's instruction
+  for this session.
+
 ## v0.4.13-plan — lvl2 RCA planning pass (2026-07-26)
 
 ### What changed

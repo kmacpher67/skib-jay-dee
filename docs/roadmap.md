@@ -51,7 +51,7 @@ for the full session write-up and
 | 2 | Audio pass | First pass done (v0.4.0) — see [sound-effects-howto.md](sound-effects-howto.md) and [future-versions.md](future-versions.md) for polish left |
 | 2.5 | World Star intro cinematic | Not started (an experimental lvl2 video-transition clip landed as a rough proof of concept, see below) |
 | 3 | More characters/abilities per PDF roster, role-swapping | Not started |
-| 4 | Oval/masked face-crop on upload instead of stretch | Not started |
+| 4 | Oval/masked face-crop on upload instead of stretch | Done (v0.4.14) |
 | 5 | FastAPI WebSocket multiplayer, server-authoritative roles | Backend scaffolded only |
 | 6 | Mongo-backed profile (replaces cookies) | Not started |
 
@@ -147,9 +147,12 @@ and chaser-bark voice clips, 1:1 with text.
   `JUICY_LLM_LOCAL_OLLAMA_BASE_URL` /
   `JUICY_LLM_DESKTOP_GAMING_OLLAMA_BASE_URL`. This is a tooling slice,
   not gameplay.
-- [ ] **Face crop on upload.** Replace the raw-square face draw in
-  `FaceUpload.jsx`/`_drawEntity()` with an oval crop/mask step at upload
-  time (canvas-based crop, no new dependency needed).
+- [x] **Face crop on upload.** Landed v0.4.14 — `FaceUpload.jsx` now
+  center-crops each uploaded photo to a square on an offscreen canvas,
+  clips it with an ellipse mask, and re-exports it as a PNG data URL
+  before handing it to the parent. `_drawEntity()` needed no changes
+  since the transparency is baked into the uploaded image itself. See
+  `frontend/e2e/face-crop-verify.spec.js`.
 - [ ] **Shop item: cosmetic sink.** Now that sheebs have a real economy
   (level rewards, death penalty), consider a cosmetic-only shop item
   (e.g. a jump-scare filter skin) so sheebs have somewhere to go once
