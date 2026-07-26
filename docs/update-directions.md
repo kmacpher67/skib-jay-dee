@@ -6,8 +6,8 @@ Use this as the handoff doc for the next agent working in the repo.
 
 - **Live production bug (broken face preview images) is now resolved:** the `v0.4.25` deploy included the fix where `App.jsx` was coercing the face pool object to `[object Object]`. The production menu now correctly shows the selected face assets.
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
-- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, the separate resume-countdown phase, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), a 20-sheebs capture penalty, and the discreet iteration badge in the HUD.
-- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, the lvl2 transition overlay lifecycle, and the post-kill profile modal / clickable deaths log. The lvl2 video now only mounts after Pipeworks is cleared *and* the engine reports the new hall-coverage / 4-skib survival gate as ready.
+- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, the separate resume-countdown phase, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), a 20-sheebs capture penalty (which can go negative above level 3), and the discreet iteration badge in the HUD.
+- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, the lvl2 transition overlay lifecycle, and the post-kill profile modal / clickable deaths log. The lvl2 video now only mounts after Pipeworks is cleared *and* the engine reports the new hall-coverage / 4-skib survival gate as ready. It also processes 25% item-loss on capture for players above level 4.
 - `frontend/src/components/ProfileModal.jsx` now renders the shared killer profile card for both fresh kills and log reopens, while `frontend/src/components/DeathsModal.jsx` shows clickable killer-ID pills.
 - `frontend/src/App.jsx` also owns the new menu version log panel, which shows `GAME_ITERATION` plus a short shipped changelog.
 - `frontend/src/version.js` is the single place to bump the visible iteration number.
@@ -19,7 +19,7 @@ Use this as the handoff doc for the next agent working in the repo.
   (`thinkpad-local`, `desktop-gaming`) so the cheap local box can stay
   the default.
 - Default faces are randomly shuffled from the local gallery each time the user presses play, unless they upload custom faces.
-- User id, sheeb balance, purchased items, death count, deaths history (now with killer IDs), and highest cleared level persist in cookies.
+- User id, sheeb balance (can be negative), purchased items, death count, deaths history (now with killer IDs), and highest cleared level persist in cookies.
 - The deployment helper now takes an iteration label and short slug, then commits only the `skib-jay-dee-toilet-game/` subtree in the website repo.
 - The audio how-to now spells out local recording guidance: capture however is convenient, keep raw edits lossless if possible, and export game-ready clips as mono `.ogg` or `.mp3` at 44.1kHz.
 - The frontend now has a starter audio loop in `frontend/src/assets/audio/jayden-skreem-loop.m4a`; the menu primes it on first interaction and the caught transition reuses the same clip as a quick sting.

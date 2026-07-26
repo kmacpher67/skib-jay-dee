@@ -244,6 +244,15 @@ export default function App() {
     setProfileModalMode(null)
     setLastCaptureLine(captureLine)
     playCaughtAudio()
+
+    syncProfile((current) => {
+      let nextOwnedItems = current.ownedItems
+      if (current.highestLevel > 4 && Math.random() < 0.25 && current.ownedItems.length > 0) {
+        const randomIndex = Math.floor(Math.random() * current.ownedItems.length)
+        nextOwnedItems = current.ownedItems.filter((_, idx) => idx !== randomIndex)
+      }
+      return { ...current, ownedItems: nextOwnedItems }
+    })
   }
 
   const handleCaughtProfileReady = (payload) => {
@@ -415,6 +424,7 @@ export default function App() {
               loadoutRewardBonus={loadout.rewardBonus}
               initialSheebs={profile.sheebs}
               initialDeaths={profile.deaths}
+              highestLevel={profile.highestLevel}
               onCaught={handleCaught}
               onLevelChange={handleLevelChange}
               onSheebsChange={handleSheebsChange}
@@ -508,7 +518,11 @@ function MainMenu({
 
       <div className="status-row">
         <span>User {profile.userId}</span>
-        <span>{profile.sheebs} sheebs</span>
+        {profile.sheebs < 0 ? (
+          <span className="debt-badge" style={{ backgroundColor: '#ff2e2e', color: 'white', padding: '0 6px', borderRadius: '4px' }}>DEBT: {profile.sheebs}</span>
+        ) : (
+          <span>{profile.sheebs} sheebs</span>
+        )}
         <span>Best level {profile.highestLevel}</span>
         <button className="status-pill deaths-pill" onClick={onOpenDeaths} type="button">
           Deaths {profile.deaths}

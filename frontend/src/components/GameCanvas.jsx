@@ -22,6 +22,7 @@ export default function GameCanvas({
   loadoutRewardBonus,
   initialSheebs,
   initialDeaths,
+  highestLevel,
   onCaught,
   onSkreem,
   onLevelChange,
@@ -55,6 +56,7 @@ export default function GameCanvas({
       onCaughtProfileReady,
       initialSheebs,
       initialDeaths,
+      highestLevel,
       loadout: {
         speedBonus: loadoutSpeedBonus,
         staminaBonus: loadoutStaminaBonus,

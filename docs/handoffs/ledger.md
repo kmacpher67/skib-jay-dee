@@ -10,6 +10,13 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.26 — 2026-07-26
+
+- Shipped sheebs debt and item loss risk for experienced players (`highestLevel > 3` and `highestLevel > 4` respectively).
+- Adjusted cookie parsing and `GameEngine` state synchronization so that sheebs are allowed to persist and display as negative ("DEBT" badge).
+- Added two new playwright test files to cover the new behaviors.
+- Bumped `GAME_ITERATION` to `v0.4.26` and deployed to production.
+
 ## v0.4.25 — 2026-07-26
 
 - Shipped the post-kill profile system: captures now pause on a reusable

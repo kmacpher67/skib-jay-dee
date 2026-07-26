@@ -6,6 +6,27 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.26 — Sheebs debt and item loss (2026-07-26)
+
+### What changed
+
+- `frontend/src/GameEngine.js` now subtracts up to 20 sheebs on capture and drops the floor-at-0 clamp when `highestLevel > 3`, allowing sheebs balances to go negative.
+- `frontend/src/App.jsx` now correctly synchronizes the negative sheebs and displays a red "DEBT" badge in the HUD and Main Menu when in debt.
+- `frontend/src/App.jsx` drops a random item from `ownedItems` with a 25% chance on capture when `highestLevel > 4`.
+- `frontend/src/lib/cookies.js` was modified to remove the `Math.max(0, ...)` clamp in `normalizeProfile()`, allowing negative sheebs to persist.
+- `frontend/e2e/negative-sheebs.spec.js` and `frontend/e2e/item-loss.spec.js` added for playwright coverage.
+
+### Design decisions
+
+- Added `this.onSheebsChange(this.sheebs)` into the engine capture flow to synchronize the sheebs state with React without breaking existing UI component lifecycles.
+- Kept the product decisions strictly decoupled from the UI transitions—which were delegated to a future session.
+- Fixed a bug where negative sheebs were being inadvertently stripped during the cookie load pass.
+
+### Verification
+
+- `cd frontend && npm run build`
+- `cd frontend && npx playwright test` (all 17 pass)
+
 ## v0.4.25 — Post-kill profile pages shipped (2026-07-26)
 
 ### What changed

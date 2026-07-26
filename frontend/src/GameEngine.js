@@ -347,6 +347,7 @@ export class GameEngine {
       onCaughtProfileReady,
       initialSheebs,
       initialDeaths = 0,
+      highestLevel = 0,
       loadout = {},
     } = {},
   ) {
@@ -405,10 +406,11 @@ export class GameEngine {
 
     this.maxStamina = 100
     this.stamina = this.maxStamina
-    this.sheebs = Math.max(0, Math.floor(initialSheebs))
+    this.sheebs = Math.max(0, Math.floor(initialSheebs)) // We can let it be negative here too, actually wait, sheebs comes from profile
     this.skreems = 0
     this.levelSkreems = 0
     this.deaths = Math.max(0, Math.floor(initialDeaths))
+    this.highestLevel = highestLevel
     this.phase = 'intro'
     this.phaseTimer = 1.6
     this.zoom = 1
@@ -464,7 +466,7 @@ export class GameEngine {
   }
 
   setSheebs(sheebs) {
-    this.sheebs = Math.max(0, Math.floor(sheebs))
+    this.sheebs = Math.floor(sheebs) // allow negative when receiving from outside
   }
 
   setLoadout(loadout = {}) {
@@ -1010,11 +1012,20 @@ export class GameEngine {
 
     this.deaths += 1
     const skreemsLost = Math.round(this.skreems * DEATH_SKREEM_PENALTY)
-    const sheebsLost = Math.min(this.sheebs, DEATH_SHEEBS_PENALTY)
+    const baseSheebsLost = DEATH_SHEEBS_PENALTY
+    let sheebsLost = 0
+    if (this.highestLevel > 3) {
+      sheebsLost = baseSheebsLost
+      this.sheebs = this.sheebs - sheebsLost
+    } else {
+      sheebsLost = Math.min(this.sheebs, baseSheebsLost)
+      this.sheebs = Math.max(0, this.sheebs - sheebsLost)
+    }
+    
     this.skreems = Math.max(0, this.skreems - skreemsLost)
     this.levelSkreems = Math.max(0, this.levelSkreems - skreemsLost)
     this.pipeworksSkreems = Math.max(0, (this.pipeworksSkreems || 0) - skreemsLost)
-    this.sheebs = Math.max(0, this.sheebs - sheebsLost)
+    this.onSheebsChange(this.sheebs)
     if (this.level.name === 'Pipeworks') {
       this.pipeworksFourSkibSeconds = 0
       this.pipeworksTransitionReady = false
@@ -1227,7 +1238,14 @@ export class GameEngine {
     ctx.fillText(`SKREEMS: ${Math.floor(this.skreems)}`, 10, 17)
 
     ctx.textAlign = 'center'
-    ctx.fillText(`SHEEBS: ${this.sheebs}`, VIEW_W / 2, 17)
+    if (this.sheebs < 0) {
+      ctx.save()
+      ctx.fillStyle = '#ff2e2e'
+      ctx.fillText(`DEBT: ${this.sheebs}`, VIEW_W / 2, 17)
+      ctx.restore()
+    } else {
+      ctx.fillText(`SHEEBS: ${this.sheebs}`, VIEW_W / 2, 17)
+    }
 
     ctx.textAlign = 'right'
     ctx.fillText(`LEVEL ${this.levelIndex + 1}/${LEVELS.length}`, VIEW_W - 10, 17)

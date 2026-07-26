@@ -150,7 +150,7 @@ and chaser-bark voice clips, 1:1 with text.
   [roadmap-handoff-v0.4.24-plan.md](handoffs/roadmap-handoff-v0.4.24-plan.md).
 - [x] **Post-kill screen and kill logging.** Landed v0.4.25 — when a kill occurs, after the kill skreem is done shaking, the game now records who did the kill in the profile history, then shows a reusable profile page for that chaser before returning to the menu. The profile card uses the `CHASER_PROFILES` content map, and the cookie-backed `deathsHistory` entries now carry `chaserId` alongside the timestamp and level.
 - [x] **Profile Pages and clickable Killz log.** Landed v0.4.25 — the killz log now displays a clickable killer-ID pill for each capture, and selecting it reopens the same profile page on top of the log. The profile page can be dismissed back to the log, or from a fresh kill back to the menu.
-- [ ] **Sheebs debt economy: allow negative balance above level 3.** Right now
+- [x] **Sheebs debt economy: allow negative balance above level 3.** Right now
   `GameEngine.js` clamps `this.sheebs` to `Math.max(0, ...)` everywhere it's
   touched (constructor, capture penalty, shop spend), so a player can never go
   below `0` regardless of level. Ken flagged the menu math looking wrong from a
@@ -166,7 +166,7 @@ and chaser-bark voice clips, 1:1 with text.
   displays in the HUD/menu pill (just a negative number? a "debt" styling?)
   before coding — flag for Ken in the next planning pass. See
   [roadmap-handoff-v0.4.26-plan.md](handoffs/roadmap-handoff-v0.4.26-plan.md).
-- [ ] **High-level risk: lose shop items/rewards above level 4.** Companion
+- [x] **High-level risk: lose shop items/rewards above level 4.** Companion
   risk/reward item to the sheebs-debt idea above — once
   `profile.highestLevel > 4`, getting captured should have a chance to strip
   a previously purchased Shleeb shop item (or another persisted reward) back
@@ -178,6 +178,8 @@ and chaser-bark voice clips, 1:1 with text.
   sheebs-debt item above as a single "stakes go up past level 4" backlog
   slice, but scope and ship them separately. See
   [roadmap-handoff-v0.4.26-plan.md](handoffs/roadmap-handoff-v0.4.26-plan.md).
+- [ ] **Difficulty Transition Screens:** When the level changes (specifically heading into Level 4 and beyond), implement a gameplay transition screen that updates the user on the difficulty spike (e.g., warning about losing sheebs/items, Shop Slop changes).
+- [ ] **Rewards/Badges:** Add a roadmap item to design and implement persistent awards/badges for high-level achievements.
 - [ ] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,
   left over from before the v0.4.16 cookie-default fix. `App.jsx` always
