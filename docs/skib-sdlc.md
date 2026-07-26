@@ -180,6 +180,12 @@ Every session that lands a meaningful change updates:
   yet). Remove items from here once they actually land in a future
   session — the ledger and version-log are the permanent record, this
   file is just a parking lot.
+- **Key feature documentation (e.g. `docs/dialog_content_chasing.md`)** — 
+  when building out content-heavy features (like dialog pools, level layouts, 
+  or overarching themes), refine and document the content in a dedicated `.md` file. 
+  This captures the situation and provides a human-AI documentation trail. If 
+  there are tasks for the human (like recording audio), include those here as a 
+  to-do list with suggested filenames so the user knows exactly what to provide.
 
 If you didn't finish an increment, still update the docs to say what state
 it's in and what's left — don't leave the next agent to reverse-engineer it
