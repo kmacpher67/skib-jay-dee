@@ -18,4 +18,4 @@
     *   "I SEE YOU! YOU CAN RUN, BUT YOU CAN'T WIPE!"
     *   "SPACE BAR? MORE LIKE ESCAPE BAR."
 
-![Skib Default](../../frontend/src/assets/skib-default.png)
+![Skib Default](../../frontend/src/assets/skib-default.jpg)
