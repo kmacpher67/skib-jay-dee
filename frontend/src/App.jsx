@@ -111,9 +111,9 @@ export default function App() {
   const handleBoostStart = () => playOneShot(boostStartUrl, 0.35)
   const handleTired = () => playOneShot(tiredUrl, 0.35)
   const handleChaserBark = () => playRandomOneShot(CHASER_BARK_URLS, 0.32)
-  const handleLevelClear = ({ index } = {}) => {
+  const handleLevelClear = ({ index, showLvl2Transition = false } = {}) => {
     playOneShot(levelClearUrl, 0.4)
-    if (index === 2) setShowLvl2Transition(true)
+    if (index === 2) setShowLvl2Transition(!!showLvl2Transition)
   }
 
   const handleLevelChangeAudio = () => playOneShot(levelStartUrl, 0.35)

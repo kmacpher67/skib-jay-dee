@@ -10,6 +10,21 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.15-plan addendum — 2026-07-26 (docs-only)
+
+- Added a new backlog item to `docs/roadmap.md`: **Feature: Parody
+  Attribute System (Panic, Grip, Scream, Sus)** — a four-stat block
+  (Panic Index inverts controls at high speed, Grip Control governs
+  corner-slide drift, Scream Volume drives audio-based NPC alerts, Sus
+  Level drives social-deduction-style NPC turns/lockouts/votes).
+- Flagged that it will require changes to the `_updateCaught` and
+  `update(dt)` loops in `frontend/src/GameEngine.js` for momentum,
+  inverted steering, and audio trigger radii — not yet broken into
+  single-session increments.
+- Extended the still-open `docs/handoffs/roadmap-handoff-v0.4.15-plan.md`
+  with this addendum rather than opening a new plan version, per Mode A
+  rule 2 (don't duplicate an in-flight plan).
+
 ## v0.4.14 — 2026-07-26 (real code)
 
 - Face crop on upload: `FaceUpload.jsx` now oval-masks every uploaded photo (offscreen canvas, square center-crop, ellipse clip, PNG re-export) instead of handing the raw file through, so uploaded faces stop rendering as a stretched square. No `GameEngine.js` changes needed. Added `frontend/e2e/face-crop-verify.spec.js`; full 8-test suite passes.
@@ -245,3 +260,9 @@ update `docs/version-log.md`.
 - Upgraded from a Phase 1 single-scene prototype to a 3-level playable
   build: fixed sprint, desktop keyboard controls, Shleeb shop, cookie
   persistence, randomized default faces, death counter, process docs.
+
+## v0.4.15 — 2026-07-26 (real code)
+
+- Tightened the lvl2 transition to wait for Pipeworks hall coverage plus a 4-skib survival timer before mounting the video.
+- Kept the React overlay dismissal behavior, and added browser coverage for the blocked gate path, the allowed path, the capture-dismiss path, and the end-of-playback path.
+- Bumped the visible iteration to `v0.4.15`.

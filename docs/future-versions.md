@@ -31,8 +31,9 @@ is a parking lot, not an archive).
   proof-of-concept, not a final asset. Replace the clip, or replace the
   whole approach with the scripted intro-cinematic plan below, once
   there's a better source video.
-- Currently only fires once per run, hardcoded to level index 2. If more
-  levels get transition clips, generalize this into a
+- Currently only fires once per run, hardcoded to level index 2, and it
+  now waits for the Pipeworks hall-coverage / 4-skib survival gate before
+  mounting. If more levels get transition clips, generalize this into a
   `transitionVideoUrl` field per level in the `LEVELS` array
   (`frontend/src/GameEngine.js`) instead of a special-cased check in
   `App.jsx`.

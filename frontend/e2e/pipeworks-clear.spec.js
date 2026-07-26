@@ -1,47 +1,46 @@
 import { test, expect } from '@playwright/test'
 
-test('Pipeworks only clears when 5 chasers are active and fully ramped', async ({ page }) => {
+async function primePipeworks(page, { hallCoverage, fourSkibSeconds, advance = false } = {}) {
+  await page.evaluate(({ hallCoverage, fourSkibSeconds, advance }) => {
+    const engine = window.__skibEngine
+    engine.levelIndex = 1
+    engine._syncLevelState({ resetPositions: true })
+    engine.phase = 'chase'
+    engine.extraChaserTimer = 0
+    engine._maybeSpawnExtraChaser(0)
+    engine.extraChaserTimer = 0
+    engine._maybeSpawnExtraChaser(0)
+    engine.extraChaserTimer = 0
+    engine._maybeSpawnExtraChaser(0)
+    engine.extraChaserTimer = 0
+    engine._maybeSpawnExtraChaser(0)
+    engine.chasers.forEach((chaser) => {
+      chaser.joinRamp = 1
+    })
+    engine.pipeworksHallCoverage = hallCoverage
+    engine.pipeworksFourSkibSeconds = fourSkibSeconds
+    engine.pipeworksTransitionReady = hallCoverage >= 0.8 && fourSkibSeconds >= 15
+    if (advance) engine._startLevelAdvance()
+  }, { hallCoverage, fourSkibSeconds, advance })
+
+  await page.waitForFunction(() => window.__skibEngine.level.name === 'Pipeworks')
+  await page.waitForFunction(() => window.__skibEngine.chasers.length === 5)
+}
+
+test('Pipeworks keeps the lvl2 transition hidden until the hall coverage and 4-skib gate is met', async ({ page }) => {
   await page.goto('./')
   await page.locator('.play-btn').click()
   await expect(page.locator('canvas')).toBeVisible()
 
-  await page.evaluate(() => {
-    window.__skibEngine.levelIndex = 1
-    window.__skibEngine._syncLevelState({ resetPositions: true })
-    window.__skibEngine.phase = 'chase'
-  })
-  
-  await page.waitForFunction(() => window.__skibEngine.level.name === 'Pipeworks')
+  await primePipeworks(page, { hallCoverage: 0.79, fourSkibSeconds: 14.9, advance: true })
+  await page.waitForFunction(() => window.__skibEngine.phase === 'level-up')
+  await expect(page.locator('.lvl2-transition')).toHaveCount(0)
 
-  await page.evaluate(() => {
-    window.__skibEngine.extraChaserTimer = 0
-    window.__skibEngine._maybeSpawnExtraChaser(0)
-    window.__skibEngine.extraChaserTimer = 0
-    window.__skibEngine._maybeSpawnExtraChaser(0)
-    window.__skibEngine.extraChaserTimer = 0
-    window.__skibEngine._maybeSpawnExtraChaser(0)
-    window.__skibEngine.extraChaserTimer = 0
-    window.__skibEngine._maybeSpawnExtraChaser(0)
-  })
+  await page.goto('./')
+  await page.locator('.play-btn').click()
+  await expect(page.locator('canvas')).toBeVisible()
 
-  await page.waitForFunction(() => window.__skibEngine.chasers.length === 5)
-
-  await page.evaluate(() => {
-    window.__skibEngine.chasers.forEach(c => { c.joinRamp = 1 })
-    window.__skibEngine.pipeworksSkreems = 100
-  })
-
-  await page.waitForTimeout(500)
-  
-  const state = await page.evaluate(() => {
-    const e = window.__skibEngine
-    return {
-      phase: e.phase,
-      levelIndex: e.levelIndex,
-      pipeworksSkreems: e.pipeworksSkreems,
-      chasers: e.chasers.length,
-      levelName: e.level.name
-    }
-  })
-  expect(state.phase).toBe('level-up')
+  await primePipeworks(page, { hallCoverage: 0.8, fourSkibSeconds: 15, advance: true })
+  await page.waitForFunction(() => window.__skibEngine.phase === 'level-up')
+  await expect(page.locator('.lvl2-transition')).toBeVisible()
 })

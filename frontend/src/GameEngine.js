@@ -306,6 +306,10 @@ const LEVELS = [
 const MAX_CHASERS = 5
 const EXTRA_CHASER_INTERVAL = 14 // seconds of uninterrupted chase before another toilet joins
 const PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL = 68
+const PIPEWORKS_HALL_COVERAGE_GOAL = 0.8
+const PIPEWORKS_GATE_REQUIRED_CHASERS = 4
+const PIPEWORKS_GATE_REQUIRED_SECONDS = 15
+const PIPEWORKS_HALL_GRID_SIZE = 30
 const DEATH_SKREEM_PENALTY = 0.3 // fraction of skreems lost on capture
 
 // Rubber-band chaser speed: each KILLZ (capture) mellows the toilet out a
@@ -416,6 +420,10 @@ export class GameEngine {
     this.chaserSpeedMod = 1
     this.nearCaptureCooldown = 15
     this.nearCaptureLine = ''
+    this.pipeworksHallCoverage = 0
+    this.pipeworksFourSkibSeconds = 0
+    this.pipeworksTransitionReady = false
+    this._pipeworksHallCoverageGrid = null
 
     this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0 }
 
@@ -669,6 +677,11 @@ export class GameEngine {
     this.chasers = [this.chaser]
     this.extraChaserTimer = EXTRA_CHASER_INTERVAL
     this.nearCaptureCooldown = 15
+    this._resetPipeworksGateState()
+
+    if (this.level.name === 'Pipeworks') {
+      this._pipeworksHallCoverageGrid = this._buildPipeworksHallCoverageGrid()
+    }
 
     if (resetPositions) {
       this.runner.x = this.level.runnerSpawn.x
@@ -707,7 +720,14 @@ export class GameEngine {
       CHASER_SPEED_MOD_MIN,
       CHASER_SPEED_MOD_MAX,
     )
-    this.onLevelClear({ index: this.levelIndex + 1, name: this.level.name })
+    this.onLevelClear({
+      index: this.levelIndex + 1,
+      name: this.level.name,
+      showLvl2Transition: this.level.name === 'Pipeworks' && this.pipeworksTransitionReady,
+      pipeworksHallCoverage: this.pipeworksHallCoverage,
+      pipeworksFourSkibSeconds: this.pipeworksFourSkibSeconds,
+      pipeworksSimultaneousSkibs: this.chasers.length,
+    })
   }
 
   update(dt) {
@@ -766,6 +786,7 @@ export class GameEngine {
     this._moveWithCollision(this.runner, move.x * speed * dt, move.y * speed * dt)
 
     this._maybeSpawnExtraChaser(dt)
+    this._updatePipeworksGateProgress(dt)
 
     let closestDist = Infinity
     let caught = false
@@ -867,6 +888,67 @@ export class GameEngine {
     })
   }
 
+  _resetPipeworksGateState() {
+    this.pipeworksHallCoverage = 0
+    this.pipeworksFourSkibSeconds = 0
+    this.pipeworksTransitionReady = false
+    this._pipeworksHallCoverageGrid = null
+  }
+
+  _buildPipeworksHallCoverageGrid() {
+    const cols = Math.ceil(WORLD.width / PIPEWORKS_HALL_GRID_SIZE)
+    const rows = Math.ceil(WORLD.height / PIPEWORKS_HALL_GRID_SIZE)
+    const walkable = new Set()
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const x = Math.min(
+          WORLD.width - 1,
+          col * PIPEWORKS_HALL_GRID_SIZE + PIPEWORKS_HALL_GRID_SIZE / 2,
+        )
+        const y = Math.min(
+          WORLD.height - 1,
+          row * PIPEWORKS_HALL_GRID_SIZE + PIPEWORKS_HALL_GRID_SIZE / 2,
+        )
+        if (!this._hitsWall({ x, y, w: 1, h: 1 })) {
+          walkable.add(row * cols + col)
+        }
+      }
+    }
+
+    return {
+      cols,
+      rows,
+      walkable,
+      visited: new Set(),
+      total: walkable.size,
+    }
+  }
+
+  _updatePipeworksGateProgress(dt) {
+    if (this.level.name !== 'Pipeworks' || !this._pipeworksHallCoverageGrid) return
+
+    const grid = this._pipeworksHallCoverageGrid
+    const runnerCenterX = this.runner.x + this.runner.w / 2
+    const runnerCenterY = this.runner.y + this.runner.h / 2
+    const col = clamp(Math.floor(runnerCenterX / PIPEWORKS_HALL_GRID_SIZE), 0, grid.cols - 1)
+    const row = clamp(Math.floor(runnerCenterY / PIPEWORKS_HALL_GRID_SIZE), 0, grid.rows - 1)
+    const index = row * grid.cols + col
+
+    if (grid.walkable.has(index) && !grid.visited.has(index)) {
+      grid.visited.add(index)
+      this.pipeworksHallCoverage = grid.total > 0 ? grid.visited.size / grid.total : 0
+    }
+
+    if (this.chasers.length >= PIPEWORKS_GATE_REQUIRED_CHASERS) {
+      this.pipeworksFourSkibSeconds += dt
+    }
+
+    this.pipeworksTransitionReady =
+      this.pipeworksHallCoverage >= PIPEWORKS_HALL_COVERAGE_GOAL &&
+      this.pipeworksFourSkibSeconds >= PIPEWORKS_GATE_REQUIRED_SECONDS
+  }
+
   _moveWithCollision(entity, dx, dy) {
     const tryX = { ...entity, x: entity.x + dx }
     if (!this._hitsWall(tryX)) entity.x = clamp(tryX.x, 24, WORLD.width - 24 - entity.w)
@@ -898,6 +980,10 @@ export class GameEngine {
     this.skreems = Math.max(0, this.skreems - skreemsLost)
     this.levelSkreems = Math.max(0, this.levelSkreems - skreemsLost)
     this.pipeworksSkreems = Math.max(0, (this.pipeworksSkreems || 0) - skreemsLost)
+    if (this.level.name === 'Pipeworks') {
+      this.pipeworksFourSkibSeconds = 0
+      this.pipeworksTransitionReady = false
+    }
     this.chaserSpeedMod = clamp(
       this.chaserSpeedMod + CHASER_SPEED_MOD_DEATH_STEP,
       CHASER_SPEED_MOD_MIN,

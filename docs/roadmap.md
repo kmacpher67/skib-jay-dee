@@ -11,7 +11,7 @@ they land, and append new items as they surface — don't let it go stale.
 The repo now also has a lightweight code-monkey lane for bounded handoff
 execution: `./scripts/run_code_monkey.sh <handoff.md>` can dispatch the
 next slice to the cheaper `thinkpad-local` Ollama profile by default,
-falling back to `OLLAMA_HOST` or switching to `desktop-gaming` /
+fallback to `OLLAMA_HOST` or switch to `desktop-gaming` /
 OpenRouter when needed. The handoff's own bounded copy-paste block is
 the prompt body.
 
@@ -22,8 +22,8 @@ faces, five levels (Porcelain Palace → Pipeworks → Flooded Annex → The
 Ramen Aisle → World Star Parking Lot), desktop keyboard controls, sprint,
 Shleeb shop, cookie-backed profile (user id, sheebs, owned items, highest
 level, lifetime deaths), skreem-on-proximity, skreem-penalty + death count
-on capture, a multi-chaser mechanic (extra toilets join in if a level
-runs long, with Pipeworks tuned for five simultaneous chasers), and a discreet build-iteration badge tied to a shared
+on capture, a multi-chaser mechanic (extra toilets join in if a level runs
+long, with Pipeworks tuned for five simultaneous chasers), and a discreet build-iteration badge tied to a shared
 frontend constant plus the deploy-commit helper. All in-game text now
 lives in one place, `frontend/src/dialog.js` (`CAPTURE_LINES`,
 `CHASER_LINES`, `TIRED_LINES`) — edit lines there without touching
@@ -36,8 +36,9 @@ frequency were bumped up. As of v0.4.0 the game also has a first real
 audio pass — chase ambience (now layered in later), capture sting, chaser
 barks, boost/tired stingers, a cookie-persisted mute toggle — plus an
 experimental (rough) lvl2 video transition whose trigger now waits for
-Pipeworks clear. Still front-end only — no backend, no multiplayer, no
-full scripted intro cinematic. See
+Pipeworks clear and an additional hall-coverage / 4-skib survival gate.
+Still front-end only — no backend, no multiplayer, no full scripted intro
+cinematic. See
 [docs/handoffs/roadmap-handoff-v0.4.0.md](handoffs/roadmap-handoff-v0.4.0.md)
 for the full session write-up and
 [docs/future-versions.md](future-versions.md) for what's parked next.
@@ -58,7 +59,7 @@ for the full session write-up and
 ## Plan: handling levels and new maps (plan only — not implemented)
 
 The current level system (`frontend/src/GameEngine.js`, `LEVELS` array +
-`buildXxx()` map functions) works but doesn't scale well past ~6-8 levels
+buildXxx() map functions) works but doesn't scale well past ~6-8 levels
 by hand-authoring wall rectangles. Proposed evolution, in order — each is
 its own increment, don't do them all at once:
 
@@ -74,9 +75,9 @@ its own increment, don't do them all at once:
    map, and closer to the PDF's "mungus game layout type map" description.
 3. **Per-level chaser roster.** The PDF roster (Skibidty Toilet Guy,
    Skib-Daddy, Raman-Aunt-Toilet Lady) implies different levels could
-   default to different chaser "types" with different speed/ability
-   profiles, not just a reskinned face. Once Phase 3 (character abilities)
-   lands, wire a `chaserType` per level.
+default to different chaser "types" with different speed/ability
+profiles, not just a reskinned face. Once Phase 3 (character abilities)
+lands, wire a `chaserType` per level.
 4. **Level unlock gating / direct select.** Right now all levels are
    reached in one continuous run (advance via skreem threshold). Consider
    letting the menu jump straight to any level up to
@@ -223,13 +224,15 @@ and chaser-bark voice clips, 1:1 with text.
   this.level.name })`, `App.jsx` moved the `index === 2` check into
   `handleLevelClear`, and the experimental `lvl2-transition.mp4` only
   appears after Pipeworks is actually cleared.
-- [ ] **RCA: lvl2 transition still fires too early for playtime, and the
-  game can crash shortly after the video starts.** Investigate the crash
-  path first, then tighten the gate so the video cannot play until the
-  player has covered at least 80% of the map halls and has survived 15
-  seconds with 4 simultaneous skibs on them. Treat the next coding
-  session as instrumentation + RCA before any user-facing behavior
-  change.
+- [x] **RCA: lvl2 transition still fired too early for playtime, and the
+  game could crash shortly after the video starts.** Landed v0.4.15 —
+  `GameEngine.js` now tracks Pipeworks hall coverage plus a 4-skib
+  survival timer and only reports `showLvl2Transition: true` when both
+  gates are met; `App.jsx` now only mounts the overlay when that flag is
+  present. Playwright now covers the blocked gate path, the allowed path,
+  the capture-dismiss path, and the end-of-playback path; browser probes
+  in Chromium didn't surface a page error when the transition played all
+  the way through.
 - [x] **RESOLVED — Tie Pipeworks's clear condition to surviving 5
   simultaneous chasers at their max speed, gated by a skreem threshold.**
   User confirmed the design and the current tuning now uses 5 skibs.
@@ -258,37 +261,3 @@ and chaser-bark voice clips, 1:1 with text.
   verification for the lvl2 timing fix confirmed the video only appears
   after Pipeworks clears, so it no longer overlaps the catch state on
   arrival.
-- [x] **RESOLVED — the lvl2 video no longer hides the jump-scare when a
-  capture starts.**
-  `frontend/src/App.jsx` now dismisses `showLvl2Transition` in
-  `handleCaught()` and resets it on `handlePlay()`, so a run cannot carry
-  the overlay into the caught state or into the next session. Added
-  `frontend/e2e/lvl2-transition-clears-on-caught.spec.js` to force the
-  Pipeworks clear, confirm the video appears on the clear, then force a
-  capture and assert the overlay unmounts before the jump-scare beat.
-
-## Session rules
-
-- Keep each session to one meaningful increment (or a small tightly-related
-  cluster, as this session did for the content pass).
-- Build after changes with `cd frontend && npm run build`.
-- Update `docs/version-log.md`, `docs/update-directions.md`, and this file
-  whenever a meaningful change lands.
-- Do not treat the backend scaffold as in scope unless the user asks for it.
-
-## Constraints (see also skib-sdlc.md)
-
-- Front-end only until the user explicitly asks for backend/multiplayer
-  work.
-- Keep the 9:16 portrait layout.
-- Don't break cookie persistence, random default faces, or the
-  single-session-increment discipline above.
-
-- [ ] **Game Identity & New Profiles.** Allow the user to keep their existing game identity and create a new game profile, still using front-end cookies only.
-- [ ] **Fix Initial Sheebs.** The game currently starts off with 200 sheebs (in cookies.js, some users see 240 somehow). This should start at 0 sheebs.
-- [ ] **Setup Version Page.** Create a version page in the frontend to display current iteration and changelog info.
-- [ ] **Track Chaser Kills (Who Killed Who).** Add to the roadmap/gameplay: Track which Skib-chaser got the kill and when. The "Deaths ##" text on the main menu should become clickable, opening a history/log modal of who killed the player and when.
-- [ ] **Skib Profile Reviewer (Nintendo Style).** Add a UI screen that rotates the skib character and tells the profile of the skib-killer-chaser (their main scare and toilet killing tricks). (Needs Ken's input on `docs/profiles/`).
-- [ ] **Fix Skreem Loop.** After any amount of interaction with the main screen, we only get a loop of the player skreeem! Less of that.
-- [ ] **New Chase Map Layout.** Need to vibe and expand upon a new chase map layout for a future level.
-- [ ] **Review Lvl2 Transition.** Maybe already specified by gameplay advances to lvl2 too fast, still need to check if the new version hasn't pushed yet or if tuning is still required.
