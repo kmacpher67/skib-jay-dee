@@ -10,6 +10,30 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.26-plan — 2026-07-26 (docs-only)
+
+- Scoped two new Phase 7 "risk goes up for experienced players" backlog
+  items in `docs/roadmap.md`, prompted by Ken's screenshot reaction to
+  seeing 240 sheebs alongside 2048 lifetime deaths: (1) let sheebs go
+  negative on capture once `profile.highestLevel > 3` instead of always
+  flooring at `0`, and (2) let captures above level 4 have a chance to
+  strip a previously purchased shop item back out of the profile. Both
+  items are explicitly blocked on product decisions from Ken (debt
+  display styling; item-loss eligibility/chance/warning/rebuy rules) — see
+  `docs/handoffs/roadmap-handoff-v0.4.26-plan.md`.
+- Added a "Menu brag stat: best level + fewest deaths" backlog item and a
+  new Phase 7 row to the high-level phases table.
+
+## v0.4.25-plan — 2026-07-26 (docs-only, ledger backfill)
+
+- The `roadmap-handoff-v0.4.25-plan.md` file (post-kill chaser profile
+  screen, `chaserId` kill-history logging, and a clickable Deaths log)
+  already existed from an earlier session but was never given a ledger,
+  version-log, or update-directions entry — backfilled here so the docs
+  trail matches what's actually on disk. Marked the older
+  `roadmap-handoff-v0.4.23-plan.md` as superseded by this fuller-scope
+  plan rather than leaving two competing plan files for the same feature.
+
 ## v0.4.24 — 2026-07-26
 
 - Implemented the 3-second `resume-countdown` phase after jump-scares in `GameEngine.js`.

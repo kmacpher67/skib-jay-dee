@@ -6,6 +6,73 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.26-plan — Risk/reward escalation planning pass (2026-07-26)
+
+### What changed
+
+- Added two new backlog items to `docs/roadmap.md` under a new "Phase 7"
+  row: a sheebs debt economy (negative balance allowed on capture once
+  `profile.highestLevel > 3`) and a losable-shop-item mechanic once
+  `profile.highestLevel > 4`. Also added a "menu brag stat" companion
+  goal (best level + fewest deaths) to give players something to show
+  off once the stakes are real.
+- Wrote `docs/handoffs/roadmap-handoff-v0.4.26-plan.md` with the full
+  design summary and a Code Monkey coding brief that is explicitly
+  gated on product decisions, not ready to dispatch yet.
+- No code changed; `GAME_ITERATION` stays `v0.4.24`.
+
+### Design decisions
+
+- Trigger for this pass was Ken's reaction to a menu screenshot (240
+  sheebs, 2048 lifetime deaths) — "I should have negative or zero
+  sheebs." Investigated and confirmed this is not a bug: sheebs are
+  earned from level-clear rewards as well as lost on capture, and every
+  capture only docks a flat 20, floored at `0`
+  (`Math.max(0, this.sheebs - sheebsLost)` in `GameEngine.js`). Chose to
+  treat the reaction as a legitimate design prompt rather than closing it
+  as "working as intended" — added the negative-balance-for-veterans item
+  instead of silently leaving it alone.
+- Deliberately scoped the debt/negative-sheebs change to apply only past
+  `highestLevel > 3`, keeping the existing floor for newer players so the
+  economy doesn't feel punishing before someone has a real shot at
+  earning it back.
+- Deliberately did **not** write concrete implementation logic for the
+  item-loss mechanic (which items, deterministic vs. chance, warning
+  UI) — these are product calls, not something to guess at per
+  `docs/skib-sdlc.md`'s "flag anything Ken needs to do himself" step.
+  Flagged explicitly in the handoff's "Flag for Ken" section instead of
+  burying it in prose.
+
+### Known non-goals for this pass
+
+- No code changes, no build run.
+- Did not touch the still-open v0.4.25-plan (post-kill profile system) —
+  unrelated feature, queued ahead of this one.
+- Did not resolve the product decisions needed to make v0.4.26-plan
+  codeable — that's explicitly left for Ken.
+
+## v0.4.25-plan — Post-kill profile system, ledger backfill (2026-07-26)
+
+### What changed
+
+- No new design work this session — `docs/handoffs/roadmap-handoff-v0.4.25-plan.md`
+  already existed (expanding the superseded v0.4.23-plan with `chaserId`
+  kill-history logging, a `CHASER_PROFILES` content map, a `ProfileModal`
+  shown after a capture's shake finishes, and a clickable Deaths log) but
+  had never been logged here, in the ledger, or in
+  `docs/update-directions.md`. This entry and the matching ledger/
+  update-directions edits backfill that gap so the docs trail matches
+  what's actually on disk.
+- Marked `docs/handoffs/roadmap-handoff-v0.4.23-plan.md` as superseded
+  (added a pointer at the top of the file) rather than leaving two
+  competing plan files scoping the same feature.
+
+### Design decisions
+
+- Kept `roadmap-handoff-v0.4.25-plan.md`'s content as-is rather than
+  rewriting it — it was already a complete, coherent plan; the gap was
+  purely in the surrounding doc trail, not the plan itself.
+
 ## v0.4.24 — Resume countdown implementation (2026-07-26)
 
 ### What changed

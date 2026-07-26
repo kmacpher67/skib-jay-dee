@@ -55,6 +55,7 @@ for the full session write-up and
 | 4 | Oval/masked face-crop on upload instead of stretch | Done (v0.4.14) |
 | 5 | FastAPI WebSocket multiplayer, server-authoritative roles | Backend scaffolded only |
 | 6 | Mongo-backed profile (replaces cookies) | Not started |
+| 7 | Risk/reward escalation for experienced players (negative sheebs, losable shop items past level 3/4) | Not started — see incremental backlog below |
 
 ## Plan: handling levels and new maps (plan only — not implemented)
 
@@ -146,8 +147,38 @@ and chaser-bark voice clips, 1:1 with text.
 - [ ] **Post-kill screen and kill logging.** When a kill occurs, after the kill skreem
   is done shaking, record who did the kill in the profile history, and then display
   a profile page for that chaser. The profile page should include humorous profile
-  info about their "toilet cleanup killen". See [roadmap-handoff-v0.4.24-plan.md](handoffs/roadmap-handoff-v0.4.24-plan.md).
-- [ ] **Profile Pages and clickable Killz log.** The killz log should display the `chaserId` (who killed the player). Add the ability to click on the skib-chaser killer profile in the log to open their full Profile Page. Introduce a Profile Pages system accessible from the menu or log.
+  info about their "toilet cleanup killen". Superseded/absorbed by the fuller scope
+  in [roadmap-handoff-v0.4.25-plan.md](handoffs/roadmap-handoff-v0.4.25-plan.md) —
+  code that item, not the older [roadmap-handoff-v0.4.23-plan.md](handoffs/roadmap-handoff-v0.4.23-plan.md).
+- [ ] **Profile Pages and clickable Killz log.** The killz log should display the `chaserId` (who killed the player). Add the ability to click on the skib-chaser killer profile in the log to open their full Profile Page. Introduce a Profile Pages system accessible from the menu or log. Fully scoped in [roadmap-handoff-v0.4.25-plan.md](handoffs/roadmap-handoff-v0.4.25-plan.md) — this is the oldest unfinished handoff, pick it up first.
+- [ ] **Sheebs debt economy: allow negative balance above level 3.** Right now
+  `GameEngine.js` clamps `this.sheebs` to `Math.max(0, ...)` everywhere it's
+  touched (constructor, capture penalty, shop spend), so a player can never go
+  below `0` regardless of level. Ken flagged the menu math looking wrong from a
+  screenshot (240 sheebs shown alongside 2048 lifetime deaths) — current
+  behavior is actually consistent (sheebs are earned per level-clear, not just
+  lost per death, and the capture penalty is a flat 20), but it's a fair
+  prompt to make the risk real for experienced players. Proposed change: once
+  `profile.highestLevel > 3`, drop the floor-at-`0` clamp on the capture
+  penalty specifically (shop purchases should probably stay floored — you
+  can't spend sheebs you don't have) so sheebs can go negative and the player
+  visibly owes a debt, while newer players (`highestLevel <= 3`) keep the
+  existing safety floor. Needs a small design call on how a negative balance
+  displays in the HUD/menu pill (just a negative number? a "debt" styling?)
+  before coding — flag for Ken in the next planning pass. See
+  [roadmap-handoff-v0.4.26-plan.md](handoffs/roadmap-handoff-v0.4.26-plan.md).
+- [ ] **High-level risk: lose shop items/rewards above level 4.** Companion
+  risk/reward item to the sheebs-debt idea above — once
+  `profile.highestLevel > 4`, getting captured should have a chance to strip
+  a previously purchased Shleeb shop item (or another persisted reward) back
+  out of the profile, not just dock sheebs/skreems. Needs product decisions
+  before coding: which items are eligible to be lost (all stat upgrades? just
+  cosmetics, once they exist?), whether it's every capture or a rolled chance,
+  and whether there's any player-facing warning ("you could lose X") before it
+  happens so it doesn't feel purely punitive/unfair. Pairs naturally with the
+  sheebs-debt item above as a single "stakes go up past level 4" backlog
+  slice, but scope and ship them separately. See
+  [roadmap-handoff-v0.4.26-plan.md](handoffs/roadmap-handoff-v0.4.26-plan.md).
 - [ ] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,
   left over from before the v0.4.16 cookie-default fix. `App.jsx` always
@@ -218,6 +249,13 @@ and chaser-bark voice clips, 1:1 with text.
   (level rewards, death penalty), consider a cosmetic-only shop item
   (e.g. a jump-scare filter skin) so sheebs have somewhere to go once
   stat upgrades are maxed. Small, self-contained.
+- [ ] **Menu brag stat: best level + fewest deaths.** Companion goal to the
+  Phase 7 risk/reward items above — once losing sheebs/items past
+  level 3/4 is real, players will want to see their best run at a glance
+  (e.g. "Best level 4 in 3 deaths"). Cookie profile already tracks
+  `highestLevel` and lifetime deaths/`deathsHistory`, so this is mostly a
+  menu display item, not new persistence. Small, do after the risk/reward
+  items land so there's something worth bragging about.
 - [x] **Level expansion.** Added The Ramen Aisle and World Star Parking Lot
   (5 levels total) — landed this session.
 - [ ] **Level data extraction** — roadmap item 1 above. Do this before

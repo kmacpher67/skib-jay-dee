@@ -1,5 +1,11 @@
 # Roadmap Handoff — v0.4.23-plan
 
+> **Superseded — see [roadmap-handoff-v0.4.25-plan.md](roadmap-handoff-v0.4.25-plan.md)
+> instead.** A later planning pass expanded this scope to also cover
+> `chaserId` kill-history logging and a clickable Deaths log, and that
+> fuller plan is what a Mode B session should implement. Left here for the
+> design-rationale trail only — do not code from this file.
+
 **Session mode:** Mode A (Planning only)
 
 This plan outlines the new post-kill screen and tracking mechanism requested by Ken. When a kill occurs (player is captured), after the kill skreem is done shaking, we want to record who did the kill in the profile history, and then display a profile page for that chaser with humorous text about their "toilet cleanup killen".
