@@ -4,6 +4,34 @@ Target from the project brief:
 `~/personal/website/kenmacpherson.com/skib-jay-dee-toilet-game/` →
 `https://kenmacpherson.com/skib-jay-dee-toilet-game/index.html`
 
+## KNOWN ISSUE (2026-07-26): live domain 404s, IP path works
+
+Confirmed via curl from outside the origin server:
+
+- `http://104.245.39.145/kenmacpherson.com/skib-jay-dee-toilet-game/` → `200`
+  (files are on disk and served correctly by *some* nginx block — likely a
+  default/catch-all server block using the domain name as a literal
+  path segment).
+- `curl -H "Host: kenmacpherson.com" http://104.245.39.145/skib-jay-dee-toilet-game/`
+  → `404` (root `/` on that same Host header returns `200`, so the vhost
+  itself is alive — it just has no `location`/`root` covering this path).
+- `https://kenmacpherson.com/skib-jay-dee-toilet-game/` (through Cloudflare)
+  → `404`, `cf-cache-status: DYNAMIC` — i.e. Cloudflare is passing the
+  request straight to origin, and origin is the one 404ing. **Cloudflare is
+  not the problem.**
+
+**Fix**: add the `location /skib-jay-dee-toilet-game/ { ... }` block
+below to the real `kenmacpherson.com` server block in nginx (not the
+default/catch-all one) and reload nginx. The assumption in the "Phase 1"
+section below — that the existing vhost already serves static files
+under this path — was wrong; the location block needs to be added
+explicitly.
+
+Once fixed, verify with `cd frontend && npm run test:e2e:prod` (see
+[README.md](../README.md#end-to-end-tests-playwright)) — it currently
+fails against the live URL because the menu/canvas never load, and
+should pass once the nginx location block is live.
+
 ## Phase 1: static only, nothing extra needed on the server
 
 Phase 1 is a self-contained static site — the frontend does **not** call

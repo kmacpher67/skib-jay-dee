@@ -5,6 +5,12 @@ backend/__pycache__/
 backend/.venv/
 *.pyc
 
+# playwright
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+frontend/playwright/.cache/
+
 # env / secrets
 .env
 .env.local

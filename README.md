@@ -68,6 +68,24 @@ converted to base64 in-browser and drawn onto that player's canvas sprite.
 Defaults (if you don't upload anything) are real photos from `images/`:
 Jayden as the Runner, "Toiletman" as the Chaser.
 
+## End-to-end tests (Playwright)
+
+```bash
+cd frontend
+npx playwright install chromium   # first time only
+npm run test:e2e                  # builds, serves, and tests the local build
+npm run test:e2e:prod              # tests the live production URL
+```
+
+`test:e2e` boots `vite build && vite preview` itself (see
+`playwright.config.js`) and checks the menu loads and Quick Play/Shop work.
+`test:e2e:prod` points the same spec at
+`https://kenmacpherson.com/skib-jay-dee-toilet-game/` with no local
+webServer — run it after any deploy to confirm the live site actually
+serves the game, not just a 200 on some unrelated page. See
+[docs/deployment.md](docs/deployment.md) for a known issue this currently
+catches.
+
 ## Deployment
 
 See [docs/deployment.md](docs/deployment.md) — Phase 1 is a static build,

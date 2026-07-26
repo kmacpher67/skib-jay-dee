@@ -58,5 +58,7 @@ fi
 
 git -C "$WEBSITE_ROOT" commit -m "$COMMIT_MESSAGE" -- "$DEPLOY_RELATIVE"
 
-echo "Deployed build output and committed changes from: $DEPLOY_DIR"
+git -C "$WEBSITE_ROOT" push
+
+echo "Deployed, committed, and pushed changes from: $DEPLOY_DIR"
 echo "Commit message: $COMMIT_MESSAGE"
