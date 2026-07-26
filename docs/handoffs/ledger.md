@@ -10,6 +10,25 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.2-plan — 2026-07-26 (docs-only planning + one pre-existing code fix)
+
+- Committed a chaser-face-randomization fix
+  (`frontend/src/GameEngine.js`, `_maybeSpawnExtraChaser()`) found
+  already written but uncommitted in the working tree — each extra
+  chaser now rolls its own `CHASER_FACE_POOL` entry instead of copying
+  the first chaser's face. Builds clean; not this session's own work,
+  just landed alongside it.
+- Added four bug/feature backlog items to `docs/roadmap.md`: lvl2 video
+  fires on arrival instead of on clear, Pipeworks's clear condition
+  should require 4 simultaneous chasers (flagged as needing a product
+  decision), extra chasers should ramp speed up after joining instead of
+  a flat discount, and a "player ded" video item (confirmed via
+  `git log --all` that no such clip ever existed in this repo).
+- Noted eight unprocessed raw photos in `images/` in `docs/characters.md`.
+- Rewrote the stale `docs/next-agent-coding-brief.md` into a concrete
+  brief scoped to these four items.
+- Added `docs/handoffs/roadmap-handoff-v0.4.2-plan.md`.
+
 ## v0.4.1-plan — 2026-07-26 (docs-only, no code shipped)
 
 - Rewrote `docs/characters.md` with real content (runner pose table,

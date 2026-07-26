@@ -6,6 +6,81 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.2-plan (docs-only planning + one pre-existing code fix found uncommitted)
+
+**Date:** July 26, 2026
+
+### What changed
+
+This session's own work was docs/plan-only — `GAME_ITERATION` stays
+`v0.4.0`. One exception: `frontend/src/GameEngine.js` was found modified
+but uncommitted in the working tree at session start (not this session's
+work — no matching version-log entry existed for it). It's a complete,
+building fix for the "chaser face randomization" gap already tracked in
+`docs/roadmap.md`: `_maybeSpawnExtraChaser()` now gives each newly
+spawned extra chaser its own independent `randomFrom(CHASER_FACE_POOL)`
+pick instead of copying `this.chaser.face`, so simultaneous chasers no
+longer all wear an identical face. Verified with `npm run build`
+(succeeds) and committed as-is since it was already finished; the
+roadmap item is checked off. See `docs/roadmap.md`'s incremental
+backlog.
+
+The rest of this session was a planning/docs pass, prompted by user
+feedback after playing v0.4.0:
+
+- Wrote up four ready-to-pick-up bugs/feature requests as roadmap
+  backlog items with exact file/line references (see
+  `docs/roadmap.md`'s incremental backlog):
+  1. The lvl2 transition video fires on *arriving* at Pipeworks
+     (`App.jsx:156-166`, `index === 2`) instead of on *clearing* it —
+     needs to move to a level-clear signal instead of the arrival index.
+  2. Pipeworks's clear condition is purely skreem-timer based
+     (`advanceAt: 68`) with no tie to chaser count, but the user wants
+     the level to specifically require surviving 4 simultaneous chasers
+     (`MAX_CHASERS` is currently `3`) — flagged as needing a product
+     decision (bump the global cap vs. a per-level condition) before
+     coding.
+  3. Extra chasers spawned by `_maybeSpawnExtraChaser()` join at a flat
+     `0.92x` speed forever — the user wants new chasers to start slower
+     and ramp up over the level instead of staying at a fixed discount.
+  4. Confirmed via `git log --all` that no "player ded" video has ever
+     existed in this repo — the only existing death feedback is the
+     canvas-drawn jump-scare zoom (`_drawJumpscare()`). Documented that
+     the next session needs to confirm with the user whether they mean
+     "make sure the existing jump-scare still fires unobstructed" or
+     "add a new, separate death-video clip," and flagged the lvl2 video
+     overlay as a possible visual-stacking risk either way.
+- Noted eight more unprocessed raw source photos already sitting in
+  `images/` (the `PXL_2025...` files) in `docs/characters.md`, following
+  the same "ask the user which role before wiring" pattern already used
+  for Sky-Diver and the second Yoodeling Unc pose.
+- Rewrote `docs/next-agent-coding-brief.md` (it was stale — referenced
+  "three levels" when the game has had five since v0.3.0) into a
+  concrete, copy-pasteable brief scoped to just these four items.
+- Added `docs/handoffs/roadmap-handoff-v0.4.2-plan.md` and a matching
+  `docs/handoffs/ledger.md` entry.
+
+### Design / plan note
+
+- Kept this strictly docs, per explicit user instruction — the three
+  gameplay-feel items (video timing, chaser-count clear condition, speed
+  ramp) all touch `GameEngine.js`/`App.jsx` logic that's easy to get
+  subtly wrong without a build+playtest loop, and one of them (the
+  4-chaser clear condition) has a real design ambiguity that's cheaper
+  to resolve in a sentence now than to guess at in code and redo later.
+- Investigated rather than assumed on the "player ded" video — grepped
+  the full git history before writing up the backlog item, since the
+  user's phrasing ("get this back into the play") implied removed
+  functionality that turned out not to exist.
+
+### Known non-goals for this version
+
+- No `GameEngine.js`/`App.jsx` changes — all four items are plan-only.
+- No `MAX_CHASERS` bump, no chaser-speed-ramp logic, no video-trigger
+  change.
+- No new video/image assets copied into `frontend/src/assets/`.
+- No `GAME_ITERATION` bump, no build, no deploy.
+
 ## v0.4.1-plan (docs-only, no code shipped)
 
 **Date:** July 26, 2026

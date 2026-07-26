@@ -4,6 +4,7 @@
 
 import { GAME_ITERATION } from './version.js'
 import { CAPTURE_LINES, CHASER_LINES, TIRED_LINES } from './dialog.js'
+import { CHASER_FACE_POOL, randomFrom } from './gameContent.js'
 
 export const WORLD = {
   width: 900,
@@ -797,7 +798,7 @@ export class GameEngine {
       h: 44,
       baseSpeed: this.chaser.baseSpeed * 0.92,
       color: this.chaser.color,
-      face: this.chaser.face,
+      face: randomFrom(CHASER_FACE_POOL)?.src ?? this.chaser.face,
     })
   }
 

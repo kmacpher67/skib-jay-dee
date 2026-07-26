@@ -154,20 +154,13 @@ this small.
   disk, wire it as an *additional* `CHASER_FACE_POOL` entry alongside the
   existing `yoodelling-unc-alex` one, not a replacement. See
   `docs/characters.md`.
-- [ ] **Chaser face randomization fix.** Today `randomFaces()`
-  (`frontend/src/gameContent.js`) picks one chaser face per *run* at menu
-  time, and `GameEngine.setFaces()`
-  (`frontend/src/GameEngine.js:419-421`) assigns that single face to
-  every entry in `this.chasers` — including extras spawned later by the
-  multi-chaser mechanic (`frontend/src/GameEngine.js:786-800`). Net
-  effect: when 2-3 toilets are on screen at once, they all wear an
-  identical face instead of each rolling independently from
-  `CHASER_FACE_POOL`. Plan: give each chaser its own random face at
-  spawn time (menu-selected face for the first chaser is fine to keep as
-  today's default/upload behavior, but each *extra* chaser spawned via
-  the multi-chaser mechanic should roll its own `CHASER_FACE_POOL` entry
-  instead of copying `this.chaser.face`). Small, self-contained change
-  once picked up — no new assets required.
+- [x] **Chaser face randomization fix.** Landed this session —
+  `_maybeSpawnExtraChaser()` (`frontend/src/GameEngine.js`) now rolls an
+  independent `randomFrom(CHASER_FACE_POOL)` pick for every extra chaser
+  it spawns instead of copying `this.chaser.face`. The lead chaser
+  (`this.chasers[0]`) keeps the menu-selected/uploaded face via
+  `setFaces()` exactly as before — only chasers spawned later by the
+  multi-chaser mechanic now roll independently.
 - [ ] **Runner pose-to-state mapping.** `RUNNER_FACE_POOL` has five
   Jayden poses (default, uncaring, skibby, getting-captured, captured)
   that read as if they were shot for specific in-game moments, but today
@@ -184,6 +177,75 @@ this small.
   browser tabs, server decides who's Chaser. This is the biggest single
   item in the whole backlog — expect it to span multiple sessions, and
   explicitly plan the sub-increments before writing code.
+- [ ] **Lvl2 transition video fires too early — gate it to clearing
+  Pipeworks, not arriving at it.** `App.jsx:156-166` (`handleLevelChange`)
+  triggers `setShowLvl2Transition(true)` when `index === 2`, which is the
+  *arrival* index reported by `GameEngine.onLevelChange` the moment the
+  runner reaches Pipeworks (Level 2) — i.e. right after clearing Level 1.
+  User-flagged bug: the clip should instead play once Pipeworks itself
+  has been survived/cleared (the transition *into* Level 3, Flooded
+  Annex), not the transition into Level 2. Fix means moving the trigger
+  off `onLevelChange`'s arrival index and onto the level-*clear* event for
+  Pipeworks specifically — check whether `onLevelClear`
+  (`GameEngine.js` constructor option, already wired for the level-clear
+  audio stinger) fires with enough info to detect "just cleared index 2,"
+  or whether `handleLevelChange`'s `index` needs to be checked against
+  "the level *after* Pipeworks" instead. Small, self-contained once
+  picked up — no new assets needed, same `lvl2-transition.mp4` clip.
+- [ ] **Tie Pipeworks's clear condition to surviving 4 simultaneous
+  chasers, not just a skreem timer.** Today every level (including
+  Pipeworks) advances purely on `levelSkreems >= level.advanceAt`
+  (`GameEngine.js:762`, `advanceAt: 68` for Pipeworks) — chaser count is
+  unrelated to clearing a level. `MAX_CHASERS` is currently `3`
+  (`GameEngine.js:301`). User wants Level 2's clear condition to
+  specifically be "the player outran 4 skibs at once" — this needs a
+  product decision, not just a number bump: (a) bump `MAX_CHASERS` to 4
+  globally (affects all levels once multi-chaser pressure ramps up, not
+  just Pipeworks), and/or (b) add a per-level chaser-count clear
+  condition alongside/instead of `advanceAt` so Pipeworks specifically
+  requires 4 active chasers survived for some duration before advancing.
+  Confirm which with the user before implementing — this changes core
+  level-pacing, not just a constant. Depends on/blocks the lvl2-video
+  item above (the video should only show once whatever the real "cleared
+  Pipeworks" condition becomes is met).
+- [ ] **Extra chasers join slow and should ramp up over a level, not
+  stay fixed.** `_maybeSpawnExtraChaser()` (`GameEngine.js:779-802`)
+  spawns each new chaser at a flat `this.chaser.baseSpeed * 0.92` — a
+  one-time discount that never changes for that chaser's remaining
+  lifetime, even as the chase drags on. `chaserSpeedMod`
+  (`CHASER_SPEED_MOD_*` constants, `GameEngine.js:310-313`) already
+  ramps *all* chasers together across level-clears/deaths, but within a
+  single level, extras never speed up relative to when they joined.
+  User wants newly-joined skibs to start noticeably slower than the lead
+  chaser and then speed up as that level's chase continues, giving the
+  player a brief window to adapt to each new chaser instead of an
+  instant fixed handicap. Plan: track a per-chaser spawn timestamp or a
+  small ramping multiplier that climbs from ~0.7-0.8 toward 1.0 over a
+  few seconds after that chaser spawns, applied on top of (not instead
+  of) the existing `chaserSpeedMod`. Self-contained to
+  `_maybeSpawnExtraChaser()` and the per-chaser speed calc in
+  `_updateChase()`/wherever `chaser.baseSpeed * this.chaserSpeedMod` is
+  read (`GameEngine.js:745`).
+- [ ] **Keep the death/capture visual working regardless of the lvl2
+  video overlay.** The existing jump-scare zoom (`_drawJumpscare()`,
+  canvas-drawn when `phase === 'caught'`, see `GameEngine.js:873`) is the
+  only death feedback that exists today — there is no separate "player
+  ded" video clip anywhere in this repo's history (checked via `git log`
+  across all branches). User referred to restoring "the old player ded"
+  playing on death — confirm with the user whether they mean (a) the
+  existing canvas jump-scare should keep firing unobstructed on every
+  capture (it already does, independent of the lvl2 overlay — verify
+  this hasn't regressed, since `showLvl2Transition`'s `<video>`
+  (`App.jsx:281-291`) is an absolutely-positioned overlay stacked on top
+  of `GameCanvas` and could visually block the jump-scare if a capture
+  and the lvl2 transition ever became simultaneous), or (b) they want a
+  *new*, distinct death-specific video clip (separate from
+  `lvl2-transition.mp4`) added the same way the lvl2 clip was — dropped
+  in `frontend/src/assets/video/`, imported, and shown as an overlay
+  during the `caught` phase. Don't build a new clip's plumbing without
+  that confirmation; the safe first step either way is auditing that the
+  jump-scare and the lvl2-video overlay can never trigger at the same
+  time and stomp each other.
 
 ## Session rules
 

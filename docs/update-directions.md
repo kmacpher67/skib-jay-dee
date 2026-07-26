@@ -19,7 +19,8 @@ Use this as the handoff doc for the next agent working in the repo.
 - **v0.4.0 audio pass:** the 11 recorded voice clips from `/audio/` (scratch, now removed) were transcoded to mono 44.1kHz mp3 and moved into `frontend/src/assets/audio/` with names describing their in-game role. They're wired into `App.jsx`: chase ambience loop, capture sting, chaser bark/scream/taunt pool, boost stinger, tired groan, level-start/level-clear stings. A cookie-persisted mute toggle (`profile.muted`) has a button on the menu and in-game HUD.
 - **Lvl2 video transition:** `frontend/src/assets/video/lvl2-transition.mp4` (moved from repo-root `/video/`) plays once as a full-screen overlay the first time a run reaches level 2. User-flagged as a rough clip — treat as a proof of concept, see `docs/future-versions.md`.
 - Full session detail: `docs/handoffs/roadmap-handoff-v0.4.0.md`. Flat change history: `docs/handoffs/ledger.md`. Scoped-out work: `docs/future-versions.md`.
-- **v0.4.1-plan (docs-only, most recent session):** no code changed, `GAME_ITERATION` is still `v0.4.0`. `docs/characters.md` was rewritten with real content (runner pose table, chaser roster table, planned-new-chasers section). Two new chasers are queued as plan-only roadmap items — Sky-Diver (Motor Killer), source photo already at `images/sky-diver-motor-killer.png`; and a second Yoodeling Unc pose, photo not yet saved to the repo. Also reviewed (not fixed) two randomization gaps: all simultaneous chasers share one face (`frontend/src/GameEngine.js:419-421`), and the five `RUNNER_FACE_POOL` poses are never mapped to game state. See `docs/handoffs/roadmap-handoff-v0.4.1-plan.md` for the copy-paste next-steps block.
+- **v0.4.1-plan (docs-only):** no code changed, `GAME_ITERATION` is still `v0.4.0`. `docs/characters.md` was rewritten with real content (runner pose table, chaser roster table, planned-new-chasers section). Two new chasers are queued as plan-only roadmap items — Sky-Diver (Motor Killer), source photo already at `images/sky-diver-motor-killer.png`; and a second Yoodeling Unc pose, photo not yet saved to the repo. Also reviewed (not fixed) two randomization gaps: all simultaneous chasers share one face (`frontend/src/GameEngine.js:419-421`), and the five `RUNNER_FACE_POOL` poses are never mapped to game state. See `docs/handoffs/roadmap-handoff-v0.4.1-plan.md` for the copy-paste next-steps block.
+- **v0.4.2-plan (docs-only, most recent session):** no code changed, `GAME_ITERATION` is still `v0.4.0`. Four items queued in `docs/roadmap.md` from user playtesting feedback: (1) the lvl2 transition video fires on *arriving* at Pipeworks instead of on *clearing* it (`App.jsx:156-166`) — ready to fix; (2) Pipeworks's clear condition should require surviving 4 simultaneous chasers instead of the current skreem-timer-only `advanceAt`, but needs a product decision (`MAX_CHASERS` is `3`, not 4) — ask the user before coding; (3) extra chasers spawned by `_maybeSpawnExtraChaser()` join at a flat `0.92x` speed forever instead of ramping up after joining — ready to fix; (4) confirmed via full `git log` that no "player ded" death video has ever existed in this repo (the only death feedback is the canvas jump-scare `_drawJumpscare()`) — needs the user to confirm intent before adding anything new. Also noted eight more unprocessed raw photos in `images/` in `docs/characters.md`, and rewrote the stale `docs/next-agent-coding-brief.md`. See `docs/handoffs/roadmap-handoff-v0.4.2-plan.md` for the copy-paste next-steps block.
 
 ## Files to check first
 
@@ -67,6 +68,15 @@ Use this as the handoff doc for the next agent working in the repo.
 ## Natural follow-up work
 
 - Pick up one of the four items queued in `docs/roadmap.md` from the
+  v0.4.2-plan session (highest priority — direct user playtest
+  feedback): fix the lvl2-video arrival-vs-clear timing bug, resolve and
+  implement the "4 simultaneous chasers" clear-condition ambiguity for
+  Pipeworks, ramp extra-chaser speed up after they join instead of a
+  flat discount, or confirm and (if needed) wire a death-specific video.
+  See `docs/handoffs/roadmap-handoff-v0.4.2-plan.md` and
+  `docs/next-agent-coding-brief.md` for exact file/line references, open
+  questions to ask the user first, and a copy-paste starting prompt.
+- Or pick up one of the four items queued in `docs/roadmap.md` from the
   v0.4.1-plan session: add the Sky-Diver chaser (asset already on disk),
   add the second Yoodeling Unc pose (blocked on the user saving the
   file), fix the shared-chaser-face randomization bug, or wire runner

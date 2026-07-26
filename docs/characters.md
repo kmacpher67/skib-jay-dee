@@ -42,11 +42,11 @@ that mismatch.
 ## Chasers
 
 The toilet-creature roster hunting Jayden. `CHASER_FACE_POOL` currently
-holds nine entries, all treated as one interchangeable pool the same way
-the runner pool is (see the review note above and the roadmap item — one
-face is picked per *run*, not per chaser instance, so when the
-multi-chaser mechanic spawns a second or third toilet they currently all
-wear an identical face instead of each rolling their own).
+holds nine entries. The lead chaser still wears the menu-selected/
+uploaded face for the whole run, but as of the v0.4.2-plan session, each
+extra chaser spawned by the multi-chaser mechanic now rolls its own
+independent pick from `CHASER_FACE_POOL` instead of copying the lead
+chaser's face — simultaneous toilets no longer look identical.
 
 | id | label | vibe |
 |---|---|---|
@@ -82,6 +82,18 @@ add pool entry" pattern once a coding session picks them up. See
   `images/yoodelling-unc-alex-2.png`). Once it's on disk, treat it as a
   second `CHASER_FACE_POOL` entry alongside the existing one rather than
   a replacement — both poses of the same bit.
+
+## Unprocessed source photos (scratch, not yet picked for any role)
+
+Eight more raw phone photos (`images/PXL_20250824_213716870.jpg` through
+`images/PXL_20250824_213836255.NIGHT.jpg`) already sit in the repo-root
+`images/` scratch folder at the same 554×984 crop other chaser/runner
+sources use, but none are referenced from `frontend/src/gameContent.js`
+or named/renamed for a specific role yet. Same pattern as Sky-Diver and
+the second Yoodeling Unc pose above: before wiring any of these in, the
+user needs to say which character/pose each one is meant to be (or
+confirm they're just unused burst shots) — don't guess a role and rename
+them unprompted.
 
 ## OTHER NPC characters (tbd future)
 
