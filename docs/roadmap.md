@@ -113,10 +113,12 @@ extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 4-chaser/max-speed clear con
   pair per line yet. Record one clip per `CAPTURE_LINES` and
   `CHASER_LINES` entry for a real 1:1 match. See
   [future-versions.md](future-versions.md).
-- [x] **Audio 3: ambient chase loop.** Landed v0.4.0 —
+- [ ] **Audio 3: ambient chase loop.** Landed v0.4.0 —
   `chase-ambient-bopbop.mp3` loops at low volume while `screen ===
   'playing'` in `App.jsx`. Ducking during `caught`/`level-up` not done
-  yet, tracked in [future-versions.md](future-versions.md).
+  yet, tracked in [future-versions.md](future-versions.md). User feedback:
+  "skibby bob bob audio is little over the top to begin" — needs a delay or
+  layering so it starts after 15 seconds or when the first extra chaser joins.
 - [x] **Audio 4: boost skreem stinger.** Landed v0.4.0 —
   `onBoostStart` now plays `boost-start-igottago-x2.mp3`.
 - [x] **Audio 5: stamina-exhausted flat tone.** Landed v0.4.0 —
@@ -221,20 +223,19 @@ extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 4-chaser/max-speed clear con
   `handleLevelClear` (`App.jsx:112`) alongside its existing audio call,
   and delete the old check from `handleLevelChange`. No new assets
   needed, same `lvl2-transition.mp4` clip.
-- [ ] **RESOLVED — Tie Pipeworks's clear condition to surviving 4
+- [ ] **RESOLVED — Tie Pipeworks's clear condition to surviving 5
   simultaneous chasers at their max speed, gated by a skreem threshold.**
-  User confirmed the design: "YES. for XX amount of SKREEM points and
-  max speed of the chasers." Decision, spelled out for implementation:
-  1. Bump `MAX_CHASERS` from `3` to `4` (`GameEngine.js:301`) so
+  User confirmed the design and requested 5 skibs. Decision, spelled out for implementation:
+  1. Bump `MAX_CHASERS` from `3` to `5` (`GameEngine.js:301`) so
      Pipeworks (and any level that runs long) can actually reach a
-     4-chaser pile-on.
+     5-chaser pile-on.
   2. Pipeworks's clear condition (`advanceAt: 68`, `GameEngine.js:762`)
      should stop being a plain skreem-timer and instead only count
      toward clearing once **all 4 chasers are active and each is at its
      own max speed** — i.e. the lead chaser's `chaserSpeedMod` at
      `CHASER_SPEED_MOD_MAX` (`GameEngine.js:311`) *and* every extra
      chaser's per-chaser spawn-ramp (see the speed-ramp item below) has
-     finished climbing to 1.0. Only skreems earned while that "4 chasers,
+     finished climbing to 1.0. Only skreems earned while that "5 chasers,
      all maxed" state holds should count toward the threshold — treat it
      as a separate counter/gate, not just reusing `levelSkreems`.
   3. The exact skreem threshold ("XX") is intentionally a tunable number,
