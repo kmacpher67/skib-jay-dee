@@ -145,6 +145,13 @@ extra-chaser speed ramp -> Pipeworks 4-chaser/max-speed clear condition
   or Raman-Aunt-Toilet Lady) and give it a distinct ability, not just a
   reskin — e.g. Skib-Daddy's Plunger Launch as a periodic speed burst.
   Depends on nothing above; can happen anytime.
+- [ ] **Funny near-capture interlude.** When a skib gets too close, pause
+  the chase, pop `jayden-getting-captured.jpg` full-screen, and stamp the
+  user's parody captions over it as a short meme card. Start with the
+  supplied "Noob-noob no no!!!" / "Thanks, Noob-Noob. This guy gets it."
+  style lines, then pick one at random from a small caption pool. This is
+  a separate beat from the actual caught/jump-scare state, not a new
+  death screen.
 - [x] **New chaser: Sky-Diver (Motor Killer).** Landed in the current worktree —
   `frontend/src/assets/sky-diver-motor-killer.png` copied in, imported in
   `frontend/src/gameContent.js`, and added to `CHASER_FACE_POOL` as
@@ -163,17 +170,23 @@ extra-chaser speed ramp -> Pipeworks 4-chaser/max-speed clear condition
   (`this.chasers[0]`) keeps the menu-selected/uploaded face via
   `setFaces()` exactly as before — only chasers spawned later by the
   multi-chaser mechanic now roll independently.
-- [ ] **Runner pose-to-state mapping.** `RUNNER_FACE_POOL` has five
-  Jayden poses (default, uncaring, skibby, getting-captured, captured)
-  that read as if they were shot for specific in-game moments, but today
-  the engine only ever picks one at random for the whole run
-  (`randomFaces()` in `frontend/src/gameContent.js`, applied once via
-  `setFaces()`). Plan: keep the random *default* pick for whichever run
-  starts, but additionally swap the runner's face for
-  `jayden-getting-captured` on the jump-scare beat and
-  `jayden-captured` on the "YOU DIED" screen, falling back to the
-  player's uploaded face unchanged if they've set a custom one. See
-  `docs/characters.md` for the pose table this maps from.
+- [x] **Runner pose-to-state mapping.** Landed this session —
+  `GameEngine.js` now swaps the runner's face to `jayden-getting-captured`
+  the instant a capture happens, holds `jayden-captured` once the
+  jump-scare zoom finishes, and restores the run's original face (random
+  default, or the player's custom upload untouched) once the chase
+  resumes. See `setFaces()` / `_triggerCaught()` / `_updateCaught()` in
+  `frontend/src/GameEngine.js`, and `docs/characters.md`.
+- [ ] **Follow-up (needs Ken): supply distinct getting-captured/captured
+  and uncaring/default photos.** The pose-swap logic above is wired
+  correctly but two of the five `RUNNER_FACE_POOL` entries turned out to
+  be byte-identical duplicates of two others (confirmed via `md5sum`):
+  `jayden-getting-captured.jpg` == `jayden-captured.jpg`, and
+  `jayden-uncaring-4029.jpg` == `jayden-default.jpg`. Until real distinct
+  photos exist for those ids, the capture beat's zoom-in and zoomed-hold
+  will show the same photo twice. Ask Ken for the actual distinct shots
+  (or confirm the duplication is intentional and collapse the pool to 3
+  unique poses instead of 5). See `docs/characters.md`.
 - [ ] **Multiplayer spike (Phase 5).** Only after everything above feels
   solid. Make the frontend actually connect to `/ws/match`, sync two
   browser tabs, server decides who's Chaser. This is the biggest single

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { GameEngine } from '../GameEngine.js'
+import { RUNNER_STATE_FACES } from '../gameContent.js'
 
 function loadImage(src) {
   return new Promise((resolve) => {
@@ -14,6 +15,7 @@ function loadImage(src) {
 export default function GameCanvas({
   runnerFace,
   chaserFace,
+  runnerIsCustom,
   loadoutSpeedBonus,
   loadoutStaminaBonus,
   loadoutRewardBonus,
@@ -54,6 +56,10 @@ export default function GameCanvas({
       },
     })
     engineRef.current = engine
+    // Exposed for e2e verification (see e2e/caught-face.spec.js) — lets a
+    // test force a capture and inspect phase/face state directly instead
+    // of relying on real-time movement/collision timing.
+    window.__skibEngine = engine
     engine.start()
     return () => engine.stop()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,16 +67,25 @@ export default function GameCanvas({
 
   useEffect(() => {
     let cancelled = false
-    Promise.all([loadImage(runnerFace), loadImage(chaserFace)]).then(
-      ([runnerImg, chaserImg]) => {
-        if (cancelled || !engineRef.current) return
-        engineRef.current.setFaces({ runnerFace: runnerImg, chaserFace: chaserImg })
-      },
-    )
+    Promise.all([
+      loadImage(runnerFace),
+      loadImage(chaserFace),
+      loadImage(RUNNER_STATE_FACES.gettingCaptured),
+      loadImage(RUNNER_STATE_FACES.captured),
+    ]).then(([runnerImg, chaserImg, gettingCapturedImg, capturedImg]) => {
+      if (cancelled || !engineRef.current) return
+      engineRef.current.setFaces({
+        runnerFace: runnerImg,
+        chaserFace: chaserImg,
+        runnerIsCustom: !!runnerIsCustom,
+        runnerGettingCapturedFace: gettingCapturedImg,
+        runnerCapturedFace: capturedImg,
+      })
+    })
     return () => {
       cancelled = true
     }
-  }, [runnerFace, chaserFace])
+  }, [runnerFace, chaserFace, runnerIsCustom])
 
   useEffect(() => {
     if (!engineRef.current) return

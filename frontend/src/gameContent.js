@@ -71,6 +71,14 @@ export function randomFaces() {
   }
 }
 
+// The runner poses shot for specific in-game moments rather than the
+// random default rotation above — used to swap Jayden's face during the
+// jump-scare/caught beat instead of picking a random pose for it.
+export const RUNNER_STATE_FACES = {
+  gettingCaptured: RUNNER_FACE_POOL.find((face) => face.id === 'jayden-getting-captured')?.src ?? null,
+  captured: RUNNER_FACE_POOL.find((face) => face.id === 'jayden-captured')?.src ?? null,
+}
+
 export function buildLoadout(ownedItems = []) {
   const owned = new Set(ownedItems)
   let speedBonus = 0

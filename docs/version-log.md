@@ -6,6 +6,99 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.6 — 2026-07-26
+
+**Previous version:** v0.4.5-plan (docs-only, see
+`docs/handoffs/roadmap-handoff-v0.4.5-plan.md`); last shipped code was
+v0.4.4.
+
+### What changed
+
+- Implemented the oldest open handoff item, queued since v0.4.1-plan:
+  runner pose-to-state mapping. `frontend/src/GameEngine.js` now swaps
+  Jayden's face to `jayden-getting-captured` the instant a capture
+  happens, holds `jayden-captured` once the jump-scare zoom finishes,
+  and restores the run's original face (random default pick, or the
+  player's uploaded face untouched) once the chase resumes.
+- Added `RUNNER_STATE_FACES` to `frontend/src/gameContent.js` so the two
+  state-specific poses are addressable by id instead of only living
+  inside the random rotation pool.
+- Threaded a new `runnerIsCustom` prop from `App.jsx` through
+  `GameCanvas.jsx` into `GameEngine.setFaces()` so the swap never
+  overrides a player's uploaded custom face.
+- Added `frontend/e2e/caught-face.spec.js`, a new Playwright test that
+  forces an immediate capture (teleporting the chaser onto the runner)
+  and asserts the face swaps through both states by object identity,
+  then restores. Exposed `window.__skibEngine` from `GameCanvas.jsx` for
+  this and future e2e verification — debug-only, doesn't change
+  gameplay.
+
+### Design decisions
+
+- Compared faces by object identity in the engine/test rather than by
+  image `src`, because of a discovery made while testing (see below):
+  two of the five `RUNNER_FACE_POOL` photos are byte-identical
+  duplicates of two others, so `src` alone can't distinguish them once
+  bundled.
+- Kept the random *default* pick behavior in `randomFaces()` completely
+  unchanged, per the original plan — only the capture beat gets the new
+  state-driven override.
+- Left the second beat's transition gated on the jump-scare's zoom
+  finishing (`zoom >= 3`), not on a fixed timer, so it stays correct even
+  if the zoom-in duration constant changes later.
+
+### Discovered while implementing (not a decision, a bug report)
+
+- `md5sum` confirms `jayden-getting-captured.jpg` ==
+  `jayden-captured.jpg` and `jayden-uncaring-4029.jpg` ==
+  `jayden-default.jpg`, byte-for-byte. Of the five documented poses,
+  only three are actually distinct photos today. The new pose-swap code
+  is correct and ready, but the capture beat will show the same photo
+  twice until Ken supplies real distinct shots for those ids (or
+  confirms the pool should collapse to 3 unique poses). Flagged in
+  `docs/roadmap.md` and `docs/characters.md` as a Ken-only follow-up —
+  not something to guess at, per the "real family photos" constraint in
+  `docs/skib-sdlc.md`.
+
+### Known non-goals for this version
+
+- Did not touch the v0.4.5-plan near-capture-interlude backlog item —
+  separate increment, not started.
+- Did not touch the v0.4.2-plan/v0.4.3-plan backlog (speed-ramp,
+  Pipeworks clear condition, lvl2-video timing, death-visual
+  verification) — still open, still next in priority after this.
+- No `GAME_ITERATION` bump, no deploy — not requested this session.
+
+## v0.4.5-plan — 2026-07-26
+
+**Previous version:** v0.4.4 (see `docs/handoffs/roadmap-handoff-v0.4.4.md`)
+
+### What changed
+
+- Scoped a new funny near-capture interlude: when a skib gets too close,
+  pause the chase, show `frontend/src/assets/jayden-getting-captured.jpg`
+  full-screen, and overlay a random parody caption from a small pool
+  seeded by the user's supplied lines.
+- Kept that beat separate from the real caught/jump-scare state so it
+  reads as a comic interruption, not a second death screen.
+- Added the feature as a dedicated backlog item in `docs/roadmap.md` and
+  wrote a fresh plan handoff for the next coding session.
+
+### Design decisions
+
+- Chose to keep the interlude as its own increment rather than folding it
+  into the existing runner pose-to-state mapping, because the new beat is
+  about timing and pause behavior, not just which Jayden pose is shown at
+  capture time.
+- Kept the wording intentionally silly so the pause card feels like a gag
+  panel, not a serious UI modal.
+
+### Known non-goals for this version
+
+- No code changed yet.
+- No new assets added.
+- No `GAME_ITERATION` bump, no build, no deploy.
+
 ## v0.4.4 — 2026-07-26
 
 **Previous version:** v0.4.3-plan (docs-only, see below)

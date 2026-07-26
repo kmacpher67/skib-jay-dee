@@ -31,13 +31,27 @@ Play starts (unless the player uploads a custom face):
 | `jayden-getting-captured` | Jayden Getting Captured | Mid-panic, about to get caught. |
 | `jayden-captured` | Jayden Captured | Post-capture, resigned. |
 
-Right now all five are treated as one interchangeable pool — one is
-picked at random when a run starts and stays fixed the whole run. They
-were clearly posed with *specific in-game moments* in mind (uncaring →
-idle/menu, getting-captured → the jump-scare beat, captured → the "YOU
-DIED" screen), but the engine doesn't currently map pose → game state.
-See the randomize-logic review in `docs/roadmap.md` for the plan to fix
-that mismatch.
+As of this session, the engine maps pose → game state for the capture
+beat: `jayden-getting-captured` shows the instant a capture happens (the
+jump-scare zoom-in), then `jayden-captured` takes over once the zoom
+finishes and holds until the chase resumes, when the run's original face
+(random default, or the player's uploaded face if custom) comes back.
+See `setFaces()` / `_triggerCaught()` / `_updateCaught()` in
+`frontend/src/GameEngine.js`.
+
+**Known asset gap — needs Ken to supply real photos.** Checked via
+`md5sum`: `jayden-getting-captured.jpg` is byte-identical to
+`jayden-captured.jpg`, and `jayden-uncaring-4029.jpg` is byte-identical
+to `jayden-default.jpg`. So of the five "poses," there are really only
+three distinct photos today (default/uncaring share one, captured/
+getting-captured share another, skibby is unique). The new pose-swap
+logic above is wired correctly and will work the moment distinct photos
+exist for each id, but until then the capture beat's zoom-in and
+zoomed-hold will visibly show the same photo twice instead of two
+different expressions. Don't regenerate or crop these — real family
+photos need Ken to supply the actual distinct shots (or confirm the
+duplication is intentional and rename the pool down to 3 unique poses
+instead of 5).
 
 ## Chasers
 

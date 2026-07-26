@@ -358,6 +358,9 @@ export class GameEngine {
       baseSpeed: 180,
       color: '#3ddc55',
       face: null,
+      isCustom: false,
+      gettingCapturedFace: null,
+      capturedFace: null,
     }
     this.chaser = {
       x: WORLD.width / 2 - 20,
@@ -389,6 +392,8 @@ export class GameEngine {
     this.phaseTimer = 1.6
     this.zoom = 1
     this.captureLine = CAPTURE_LINES[0]
+    this._preCaughtRunnerFace = null
+    this._caughtFaceStage = null
     this.chaserLine = ''
     this.chaserLineTimer = 0
     this.runnerLine = ''
@@ -417,9 +422,12 @@ export class GameEngine {
     this._bindInput()
   }
 
-  setFaces({ runnerFace, chaserFace }) {
+  setFaces({ runnerFace, chaserFace, runnerIsCustom, runnerGettingCapturedFace, runnerCapturedFace }) {
     if (runnerFace) this.runner.face = runnerFace
     if (chaserFace) this.chasers.forEach((c) => { c.face = chaserFace })
+    this.runner.isCustom = !!runnerIsCustom
+    if (runnerGettingCapturedFace) this.runner.gettingCapturedFace = runnerGettingCapturedFace
+    if (runnerCapturedFace) this.runner.capturedFace = runnerCapturedFace
   }
 
   setSheebs(sheebs) {
@@ -820,6 +828,14 @@ export class GameEngine {
     this.zoom = 1
     this.captureLine = CAPTURE_LINES[Math.floor(Math.random() * CAPTURE_LINES.length)]
 
+    // Swap to the poses shot for this exact beat, unless the player
+    // uploaded their own custom runner face (never override that).
+    this._preCaughtRunnerFace = this.runner.face
+    this._caughtFaceStage = 'impact'
+    if (!this.runner.isCustom && this.runner.gettingCapturedFace) {
+      this.runner.face = this.runner.gettingCapturedFace
+    }
+
     this.deaths += 1
     const skreemsLost = Math.round(this.skreems * DEATH_SKREEM_PENALTY)
     this.skreems = Math.max(0, this.skreems - skreemsLost)
@@ -839,6 +855,18 @@ export class GameEngine {
     this.phaseTimer -= dt
     this.zoom = clamp(this.zoom + dt * 5, 1, 3)
 
+    // Once the zoom-in finishes, hold on the "resigned" pose for the rest
+    // of the beat instead of the initial impact pose.
+    if (
+      this._caughtFaceStage === 'impact' &&
+      this.zoom >= 3 &&
+      !this.runner.isCustom &&
+      this.runner.capturedFace
+    ) {
+      this._caughtFaceStage = 'held'
+      this.runner.face = this.runner.capturedFace
+    }
+
     if (this.phaseTimer <= 0) {
       this.runner.x = this.level.runnerSpawn.x
       this.runner.y = this.level.runnerSpawn.y
@@ -853,6 +881,9 @@ export class GameEngine {
       this.chaserLineTimer = 0
       this.runnerLineTimer = 0
       this.staminaExhaustedFired = false
+      if (this._preCaughtRunnerFace) this.runner.face = this._preCaughtRunnerFace
+      this._preCaughtRunnerFace = null
+      this._caughtFaceStage = null
     }
   }
 

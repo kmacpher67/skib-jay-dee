@@ -264,6 +264,7 @@ export default function App() {
             <GameCanvas
               runnerFace={runnerFace}
               chaserFace={chaserFace}
+              runnerIsCustom={runnerIsCustom}
               loadoutSpeedBonus={loadout.speedBonus}
               loadoutStaminaBonus={loadout.staminaBonus}
               loadoutRewardBonus={loadout.rewardBonus}

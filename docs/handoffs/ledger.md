@@ -10,6 +10,34 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.6 — 2026-07-26
+
+- Implemented runner pose-to-state mapping (oldest open handoff item,
+  queued since v0.4.1-plan): `frontend/src/GameEngine.js` swaps Jayden's
+  face to `jayden-getting-captured` on capture, holds
+  `jayden-captured` through the zoomed-in beat, restores the original
+  face on chase resume; skipped entirely if the player uploaded a
+  custom face.
+- Added `RUNNER_STATE_FACES` (`frontend/src/gameContent.js`), a
+  `runnerIsCustom` prop threaded through `App.jsx` -> `GameCanvas.jsx` ->
+  `GameEngine.setFaces()`, and `window.__skibEngine` debug exposure in
+  `GameCanvas.jsx` for e2e verification.
+- Added `frontend/e2e/caught-face.spec.js`; full 4-test Playwright suite
+  passes.
+- Discovered `jayden-getting-captured.jpg`/`jayden-uncaring-4029.jpg` are
+  byte-identical duplicates of `jayden-captured.jpg`/`jayden-default.jpg`
+  (`md5sum`-confirmed) — flagged as a Ken-only asset follow-up in
+  `docs/roadmap.md` and `docs/characters.md`, not fixed/guessed at.
+- Added `docs/handoffs/roadmap-handoff-v0.4.6.md`.
+
+## v0.4.5-plan — 2026-07-26
+
+- Scoped a new funny near-capture interlude: pause the chase when a
+  skib gets too close, show `jayden-getting-captured.jpg`, and overlay a
+  randomized parody caption pool.
+- Added the new backlog item to `docs/roadmap.md`.
+- Added `docs/handoffs/roadmap-handoff-v0.4.5-plan.md`.
+
 ## v0.4.4 — 2026-07-26
 
 - Added new chaser Sky-Diver (Motor Killer): copied

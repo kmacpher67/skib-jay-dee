@@ -4,6 +4,11 @@ Copy and paste the block below into the next coding agent session. This
 brief follows the three-session order documented in
 `docs/handoffs/roadmap-handoff-v0.4.3-plan.md`.
 
+A later docs-only planning pass added a separate near-capture pause-card
+item in `docs/handoffs/roadmap-handoff-v0.4.5-plan.md`; keep that one as
+its own single increment if you choose to pick it up instead of the code
+backlog below.
+
 ---
 
 You're continuing work on **Skib-Jay-Dee-Toilet** in
