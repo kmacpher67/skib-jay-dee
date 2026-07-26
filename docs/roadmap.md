@@ -10,8 +10,10 @@ they land, and append new items as they surface — don't let it go stale.
 
 The repo now also has a lightweight code-monkey lane for bounded handoff
 execution: `./scripts/run_code_monkey.sh <handoff.md>` can dispatch the
-next slice to local Ollama using `OLLAMA_HOST` or to OpenRouter, using
-the handoff's own bounded copy-paste block as the prompt.
+next slice to the cheaper `thinkpad-local` Ollama profile by default,
+falling back to `OLLAMA_HOST` or switching to `desktop-gaming` /
+OpenRouter when needed. The handoff's own bounded copy-paste block is
+the prompt body.
 
 ## Where things stand (as of this session)
 
@@ -95,8 +97,8 @@ Each item below is scoped to fit in one agent session. Pull the next
 open one, or reorder if something else is more urgent — just keep items
 this small.
 
-Recommended next-three-session order, if we want the tightest handoff:
-extra-chaser speed ramp -> Pipeworks 4-chaser/max-speed clear condition
+Recommended next-session order, if we want the tightest handoff:
+extra-chaser speed ramp (done, v0.4.7) -> Pipeworks 4-chaser/max-speed clear condition
 -> lvl2 video timing fix + death-visual verification.
 
 - [x] **Audio 1: SFX plumbing.** Landed v0.4.0 — real clips wired for
@@ -130,6 +132,15 @@ extra-chaser speed ramp -> Pipeworks 4-chaser/max-speed clear condition
   `frontend/src/version.js` constant, a discreet iteration label in the
   menu/HUD, and a deploy helper that builds, syncs, and commits only the
   `skib-jay-dee-toilet-game/` subtree with a short iteration slug.
+- [ ] **Code Monkey: host-profile routing.** Make the bounded code-monkey
+  lane understand named Ollama host profiles so it can switch between
+  the cheap `thinkpad-local` T2000 box and the remote `desktop-gaming`
+  host without editing URLs or restarting anything. Keep the cheap
+  ThinkPad profile as the default, use `OLLAMA_HOST` as the shell-level
+  fallback, and support profile-specific env vars like
+  `JUICY_LLM_LOCAL_OLLAMA_BASE_URL` /
+  `JUICY_LLM_DESKTOP_GAMING_OLLAMA_BASE_URL`. This is a tooling slice,
+  not gameplay.
 - [ ] **Face crop on upload.** Replace the raw-square face draw in
   `FaceUpload.jsx`/`_drawEntity()` with an oval crop/mask step at upload
   time (canvas-based crop, no new dependency needed).
@@ -236,23 +247,17 @@ extra-chaser speed ramp -> Pipeworks 4-chaser/max-speed clear condition
   to be a checkable state) and blocks/feeds the lvl2-video item above
   (the video should only show once this new "cleared Pipeworks" event
   fires, not the old flat `advanceAt` check).
-- [ ] **Extra chasers join slow and should ramp up over a level, not
-  stay fixed.** **Fully planned as of v0.4.3-plan, ready to implement** —
-  see `docs/handoffs/roadmap-handoff-v0.4.3-plan.md` for the exact edits.
-  Summary: `_maybeSpawnExtraChaser()` (`GameEngine.js:779-802`) spawns
-  each new chaser at a flat `this.chaser.baseSpeed * 0.92` — a one-time
-  discount that never changes for that chaser's remaining lifetime, even
-  as the chase drags on. `chaserSpeedMod` (`CHASER_SPEED_MOD_*`
-  constants, `GameEngine.js:310-313`) already ramps *all* chasers
-  together across level-clears/deaths, but within a single level, extras
-  never speed up relative to when they joined. Fix: add
-  `CHASER_JOIN_RAMP_START = 0.7` / `CHASER_JOIN_RAMP_SECONDS = 5`
-  constants, give each newly-pushed chaser a `joinRamp: 0` field (lead
-  chaser has none, defaults to fully-ramped), advance it toward 1 each
-  frame in the chase-update loop, and multiply the resulting
-  `lerp(CHASER_JOIN_RAMP_START, 1, joinRamp)` into the existing
-  `chaser.baseSpeed * this.chaserSpeedMod` calc (`GameEngine.js:746`) —
-  layered on top of, not replacing, the run-level rubber-band.
+- [x] **Extra chasers join slow and should ramp up over a level, not
+  stay fixed.** Landed v0.4.7 (Session 1 of the v0.4.3-plan backlog) —
+  `_maybeSpawnExtraChaser()` (`GameEngine.js`) no longer applies a flat
+  `* 0.92` discount; new chasers spawn with a `joinRamp: 0` field that
+  climbs to `1` over `CHASER_JOIN_RAMP_SECONDS` (5s), and the chase-update
+  loop multiplies `lerp(CHASER_JOIN_RAMP_START, 1, joinRamp)` into the
+  existing `chaser.baseSpeed * this.chaserSpeedMod` calc — layered on top
+  of, not replacing, the run-level rubber-band. Lead chaser has no
+  `joinRamp` field (`?? 1` keeps it always fully ramped). Covered by
+  `frontend/e2e/chaser-join-ramp.spec.js`. See
+  `docs/handoffs/roadmap-handoff-v0.4.7.md`.
 - [ ] **RESOLVED — no new death video, keep the original jump-scare
   working.** User confirmed: "my bad the ded is still the original" —
   there is no new death-specific video wanted; option (a) from the

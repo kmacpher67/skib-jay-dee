@@ -7,7 +7,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
 
 if [[ $# -lt 1 ]]; then
-  echo "usage: $0 [--dry-run] <handoff.md> [--backend ollama|openrouter] [--model MODEL] [--base-url URL]" >&2
+  echo "usage: $0 [--dry-run] <handoff.md> [--backend ollama|openrouter] [--profile NAME] [--model MODEL] [--base-url URL]" >&2
   exit 2
 fi
 

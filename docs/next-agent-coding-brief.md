@@ -8,10 +8,10 @@ Copy and paste the block below into the next coding agent session. This
 brief follows the three-session order documented in
 `docs/handoffs/roadmap-handoff-v0.4.3-plan.md`.
 
-If you're starting fresh, the active open handoff is now
-`docs/handoffs/roadmap-handoff-v0.4.5-plan.md`; keep this brief as the
-older backlog reference and use the newer handoff as the actual starting
-prompt.
+If you're starting fresh, the active open handoff for the host-profile
+routing work is `docs/handoffs/roadmap-handoff-v0.4.7-plan.md`; keep
+this brief as the older backlog reference and use the newer handoff as
+the actual starting prompt.
 
 A later docs-only planning pass added a separate near-capture pause-card
 item in `docs/handoffs/roadmap-handoff-v0.4.5-plan.md`; keep that one as
@@ -39,7 +39,7 @@ Read first:
 
 1. `docs/skib-sdlc.md`
 2. `docs/update-directions.md`
-3. `docs/handoffs/roadmap-handoff-v0.4.3-plan.md`
+3. `docs/handoffs/roadmap-handoff-v0.4.7-plan.md`
 4. `frontend/src/App.jsx`
 5. `frontend/src/GameEngine.js`
 

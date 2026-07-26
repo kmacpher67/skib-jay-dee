@@ -99,6 +99,10 @@ machine-readable when you want a code-monkey run:
   or its dispatch section. Default backend is local `ollama` on
   the shell's `OLLAMA_HOST`; use `openrouter` when you want a remote
   model.
+- For Ollama host selection, prefer the named profile selector
+  (`thinkpad-local` or `desktop-gaming`) instead of hard-coding URLs;
+  let the profile-specific env vars win and keep `OLLAMA_HOST` as the
+  fallback.
 - Keep the fenced copy-paste block short and bounded. The wrapper reads
   that block as the prompt body.
 - Include a real verification command in the handoff so the worker knows

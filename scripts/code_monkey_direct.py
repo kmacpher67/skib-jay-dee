@@ -18,9 +18,9 @@ from code_monkey_resolve_backend import resolve_backend_model  # noqa: E402
 MAX_TOKENS = 8192
 
 
-def dry_run(handoff_path: Path, backend: str, model: str, base_url: str, repo_root: Path) -> int:
+def dry_run(handoff_path: Path, backend: str, profile: str, model: str, base_url: str, repo_root: Path) -> int:
     prompt = extract_prompt(handoff_path, repo_root)
-    print(f"[code-monkey] dry-run backend={backend} model={model}")
+    print(f"[code-monkey] dry-run backend={backend} profile={profile} model={model}")
     print("──────────────────────────────────────────────────────────────────────────")
     print(prompt)
     print("──────────────────────────────────────────────────────────────────────────")
@@ -54,6 +54,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("handoff", help="Path to the handoff markdown file.")
     parser.add_argument("--dry-run", action="store_true", help="Print the prompt instead of calling the model.")
     parser.add_argument("--backend", default=None, choices=["ollama", "openrouter"], help="Override backend.")
+    parser.add_argument(
+        "--profile",
+        default=None,
+        help="Override the Ollama host profile (for example thinkpad-local or desktop-gaming).",
+    )
     parser.add_argument("--model", default=None, help="Override model slug.")
     parser.add_argument("--base-url", default=None, help="Override chat-completions base URL.")
     args = parser.parse_args(argv)
@@ -64,15 +69,16 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     repo_root = Path(__file__).resolve().parent.parent
-    backend, model, base_url = resolve_backend_model(
+    backend, profile, model, base_url = resolve_backend_model(
         handoff_path,
         env_backend=args.backend,
         env_model=args.model,
         env_base_url=args.base_url,
+        env_profile=args.profile,
     )
 
     if args.dry_run:
-        return dry_run(handoff_path, backend, model, base_url, repo_root)
+        return dry_run(handoff_path, backend, profile, model, base_url, repo_root)
 
     prompt = extract_prompt(handoff_path, repo_root)
     api_key = os.environ.get("SKIB_CODE_MONKEY_OPENROUTER_KEY") or os.environ.get("OPENROUTER_API_KEY")

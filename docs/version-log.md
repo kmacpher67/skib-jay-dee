@@ -34,6 +34,35 @@ focused on *why*, those two are the *what* and *when*.
 - No gameplay code changed.
 - No `GAME_ITERATION` bump, build, or deploy.
 
+## Code Monkey host-profile routing pass — 2026-07-26
+
+### What changed
+
+- Added named Ollama host-profile routing for the code-monkey lane so
+  the dispatch script can switch between `thinkpad-local` and
+  `desktop-gaming` without hand-editing URLs. The resolver now accepts
+  `code_monkey_ollama_profile` / `code_monkey_host_profile` in handoff
+  frontmatter, `SKIB_CODE_MONKEY_OLLAMA_PROFILE` in the shell, and a
+  CLI `--profile` override.
+- Added a new roadmap item and a matching plan handoff for the
+  profile-based routing slice, plus start-doc updates so the cheaper
+  local ThinkPad profile is the default path in the docs.
+
+### Design decisions
+
+- Kept `OLLAMA_HOST` as the generic fallback instead of the only source
+  of truth, because the whole point of the selector is to let the cheap
+  local profile win by default while still allowing a remote
+  `desktop-gaming` profile when needed.
+- Chose profile-specific env vars (`JUICY_LLM_LOCAL_OLLAMA_BASE_URL`,
+  `JUICY_LLM_DESKTOP_GAMING_OLLAMA_BASE_URL`, and matching model vars)
+  as the operator-friendly bridge from the juicy setup to this repo.
+
+### Known non-goals for this pass
+
+- No gameplay code changed.
+- No `GAME_ITERATION` bump, build, or deploy.
+
 ## v0.4.6 — 2026-07-26
 
 **Previous version:** v0.4.5-plan (docs-only, see
@@ -823,3 +852,56 @@ accurate summary of where the code actually ended up this session:
 - No cinematic intro was added yet.
 - No crop or oval face mask was added yet.
 - No multiplayer or server authority changes were added yet.
+
+## v0.4.7 — 2026-07-26 (real code)
+
+Picked up **Session 1** of the three-session backlog documented in
+`docs/handoffs/roadmap-handoff-v0.4.3-plan.md`/`docs/next-agent-coding-brief.md` —
+the oldest unfinished handoff by version order (older than `v0.4.5-plan`'s
+near-capture interlude, per `docs/skib-sdlc.md` Mode B's "oldest, not
+newest" rule).
+
+Before coding, tried the code-monkey lane per the user's request:
+`./scripts/run_code_monkey.sh` confirmed operational (Ollama reachable on
+both the `thinkpad-local` and `desktop-gaming` profiles), but a real
+dispatch against a session-1-scoped prompt returned a diff with
+hallucinated line numbers, an invented `MAX_CHASERS = 5`, and a duplicate
+`chaserSpeed` declaration — not usable as-is. The lane also only prints a
+chat completion (no apply step), so a human/agent still has to review and
+land the result either way. Implemented the change directly instead.
+
+### What changed
+
+- `frontend/src/GameEngine.js`: added a `lerp(a, b, t)` helper, and two
+  constants — `CHASER_JOIN_RAMP_START = 0.7`, `CHASER_JOIN_RAMP_SECONDS = 5`
+  — next to the existing `CHASER_SPEED_MOD_*` block.
+- `_maybeSpawnExtraChaser()` no longer bakes in a flat `* 0.92` discount;
+  new chasers spawn with `baseSpeed: this.chaser.baseSpeed` and a fresh
+  `joinRamp: 0` field.
+- The chase-update loop now advances each chaser's `joinRamp` toward `1`
+  every frame (`dt / CHASER_JOIN_RAMP_SECONDS`) and multiplies
+  `lerp(CHASER_JOIN_RAMP_START, 1, joinRamp)` into the existing
+  `chaser.baseSpeed * this.chaserSpeedMod` calc — layered on top of the
+  run-level rubber-band, not replacing it. The lead chaser has no
+  `joinRamp` field, so `chaser.joinRamp ?? 1` keeps it always fully
+  ramped, matching its current behavior exactly.
+- Added `frontend/e2e/chaser-join-ramp.spec.js`: forces an immediate
+  extra-chaser spawn (`engine.extraChaserTimer = 0`), asserts the new
+  chaser's `joinRamp` starts near 0 and its effective speed is below the
+  lead chaser's, then fast-forwards `joinRamp` to confirm it reaches 1.
+
+### Verification performed
+
+- `cd frontend && npm run build` succeeds.
+- `npx playwright test` — all 5 tests pass (4 previous + the new
+  `chaser-join-ramp.spec.js`).
+
+### What's explicitly not done
+
+- Session 2 (Pipeworks 4-chaser/max-speed clear condition) and Session 3
+  (lvl2-video timing fix + death-visual verification) — next two
+  increments in the same backlog, per
+  `docs/handoffs/roadmap-handoff-v0.4.3-plan.md`.
+- The separate near-capture-interlude backlog (`v0.4.5-plan`) — still
+  open, unrelated increment.
+- No `GAME_ITERATION` bump, no deploy — not requested this session.

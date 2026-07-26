@@ -11,7 +11,10 @@ Use this as the handoff doc for the next agent working in the repo.
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
   can dispatch a bounded handoff to local Ollama using the shell's
   `OLLAMA_HOST` or to OpenRouter. A handoff can advertise its target
-  backend/model with `code_monkey_backend` and `code_monkey_model`.
+  backend/model with `code_monkey_backend` and `code_monkey_model`, and
+  the lane now understands named Ollama host profiles
+  (`thinkpad-local`, `desktop-gaming`) so the cheap local box can stay
+  the default.
 - Default faces are randomly shuffled from the local gallery each time the user presses play, unless they upload custom faces.
 - User id, sheeb balance, purchased items, death count, and highest cleared level persist in cookies.
 - The deployment helper now takes an iteration label and short slug, then commits only the `skib-jay-dee-toilet-game/` subtree in the website repo.
@@ -29,7 +32,8 @@ Use this as the handoff doc for the next agent working in the repo.
 - **v0.4.3-plan (docs-only):** started from a request to work the "chaser face randomization fix," but re-verified that item already shipped in v0.4.2-plan (`frontend/src/GameEngine.js:801`, confirmed still correct) — nothing left to do there; redirected (per the user) to documenting a tighter three-session order in `docs/handoffs/roadmap-handoff-v0.4.3-plan.md`: session 1 extra-chaser speed ramp, session 2 Pipeworks's 4-chaser/max-speed clear condition, session 3 lvl2-video timing fix plus death-visual verification. No code changed, no build run, `GAME_ITERATION` still `v0.4.0`. Also found and cleaned up a stray orphaned text fragment left in `docs/roadmap.md` by the concurrent v0.4.2-plan follow-up edit. `docs/next-agent-coding-brief.md` and the v0.4.3 handoff now mirror that same three-session order.
 - **v0.4.4 (real code):** picked up the oldest open handoff (`docs/handoffs/roadmap-handoff-v0.4.1-plan.md`) per Mode B ordering, and shipped one of its two remaining unblocked items — the new **Sky-Diver (Motor Killer)** chaser. `images/sky-diver-motor-killer.png` copied into `frontend/src/assets/`, imported in `frontend/src/gameContent.js`, added to `CHASER_FACE_POOL` (tenth entry, id `sky-diver-motor-killer`). No engine changes needed. Verified with `npm run build`, the Playwright smoke suite, and a headless-Chromium run forcing `Math.random` so `randomFrom(CHASER_FACE_POOL)` resolved to the new entry — confirmed the browser actually requests and loads the asset with no console errors, not just that it's present in the bundle. `GAME_ITERATION` stays `v0.4.0`, no deploy. The other remaining v0.4.1-plan item — runner pose-to-state mapping — was deliberately left for a separate session (single-increment sizing rule); the second Yoodeling Unc pose is still blocked on the user. See `docs/handoffs/roadmap-handoff-v0.4.4.md` for the copy-paste next-steps block.
 - **v0.4.5-plan (docs-only):** scoped a new "funny near-capture interlude" backlog item (pause-card + parody captions using `jayden-getting-captured.jpg`, deliberately kept separate from the real caught/jump-scare state). No code changed. See `docs/handoffs/roadmap-handoff-v0.4.5-plan.md`.
-- **v0.4.6 (real code, most recent session):** finished clearing the v0.4.1-plan backlog by implementing **runner pose-to-state mapping**, the item flagged as the next natural step in v0.4.4. `frontend/src/GameEngine.js` now swaps Jayden's face to `jayden-getting-captured` the instant a capture happens, holds `jayden-captured` once the jump-scare zoom finishes (`zoom >= 3`), and restores the run's original face once the chase resumes — skipped entirely if the player uploaded a custom face (new `runnerIsCustom` flag threaded `App.jsx` → `GameCanvas.jsx` → `GameEngine.setFaces()`). Added `RUNNER_STATE_FACES` to `frontend/src/gameContent.js` and a new Playwright test, `frontend/e2e/caught-face.spec.js`, that forces an immediate capture (teleporting the chaser onto the runner via a new debug hook, `window.__skibEngine`, exposed from `GameCanvas.jsx`) and asserts the face swaps by object identity through both states, then restores; full 4-test suite passes. **Found and flagged, did not fix:** `md5sum` confirms `jayden-getting-captured.jpg` == `jayden-captured.jpg` and `jayden-uncaring-4029.jpg` == `jayden-default.jpg`, byte-for-byte — only 3 of the 5 documented runner poses are actually distinct photos. The swap logic is correct and ready, but the capture beat will visibly show the same photo twice until Ken supplies real distinct shots (or confirms the pool should collapse to 3 poses) — flagged in `docs/roadmap.md` and `docs/characters.md`, not guessed at, per the "real family photos" constraint in `docs/skib-sdlc.md`. `GAME_ITERATION` stays `v0.4.0`, no deploy requested. See `docs/handoffs/roadmap-handoff-v0.4.6.md` for the copy-paste next-steps block.
+- **v0.4.7 (real code, most recent session):** picked up Session 1 of the v0.4.3-plan three-session backlog (the oldest unfinished handoff, older than v0.4.5-plan's near-capture interlude) — **extra-chaser speed ramp**. `frontend/src/GameEngine.js`'s `_maybeSpawnExtraChaser()` no longer gives new chasers a flat `* 0.92` speed discount forever; each now gets a `joinRamp: 0` field that climbs to `1` over `CHASER_JOIN_RAMP_SECONDS` (5s), multiplied into the existing `chaser.baseSpeed * this.chaserSpeedMod` calc via a new `lerp()` helper — layered on top of the run-level rubber-band, not replacing it. Tried the code-monkey lane first per the user's ask: confirmed operational (Ollama reachable on `thinkpad-local`/`desktop-gaming`), but a real dispatch on a session-1-scoped prompt returned a diff with wrong line numbers, an invented `MAX_CHASERS = 5`, and a duplicate declaration — not usable, so implemented directly instead. Added `frontend/e2e/chaser-join-ramp.spec.js` (forces an immediate extra-chaser spawn and asserts the ramp behavior); full 5-test Playwright suite passes. `GAME_ITERATION` stays `v0.4.0`, no deploy requested. See `docs/handoffs/roadmap-handoff-v0.4.7.md`.
+- **v0.4.6 (real code):** finished clearing the v0.4.1-plan backlog by implementing **runner pose-to-state mapping**, the item flagged as the next natural step in v0.4.4. `frontend/src/GameEngine.js` now swaps Jayden's face to `jayden-getting-captured` the instant a capture happens, holds `jayden-captured` once the jump-scare zoom finishes (`zoom >= 3`), and restores the run's original face once the chase resumes — skipped entirely if the player uploaded a custom face (new `runnerIsCustom` flag threaded `App.jsx` → `GameCanvas.jsx` → `GameEngine.setFaces()`). Added `RUNNER_STATE_FACES` to `frontend/src/gameContent.js` and a new Playwright test, `frontend/e2e/caught-face.spec.js`, that forces an immediate capture (teleporting the chaser onto the runner via a new debug hook, `window.__skibEngine`, exposed from `GameCanvas.jsx`) and asserts the face swaps by object identity through both states, then restores; full 4-test suite passes. **Found and flagged, did not fix:** `md5sum` confirms `jayden-getting-captured.jpg` == `jayden-captured.jpg` and `jayden-uncaring-4029.jpg` == `jayden-default.jpg`, byte-for-byte — only 3 of the 5 documented runner poses are actually distinct photos. The swap logic is correct and ready, but the capture beat will visibly show the same photo twice until Ken supplies real distinct shots (or confirms the pool should collapse to 3 poses) — flagged in `docs/roadmap.md` and `docs/characters.md`, not guessed at, per the "real family photos" constraint in `docs/skib-sdlc.md`. `GAME_ITERATION` stays `v0.4.0`, no deploy requested. See `docs/handoffs/roadmap-handoff-v0.4.6.md` for the copy-paste next-steps block.
 
 ## Files to check first
 
@@ -60,13 +64,16 @@ manually:
    execute.
 2. Check whether that handoff has `code_monkey_backend` and
    `code_monkey_model` hints. If not, the local default is Ollama using
-   `OLLAMA_HOST` from your shell environment.
+   the `thinkpad-local` profile from your shell environment, with
+   `OLLAMA_HOST` as the fallback.
 3. Run `./scripts/run_code_monkey.sh --dry-run <handoff.md>` once to see
    the exact prompt the worker will get.
 4. Run `./scripts/run_code_monkey.sh <handoff.md>` to actually dispatch
    it.
 5. Use the handoff's own verification command plus `git diff` to check
    whether the slice worked.
+6. To force a profile on the wrapper, add `--profile thinkpad-local` or
+   `--profile desktop-gaming`.
 
 ## Current gameplay features
 
@@ -96,10 +103,11 @@ manually:
 
 ## Natural follow-up work
 
-- The tightest next three sessions, in order, are now documented in
-  `docs/handoffs/roadmap-handoff-v0.4.3-plan.md`: extra-chaser speed
-  ramp, Pipeworks's 4-chaser/max-speed clear condition, then the lvl2
-  video timing fix plus death-visual verification.
+- The v0.4.3-plan three-session backlog is now underway: extra-chaser
+  speed ramp landed in v0.4.7. Next up: Pipeworks's 4-chaser/max-speed
+  clear condition, then the lvl2 video timing fix plus death-visual
+  verification. See `docs/handoffs/roadmap-handoff-v0.4.7.md` for the
+  copy-paste next-steps block.
 - A separate docs-only planning pass now adds a funny near-capture
   interlude item to `docs/roadmap.md` that pauses the chase and shows
   `jayden-getting-captured.jpg` with parody captions. That item is its

@@ -19,6 +19,15 @@ update `docs/version-log.md`.
   open handoff to advertise the new lane and its Ollama/OpenRouter
   routing hints.
 
+## Code Monkey host-profile routing pass — 2026-07-26
+
+- Added named Ollama host-profile routing to the code-monkey resolver
+  and CLI so the lane can switch between `thinkpad-local` and
+  `desktop-gaming` without hard-editing URLs.
+- Added `docs/handoffs/roadmap-handoff-v0.4.7-plan.md` and updated the
+  start docs / roadmap / version log to keep the cheaper local profile
+  as the default routing story.
+
 ## v0.4.6 — 2026-07-26
 
 - Implemented runner pose-to-state mapping (oldest open handoff item,
