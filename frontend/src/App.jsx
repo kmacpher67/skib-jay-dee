@@ -7,6 +7,7 @@ import {
   SHOP_ITEMS,
   randomFaces,
 } from './gameContent.js'
+import { GAME_ITERATION } from './version.js'
 import { loadProfile, persistProfile } from './lib/cookies.js'
 import './App.css'
 
@@ -94,6 +95,7 @@ export default function App() {
           <>
             <MainMenu
               profile={profile}
+              iteration={GAME_ITERATION}
               runnerFace={runnerFace}
               chaserFace={chaserFace}
               loadout={loadout}
@@ -147,6 +149,7 @@ export default function App() {
 
 function MainMenu({
   profile,
+  iteration,
   runnerFace,
   chaserFace,
   loadout,
@@ -198,6 +201,10 @@ function MainMenu({
       <p className="hint hint-quiet">
         The Porcelain Palace now has three levels, the Shleeb shop works, and your user id stays in
         cookies so the save survives reloads.
+      </p>
+
+      <p className="build-tag" aria-label={`Game iteration ${iteration}`}>
+        {iteration}
       </p>
     </div>
   )

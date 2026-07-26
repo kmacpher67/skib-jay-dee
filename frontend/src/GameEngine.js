@@ -2,6 +2,8 @@
 // Vanilla JS / HTML5 Canvas engine for Skib-Jay-Dee-Toilet.
 // Keeps the action in one place so React stays out of the hot path.
 
+import { GAME_ITERATION } from './version.js'
+
 export const WORLD = {
   width: 900,
   height: 1500,
@@ -916,6 +918,14 @@ export class GameEngine {
       ctx.fillStyle = '#ffd27a'
       ctx.fillText(`TOILETS ON YOU: ${this.chasers.length}`, VIEW_W - 10, 44)
     }
+    ctx.restore()
+
+    ctx.save()
+    ctx.fillStyle = 'rgba(255,255,255,0.32)'
+    ctx.font = 'bold 9px sans-serif'
+    ctx.textAlign = 'right'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(GAME_ITERATION, VIEW_W - 10, 60)
     ctx.restore()
 
     ctx.save()

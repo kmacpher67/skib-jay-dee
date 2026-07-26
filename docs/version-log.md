@@ -3,6 +3,37 @@
 This file memorializes the design and plan decisions made during the
 front-end upgrade pass.
 
+## v0.3.1
+
+**Date:** July 26, 2026
+
+### What changed
+
+- Added a shared build-iteration constant in `frontend/src/version.js`
+  and surfaced it discreetly in both the main menu and the in-game HUD.
+- Updated `scripts/deploy-static.sh` so it builds the frontend, rsyncs the
+  output into the website repo, stages only the
+  `skib-jay-dee-toilet-game/` subtree, and commits with the message format
+  `kenmacpherson.com - skib-jay-dee toilet game: <iteration> <short-name>`.
+- Updated the deployment and handoff docs so the next session uses the
+  same short iteration slug when publishing.
+
+### Design / plan note
+
+- The iteration label is intentionally small and non-intrusive so it can
+  help match a running build to the deploy commit without adding more UI
+  noise.
+- Keeping the version string in one frontend module makes future bumps a
+  single-file change for both the menu badge and the HUD marker.
+- The deploy helper now treats the website folder as the source of truth
+  for the published static site and only commits the skib subtree, which
+  keeps unrelated website files out of this game's deploy history.
+
+### Known non-goals for this version
+
+- No gameplay or content changes were made in this pass.
+- No audio, intro cinematic, or face-crop work was added yet.
+
 ## v0.3.0
 
 **Date:** July 26, 2026

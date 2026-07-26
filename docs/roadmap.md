@@ -15,9 +15,10 @@ faces, five levels (Porcelain Palace → Pipeworks → Flooded Annex → The
 Ramen Aisle → World Star Parking Lot), desktop keyboard controls, sprint,
 Shleeb shop, cookie-backed profile (user id, sheebs, owned items, highest
 level, lifetime deaths), skreem-on-proximity, skreem-penalty + death count
-on capture, and a multi-chaser mechanic (extra toilets join in if a level
-runs long). Still front-end only — no backend, no multiplayer, no audio,
-no intro cinematic.
+on capture, a multi-chaser mechanic (extra toilets join in if a level
+runs long), and a discreet build-iteration badge tied to a shared
+frontend constant plus the deploy-commit helper. Still front-end only —
+no backend, no multiplayer, no audio, no intro cinematic.
 
 ## High-level phases (from the PDF + repo history)
 
@@ -90,6 +91,10 @@ this small.
   in `GameEngine.js`, reusing the existing banner/zoom drawing primitives.
   Front-end only, no new assets required beyond what's already scripted in
   the PDF.
+- [x] **Build iteration badge + deploy commit helper.** Added a shared
+  `frontend/src/version.js` constant, a discreet iteration label in the
+  menu/HUD, and a deploy helper that builds, syncs, and commits only the
+  `skib-jay-dee-toilet-game/` subtree with a short iteration slug.
 - [ ] **Face crop on upload.** Replace the raw-square face draw in
   `FaceUpload.jsx`/`_drawEntity()` with an oval crop/mask step at upload
   time (canvas-based crop, no new dependency needed).

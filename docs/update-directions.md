@@ -5,10 +5,12 @@ Use this as the handoff doc for the next agent working in the repo.
 ## Current state
 
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
-- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, and a multi-chaser mechanic (extra toilets join in if a level runs long).
-- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, and the play/session handoff.
+- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long), and the discreet iteration badge in the HUD.
+- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, and the matching menu build tag.
+- `frontend/src/version.js` is the single place to bump the visible iteration number.
 - Default faces are randomly shuffled from the local gallery each time the user presses play, unless they upload custom faces.
 - User id, sheeb balance, purchased items, death count, and highest cleared level persist in cookies.
+- The deployment helper now takes an iteration label and short slug, then commits only the `skib-jay-dee-toilet-game/` subtree in the website repo.
 
 ## Files to check first
 
@@ -21,6 +23,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - `frontend/src/GameEngine.js`
 - `frontend/src/App.jsx`
 - `frontend/src/gameContent.js`
+- `frontend/src/version.js`
 - `frontend/src/lib/cookies.js`
 - `frontend/src/components/GameCanvas.jsx`
 - `frontend/src/components/ShopModal.jsx`
@@ -39,6 +42,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - The Shleeb shop is front-end only and sells stat upgrades that persist in cookies.
 - The profile tracks lifetime deaths (shown in the menu and the in-game HUD); getting caught also deducts a chunk of the current skreem total.
 - If the runner survives a level too long without getting caught, extra toilets join the chase (capped, resets on capture or level change) — the HUD shows "TOILETS ON YOU" once more than one is active.
+- A discreet version/iteration label now appears in the menu and the in-game HUD so deploys can be matched to a visible build tag.
 - New chaser/runner faces are added by dropping an image in `frontend/src/assets/` and adding one entry to `RUNNER_FACE_POOL` / `CHASER_FACE_POOL` in `frontend/src/gameContent.js` — see `crazy-jack-chaser` for the pattern.
 
 ## Where to edit things
@@ -46,6 +50,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - Add or rebalance levels in `frontend/src/GameEngine.js`.
 - Add or change shop items in `frontend/src/gameContent.js`, then keep the purchase logic aligned in `frontend/src/App.jsx`.
 - Change persistence fields in `frontend/src/lib/cookies.js`.
+- Bump the visible iteration in `frontend/src/version.js` when you want a new build tag.
 - Change menu/shop presentation in `frontend/src/App.jsx` and `frontend/src/App.css`.
 - Change game HUD, controls, or level rendering in `frontend/src/GameEngine.js`.
 

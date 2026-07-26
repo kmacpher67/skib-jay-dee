@@ -69,6 +69,10 @@ from a half-applied diff.
   "updates."
 - Don't squash onto a previous agent's commit — create a new commit.
 - Don't amend or rewrite history that's already landed.
+- When publishing the built site, run `./scripts/deploy-static.sh
+  <iteration> <short-name>` from the repo root so the website repo gets a
+  commit like `kenmacpherson.com - skib-jay-dee toilet game: v0.3.1
+  intro-badge` and only the `skib-jay-dee-toilet-game/` subtree is staged.
 
 ## Constraints that apply to every increment unless the user says otherwise
 

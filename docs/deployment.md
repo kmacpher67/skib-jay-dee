@@ -20,9 +20,11 @@ now:
    ```bash
    cp -r frontend/dist/* ~/personal/website/kenmacpherson.com/skib-jay-dee-toilet-game/
    ```
-   Or run the helper script from the repo root:
+   Or run the helper script from the repo root. It builds, rsyncs, and
+   commits only the `skib-jay-dee-toilet-game/` subtree in the website
+   repo with the requested short iteration label:
    ```bash
-   ./scripts/deploy-static.sh
+   ./scripts/deploy-static.sh v0.3.1 intro-badge
    ```
 3. **nginx needs no special config beyond serving static files** from that
    directory — no proxy, no CGI, no Python process. If the existing
@@ -41,8 +43,9 @@ now:
 
 **CI/CD**: the brief says "ci/cd pushes automatically" — whatever that
 pipeline is, it only needs to run steps 1–2 above (`npm ci && npm run
-build`, then rsync/copy `dist/` to the deploy path). No server restart is
-required since it's static files.
+build`, then rsync/copy `dist/` to the deploy path, then commit the
+`skib-jay-dee-toilet-game/` subtree with a short iteration slug). No
+server restart is required since it's static files.
 
 ## Phase 2+: once the backend gets wired in
 
