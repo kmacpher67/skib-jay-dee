@@ -82,9 +82,13 @@ npm run test:e2e:prod              # tests the live production URL
 `test:e2e:prod` points the same spec at
 `https://kenmacpherson.com/skib-jay-dee-toilet-game/` with no local
 webServer — run it after any deploy to confirm the live site actually
-serves the game, not just a 200 on some unrelated page. See
-[docs/deployment.md](docs/deployment.md) for a known issue this currently
-catches.
+serves the game, not just a 200 on some unrelated page.
+
+Both are automated in [.github/workflows/e2e.yml](.github/workflows/e2e.yml):
+`local` runs on every push/PR touching `frontend/`, and `production` runs
+on push plus a 30-minute schedule so a live regression (bad nginx config,
+expired cert, broken deploy) surfaces as a failed GitHub Actions run
+without anyone needing to check by hand.
 
 ## Deployment
 
