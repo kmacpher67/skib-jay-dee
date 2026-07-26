@@ -10,6 +10,12 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.22 — 2026-07-26 (real code)
+
+- Implemented level-advance pacing: for every non-Pipeworks level with an `advanceAt` threshold (1, 3, 4), required *all three* of the existing skreem threshold, a new elapsed-in-level time floor (`MIN_LEVEL_SECONDS_BEFORE_ADVANCE` set to `30`s), and `this.chasers.length >= 2` before the level can clear.
+- Changed the extra chaser spawn interval to 20 seconds.
+- Bumped `GAME_ITERATION` to `v0.4.22`.
+
 ## v0.4.21 — 2026-07-26 (real code)
 
 - Added the deaths history log UI: menu Deaths pill now opens a modal

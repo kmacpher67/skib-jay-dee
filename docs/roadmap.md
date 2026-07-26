@@ -123,23 +123,16 @@ and chaser-bark voice clips, 1:1 with text.
   flat 20 sheebs on capture, floored at 0, in addition to the existing
   skreem penalty. The "slow the chasers down on death" half of this ask
   was already implemented (`CHASER_SPEED_MOD_DEATH_STEP`).
-- [ ] **RESOLVED — level-advance pacing is still too fast; add a
-  time floor and a two-simultaneous-chasers floor.** Ken: "level
-  upgrades are still too fast, maybe more time running by the player
-  plus level can not increase until there are at least two skibs
-  simulatenously chasing." Confirmed design: for every non-Pipeworks
-  level with an `advanceAt` threshold (1, 3, 4), require *all three* of
+- [x] **RESOLVED — level-advance pacing is still too fast; add a
+  time floor and a two-simultaneous-chasers floor.** Landed in v0.4.22 — for every non-Pipeworks
+  level with an `advanceAt` threshold (1, 3, 4), required *all three* of
   the existing skreem threshold, a new elapsed-in-level time floor
-  (`MIN_LEVEL_SECONDS_BEFORE_ADVANCE`, set to `30`s), and
-  `this.chasers.length >= 2` before the level can clear. Also, change
+  (`MIN_LEVEL_SECONDS_BEFORE_ADVANCE` set to `30`s), and
+  `this.chasers.length >= 2` before the level can clear. Also changed
   the extra chaser spawn interval to 20 seconds. Pipeworks
   already requires 5 simultaneous chasers (stricter than 2) so it needs
   no change; the final level has no `advanceAt` and is also unaffected.
-  Ready to code — see
-  [roadmap-handoff-v0.4.22-plan.md](handoffs/roadmap-handoff-v0.4.22-plan.md)
-  for the exact diff and copy-paste block. Previously this item only
-  covered level 1's threshold in isolation; superseded by the above. See
-  [gameplay-mechanics.md](gameplay-mechanics.md#round--level-advancement-why-does-the-round).
+  See [gameplay-mechanics.md](gameplay-mechanics.md#round--level-advancement-why-does-the-round).
 - [ ] **Post-kill screen and kill logging.** When a kill occurs, after the kill skreem
   is done shaking, record who did the kill in the profile history, and then display
   a profile page for that chaser. The profile page should include humorous profile

@@ -304,7 +304,8 @@ const LEVELS = [
 ]
 
 const MAX_CHASERS = 5
-const EXTRA_CHASER_INTERVAL = 14 // seconds of uninterrupted chase before another toilet joins
+const EXTRA_CHASER_INTERVAL = 20 // seconds of uninterrupted chase before another toilet joins
+const MIN_LEVEL_SECONDS_BEFORE_ADVANCE = 30
 const PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL = 68
 const PIPEWORKS_HALL_COVERAGE_GOAL = 0.8
 const PIPEWORKS_GATE_REQUIRED_CHASERS = 4
@@ -674,6 +675,7 @@ export class GameEngine {
     this.runnerLine = ''
     this.runnerLineTimer = 0
     this.levelSkreems = 0
+    this.levelElapsed = 0
     this.pipeworksSkreems = 0
     this.chasers = [this.chaser]
     this.extraChaserTimer = EXTRA_CHASER_INTERVAL
@@ -781,6 +783,7 @@ export class GameEngine {
     this.wasSprinting = sprinting
     this.runnerLineTimer = Math.max(0, this.runnerLineTimer - dt)
     this.nearCaptureCooldown = Math.max(0, this.nearCaptureCooldown - dt)
+    this.levelElapsed += dt
 
     const speed = this.runner.baseSpeed * (sprinting ? 1.8 : 1)
     const move = this._getMoveVector()
@@ -832,7 +835,12 @@ export class GameEngine {
         this._startLevelAdvance()
         return
       }
-    } else if (this.level.advanceAt && this.levelSkreems >= this.level.advanceAt) {
+    } else if (
+      this.level.advanceAt &&
+      this.levelSkreems >= this.level.advanceAt &&
+      this.levelElapsed >= MIN_LEVEL_SECONDS_BEFORE_ADVANCE &&
+      this.chasers.length >= 2
+    ) {
       this._startLevelAdvance()
       return
     }
