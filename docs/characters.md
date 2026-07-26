@@ -69,11 +69,11 @@ chaser's face — simultaneous toilets no longer look identical.
 | `skib-killn` | Skibbidy Killn | Feral, mid-chase snarl. | [Profile](profiles/skib-killn.md) |
 | `dad-case` | Dad Case | Deadpan "dad energy" chaser. | [Profile](profiles/dad-case.md) |
 | `yoodelling-unc-alex` | Yoodelling Unc Alex | The yodeling uncle bit — see below, a second pose is planned. | [Profile](profiles/yoodelling-unc-alex.md) |
-| `ant-k-raman` | Ant K Raman | Raman-Aunt-Toilet-Lady-adjacent, from the PDF roster. | TBD |
-| `anti-k-raman-2` | Anti K Raman 2 | Alt take on the above. | TBD |
-| `ded-dad` | Ded Dad | Deadpan, unsettling. | TBD |
-| `crazy-jack-chaser` | Crazy Jack | Wild-eyed, unhinged energy. | TBD |
-| `sky-diver-motor-killer` | Sky-Diver (Motor Killer) | Grizzled, leather-jacket biker portrait — a road-warrior/biker take on the chaser roster, distinct from the toilet-creature designs. Landed this session. | TBD |
+| `ant-k-raman` | Ant K Raman | Raman-Aunt-Toilet-Lady-adjacent, from the PDF roster. | [Profile](profiles/ant-k-raman.md) |
+| `anti-k-raman-2` | Anti K Raman 2 | Alt take on the above. | [Profile](profiles/anti-k-raman-2.md) |
+| `ded-dad` | Ded Dad | Deadpan, unsettling. | [Profile](profiles/ded-dad.md) |
+| `crazy-jack-chaser` | Crazy Jack | Wild-eyed, unhinged energy. | [Profile](profiles/crazy-jack-chaser.md) |
+| `sky-diver-motor-killer` | Sky-Diver (Motor Killer) | Grizzled, leather-jacket biker portrait — a road-warrior/biker take on the chaser roster, distinct from the toilet-creature designs. Landed this session. | [Profile](profiles/sky-diver-motor-killer.md) |
 
 ### Planned new chasers (not yet wired — plan only)
 

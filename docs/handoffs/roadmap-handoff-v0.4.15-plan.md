@@ -8,7 +8,7 @@ This was a Mode A planning session to scope out new game profile management, res
 ## What this session did
 
 1. **Updated Roadmap:** Added multiple new backlog items (Profiles, Sheeb balance fix, Version page, Skreem loop fix, New map layout, Lvl 2 transition review).
-2. **Created Character Profile Stubs:** Created `docs/profiles/` and stubbed out `.md` files for the first five characters (`skib-default`, `toiletman-wet`, `skib-killn`, `dad-case`, `yoodelling-unc-alex`).
+2. **Created Character Profile Stubs:** Created `docs/profiles/` and stubbed out `.md` files for all ten characters (`skib-default`, `toiletman-wet`, `skib-killn`, `dad-case`, `yoodelling-unc-alex`, `ant-k-raman`, `anti-k-raman-2`, `ded-dad`, `crazy-jack-chaser`, `sky-diver-motor-killer`).
 3. **Updated characters.md:** Added links from the main characters document to these new profile stubs. Ken will fill in the missing content (Main Scare, Killing Tricks, Best Dialogs) for each profile.
 
 ## What's explicitly not done
