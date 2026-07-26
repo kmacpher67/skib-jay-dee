@@ -104,9 +104,9 @@ manually:
 ## Natural follow-up work
 
 - The v0.4.3-plan three-session backlog is now underway: extra-chaser
-  speed ramp landed in v0.4.8. Next up: Pipeworks's 4-chaser/max-speed
+  speed ramp landed in v0.4.8. Next up: Pipeworks's 5-chaser/max-speed
   clear condition, then the lvl2 video timing fix plus death-visual
-  verification. See `docs/handoffs/roadmap-handoff-v0.4.8.md` for the
+  verification, and the audio layering delay. See `docs/handoffs/roadmap-handoff-v0.4.9-plan.md` for the
   copy-paste next-steps block.
 - A separate docs-only planning pass now adds a funny near-capture
   interlude item to `docs/roadmap.md` that pauses the chase and shows
@@ -116,7 +116,7 @@ manually:
   v0.4.2-plan session (highest priority — direct user playtest
   feedback, and now fully unblocked, no more open questions): ramp
   extra-chaser speed up after they join instead of a flat discount,
-  then tie Pipeworks's clear condition to 4 simultaneous chasers at max
+  then tie Pipeworks's clear condition to 5 simultaneous chasers at max
   speed gated by a skreem threshold, then fix the lvl2-video
   arrival-vs-clear timing bug, then verify the death jump-scare isn't
   blocked by the video overlay. See
@@ -136,10 +136,10 @@ manually:
   when a skib gets too close, distinct from the real caught/jump-scare
   path.
 - Also still open: the rest of the v0.4.2-plan/v0.4.3-plan backlog, in
-  order — Pipeworks's 4-chaser/max-speed clear condition, then the
+  order — Pipeworks's 5-chaser/max-speed clear condition, then the
   lvl2-video arrival-vs-clear timing fix, then death-visual overlap
-  verification (extra-chaser speed ramp landed in v0.4.8). Fully spec'd
-  in `docs/handoffs/roadmap-handoff-v0.4.3-plan.md` and
+  verification (extra-chaser speed ramp landed in v0.4.8), plus the new audio delay. Fully spec'd
+  in `docs/handoffs/roadmap-handoff-v0.4.9-plan.md` and
   `docs/next-agent-coding-brief.md` — the highest-priority backlog since
   it traces to direct user playtest feedback.
 - Do a real sound-on playthrough of the v0.4.0 audio pass — it was wired and tested (build + Playwright) but never actually listened to in this sandbox (no speakers). Check volume balance before building more on top of it.
