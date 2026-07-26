@@ -13,7 +13,7 @@ focused on *why*, those two are the *what* and *when*.
 - Added a lightweight code-monkey lane for bounded agent runs:
   `scripts/run_code_monkey.sh` now dispatches a handoff prompt through
   `scripts/code_monkey_direct.py`, which extracts the fenced copy-paste
-  block and can target local Ollama on `DESKTOP_GAMING` or OpenRouter.
+  block and can target local Ollama via `OLLAMA_HOST` or OpenRouter.
 - Added `AGENTS.md` at the repo root so the bounded prompt has a stable
   first stop, and updated `docs/skib-sdlc.md`, `docs/update-directions.md`,
   `docs/next-agent-coding-brief.md`, `docs/roadmap.md`, and the current
@@ -25,9 +25,9 @@ focused on *why*, those two are the *what* and *when*.
 - Kept the lane intentionally thin: a prompt extractor, backend/model
   resolver, and OpenAI-compatible chat caller are enough for this repo's
   automation without introducing a new runtime or a second task system.
-- Defaulted the local path to Ollama on `DESKTOP_GAMING`, since that's
-  the requested coding target, and left OpenRouter as the explicit
-  alternate backend rather than mixing the two.
+- Defaulted the local path to Ollama via the shell's `OLLAMA_HOST`, and
+  left OpenRouter as the explicit alternate backend rather than mixing
+  the two.
 
 ### Known non-goals for this pass
 

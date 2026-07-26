@@ -28,7 +28,7 @@ Use `./scripts/run_code_monkey.sh <handoff>` to dispatch a bounded coding
 slice to either local Ollama or OpenRouter.
 
 - Default local backend: `ollama`
-- Default local Ollama base URL: `http://DESKTOP_GAMING:11434/v1`
+- Default local Ollama host comes from `OLLAMA_HOST`
 - Alternate backend: `openrouter`
 
 The wrapper reads the handoff copy-paste block, so keep that block short,

@@ -9,7 +9,7 @@ from pathlib import Path
 
 DEFAULT_BACKEND = "ollama"
 DEFAULT_OLLAMA_MODEL = "qwen3:8b"
-DEFAULT_OLLAMA_BASE_URL = "http://DESKTOP_GAMING:11434/v1"
+DEFAULT_OLLAMA_BASE_URL = "http://localhost:11434/v1"
 DEFAULT_OPENROUTER_MODEL = "openrouter/free"
 DEFAULT_OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
@@ -39,6 +39,19 @@ def read_frontmatter_fields(text: str) -> tuple[str, str, str]:
         elif line.startswith("code_monkey_base_url:"):
             base_url = strip_scalar(line.split(":", 1)[1])
     return backend, model, base_url
+
+
+def _resolve_ollama_base_url(base_url: str) -> str:
+    candidate = base_url.strip()
+    if not candidate:
+        candidate = os.environ.get("OLLAMA_HOST", "").strip()
+    if not candidate:
+        candidate = os.environ.get("SKIB_CODE_MONKEY_BASE_URL", "").strip()
+    if not candidate:
+        candidate = DEFAULT_OLLAMA_BASE_URL
+    if candidate.endswith("/v1"):
+        return candidate
+    return candidate.rstrip("/") + "/v1"
 
 
 def resolve_backend_model(
@@ -79,11 +92,10 @@ def resolve_backend_model(
             or (env_model if env_model is not None else os.environ.get("SKIB_CODE_MONKEY_MODEL", ""))
             or DEFAULT_OLLAMA_MODEL
         ).strip()
-        base_url = (
+        base_url = _resolve_ollama_base_url(
             fm_base_url
             or (env_base_url if env_base_url is not None else os.environ.get("SKIB_CODE_MONKEY_BASE_URL", ""))
-            or DEFAULT_OLLAMA_BASE_URL
-        ).strip()
+        )
 
     return backend, model, base_url
 

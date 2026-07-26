@@ -9,9 +9,9 @@ Use this as the handoff doc for the next agent working in the repo.
 - `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, and the matching menu build tag.
 - `frontend/src/version.js` is the single place to bump the visible iteration number.
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
-  can dispatch a bounded handoff to local Ollama on `DESKTOP_GAMING` or
-  to OpenRouter. A handoff can advertise its target backend/model with
-  `code_monkey_backend` and `code_monkey_model`.
+  can dispatch a bounded handoff to local Ollama using the shell's
+  `OLLAMA_HOST` or to OpenRouter. A handoff can advertise its target
+  backend/model with `code_monkey_backend` and `code_monkey_model`.
 - Default faces are randomly shuffled from the local gallery each time the user presses play, unless they upload custom faces.
 - User id, sheeb balance, purchased items, death count, and highest cleared level persist in cookies.
 - The deployment helper now takes an iteration label and short slug, then commits only the `skib-jay-dee-toilet-game/` subtree in the website repo.
@@ -59,8 +59,8 @@ manually:
 1. Open `docs/handoffs/` and pick the handoff you want the worker to
    execute.
 2. Check whether that handoff has `code_monkey_backend` and
-   `code_monkey_model` hints. If not, the local default is Ollama on
-   `DESKTOP_GAMING`.
+   `code_monkey_model` hints. If not, the local default is Ollama using
+   `OLLAMA_HOST` from your shell environment.
 3. Run `./scripts/run_code_monkey.sh --dry-run <handoff.md>` once to see
    the exact prompt the worker will get.
 4. Run `./scripts/run_code_monkey.sh <handoff.md>` to actually dispatch

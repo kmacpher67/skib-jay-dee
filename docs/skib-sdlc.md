@@ -97,7 +97,8 @@ machine-readable when you want a code-monkey run:
 
 - Add `code_monkey_backend` and `code_monkey_model` hints to the handoff
   or its dispatch section. Default backend is local `ollama` on
-  `DESKTOP_GAMING`; use `openrouter` when you want a remote model.
+  the shell's `OLLAMA_HOST`; use `openrouter` when you want a remote
+  model.
 - Keep the fenced copy-paste block short and bounded. The wrapper reads
   that block as the prompt body.
 - Include a real verification command in the handoff so the worker knows

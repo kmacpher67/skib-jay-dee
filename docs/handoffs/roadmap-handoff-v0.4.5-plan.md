@@ -1,7 +1,6 @@
 ---
 code_monkey_backend: ollama
 code_monkey_model: qwen3:8b
-code_monkey_base_url: http://DESKTOP_GAMING:11434/v1
 done_condition_cmd: cd frontend && npm run build
 ---
 
@@ -44,7 +43,7 @@ this repo:
 
 - `code_monkey_backend: ollama`
 - `code_monkey_model: qwen3:8b`
-- local Ollama base URL: `http://DESKTOP_GAMING:11434/v1`
+- local Ollama host: `OLLAMA_HOST`
 
 ## Verification performed
 

@@ -10,7 +10,7 @@ they land, and append new items as they surface — don't let it go stale.
 
 The repo now also has a lightweight code-monkey lane for bounded handoff
 execution: `./scripts/run_code_monkey.sh <handoff.md>` can dispatch the
-next slice to local Ollama on `DESKTOP_GAMING` or to OpenRouter, using
+next slice to local Ollama using `OLLAMA_HOST` or to OpenRouter, using
 the handoff's own bounded copy-paste block as the prompt.
 
 ## Where things stand (as of this session)
