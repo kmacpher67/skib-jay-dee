@@ -6,6 +6,75 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.4 — 2026-07-26
+
+**Previous version:** v0.4.3-plan (docs-only, see below)
+
+### What changed
+
+- Added a new chaser: Sky-Diver (Motor Killer). Copied the source photo
+  (`images/sky-diver-motor-killer.png`, a grizzled biker portrait shared
+  in the v0.4.1-plan session) into `frontend/src/assets/`, imported it in
+  `frontend/src/gameContent.js`, and added it to `CHASER_FACE_POOL` as
+  `sky-diver-motor-killer` — the tenth entry in the pool, following the
+  existing "drop image → import → add pool entry" pattern.
+- Picked this item from the oldest open handoff
+  (`docs/handoffs/roadmap-handoff-v0.4.1-plan.md`) per `docs/skib-sdlc.md`
+  Mode B's "oldest unfinished handoff first" rule. Of that handoff's four
+  original items: the chaser-face-randomization fix already landed in
+  v0.4.2-plan; the second Yoodeling Unc pose is still blocked on the
+  user; the runner pose-to-state mapping is unblocked but was left for a
+  future session (this session's single increment, per the sizing rule).
+
+### Design decisions
+
+- Kept the increment to exactly one roadmap item (Sky-Diver) rather than
+  also doing the runner pose-to-state mapping in the same session, per
+  `docs/skib-sdlc.md`'s single-session sizing rule.
+- `GAME_ITERATION` stays `v0.4.0` and no deploy was run — the user asked
+  for this session to stay local-only unless publishing is explicitly
+  requested.
+
+### Verification performed
+
+- `cd frontend && npm run build` succeeds and bundles the new asset
+  (`dist/assets/sky-diver-motor-killer-*.png`).
+- The existing Playwright smoke suite (`npx playwright test`) passes (3/3).
+- Additionally drove `vite preview` with a headless Chromium session
+  (via the project's installed Playwright), forcing `Math.random` so
+  `randomFrom(CHASER_FACE_POOL)` resolves to the new last-index entry,
+  confirmed the browser actually issues a network request for
+  `sky-diver-motor-killer-*.png` (200, loaded) and that no console/page
+  errors occur during Quick Play — the same `new Image()` load path used
+  by every other pool entry.
+
+### Plan decisions
+
+- Next natural pick from the same handoff: the runner pose-to-state
+  mapping (`frontend/src/gameContent.js`'s `RUNNER_FACE_POOL` /
+  `randomFaces()`), wiring `jayden-getting-captured` to the jump-scare
+  beat and `jayden-captured` to the caught/"YOU DIED" screen.
+- The second Yoodeling Unc pose remains blocked until the user saves the
+  photo to `images/`.
+- The four items queued from the v0.4.2-plan session (speed-ramp →
+  clear-condition → video-timing → death-visual verification) remain the
+  higher-priority backlog per direct user playtest feedback — see
+  `docs/next-agent-coding-brief.md`.
+
+### Implementation decisions worth remembering
+
+- New chaser/runner faces are added by dropping an image file in
+  `frontend/src/assets/`, importing it in `frontend/src/gameContent.js`,
+  and adding one `{ id, label, src }` entry to the relevant pool — no
+  engine changes needed for a plain new face.
+
+### Known non-goals for this version
+
+- No runner pose-to-state mapping (the other unblocked v0.4.1-plan item)
+  — left for the next session so this increment stays single-purpose.
+- No Yoodeling Unc second pose — still blocked on the user.
+- No `GAME_ITERATION` bump, no deploy.
+
 ## v0.4.3-plan (docs-only planning)
 
 **Date:** July 26, 2026
@@ -573,72 +642,6 @@ accurate summary of where the code actually ended up this session:
   front-end-only playable build.
 - Added three levels and progression.
 - Fixed sprint so it behaves like a held input instead of getting stuck.
-## v0.4.4 — 2026-07-26
-
-- Added a new chaser: Sky-Diver (Motor Killer). Copied the source photo
-  (`images/sky-diver-motor-killer.png`, a grizzled biker portrait shared
-  in the v0.4.1-plan session) into `frontend/src/assets/`, imported it in
-  `frontend/src/gameContent.js`, and added it to `CHASER_FACE_POOL` as
-  `sky-diver-motor-killer` — the tenth entry in the pool, following the
-  existing "drop image → import → add pool entry" pattern.
-- Picked this item from the oldest open handoff
-  (`docs/handoffs/roadmap-handoff-v0.4.1-plan.md`) per `docs/skib-sdlc.md`
-  Mode B's "oldest unfinished handoff first" rule. The other three
-  original v0.4.1-plan items: the chaser-face-randomization fix already
-  landed in v0.4.2-plan; the second Yoodeling Unc pose is still blocked
-  on the user; the runner pose-to-state mapping is unblocked but was left
-  for a future session (this session's single increment, per the sizing
-  rule).
-
-### Design decisions
-
-- Kept the increment to exactly one roadmap item (Sky-Diver) rather than
-  also doing the runner pose-to-state mapping in the same session, per
-  `docs/skib-sdlc.md`'s single-session sizing rule.
-- `GAME_ITERATION` stays `v0.4.0` and no deploy was run — the user asked
-  for this session to stay local-only unless publishing is explicitly
-  requested.
-
-### Verification performed
-
-- `cd frontend && npm run build` succeeds and bundles the new asset
-  (`dist/assets/sky-diver-motor-killer-*.png`).
-- The existing Playwright smoke suite (`npx playwright test`) passes (3/3).
-- Additionally drove `vite preview` with a headless Chromium session
-  (via the project's installed Playwright), forcing `Math.random` so
-  `randomFrom(CHASER_FACE_POOL)` resolves to the new last-index entry,
-  confirmed the browser actually issues a network request for
-  `sky-diver-motor-killer-*.png` (200, loaded) and that no console/page
-  errors occur during Quick Play — the same `new Image()` load path used
-  by every other pool entry.
-
-### Plan decisions
-
-- Next natural pick from the same handoff: the runner pose-to-state
-  mapping (`frontend/src/gameContent.js`'s `RUNNER_FACE_POOL` /
-  `randomFaces()`), wiring `jayden-getting-captured` to the jump-scare
-  beat and `jayden-captured` to the caught/"YOU DIED" screen.
-- The second Yoodeling Unc pose remains blocked until the user saves the
-  photo to `images/`.
-- The four items queued from the v0.4.2-plan session (speed-ramp →
-  clear-condition → video-timing → death-visual verification) remain the
-  higher-priority backlog per direct user playtest feedback — see
-  `docs/next-agent-coding-brief.md`.
-
-### Implementation decisions worth remembering
-
-- New chaser/runner faces are added by dropping an image file in
-  `frontend/src/assets/`, importing it in `frontend/src/gameContent.js`,
-  and adding one `{ id, label, src }` entry to the relevant pool — no
-  engine changes needed for a plain new face.
-
-### Known non-goals for this version
-
-- No runner pose-to-state mapping (the other unblocked v0.4.1-plan item)
-  — left for the next session so this increment stays single-purpose.
-- No Yoodeling Unc second pose — still blocked on the user.
-- No `GAME_ITERATION` bump, no deploy.
-
 - Added desktop keyboard controls with Arrow keys / WASD movement and
   SPACE boost support.
 - Added a working Shleeb shop that spends and persists sheebs.

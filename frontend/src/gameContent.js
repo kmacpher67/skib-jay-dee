@@ -12,6 +12,7 @@ import antKRaman from './assets/ant-k-raman.PNG'
 import antiKRaman2 from './assets/anti-k-raman2.PNG'
 import dedDad from './assets/ded-dad.jpg'
 import crazyJackChaser from './assets/crazy-jack-chaser.jpeg'
+import skyDiverMotorKiller from './assets/sky-diver-motor-killer.png'
 
 export const RUNNER_FACE_POOL = [
   { id: 'jayden-default', label: 'Jayden Default', src: jaydenDefault },
@@ -31,6 +32,7 @@ export const CHASER_FACE_POOL = [
   { id: 'anti-k-raman-2', label: 'Anti K Raman 2', src: antiKRaman2 },
   { id: 'ded-dad', label: 'Ded Dad', src: dedDad },
   { id: 'crazy-jack-chaser', label: 'Crazy Jack', src: crazyJackChaser },
+  { id: 'sky-diver-motor-killer', label: 'Sky-Diver (Motor Killer)', src: skyDiverMotorKiller },
 ]
 
 export const SHOP_ITEMS = [

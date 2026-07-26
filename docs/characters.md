@@ -42,7 +42,7 @@ that mismatch.
 ## Chasers
 
 The toilet-creature roster hunting Jayden. `CHASER_FACE_POOL` currently
-holds nine entries. The lead chaser still wears the menu-selected/
+holds ten entries. The lead chaser still wears the menu-selected/
 uploaded face for the whole run, but as of the v0.4.2-plan session, each
 extra chaser spawned by the multi-chaser mechanic now rolls its own
 independent pick from `CHASER_FACE_POOL` instead of copying the lead
@@ -59,19 +59,14 @@ chaser's face — simultaneous toilets no longer look identical.
 | `anti-k-raman-2` | Anti K Raman 2 | Alt take on the above. |
 | `ded-dad` | Ded Dad | Deadpan, unsettling. |
 | `crazy-jack-chaser` | Crazy Jack | Wild-eyed, unhinged energy. |
+| `sky-diver-motor-killer` | Sky-Diver (Motor Killer) | Grizzled, leather-jacket biker portrait — a road-warrior/biker take on the chaser roster, distinct from the toilet-creature designs. Landed this session. |
 
 ### Planned new chasers (not yet wired — plan only)
 
-Two new chasers are queued up, following the same "drop image → import →
-add pool entry" pattern once a coding session picks them up. See
-`docs/roadmap.md`'s incremental backlog for the tracked items.
+One new chaser is still queued up, following the same "drop image →
+import → add pool entry" pattern once a coding session picks it up. See
+`docs/roadmap.md`'s incremental backlog for the tracked item.
 
-- **Sky-Diver (Motor Killer).** Source photo already dropped at
-  `images/sky-diver-motor-killer.png` (repo-root scratch, not yet copied
-  into `frontend/src/assets/` or imported in `gameContent.js`). A
-  grizzled, leather-jacket biker portrait — reads as a road-warrior/biker
-  take on the chaser roster, distinct from the toilet-creature designs.
-  Working id when wired: `sky-diver-motor-killer`.
 - **Yoodeling Unc — second pose.** A second photo for the existing
   "Yoodelling Unc Alex" bit was shared this session (costume shot: red
   pointed cap, blue-and-white Dutch outfit, "Dutch Boy" paint can,

@@ -10,6 +10,20 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.4 — 2026-07-26
+
+- Added new chaser Sky-Diver (Motor Killer): copied
+  `images/sky-diver-motor-killer.png` into `frontend/src/assets/`,
+  imported it in `frontend/src/gameContent.js`, added a `CHASER_FACE_POOL`
+  entry (`sky-diver-motor-killer`).
+- Picked up the oldest open handoff (v0.4.1-plan) per Mode B ordering;
+  the other unblocked item from that handoff (runner pose-to-state
+  mapping) is left for the next session.
+- Verified with `npm run build`, the Playwright smoke suite, and a
+  headless Chromium run forcing `randomFrom` to select the new pool
+  entry to confirm the asset actually loads with no console errors.
+- Added `docs/handoffs/roadmap-handoff-v0.4.4.md`.
+
 ## v0.4.3-plan — 2026-07-26 (docs-only planning)
 
 - Re-verified the chaser-face-randomization fix (v0.4.2-plan) is live and
