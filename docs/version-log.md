@@ -6,6 +6,24 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.13-plan — lvl2 RCA planning pass (2026-07-26)
+
+### What changed
+
+- Re-scoped the lvl2 transition work after playtesting feedback: the current video gate is still too permissive for the user's expectation, and there is a crash shortly after the video starts that needs root-cause analysis before any further timing tweaks.
+- Added a new roadmap item that makes the next coding session start with reproduction and instrumentation, then tighten the gate to the user's requested bar: 80% map-hall coverage plus 15 seconds with 4 simultaneous skibs.
+- Prepared a fresh copy-paste brief for the next coding agent so the investigation starts from the real files (`App.jsx`, `GameEngine.js`, `GameCanvas.jsx`) instead of guesswork.
+
+### Design decisions
+
+- Chose to treat this as RCA first, behavior change second. The previous "video fires on clear" fix is still valid, but it is not sufficient for the new playability target.
+- Kept the new gate requirement in the roadmap and handoff docs rather than baking it into code here, because the next session still needs to confirm whether the crash is in the overlay lifecycle, the level-advance path, or the multi-chaser update loop.
+
+### Known non-goals for this pass
+
+- No gameplay code changed.
+- No build, test run, `GAME_ITERATION` bump, or deploy.
+
 ## v0.4.12 — near-capture interlude pass (2026-07-26)
 
 ### What changed

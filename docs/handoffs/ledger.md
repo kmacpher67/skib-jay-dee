@@ -10,6 +10,12 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.13-plan — 2026-07-26 (docs-only)
+
+- Re-scoped the lvl2 transition as an RCA item because playtesting says it still fires too early and can crash shortly after playback starts.
+- Captured the new gate target in the backlog: 80% map-hall coverage plus 15 seconds with 4 simultaneous skibs.
+- Added a fresh copy-paste brief for the next coding agent so the investigation starts with reproduction and instrumentation.
+
 ## v0.4.12 — 2026-07-26
 
 - Implemented the near-capture interlude (pause card + parody captions) when a skib gets too close.

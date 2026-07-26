@@ -217,6 +217,13 @@ and chaser-bark voice clips, 1:1 with text.
   this.level.name })`, `App.jsx` moved the `index === 2` check into
   `handleLevelClear`, and the experimental `lvl2-transition.mp4` only
   appears after Pipeworks is actually cleared.
+- [ ] **RCA: lvl2 transition still fires too early for playtime, and the
+  game can crash shortly after the video starts.** Investigate the crash
+  path first, then tighten the gate so the video cannot play until the
+  player has covered at least 80% of the map halls and has survived 15
+  seconds with 4 simultaneous skibs on them. Treat the next coding
+  session as instrumentation + RCA before any user-facing behavior
+  change.
 - [x] **RESOLVED — Tie Pipeworks's clear condition to surviving 5
   simultaneous chasers at their max speed, gated by a skreem threshold.**
   User confirmed the design and the current tuning now uses 5 skibs.

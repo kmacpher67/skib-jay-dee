@@ -6,7 +6,7 @@ Use this as the handoff doc for the next agent working in the repo.
 
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
 - `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, five levels, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), and the discreet iteration badge in the HUD.
-- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, the lvl2 transition timing/overlay-dismiss behavior, and the matching menu build tag.
+- `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, the lvl2 transition timing/overlay-dismiss behavior, and the matching menu build tag. The lvl2 transition still needs an RCA pass because playtesting says it fires too early and can crash shortly after the video starts.
 - `frontend/src/version.js` is the single place to bump the visible iteration number.
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
   can dispatch a bounded handoff to local Ollama using the shell's
@@ -52,6 +52,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - `frontend/src/lib/cookies.js`
 - `frontend/src/components/GameCanvas.jsx`
 - `frontend/src/components/ShopModal.jsx`
+- `docs/handoffs/roadmap-handoff-v0.4.13-plan.md`
 - `scripts/run_code_monkey.sh`
 - `scripts/code_monkey_direct.py`
 
@@ -103,6 +104,7 @@ manually:
 
 ## Natural follow-up work
 
+- RCA the lvl2 transition bug first: reproduce the crash after the video starts, instrument the phase/overlay/chaser-state path, then tighten the gate so the video only appears after 80% map-hall coverage and 15 seconds with 4 simultaneous skibs.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it
   needs Ken to record real voice clips first, it's not a pure coding
   task. Ask him before treating it as unblocked.
