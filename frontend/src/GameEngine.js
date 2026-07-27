@@ -358,6 +358,19 @@ const PIPEWORKS_HALL_GRID_SIZE = 30
 const DEATH_SKREEM_PENALTY = 0.3 // fraction of skreems lost on capture
 const DEATH_SHEEBS_PENALTY = 20
 
+// Level 5+ end-game escalation (docs/handoffs/roadmap-handoff-v0.4.34-plan.md):
+// at Level 5 (levelIndex 4) chasers stop respecting walls (below that they
+// path around them like the runner does) and get a flat speed bump. The
+// Gawd Particle is a very rare Level 5+ pickup that lets the runner do the
+// same for a short window and turns contact with a chaser into a despawn +
+// respawn-timer instead of a capture.
+const LEVEL5_PLUS_START_INDEX = 4
+const LEVEL5_PLUS_CHASER_SPEED_MULT = 1.15
+const GAWD_PARTICLE_SPAWN_CHANCE = 0.08
+const GAWD_PARTICLE_PICKUP_SIZE = 28
+const GAWD_PARTICLE_BUFF_SECONDS = 10
+const CHASER_RESPAWN_SECONDS = 15
+
 // Rubber-band chaser speed: each KILLZ (capture) mellows the toilet out a
 // bit since a fresh spawn right after dying is the least fun way to lose
 // again; each level Jayden clears ramps it back up so the game doesn't get
@@ -501,6 +514,9 @@ export class GameEngine {
     this.pipeworksFourSkibSeconds = 0
     this.pipeworksTransitionReady = false
     this._pipeworksHallCoverageGrid = null
+    this.gawdParticleActive = false
+    this.gawdParticleTimer = 0
+    this.chaserRespawnQueue = []
 
     this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0, luckBonus: 0 }
 
@@ -798,6 +814,10 @@ export class GameEngine {
     this.levelElapsed = 0
     this.pipeworksSkreems = 0
     this.chasers = [this.chaser]
+    this.chaser.spawn = this.level.chaserSpawn
+    this.chaserRespawnQueue = []
+    this.gawdParticleActive = false
+    this.gawdParticleTimer = 0
     this.extraChaserTimer = EXTRA_CHASER_INTERVAL
     this.nearCaptureCooldown = 15
     this._resetPipeworksGateState()
@@ -821,6 +841,7 @@ export class GameEngine {
     this._spawnProgressionBadge()
     this._maybeSpawnHumorBadge()
     this._spawnQuestRoomBadge()
+    this._maybeSpawnGawdParticle()
 
     if (notify) {
       this.onLevelChange({
@@ -932,10 +953,19 @@ export class GameEngine {
     this.levelElapsed += dt
     this.fireCooldown = Math.max(0, this.fireCooldown - dt)
 
+    if (this.gawdParticleActive) {
+      this.gawdParticleTimer = Math.max(0, this.gawdParticleTimer - dt)
+      if (this.gawdParticleTimer <= 0) this.gawdParticleActive = false
+    }
+
     const speed = this.runner.baseSpeed * (sprinting ? 1.8 : 1)
     const move = this._getMoveVector()
     if (move.x !== 0 || move.y !== 0) this.runner.facing = { x: move.x, y: move.y }
-    this._moveWithCollision(this.runner, move.x * speed * dt, move.y * speed * dt)
+    if (this.gawdParticleActive) {
+      this._moveIgnoringWalls(this.runner, move.x * speed * dt, move.y * speed * dt)
+    } else {
+      this._moveWithCollision(this.runner, move.x * speed * dt, move.y * speed * dt)
+    }
 
     const fireHeld = this.keys.fire || this.fireBtn.active
     if (fireHeld && !this._firePrevHeld) this._tryFire()
@@ -945,12 +975,15 @@ export class GameEngine {
     this._checkPickups()
 
     this._maybeSpawnExtraChaser(dt)
+    this._updateChaserRespawns(dt)
     this._updatePipeworksGateProgress(dt)
 
+    const wallHackLevel = this.levelIndex >= LEVEL5_PLUS_START_INDEX
     let closestDist = Infinity
     let caught = false
     let caughtBy = null
     let nearCapture = false
+    const despawning = []
 
     for (const chaser of this.chasers) {
       const dx = this.runner.x - chaser.x
@@ -962,11 +995,15 @@ export class GameEngine {
       } else {
         chaser.joinRamp = Math.min(1, (chaser.joinRamp ?? 1) + dt / CHASER_JOIN_RAMP_SECONDS)
         const joinRampMod = lerp(CHASER_JOIN_RAMP_START, 1, chaser.joinRamp)
-        const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod
-        chaser.x += (dx / dist) * chaserSpeed * dt
-        chaser.y += (dy / dist) * chaserSpeed * dt
-        chaser.x = clamp(chaser.x, 24, WORLD.width - 24 - chaser.w)
-        chaser.y = clamp(chaser.y, 24, WORLD.height - 24 - chaser.h)
+        const speedMult = wallHackLevel ? LEVEL5_PLUS_CHASER_SPEED_MULT : 1
+        const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod * speedMult
+        const stepX = (dx / dist) * chaserSpeed * dt
+        const stepY = (dy / dist) * chaserSpeed * dt
+        if (wallHackLevel) {
+          this._moveIgnoringWalls(chaser, stepX, stepY)
+        } else {
+          this._moveWithCollision(chaser, stepX, stepY)
+        }
       }
 
       if (dist < 300) {
@@ -974,8 +1011,8 @@ export class GameEngine {
         this.skreems += gain
         this.levelSkreems += gain
         if (
-          this.level.name === 'Pipeworks' && 
-          this.chasers.length >= MAX_CHASERS && 
+          this.level.name === 'Pipeworks' &&
+          this.chasers.length >= MAX_CHASERS &&
           this.chasers.every(c => (c.joinRamp ?? 1) >= 1)
         ) {
           this.pipeworksSkreems += gain
@@ -983,11 +1020,23 @@ export class GameEngine {
       }
       if (dist < closestDist) closestDist = dist
       if (rectsIntersect(this.runner, chaser)) {
-        caught = true
-        caughtBy = chaser
+        if (this.gawdParticleActive) {
+          despawning.push(chaser)
+        } else {
+          caught = true
+          caughtBy = chaser
+        }
       } else if (dist < 100 && this.nearCaptureCooldown <= 0) {
         nearCapture = true
       }
+    }
+
+    if (despawning.length > 0) {
+      this.chasers = this.chasers.filter((c) => !despawning.includes(c))
+      despawning.forEach((chaser) => {
+        chaser.joinRamp = 0
+        this.chaserRespawnQueue.push({ chaser, timer: CHASER_RESPAWN_SECONDS })
+      })
     }
 
     if (this.chasers.length > 0) this.onSkreem(Math.floor(this.skreems))
@@ -1058,6 +1107,7 @@ export class GameEngine {
       color: this.chaser.color,
       face: extraFace,
       faceId: extraFaceId,
+      spawn,
     })
     this.onExtraChaserSpawn({
       count: this.chasers.length,
@@ -1082,6 +1132,9 @@ export class GameEngine {
         this.onBadgeEarned(pickup.badgeId)
       } else if (pickup.type === 'quest-badge') {
         this.onBadgeEarned(pickup.badgeId)
+      } else if (pickup.type === 'gawd-particle') {
+        this.gawdParticleActive = true
+        this.gawdParticleTimer = GAWD_PARTICLE_BUFF_SECONDS
       }
       return false
     })
@@ -1200,6 +1253,24 @@ export class GameEngine {
       this.luckyBadgeEarned = true
       this.onBadgeEarned('lucky')
     }
+  }
+
+  // Gawd Particle (docs/handoffs/roadmap-handoff-v0.4.34-plan.md): Level 5+
+  // only, very low spawn chance — see _checkPickups for the buff it grants.
+  _maybeSpawnGawdParticle() {
+    if (this.levelIndex < LEVEL5_PLUS_START_INDEX) return
+    if (Math.random() >= GAWD_PARTICLE_SPAWN_CHANCE) return
+
+    const spawn = this._findRandomWalkableSpawn()
+    if (!spawn) return
+
+    this.pickups.push({
+      type: 'gawd-particle',
+      x: spawn.x,
+      y: spawn.y,
+      w: GAWD_PARTICLE_PICKUP_SIZE,
+      h: GAWD_PARTICLE_PICKUP_SIZE,
+    })
   }
 
   _findRandomWalkableSpawn() {
@@ -1338,6 +1409,30 @@ export class GameEngine {
     return this.map.walls.some((wall) => rectsIntersect(entity, wall))
   }
 
+  // Used by Level 5+ wall-hack chasers and by the runner while the Gawd
+  // Particle buff is active — moves straight through walls, still clamped
+  // to the world bounds.
+  _moveIgnoringWalls(entity, dx, dy) {
+    entity.x = clamp(entity.x + dx, 24, WORLD.width - 24 - entity.w)
+    entity.y = clamp(entity.y + dy, 24, WORLD.height - 24 - entity.h)
+  }
+
+  _updateChaserRespawns(dt) {
+    if (this.chaserRespawnQueue.length === 0) return
+    this.chaserRespawnQueue = this.chaserRespawnQueue.filter((entry) => {
+      entry.timer -= dt
+      if (entry.timer > 0) return true
+
+      const chaser = entry.chaser
+      chaser.x = chaser.spawn?.x ?? chaser.x
+      chaser.y = chaser.spawn?.y ?? chaser.y
+      chaser.stunnedUntil = 0
+      chaser.joinRamp = CHASER_JOIN_RAMP_START
+      this.chasers.push(chaser)
+      return false
+    })
+  }
+
   _triggerCaught(caughtBy = null) {
     this.phase = 'caught'
     this.phaseTimer = 2.6
@@ -1422,6 +1517,9 @@ export class GameEngine {
       this.chaser.y = this.level.chaserSpawn.y
       this.chaser.stunnedUntil = 0
       this.chasers = [this.chaser]
+      this.chaserRespawnQueue = []
+      this.gawdParticleActive = false
+      this.gawdParticleTimer = 0
       this.extraChaserTimer = EXTRA_CHASER_INTERVAL
       this.zoom = 1
       this.stamina = this.maxStamina
@@ -1487,6 +1585,7 @@ export class GameEngine {
       this._drawEntity(ctx, chaser)
       if (chaser.stunnedUntil > 0) this._drawStunEffect(ctx, chaser)
     })
+    if (this.gawdParticleActive) this._drawGawdParticleGlow(ctx)
     this._drawEntity(ctx, this.runner)
     this._drawBullets(ctx)
     ctx.restore()
@@ -1570,6 +1669,9 @@ export class GameEngine {
     if (pickup.type === 'quest-badge') {
       return { bg: '#3a2f1a', border: '#ffb84d', emoji: BADGES[pickup.badgeId]?.emoji || '🏆' }
     }
+    if (pickup.type === 'gawd-particle') {
+      return { bg: '#3a2f0a', border: '#ffe066', emoji: '✨' }
+    }
     return { bg: '#3a3a3a', border: '#ffd27a', emoji: '🔫' }
   }
 
@@ -1610,6 +1712,21 @@ export class GameEngine {
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     ctx.fillText('💫', chaser.x + chaser.w / 2, chaser.y - 10)
+    ctx.restore()
+  }
+
+  _drawGawdParticleGlow(ctx) {
+    ctx.save()
+    ctx.shadowColor = '#ffe066'
+    ctx.shadowBlur = 20
+    ctx.strokeStyle = '#ffe066'
+    ctx.lineWidth = 3
+    ctx.strokeRect(
+      this.runner.x - 4,
+      this.runner.y - 4,
+      this.runner.w + 8,
+      this.runner.h + 8,
+    )
     ctx.restore()
   }
 
@@ -1680,6 +1797,18 @@ export class GameEngine {
       ctx.textAlign = 'left'
       ctx.textBaseline = 'middle'
       ctx.fillText(`🔫 AMMO: ${this.runner.gun.ammo}`, 10, 64)
+      ctx.restore()
+    }
+
+    if (this.gawdParticleActive) {
+      ctx.save()
+      ctx.fillStyle = 'rgba(0,0,0,0.4)'
+      ctx.fillRect(VIEW_W - 140, 54, 130, 20)
+      ctx.fillStyle = '#ffe066'
+      ctx.font = 'bold 11px sans-serif'
+      ctx.textAlign = 'right'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(`✨ WALLHACK: ${this.gawdParticleTimer.toFixed(1)}s`, VIEW_W - 10, 64)
       ctx.restore()
     }
 

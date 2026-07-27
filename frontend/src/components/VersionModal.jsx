@@ -1,5 +1,15 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.34',
+    title: 'Level 5+: Wall Hacks & the Gawd Particle',
+    description: 'Starting at Level 5, the toilets stop respecting walls and move faster. Find the ultra-rare Gawd Particle to flip the script: run through walls yourself for 10 seconds, and touching a chaser despawns it instead of catching you (it respawns after 15s).',
+  },
+  {
+    version: 'v0.4.33',
+    title: 'Quest Room badges + Level 4+ survival floor',
+    description: 'Ramen Aisle and World Star Parking Lot now hide a guaranteed landmark badge in their own quest room. Level 4 and beyond also need a scaling survival-time floor with all 5 toilets active before you can advance, on top of the skreems goal.',
+  },
+  {
     version: 'v0.4.32',
     title: 'Explore for badges',
     description: 'Levels 1-3 now hide a mandatory badge pickup somewhere on the map — find it before you can move on. Keep an eye out for rare, optional humor badges too, like the Mysterious Plunger and the Golden TP.',

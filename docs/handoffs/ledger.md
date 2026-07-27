@@ -552,3 +552,17 @@ update `docs/version-log.md`.
 - Tightened the lvl2 transition to wait for Pipeworks hall coverage plus a 4-skib survival timer before mounting the video.
 - Kept the React overlay dismissal behavior, and added browser coverage for the blocked gate path, the allowed path, the capture-dismiss path, and the end-of-playback path.
 - Bumped the visible iteration to `v0.4.15`.
+
+## v0.4.34 — 2026-07-26
+
+- Gave chasers real wall collision on Levels 1-4 (`_moveWithCollision`,
+  previously unused by chasers at all) and kept wall-passthrough +
+  a 1.15x speed multiplier for Level 5+ (`_moveIgnoringWalls`).
+- Added the Gawd Particle: rare Level 5+ pickup, 10s runner wall-hack
+  buff, despawns a touched chaser instead of capturing the runner and
+  respawns it 15s later via a new `chaserRespawnQueue`.
+- Added HUD/visual feedback (gold runner glow, wallhack countdown,
+  `✨` pickup style) and `frontend/e2e/level5-wallhacks-gawd-particle.spec.js`.
+- Backfilled the missing v0.4.33 `VersionModal.jsx` entry alongside the
+  new v0.4.34 one.
+- `GAME_ITERATION` bumped to `v0.4.34`, deployed.

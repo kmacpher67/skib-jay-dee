@@ -4,18 +4,41 @@ Use this as the handoff doc for the next agent working in the repo.
 
 ## Current state
 
+- **v0.4.34 (real code, most recent session):** implemented the Level 5+
+  end-game escalation from `docs/handoffs/roadmap-handoff-v0.4.34-plan.md`
+  — **Chaser Wall Hacks** and the **Gawd Particle**. Found while reading
+  `GameEngine.js` that chasers never had wall collision at all (only the
+  runner did), so instead of a literal "disable collision at Level 5"
+  no-op, gave chasers real wall-aware movement on Levels 1-4
+  (`_moveWithCollision`, reused from the runner) and kept the
+  always-pass-through behavior + a new `1.15x` speed multiplier at
+  Level 5+ (`levelIndex >= 4`, `_moveIgnoringWalls`). The Gawd Particle is
+  a new Level 5+-only pickup (8% roll/level) that gives the runner the
+  same wall-hack for 10s and turns a chaser collision into a despawn +
+  15s respawn (`chaserRespawnQueue`) instead of a capture. Added HUD/visual
+  feedback (gold runner glow, wallhack countdown) and
+  `frontend/e2e/level5-wallhacks-gawd-particle.spec.js`. Full 27-test
+  suite (26 active, 1 pre-existing skip) and `npm run build` pass. Also
+  backfilled a missing v0.4.33 entry in `VersionModal.jsx`. `GAME_ITERATION`
+  bumped to `v0.4.34` and deployed. See
+  `docs/handoffs/roadmap-handoff-v0.4.34.md`.
+- **v0.4.33 (real code):** Quest Room landmark badges (guaranteed pickup
+  in Ramen Aisle / World Star Parking Lot's dedicated quest room) and the
+  Level 4+ survival floor (scaling time requirement + all 5 chasers
+  active, stacked on the existing skreems threshold). See
+  `docs/handoffs/roadmap-handoff-v0.4.33.md`.
 - **v0.4.32 (real code):** implemented both items from the v0.4.32-plan handoff — **Retrofit Early Level Badges** (Levels 1-3 each auto-spawn a mandatory `progressionBadgeId` map pickup that must be found before the level can advance, on top of every existing skreem/time/chaser condition) and **Humor & Intrigue Random Badges** (a separate, non-gating `HUMOR_BADGE_IDS` pool with an 18% spawn chance per level start, retrying at later levels if missed). Also generalized pickup rendering and the level-clear banner's badge-emoji lookup to be data-driven off `BADGES` instead of hardcoded per-id branches. New `frontend/e2e/progression-badges.spec.js`; fixed a pre-existing flaky assertion in `frontend/e2e/jayden-gun.spec.js`. Full 23-test suite (22 active, 1 pre-existing skip) and `npm run build` pass. `GAME_ITERATION` bumped to `v0.4.32` and deployed. See `docs/handoffs/roadmap-handoff-v0.4.32.md`.
 - **Live production bug (black screen on Quick Play) is now resolved:** v0.4.30's Badges integration left `onBadgeEarned` out of `GameEngine`'s constructor destructuring, throwing a `ReferenceError` on boot and crashing the React tree before `<canvas>` could mount. Fixed, verified (18/18 Playwright), and shipped as **v0.4.30.1** — see `docs/handoffs/roadmap-handoff-v0.4.30.md` and `docs/version-log.md`.
 - **v0.4.31 (real code):** implemented both items from the v0.4.31-plan handoff in one session — the **Jayden Gun** (map pickup, 1-2 usable rounds, dedicated `F` key + touch FIRE button, fires in the runner's facing direction, 3-5s chaser stun, gun disappears at 0 ammo) and the **Lucky Charm** shop items + **Lucky** badge (`Lucky Charm` 150/+15%, `Golden Lucky Charm` 250/+25%, stacking; badge fires on the luck bonus's first actual proc via a two-stage spawn roll, confirmed with Ken before coding). New `frontend/e2e/jayden-gun.spec.js` and `frontend/e2e/lucky-charm.spec.js`; full 21-test suite (20 active, 1 pre-existing skip) and `npm run build` pass. `GAME_ITERATION` stays `v0.4.30.1` — bump/deploy was scoped "only if asked" and wasn't. See `docs/handoffs/roadmap-handoff-v0.4.31.md`. Rolling Pickups (Mario-style) is still an undesigned backlog item, unrelated to this session.
 - **Process note:** `docs/skib-sdlc.md` now has an explicit "no code-cowboy sessions" rule — don't fix a bug found mid-planning inline in a `-plan.md`, give it its own Mode B session; and don't mark a design question "unblocked" for coding unless the user actually answered it in conversation.
 - **Live production bug (broken face preview images) is now resolved:** the `v0.4.25` deploy included the fix where `App.jsx` was coercing the face pool object to `[object Object]`. The production menu now correctly shows the selected face assets.
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
-- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, the separate resume-countdown phase, five levels, the shipped Level 4+ quest rooms / survival floor, desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), a 20-sheebs capture penalty (which can go negative above level 3), and the discreet iteration badge in the HUD.
+- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, the separate resume-countdown phase, five levels, the shipped Level 4+ quest rooms / survival floor, the Level 5+ chaser wall-hacks + speed bump and the Gawd Particle wall-hack/despawn-respawn counter (v0.4.34), desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), a 20-sheebs capture penalty (which can go negative above level 3), and the discreet iteration badge in the HUD.
 - `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, the lvl2 transition overlay lifecycle, the post-kill profile modal / clickable deaths log, and the level 4 warning overlay. The lvl2 video now only mounts after Pipeworks is cleared *and* the engine reports the new hall-coverage / 4-skib survival gate as ready. It also processes 25% item-loss on capture for players above level 4.
 - `frontend/src/components/ProfileModal.jsx` now renders the shared killer profile card for both fresh kills and log reopens, while `frontend/src/components/DeathsModal.jsx` shows clickable killer-ID pills.
 - `frontend/src/App.jsx` also owns the new menu version log panel, which shows `GAME_ITERATION` plus a short shipped changelog.
 - Planning-only review: the current maps are mechanically fine but need stronger landmark identity, so `docs/interactive-content-pack.md` now seeds the next funny runner/chaser item pack and secret awards.
-- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently `v0.4.32` (progression badges and humor badges shipped).
+- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently `v0.4.34` (Level 5+ chaser wall-hacks + the Gawd Particle shipped).
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
   can dispatch a bounded handoff to local Ollama using the shell's
   `OLLAMA_HOST` or to OpenRouter. A handoff can advertise its target
@@ -143,7 +166,7 @@ manually:
 
 - **Jayden Gun + Lucky Charm/Lucky badge landed in v0.4.31** — no longer on this list. Rolling Pickups (Mario-style) is still a separate, undesigned backlog item.
 - **v0.4.26-plan shipped as v0.4.26** (negative sheebs debt + item loss above level 3/4) — that line is stale, corrected here.
-- **Early-level progression badges + humor/random badges landed in v0.4.32** — no longer on this list. Quest Rooms and the Level 4+ 90-second survival floor shipped in v0.4.33; the remaining map/difficulty branch is `v0.4.34-plan` (chaser wall-hacks, "Gawd Particle"). The current content-polish thread is `v0.4.35-plan` (Rolling Pickups, Schleimy Potion, Coolness Dialog).
+- **Early-level progression badges + humor/random badges landed in v0.4.32** — no longer on this list. Quest Rooms and the Level 4+ 90-second survival floor shipped in v0.4.33. **Chaser Wall Hacks + the Gawd Particle landed in v0.4.34** — no longer on this list either. The current content-polish thread is `v0.4.35-plan` (Rolling Pickups, Schleimy Potion, Coolness Dialog) — that's the oldest unfinished handoff now.
 - The next map-architecture follow-up is parked in `docs/handoffs/roadmap-handoff-v0.4.36-plan.md` so the v0.4.35 content-polish slice can stay small.
 - `v0.4.25` is now shipped: the post-kill profile card, killer-ID logging, and clickable deaths log are in production.
 - **Game identity / multiple cookie-backed save slots landed in v0.4.29** — the profile switcher, `localStorage` registry, and `docs/profiles-and-identity.md` are all in place. No longer on this list.

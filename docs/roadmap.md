@@ -281,8 +281,8 @@ and chaser-bark voice clips, 1:1 with text.
   (spawn conditions, which levels, additive vs. replacement chaser). See
   [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
 - [x] **Level 4+ Difficulty Constraints.** Landed in v0.4.33 — Level 4 and higher now requires at least 90 seconds (scaling up with higher levels) of running and evasion of 5 chasers before the level can clear.
-- [ ] **Skib-Chaser Evolution (Level 5+).** After level 4, skib-chasers get more powerful attacks, increased speed, and the terrifying ability to go through walls.
-- [ ] **The "Gawd Particle" (Level 5+).** An ultra-rare pickup item appearing after level 5. It allows runners to run through walls and essentially kill skib-chasers (despawning them entirely, forcing a respawn timer).
+- [x] **Skib-Chaser Evolution (Level 5+).** Landed in v0.4.34 — chasers turned out to have no wall collision at all pre-v0.4.34 (only the runner did), so this gave them real wall-aware movement on Levels 1-4 and kept the always-pass-through behavior plus a `1.15x` speed multiplier for Level 5+ (`levelIndex >= 4`). See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
+- [x] **The "Gawd Particle" (Level 5+).** Landed in v0.4.34 — an 8%-per-level Level 5+ pickup grants the runner a 10s wall-hack buff; touching a chaser while it's active despawns the chaser (15s respawn timer) instead of capturing the runner. See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
 - [x] **Quest Rooms & Landmark Badges.** Landed in v0.4.33 — Level 4 and Level 5 now each have a dedicated landmark room with a quest badge, with Level 4 keeping two exits and Level 5 tightening into a one-door chokepoint.
 - [ ] **Interactive content pack: secret items, gag awards, and map personality.** Add a small data-driven catalog of runner/chaser good and bad items plus exploration awards so levels feel more alive, funny, and readable instead of just harder. See [docs/interactive-content-pack.md](interactive-content-pack.md).
 - [x] **Retrofit Early Level Badges.** Landed v0.4.32 — Levels 1-3

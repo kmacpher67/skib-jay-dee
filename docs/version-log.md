@@ -907,3 +907,90 @@ focused on *why*, those two are the *what* and *when*.
 ### Design decisions
 
 - Kept the Pipeworks threshold at 68 rather than tuning it just because
+ it's now technically achievable — kept it at the value that felt right in
+  the previous session's playtesting, since Level 5's own new difficulty
+  spike (below) is a separate lever.
+
+## v0.4.34 — Level 5+ escalation: Wall Hacks & the Gawd Particle (2026-07-26)
+
+### What changed
+
+- Picked up `docs/handoffs/roadmap-handoff-v0.4.34-plan.md` (the oldest
+  unfinished handoff) and implemented both of its features in
+  `frontend/src/GameEngine.js`.
+- **Chaser wall hacks (Feature 1):** discovered while reading the code
+  that chasers never actually collided with walls at all — only the
+  runner used `_moveWithCollision`/`_hitsWall`. Rather than literally
+  "disable wall collision at Level 5" (a no-op against the real code),
+  gave chasers real wall-aware movement below Level 5 (`levelIndex < 4`,
+  reusing the runner's existing `_moveWithCollision`) so hiding
+  spots/chokepoints actually mean something on Levels 1-4, and kept the
+  original always-pass-through behavior for Level 5+ (`levelIndex >= 4`,
+  new `_moveIgnoringWalls` helper) so "the rules break down" reads as a
+  real shift instead of no change. Also applied a flat `1.15x`
+  (`LEVEL5_PLUS_CHASER_SPEED_MULT`) chaser speed multiplier at Level 5+.
+- **The Gawd Particle (Feature 2):** new `gawd-particle` pickup type,
+  spawn-gated to `levelIndex >= 4` at an 8% roll per level
+  (`GAWD_PARTICLE_SPAWN_CHANCE`), following the same
+  `_findRandomWalkableSpawn()` pattern as the Jayden Gun/badges. On
+  pickup, sets `gawdParticleActive` + a 10s `gawdParticleTimer`
+  (`GAWD_PARTICLE_BUFF_SECONDS`), during which the runner also uses
+  `_moveIgnoringWalls`. While active, a runner/chaser collision that
+  would normally trigger a capture instead despawns that chaser (removed
+  from `this.chasers`) and queues it in a new `chaserRespawnQueue` with a
+  15s timer (`CHASER_RESPAWN_SECONDS`); `_updateChaserRespawns()` ticks
+  the queue each frame and re-adds the chaser at its stored `spawn`
+  point (added a `spawn` field to both the main chaser and
+  `_maybeSpawnExtraChaser()`'s extras) once the timer elapses. Both the
+  buff and the respawn queue are cleared on level change and on death,
+  same as the rest of per-run chase state.
+- Added a gold glow around the runner while the buff is active
+  (`_drawGawdParticleGlow`), a HUD "✨ WALLHACK: Xs" countdown next to the
+  ammo readout, and a `gawd-particle` pickup style (`✨`, gold border).
+- New `frontend/e2e/level5-wallhacks-gawd-particle.spec.js`: confirms
+  chasers are blocked by a synthetic wall pre-Level-5 but pass clean
+  through it at Level 5 (stepping in real per-frame `dt` — an early
+  version of this test used a single 1-second `update()` call and
+  accidentally proved a pre-existing tunneling artifact in the simple
+  AABB collision instead of the actual wall-hack behavior); confirms the
+  particle never spawns before Level 5 and does spawn after over 400
+  rolls; confirms the runner buff lets it cross a wall and blocks it
+  again once the buff (or when it's not present) expires; and confirms
+  the despawn-then-respawn-at-spawn-point cycle for a touched chaser.
+  Full 27-test suite (26 active, 1 pre-existing skip) plus `npm run
+  build` pass.
+- Backfilled two missing `VersionModal.jsx` entries: v0.4.33 (Quest Room
+  badges + Level 4+ survival floor) was never added to the in-game "What
+  shipped lately" list despite shipping in the prior session — added it
+  alongside the new v0.4.34 entry.
+- `GAME_ITERATION` bumped to `v0.4.34` and deployed via
+  `./scripts/deploy-static.sh`.
+
+### Design decisions
+
+- Chose to give chasers genuine wall collision below Level 5 instead of
+  a no-op "disable" of collision that was never there — the handoff's
+  intent (walls matter until Level 5, then don't) only exists if there's
+  an actual before/after difference. Flagged this deviation here rather
+  than silently reinterpreting the spec.
+- Reused the extra-chaser corner-spawn object as the `spawn` field
+  directly (`this.chasers.push({ ..., spawn })`) instead of a separate
+  lookup table, so respawn logic stays a straight readback with no new
+  bookkeeping structure.
+- Kept the Gawd Particle's respawn queue best-effort on capacity (no
+  `MAX_CHASERS` check before re-adding) — a chaser that despawned was
+  already counted against the cap, so at worst a respawn can transiently
+  put the roster one over `MAX_CHASERS`, which is low-stakes and simpler
+  than threading a second wait condition through the queue.
+
+### Known non-goals for this pass
+
+- No audio cue for collecting the Gawd Particle or for a chaser despawn
+  — flagged as a natural follow-up in `docs/future-versions.md`, not
+  guessed at.
+- No new badge tied to collecting the Gawd Particle or wall-hacking a
+  chaser; the handoff didn't ask for one and the existing badge set
+  doesn't have an obvious slot for it.
+- Didn't retune `LEVEL5_PLUS_CHASER_SPEED_MULT`/`GAWD_PARTICLE_*`
+  constants beyond the handoff's suggested ranges — real playtesting
+  feedback should drive any further tuning.
