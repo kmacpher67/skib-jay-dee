@@ -20,6 +20,10 @@ the full intro cinematic remain future work — see
 
 ## Quick start
 
+Requires **Node 24.x (Active LTS)** and **npm >= 10** — see
+`frontend/.nvmrc` (run `nvm use` in `frontend/`) and
+[docs/dev-notes.md](docs/dev-notes.md) for why.
+
 ```bash
 cd frontend
 npm install

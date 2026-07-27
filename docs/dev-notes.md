@@ -115,3 +115,109 @@ Operational rule going forward:
 
 - Keep scheduled production checks as smoke tests (uptime + core UX).
 - Run full production E2E only right after deploying the same revision.
+
+## 2026-07-27 Node 20 deprecation warning (separate from the E2E RCA above)
+
+GitHub Actions runs started printing this on every E2E job:
+
+```
+Node.js 20 is deprecated. The following actions target Node.js 20 but are
+being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4,
+actions/upload-artifact@v4.
+```
+
+This is unrelated to the webServer/scope issues fixed above — it's about the
+**Actions runtime**, not this project's Node version. Two different things
+share the name "Node 20" here:
+
+1. The JS runtime GitHub's runner uses internally to execute action code
+   (`actions/checkout`, `actions/setup-node`, `actions/upload-artifact`,
+   etc.). GitHub deprecated Node 20 for that runtime and is transparently
+   forcing those actions onto Node 24 — hence "being forced to run on
+   Node.js 24." This is a warning today; it becomes a hard requirement once
+   GitHub finishes the deprecation.
+2. `node-version: 20` in our `setup-node@v4` steps in
+   [.github/workflows/e2e.yml](../.github/workflows/e2e.yml) — this only
+   controls what Node version gets installed to build/run *our app code*
+   (`npm ci`, `npm run build`, Playwright). It has no effect on (1).
+
+Setting `node-version: 20` did not cause the warning and bumping it alone
+wouldn't have silenced it — the warning is about the actions themselves,
+which GitHub controls, not about our workflow's `with: node-version`.
+
+**Local vs CI Node version:** the sandbox this project was originally
+developed in ran Node `v21.6.1` / npm `10.2.4`. Node 21 is an odd-numbered
+release — those are short-term (non-LTS) lines that stop receiving updates
+once the next even release ships, so 21 was already end-of-life upstream
+(June 2024). It happened to satisfy Vite 5's `^18 || >=20` engine
+requirement, but it was never a version anyone should intentionally target.
+
+### Decision: Node 22 vs Node 24
+
+First pass (this doc, same date) bumped CI + `engines` to Node 22, reasoning
+"22 is Active LTS, no reason to stay on 20." Revisited the same day once the
+question came up: **is 22 actually still the right target, or should we go
+straight to 24?**
+
+Node's release cadence: a new major ships as "Current" every April; odd
+majors (21, 23, 25, ...) never get LTS and die on the next even release;
+even majors (20, 22, 24, 26, ...) become "Active LTS" that following
+October, then "Maintenance LTS" a year after that, then EOL a year after
+that. As of this date (2026-07-27):
+
+- **Node 20** — Maintenance LTS, already past general EOL messaging (this is
+  the version GitHub's own warning is about, on the Actions-runtime side).
+- **Node 22** — now in **Maintenance LTS** (security fixes only, no new
+  features/perf work).
+- **Node 24** — now the **Active LTS** — the version actually recommended
+  for new work today.
+- **Node 26** — "Current" only; doesn't become LTS until October 2026 (a
+  few months out from this date). Current releases get less production
+  hardening and churn faster — not worth adopting early for a project with
+  no need for bleeding-edge runtime features.
+
+So 22 wasn't wrong, it's just already one rung behind where "Active LTS"
+sits today. **Decision: target Node 24 now**, not 22 and not 26. Re-evaluate
+once 26 flips to Active LTS (~October 2026) using the same logic — jump to
+the new Active LTS, don't chase Current.
+
+This also happens to line up with the GitHub Actions warning above: GitHub
+is forcing the *actions'* internal runtime to Node 24 anyway, so building
+our own app code on 24 too means local, CI job-runtime, and CI
+action-runtime all agree — no version drift left anywhere in the pipeline.
+
+**Does this project's stack actually need anything Node 24 adds?** No —
+Vite 5, Playwright, React, and plain `fetch`/cookie-based persistence have
+no dependency on any Node 22→24 feature (native `fetch`, W3C
+`test_runner` stability, permission model tweaks, etc. — none of which this
+codebase uses). The benefit here is purely **staying on a supported,
+patched LTS line and killing local/CI version drift**, not unlocking new
+capability.
+
+**Verified before merging this change:** installed Node 24.18.0 via `nvm`,
+ran `npm ci`, `npm run build`, and the full local `npm run test:e2e` suite
+in `frontend/` — build succeeded and 32/33 Playwright specs passed (1
+pre-existing skip, unrelated to Node version). No breakage from the 22 → 24
+bump.
+
+Updated to:
+
+- `.github/workflows/e2e.yml` → `node-version: 24` (both jobs)
+- `frontend/package.json` → `engines: { "node": ">=24 <25", "npm": ">=10" }`
+- `frontend/.nvmrc` → `24`
+
+**If your local machine is on Node 22.x:** that's fine to keep working with
+day-to-day (it's still a supported LTS, just Maintenance-phase), but it's no
+longer what CI or `engines` target — plan to move to 24 when convenient.
+`engines` doesn't hard-block installs (npm only warns unless
+`engine-strict=true` is set), so this is a documentation/lint signal, not an
+enforced gate.
+
+**One thing this change does *not* affect:** whether your OS-installed Node
+version matches what CI builds with. GitHub Actions' `setup-node@v4` step
+downloads and installs its own Node distribution on the runner, isolated
+from anything mentioned here — it does not read or depend on your local
+machine's Node install at all. Bumping your local Node keeps your day-to-day
+`npm run dev`/`npm run build` in parity with CI (fewer "works on my machine"
+surprises) and keeps you on a supported/patched runtime, but it is not what
+makes CI itself build on Node 24 — the workflow file is.

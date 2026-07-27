@@ -12,6 +12,8 @@ update `docs/version-log.md`.
 2026-07-27 | v0.4.39 | Added Enhanced Death Logs telemetry (timePlayed, sessionSheebDelta, sessionSkreemDelta) to deathsHistory
 2026-07-27 | v0.4.39 | Added Fair Use / Parody Warning and GitHub feedback link to Main Menu footer
 2026-07-27 | infra/docs (GPT-5.3-Codex) | Fixed E2E workflow failures: CI local prebuild + preview-only Playwright webServer in CI, production smoke/full split, and RCA documented in dev-notes + README
+2026-07-27 | infra/docs (Claude, Sonnet 5) | Bumped e2e.yml setup-node to Node 22 (was 20); added engines + frontend/.nvmrc; documented Node 20 Actions-runtime deprecation warning vs project Node version in dev-notes.md + README
+2026-07-27 | infra/docs (Claude, Sonnet 5) | Revisited same-day: bumped Node target 22 → 24 (current Active LTS, not yet-LTS 26) across e2e.yml/engines/.nvmrc; verified npm ci + build + full e2e suite pass on Node 24; documented LTS-cadence decision in dev-notes.md
 2026-07-27 | docs (Claude, Sonnet 5) | Roadmap snapshot: 16 open frontend backlog items tagged; v0.4.40 Shart Knocker plan + next-agent-planning-brief created; queue order locked (v0.4.39 then v0.4.40); v0.4.38-plan marked shipped
 2026-07-27 | v0.4.37 | Close-call freeze phase added after near-capture beat
 2026-07-27 | v0.4.37 | Clean close-call escape awards +50 sheebs and Slippery badge
