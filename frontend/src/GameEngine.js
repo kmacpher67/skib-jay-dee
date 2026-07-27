@@ -206,9 +206,21 @@ function buildRamenAisle() {
     { x: 760, y: 1250, r: 45 },
   )
 
+  // Landmark quest room (v0.4.33): an enclosed stockroom with two narrow
+  // openings on opposite sides (north/south), per the "openings on each
+  // side" spec for Level 4. Sits clear of the aisle grid and puddles.
+  const questRoom = { x: 740, y: 200, w: 120, h: 200 }
+  walls.push({ x: questRoom.x, y: questRoom.y, w: 20, h: questRoom.h }) // west
+  walls.push({ x: questRoom.x + questRoom.w - 20, y: questRoom.y, w: 20, h: questRoom.h }) // east
+  walls.push({ x: questRoom.x, y: questRoom.y, w: 35, h: 20 }) // north-left
+  walls.push({ x: questRoom.x + questRoom.w - 35, y: questRoom.y, w: 35, h: 20 }) // north-right
+  walls.push({ x: questRoom.x, y: questRoom.y + questRoom.h - 20, w: 35, h: 20 }) // south-left
+  walls.push({ x: questRoom.x + questRoom.w - 35, y: questRoom.y + questRoom.h - 20, w: 35, h: 20 }) // south-right
+
   return {
     walls,
     puddles,
+    questRoom,
     theme: {
       background: '#fff6e6',
       wallFill: '#d99a3f',
@@ -245,9 +257,20 @@ function buildWorldStarParkingLot() {
     { x: 620, y: 780, r: 55 },
   )
 
+  // Landmark quest room (v0.4.33): a sealed booth with only ONE door — a
+  // real chokepoint, per the "Level 5+ single door" spec. Sits in the open
+  // band above the car grid.
+  const questRoom = { x: 760, y: 50, w: 110, h: 120 }
+  walls.push({ x: questRoom.x, y: questRoom.y, w: questRoom.w, h: 20 }) // north
+  walls.push({ x: questRoom.x, y: questRoom.y, w: 20, h: questRoom.h }) // west
+  walls.push({ x: questRoom.x + questRoom.w - 20, y: questRoom.y, w: 20, h: questRoom.h }) // east
+  walls.push({ x: questRoom.x, y: questRoom.y + questRoom.h - 20, w: 30, h: 20 }) // south-left
+  walls.push({ x: questRoom.x + questRoom.w - 30, y: questRoom.y + questRoom.h - 20, w: 30, h: 20 }) // south-right
+
   return {
     walls,
     puddles,
+    questRoom,
     theme: {
       background: '#1c1f2b',
       wallFill: '#3a3f52',
@@ -300,6 +323,7 @@ const LEVELS = [
     runnerSpawn: { x: WORLD.width / 2 - 20, y: WORLD.height - 150 },
     chaserSpawn: { x: 80, y: 190 },
     buildMap: buildRamenAisle,
+    questBadgeId: 'ramen-vault-keeper',
   },
   {
     name: 'World Star Parking Lot',
@@ -310,12 +334,22 @@ const LEVELS = [
     runnerSpawn: { x: 260, y: WORLD.height - 140 },
     chaserSpawn: { x: WORLD.width - 150, y: 230 },
     buildMap: buildWorldStarParkingLot,
+    questBadgeId: 'world-star-witness',
   },
 ]
 
 const MAX_CHASERS = 5
 const EXTRA_CHASER_INTERVAL = 20 // seconds of uninterrupted chase before another toilet joins
 const MIN_LEVEL_SECONDS_BEFORE_ADVANCE = 30
+
+// Level 4+ difficulty floor (docs/handoffs/roadmap-handoff-v0.4.33-plan.md):
+// advancing past Level 4 (levelIndex 3) and any level beyond it also
+// requires surviving a scaling time floor with all 5 chasers active, on
+// top of the existing skreems threshold (kept, not replaced, per Ken).
+const LEVEL4_PLUS_START_INDEX = 3
+const LEVEL4_PLUS_BASE_SURVIVAL_SECONDS = 90
+const LEVEL4_PLUS_SURVIVAL_STEP_SECONDS = 30
+const LEVEL4_PLUS_REQUIRED_CHASERS = 5
 const PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL = 68
 const PIPEWORKS_HALL_COVERAGE_GOAL = 0.8
 const PIPEWORKS_GATE_REQUIRED_CHASERS = 4
@@ -441,7 +475,7 @@ export class GameEngine {
 
     this.maxStamina = 100
     this.stamina = this.maxStamina
-    this.sheebs = Math.max(0, Math.floor(initialSheebs)) // We can let it be negative here too, actually wait, sheebs comes from profile
+    this.sheebs = Number.isFinite(initialSheebs) ? Math.floor(initialSheebs) : 0
     this.skreems = 0
     this.levelSkreems = 0
     this.deaths = Math.max(0, Math.floor(initialDeaths))
@@ -786,6 +820,7 @@ export class GameEngine {
     this._maybeSpawnGunPickup()
     this._spawnProgressionBadge()
     this._maybeSpawnHumorBadge()
+    this._spawnQuestRoomBadge()
 
     if (notify) {
       this.onLevelChange({
@@ -967,7 +1002,8 @@ export class GameEngine {
       this.levelSkreems >= this.level.advanceAt &&
       this.levelElapsed >= MIN_LEVEL_SECONDS_BEFORE_ADVANCE &&
       this.chasers.length >= 2 &&
-      this._hasRequiredLevelBadge()
+      this._hasRequiredLevelBadge() &&
+      this._meetsLevel4PlusFloor()
     ) {
       this._startLevelAdvance()
       return
@@ -1044,6 +1080,8 @@ export class GameEngine {
         this.onBadgeEarned(pickup.badgeId)
       } else if (pickup.type === 'humor-badge') {
         this.onBadgeEarned(pickup.badgeId)
+      } else if (pickup.type === 'quest-badge') {
+        this.onBadgeEarned(pickup.badgeId)
       }
       return false
     })
@@ -1054,6 +1092,19 @@ export class GameEngine {
   // Levels with no progressionBadgeId (4-5) are unaffected.
   _hasRequiredLevelBadge() {
     return !this.level.progressionBadgeId || this.levelBadgeCollected
+  }
+
+  // Level 4+ difficulty floor (v0.4.33): below levelIndex 3 this is
+  // always true (no-op). At Level 4 and beyond, survival time required
+  // scales by LEVEL4_PLUS_SURVIVAL_STEP_SECONDS per level past Level 4,
+  // and all 5 chasers must be active — layered on top of, not instead
+  // of, the skreems threshold above.
+  _meetsLevel4PlusFloor() {
+    if (this.levelIndex < LEVEL4_PLUS_START_INDEX) return true
+    const requiredSeconds =
+      LEVEL4_PLUS_BASE_SURVIVAL_SECONDS +
+      (this.levelIndex - LEVEL4_PLUS_START_INDEX) * LEVEL4_PLUS_SURVIVAL_STEP_SECONDS
+    return this.levelElapsed >= requiredSeconds && this.chasers.length >= LEVEL4_PLUS_REQUIRED_CHASERS
   }
 
   _spawnProgressionBadge() {
@@ -1099,6 +1150,27 @@ export class GameEngine {
       y: spawn.y,
       w: HUMOR_BADGE_PICKUP_SIZE,
       h: HUMOR_BADGE_PICKUP_SIZE,
+    })
+  }
+
+  // Landmark quest rooms (docs/handoffs/roadmap-handoff-v0.4.33-plan.md):
+  // a guaranteed pickup at the center of the level's dedicated quest room
+  // (see buildRamenAisle/buildWorldStarParkingLot's `questRoom` rect).
+  // Optional/non-gating, unlike the Levels 1-3 progression badges — never
+  // touches levelBadgeCollected or any advance check.
+  _spawnQuestRoomBadge() {
+    const badgeId = this.level.questBadgeId
+    const room = this.map.questRoom
+    if (!badgeId || !room) return
+    if (this.earnedBadges.includes(badgeId)) return
+
+    this.pickups.push({
+      type: 'quest-badge',
+      badgeId,
+      x: room.x + room.w / 2 - GUN_PICKUP_SIZE / 2,
+      y: room.y + room.h / 2 - GUN_PICKUP_SIZE / 2,
+      w: GUN_PICKUP_SIZE,
+      h: GUN_PICKUP_SIZE,
     })
   }
 
@@ -1494,6 +1566,9 @@ export class GameEngine {
     }
     if (pickup.type === 'humor-badge') {
       return { bg: '#1a3a2c', border: '#7dffb3', emoji: BADGES[pickup.badgeId]?.emoji || '❓' }
+    }
+    if (pickup.type === 'quest-badge') {
+      return { bg: '#3a2f1a', border: '#ffb84d', emoji: BADGES[pickup.badgeId]?.emoji || '🏆' }
     }
     return { bg: '#3a3a3a', border: '#ffd27a', emoji: '🔫' }
   }

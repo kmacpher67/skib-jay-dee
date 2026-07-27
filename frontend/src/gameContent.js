@@ -151,6 +151,18 @@ export const BADGES = {
     lore: "Waded through the Flooded Annex's worst puddles for this. Worth it.",
     emoji: '🏺',
   },
+  'ramen-vault-keeper': {
+    id: 'ramen-vault-keeper',
+    name: 'Ramen Vault Keeper',
+    lore: 'Tucked behind two rows of carts was a vault nobody bothered to check. You did.',
+    emoji: '🍜',
+  },
+  'world-star-witness': {
+    id: 'world-star-witness',
+    name: 'World Star Witness',
+    lore: 'Only one door in. You went in anyway, camera light and all.',
+    emoji: '📸',
+  },
   'mysterious-plunger': {
     id: 'mysterious-plunger',
     name: 'Mysterious Plunger',
