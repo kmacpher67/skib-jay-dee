@@ -10,6 +10,11 @@ focused on *why*, those two are the *what* and *when*.
 
 ### What changed
 
+## v0.4.36 (Taco Bell, Decoys & Map Refactor)
+- **Map Refactor**: Converted Porcelain Palace and Pipeworks to 2D grid arrays, using `parseMapGrid` to dynamically generate wall rectangles, cleaning up hardcoded pixel spaghetti.
+- **Taco Bell & Decoy Pickups**: Added two new items to the Mario-style roller expansion. Taco Bell provides a speed boost but removes steering. The Decoy drops a cardboard cutout that distracts Skibs.
+- **Secret Badges**: Added two new hidden badges: `pacifist-warzone` (Survive Level 4 with the Jayden Gun without firing) and `premature-evacuation` (Get caught in the first 5 seconds of Level 1).
+
 - Reviewed the open v0.4.37 plan against the current roadmap and
   refocused it toward a fun-first front-end pass instead of a numbers-only
   balance pass.

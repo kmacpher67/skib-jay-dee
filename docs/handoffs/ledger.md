@@ -587,3 +587,4 @@ update `docs/version-log.md`.
 - Backfilled the missing v0.4.33 `VersionModal.jsx` entry alongside the
   new v0.4.34 one.
 - `GAME_ITERATION` bumped to `v0.4.34`, deployed.
+- **v0.4.36**: Level Data Extraction, Taco Bell & Decoy Pickups, Secret Badges. (docs/handoffs/roadmap-handoff-v0.4.36.md)

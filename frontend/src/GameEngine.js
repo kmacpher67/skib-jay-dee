@@ -14,6 +14,7 @@ import {
   HARD_CHASER_LINES,
 } from './dialog.js'
 import { CHASER_FACE_POOL, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS } from './gameContent.js'
+import { PORCELAIN_GRID, PIPEWORKS_GRID } from './mapGrids.js'
 
 export const WORLD = {
   width: 900,
@@ -43,24 +44,23 @@ function makeBoundaryWalls(walls) {
   walls.push({ x: WORLD.width - t, y: 0, w: t, h: WORLD.height })
 }
 
-function addGrid(walls, {
-  startX,
-  startY,
-  cols,
-  rows,
-  gapX,
-  gapY,
-  tileW,
-  tileH,
-  staggerEvery = 0,
-  staggerOffset = 0,
-}) {
-  for (let row = 0; row < rows; row++) {
-    const rowOffset = staggerEvery && row % staggerEvery === 1 ? staggerOffset : 0
-    const y = startY + row * gapY
-    for (let col = 0; col < cols; col++) {
-      const x = startX + rowOffset + col * gapX
-      walls.push({ x, y, w: tileW, h: tileH })
+function parseMapGrid(walls, gridArray, tileSize) {
+  const rows = gridArray.length;
+  const cols = gridArray[0].length;
+  const visited = Array.from({ length: rows }, () => new Array(cols).fill(false));
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (gridArray[r][c] === '#' && !visited[r][c]) {
+        let w = 1;
+        while (c + w < cols && gridArray[r][c + w] === '#' && !visited[r][c + w]) w++;
+        let h = 1, canExpand = true;
+        while (r + h < rows && canExpand) {
+          for (let i = 0; i < w; i++) if (gridArray[r + h][c + i] !== '#' || visited[r + h][c + i]) { canExpand = false; break; }
+          if (canExpand) h++;
+        }
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) visited[r + y][c + x] = true;
+        walls.push({ x: c * tileSize, y: r * tileSize, w: w * tileSize, h: h * tileSize });
+      }
     }
   }
 }
@@ -69,16 +69,7 @@ function buildPorcelainPalace() {
   const walls = []
   const puddles = []
   makeBoundaryWalls(walls)
-  addGrid(walls, {
-    startX: 120,
-    startY: 220,
-    cols: 3,
-    rows: 4,
-    gapX: 200,
-    gapY: 300,
-    tileW: 110,
-    tileH: 160,
-  })
+  parseMapGrid(walls, PORCELAIN_GRID, 10)
   puddles.push(
     { x: 300, y: 500, r: 60 },
     { x: 650, y: 900, r: 70 },
@@ -100,30 +91,7 @@ function buildPipeworks() {
   const walls = []
   const puddles = []
   makeBoundaryWalls(walls)
-
-  // Narrower lanes, more turns.
-  walls.push({ x: 140, y: 170, w: 90, h: 280 })
-  walls.push({ x: 350, y: 250, w: 150, h: 120 })
-  walls.push({ x: 610, y: 160, w: 90, h: 340 })
-  walls.push({ x: 180, y: 620, w: 180, h: 90 })
-  walls.push({ x: 430, y: 760, w: 120, h: 210 })
-  walls.push({ x: 610, y: 1020, w: 160, h: 110 })
-  walls.push({ x: 120, y: 1120, w: 120, h: 240 })
-  walls.push({ x: 340, y: 1230, w: 220, h: 120 })
-  walls.push({ x: 640, y: 1280, w: 110, h: 110 })
-
-  addGrid(walls, {
-    startX: 90,
-    startY: 420,
-    cols: 3,
-    rows: 2,
-    gapX: 230,
-    gapY: 300,
-    tileW: 90,
-    tileH: 150,
-    staggerEvery: 2,
-    staggerOffset: 60,
-  })
+  parseMapGrid(walls, PIPEWORKS_GRID, 10)
 
   puddles.push(
     { x: 270, y: 380, r: 45 },
@@ -187,16 +155,15 @@ function buildRamenAisle() {
   makeBoundaryWalls(walls)
 
   // Long, narrow vertical aisles blocked by knocked-over shopping carts.
-  addGrid(walls, {
-    startX: 100,
-    startY: 160,
-    cols: 4,
-    rows: 6,
-    gapX: 190,
-    gapY: 220,
-    tileW: 60,
-    tileH: 170,
-  })
+  const startX = 100, startY = 160, cols = 4, rows = 6, gapX = 190, gapY = 220, tileW = 60, tileH = 170;
+  for (let row = 0; row < rows; row++) {
+    const rowOffset = 0;
+    const y = startY + row * gapY
+    for (let col = 0; col < cols; col++) {
+      const x = startX + rowOffset + col * gapX
+      walls.push({ x, y, w: tileW, h: tileH })
+    }
+  }
 
   walls.push({ x: 40, y: 700, w: 140, h: 60 })
   walls.push({ x: 700, y: 500, w: 140, h: 60 })
@@ -238,18 +205,15 @@ function buildWorldStarParkingLot() {
   makeBoundaryWalls(walls)
 
   // Rows of parked "cars" with lanes between them.
-  addGrid(walls, {
-    startX: 90,
-    startY: 200,
-    cols: 3,
-    rows: 5,
-    gapX: 260,
-    gapY: 240,
-    tileW: 150,
-    tileH: 90,
-    staggerEvery: 2,
-    staggerOffset: 90,
-  })
+  const startX = 90, startY = 200, cols = 3, rows = 5, gapX = 260, gapY = 240, tileW = 150, tileH = 90, staggerEvery = 2, staggerOffset = 90;
+  for (let row = 0; row < rows; row++) {
+    const rowOffset = staggerEvery && row % staggerEvery === 1 ? staggerOffset : 0
+    const y = startY + row * gapY
+    for (let col = 0; col < cols; col++) {
+      const x = startX + rowOffset + col * gapX
+      walls.push({ x, y, w: tileW, h: tileH })
+    }
+  }
 
   walls.push({ x: 60, y: 1300, w: 200, h: 70 })
   walls.push({ x: 620, y: 1320, w: 200, h: 70 })
@@ -498,6 +462,8 @@ export class GameEngine {
     this.highestLevel = highestLevel
     this.phase = 'intro'
     this.phaseTimer = 1.6
+    this.levelSeconds = 0
+    this.gunFiredThisLevel = false
     this.zoom = 1
     this.captureLine = CAPTURE_LINES[0]
     this._preCaughtRunnerFace = null
@@ -520,6 +486,11 @@ export class GameEngine {
     this.gawdParticleTimer = 0
     this.schleimyPotionActive = false
     this.schleimyPotionTimer = 0
+    this.tacoBellActive = false
+    this.tacoBellTimer = 0
+    this.decoyActive = false
+    this.decoyTimer = 0
+    this.decoyPos = { x: 0, y: 0 }
     this.chaserRespawnQueue = []
 
     this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0, luckBonus: 0 }
@@ -529,6 +500,8 @@ export class GameEngine {
     this.bullets = []
     this.fireCooldown = 0
     this.luckyBadgeEarned = (earnedBadges || []).includes('lucky')
+    this.levelSeconds = 0
+    this.gunFiredThisLevel = false
     this.levelBadgeCollected = false
 
     this.joystick = { active: false, id: null, cx: 0, cy: 0, dx: 0, dy: 0 }
@@ -745,7 +718,7 @@ export class GameEngine {
   }
 
   _handlePointerMove(e) {
-    if (this.joystick.active && e.pointerId === this.joystick.id) {
+    if (this.joystick.active && e.pointerId === this.joystick.id && !this.tacoBellActive) {
       const { x, y } = this._toViewCoords(e)
       this._updateJoystickVector(x, y)
     }
@@ -792,6 +765,9 @@ export class GameEngine {
   }
 
   _getMoveVector() {
+    if (this.tacoBellActive) {
+      return { x: this.joystick.dx, y: this.joystick.dy }
+    }
     if (this.joystick.active) {
       return { x: this.joystick.dx, y: this.joystick.dy }
     }
@@ -825,6 +801,10 @@ export class GameEngine {
     this.gawdParticleTimer = 0
     this.schleimyPotionActive = false
     this.schleimyPotionTimer = 0
+    this.tacoBellActive = false
+    this.tacoBellTimer = 0
+    this.decoyActive = false
+    this.decoyTimer = 0
     this.extraChaserTimer = EXTRA_CHASER_INTERVAL
     this.nearCaptureCooldown = 15
     this._resetPipeworksGateState()
@@ -847,9 +827,11 @@ export class GameEngine {
     this.levelBadgeCollected = false
     this._maybeSpawnGunPickup()
     this._spawnProgressionBadge()
+    this._maybeSpawnGunPickup()
     this._maybeSpawnHumorBadge()
-    this._spawnQuestRoomBadge()
     this._maybeSpawnGawdParticle()
+    this._maybeSpawnTacoBell()
+    this._maybeSpawnDecoy()
     this._maybeSpawnSchleimyPotion()
     this._spawnRollingPickups()
 
@@ -948,6 +930,28 @@ export class GameEngine {
       return
     }
 
+    if (this.phase === 'playing') {
+      this.levelSeconds += dt
+      const wasExhausted = this.stamina <= 0
+
+      if (this.gawdParticleActive) {
+        this.gawdParticleTimer = Math.max(0, this.gawdParticleTimer - dt)
+        if (this.gawdParticleTimer <= 0) this.gawdParticleActive = false
+      }
+      if (this.schleimyPotionActive) {
+        this.schleimyPotionTimer = Math.max(0, this.schleimyPotionTimer - dt)
+        if (this.schleimyPotionTimer <= 0) this.schleimyPotionActive = false
+      }
+      if (this.tacoBellActive) {
+        this.tacoBellTimer = Math.max(0, this.tacoBellTimer - dt)
+        if (this.tacoBellTimer <= 0) this.tacoBellActive = false
+      }
+      if (this.decoyActive) {
+        this.decoyTimer = Math.max(0, this.decoyTimer - dt)
+        if (this.decoyTimer <= 0) this.decoyActive = false
+      }
+    }
+    
     const sprinting = (this.sprintBtn.active || this.keys.sprint) && this.stamina > 0
     if (sprinting) {
       if (!this.wasSprinting) this.onBoostStart()
@@ -968,23 +972,7 @@ export class GameEngine {
     this.levelElapsed += dt
     this.fireCooldown = Math.max(0, this.fireCooldown - dt)
 
-    if (this.gawdParticleActive) {
-      this.gawdParticleTimer = Math.max(0, this.gawdParticleTimer - dt)
-      if (this.gawdParticleTimer <= 0) this.gawdParticleActive = false
-    }
-
-    if (this.schleimyPotionActive) {
-      this.schleimyPotionTimer = Math.max(0, this.schleimyPotionTimer - dt)
-      if (this.schleimyPotionTimer <= 0) {
-        this.schleimyPotionActive = false
-        this.runner.x -= 13
-        this.runner.y -= 13
-        this.runner.w = 40
-        this.runner.h = 40
-      }
-    }
-
-    let speed = this.runner.baseSpeed * (sprinting ? 1.8 : 1)
+    let speed = this.runner.baseSpeed * (this.tacoBellActive ? 1.5 : 1) * (sprinting ? 1.8 : 1)
     if (this.schleimyPotionActive) speed *= 0.8
     const move = this._getMoveVector()
     if (move.x !== 0 || move.y !== 0) this.runner.facing = { x: move.x, y: move.y }
@@ -1014,9 +1002,9 @@ export class GameEngine {
     const despawning = []
 
     for (const chaser of this.chasers) {
-      const dx = this.runner.x - chaser.x
-      const dy = this.runner.y - chaser.y
-      const dist = Math.hypot(dx, dy) || 1
+      const target = this.runner
+      const dir = { x: (this.decoyActive ? this.decoyPos.x : target.x) - chaser.x, y: (this.decoyActive ? this.decoyPos.y : target.y) - chaser.y }
+      const dist = Math.hypot(dir.x, dir.y) || 1
 
       if (chaser.stunnedUntil > 0) {
         chaser.stunnedUntil = Math.max(0, chaser.stunnedUntil - dt)
@@ -1026,8 +1014,8 @@ export class GameEngine {
         let speedMult = wallHackLevel ? LEVEL5_PLUS_CHASER_SPEED_MULT : 1
         if (this.schleimyPotionActive) speedMult *= 1.2
         const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod * speedMult
-        const stepX = (dx / dist) * chaserSpeed * dt
-        const stepY = (dy / dist) * chaserSpeed * dt
+        const stepX = (dir.x / dist) * chaserSpeed * dt
+        const stepY = (dir.y / dist) * chaserSpeed * dt
         if (wallHackLevel) {
           this._moveIgnoringWalls(chaser, stepX, stepY)
         } else {
@@ -1035,8 +1023,12 @@ export class GameEngine {
         }
       }
 
-      if (dist < 300) {
-        const gain = dt * (300 - dist) * 0.06
+      const dx = this.runner.x - chaser.x
+      const dy = this.runner.y - chaser.y
+      const runnerDist = Math.hypot(dx, dy) || 1
+
+      if (runnerDist < 300) {
+        const gain = dt * (300 - runnerDist) * 0.06
         this.skreems += gain
         this.levelSkreems += gain
         if (
@@ -1047,7 +1039,7 @@ export class GameEngine {
           this.pipeworksSkreems += gain
         }
       }
-      if (dist < closestDist) closestDist = dist
+      if (runnerDist < closestDist) closestDist = runnerDist
       if (rectsIntersect(this.runner, chaser)) {
         if (this.gawdParticleActive) {
           despawning.push(chaser)
@@ -1055,7 +1047,7 @@ export class GameEngine {
           caught = true
           caughtBy = chaser
         }
-      } else if (dist < 100 && this.nearCaptureCooldown <= 0) {
+      } else if (runnerDist < 100 && this.nearCaptureCooldown <= 0) {
         nearCapture = true
       }
     }
@@ -1172,13 +1164,23 @@ export class GameEngine {
         this.runnerLineTimer = 2
       } else if (pickup.type === 'schleimy-potion') {
         this.schleimyPotionActive = true
-        this.schleimyPotionTimer = 4
+        this.schleimyPotionTimer = 8
         this.runner.x += 13
         this.runner.y += 13
         this.runner.w = 14
         this.runner.h = 14
         this.runnerLine = COOLNESS_LINES[Math.floor(Math.random() * COOLNESS_LINES.length)]
         this.runnerLineTimer = 2
+      } else if (pickup.type === 'taco-bell') {
+        this.tacoBellActive = true
+        this.tacoBellTimer = 3
+        if (this.joystick.dx === 0 && this.joystick.dy === 0) {
+          this.joystick.dy = -1
+        }
+      } else if (pickup.type === 'decoy') {
+        this.decoyActive = true
+        this.decoyTimer = 4
+        this.decoyPos = { x: pickup.x, y: pickup.y }
       }
       return false
     })
@@ -1227,18 +1229,10 @@ export class GameEngine {
     })
   }
 
-  // Levels 1-3 (docs/handoffs/roadmap-handoff-v0.4.32-plan.md): finding the
-  // level's badge is now a prerequisite to advancing, not just a bonus.
-  // Levels with no progressionBadgeId (4-5) are unaffected.
   _hasRequiredLevelBadge() {
     return !this.level.progressionBadgeId || this.levelBadgeCollected
   }
 
-  // Level 4+ difficulty floor (v0.4.33): below levelIndex 3 this is
-  // always true (no-op). At Level 4 and beyond, survival time required
-  // scales by LEVEL4_PLUS_SURVIVAL_STEP_SECONDS per level past Level 4,
-  // and all 5 chasers must be active — layered on top of, not instead
-  // of, the skreems threshold above.
   _meetsLevel4PlusFloor() {
     if (this.levelIndex < LEVEL4_PLUS_START_INDEX) return true
     const requiredSeconds =
@@ -1251,8 +1245,6 @@ export class GameEngine {
     const badgeId = this.level.progressionBadgeId
     if (!badgeId) return
 
-    // Already earned in a past run — don't force re-collecting it every
-    // replay, the gate exists to encourage exploring the level once.
     if (this.earnedBadges.includes(badgeId)) {
       this.levelBadgeCollected = true
       return
@@ -1260,7 +1252,6 @@ export class GameEngine {
 
     const spawn = this._findRandomWalkableSpawn()
     if (!spawn) {
-      // Fail-open: never hard-lock progression on a bad map roll.
       this.levelBadgeCollected = true
       return
     }
@@ -1293,11 +1284,6 @@ export class GameEngine {
     })
   }
 
-  // Landmark quest rooms (docs/handoffs/roadmap-handoff-v0.4.33-plan.md):
-  // a guaranteed pickup at the center of the level's dedicated quest room
-  // (see buildRamenAisle/buildWorldStarParkingLot's `questRoom` rect).
-  // Optional/non-gating, unlike the Levels 1-3 progression badges — never
-  // touches levelBadgeCollected or any advance check.
   _spawnQuestRoomBadge() {
     const badgeId = this.level.questBadgeId
     const room = this.map.questRoom
@@ -1342,8 +1328,6 @@ export class GameEngine {
     }
   }
 
-  // Gawd Particle (docs/handoffs/roadmap-handoff-v0.4.34-plan.md): Level 5+
-  // only, very low spawn chance — see _checkPickups for the buff it grants.
   _maybeSpawnGawdParticle() {
     if (this.levelIndex < LEVEL5_PLUS_START_INDEX) return
     if (Math.random() >= GAWD_PARTICLE_SPAWN_CHANCE) return
@@ -1361,16 +1345,50 @@ export class GameEngine {
   }
 
   _maybeSpawnSchleimyPotion() {
-    if (Math.random() >= 0.15) return
-    const spawn = this._findRandomWalkableSpawn()
-    if (!spawn) return
-
+    if (Math.random() > 0.15) return
+    const cx = WORLD.width / 2
+    const cy = WORLD.height / 2
     this.pickups.push({
       type: 'schleimy-potion',
-      x: spawn.x,
-      y: spawn.y,
+      x: cx,
+      y: cy,
+      w: GAWD_PARTICLE_PICKUP_SIZE,
+      h: GAWD_PARTICLE_PICKUP_SIZE,
+      vx: 0,
+      vy: 0,
+      sprite: '🧪',
+    })
+  }
+
+  _maybeSpawnTacoBell() {
+    if (Math.random() > 0.05) return
+    const cx = this.map.walls[0].x + this.map.walls[0].w / 2
+    const cy = this.map.walls[0].y + this.map.walls[0].h / 2
+    this.pickups.push({
+      type: 'taco-bell',
+      x: cx,
+      y: cy,
       w: 28,
       h: 28,
+      vx: 0,
+      vy: 0,
+      sprite: '🌮',
+    })
+  }
+
+  _maybeSpawnDecoy() {
+    if (Math.random() > 0.05) return
+    const cx = WORLD.width / 2
+    const cy = WORLD.height / 2
+    this.pickups.push({
+      type: 'decoy',
+      x: cx,
+      y: cy,
+      w: 28,
+      h: 28,
+      vx: 0,
+      vy: 0,
+      sprite: '🧍',
     })
   }
 
@@ -1410,7 +1428,10 @@ export class GameEngine {
   }
 
   _tryFire() {
-    if (this.phase !== 'chase' || this.fireCooldown > 0) return
+    if (this.runner.gun) {
+      this.gunFiredThisLevel = true
+      if (this.runner.gun.chambers <= 0 || this.fireCooldown > 0) return
+    }
     this.fireCooldown = GUN_FIRE_COOLDOWN
 
     if (!this.runner.gun || this.runner.gun.ammo <= 0) {
@@ -1530,9 +1551,6 @@ export class GameEngine {
     return this.map.walls.some((wall) => rectsIntersect(entity, wall))
   }
 
-  // Used by Level 5+ wall-hack chasers and by the runner while the Gawd
-  // Particle buff is active — moves straight through walls, still clamped
-  // to the world bounds.
   _moveIgnoringWalls(entity, dx, dy) {
     entity.x = clamp(entity.x + dx, 24, WORLD.width - 24 - entity.w)
     entity.y = clamp(entity.y + dy, 24, WORLD.height - 24 - entity.h)
@@ -1561,8 +1579,6 @@ export class GameEngine {
     this._caughtChaser = caughtBy
     this.captureLine = CAPTURE_LINES[Math.floor(Math.random() * CAPTURE_LINES.length)]
 
-    // Swap to the poses shot for this exact beat, unless the player
-    // uploaded their own custom runner face (never override that).
     this._preCaughtRunnerFace = this.runner.face
     this._caughtFaceStage = 'impact'
     if (!this.runner.isCustom && this.runner.gettingCapturedFace) {
@@ -1594,6 +1610,13 @@ export class GameEngine {
       this.pipeworksFourSkibSeconds = 0
       this.pipeworksTransitionReady = false
     }
+    this.onLevelClear()
+    
+    if (this.levelIndex === 3 && this.runner.gun && !this.gunFiredThisLevel) {
+      this.onBadgeEarned('pacifist-warzone')
+    }
+
+    this.levelIndex++
     this.chaserSpeedMod = clamp(
       this.chaserSpeedMod + CHASER_SPEED_MOD_DEATH_STEP,
       CHASER_SPEED_MOD_MIN,
@@ -1621,8 +1644,6 @@ export class GameEngine {
     this.phaseTimer -= dt
     this.zoom = clamp(this.zoom + dt * 5, 1, 3)
 
-    // Once the zoom-in finishes, hold on the "resigned" pose for the rest
-    // of the beat instead of the initial impact pose.
     if (
       this._caughtFaceStage === 'impact' &&
       this.zoom >= 3 &&
@@ -1807,18 +1828,25 @@ export class GameEngine {
 
   _drawPickups(ctx) {
     this.pickups.forEach((pickup) => {
-      const style = this._pickupStyle(pickup)
       ctx.save()
-      ctx.fillStyle = style.bg
-      ctx.fillRect(pickup.x, pickup.y, pickup.w, pickup.h)
-      ctx.strokeStyle = style.border
-      ctx.lineWidth = 2
-      ctx.strokeRect(pickup.x, pickup.y, pickup.w, pickup.h)
-      ctx.fillStyle = style.border
-      ctx.font = 'bold 16px sans-serif'
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-      ctx.fillText(style.emoji, pickup.x + pickup.w / 2, pickup.y + pickup.h / 2)
+      if (pickup.sprite) {
+        ctx.font = '24px sans-serif'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(pickup.sprite, pickup.x + pickup.w / 2, pickup.y + pickup.h / 2)
+      } else {
+        const style = this._pickupStyle(pickup)
+        ctx.fillStyle = style.bg
+        ctx.fillRect(pickup.x, pickup.y, pickup.w, pickup.h)
+        ctx.strokeStyle = style.border
+        ctx.lineWidth = 2
+        ctx.strokeRect(pickup.x, pickup.y, pickup.w, pickup.h)
+        ctx.fillStyle = style.border
+        ctx.font = 'bold 16px sans-serif'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(style.emoji, pickup.x + pickup.w / 2, pickup.y + pickup.h / 2)
+      }
       ctx.restore()
     })
 
@@ -1946,15 +1974,26 @@ export class GameEngine {
       ctx.restore()
     }
 
-    if (this.gawdParticleActive) {
+    if (this.gawdParticleActive || this.tacoBellActive || this.decoyActive) {
       ctx.save()
       ctx.fillStyle = 'rgba(0,0,0,0.4)'
-      ctx.fillRect(VIEW_W - 140, 54, 130, 20)
+      ctx.fillRect(VIEW_W - 140, 54, 130, 60)
       ctx.fillStyle = '#ffe066'
       ctx.font = 'bold 11px sans-serif'
       ctx.textAlign = 'right'
       ctx.textBaseline = 'middle'
-      ctx.fillText(`✨ WALLHACK: ${this.gawdParticleTimer.toFixed(1)}s`, VIEW_W - 10, 64)
+      if (this.gawdParticleActive) {
+        ctx.fillStyle = '#ffdf00'
+        ctx.fillText(`✨ WALLHACK: ${this.gawdParticleTimer.toFixed(1)}s`, VIEW_W - 10, 64)
+      }
+      if (this.tacoBellActive) {
+        ctx.fillStyle = '#ff4444'
+        ctx.fillText(`🌮 SPICY: ${this.tacoBellTimer.toFixed(1)}s`, VIEW_W - 10, 84)
+      }
+      if (this.decoyActive) {
+        ctx.fillStyle = '#44ffff'
+        ctx.fillText(`🧍 DECOY: ${this.decoyTimer.toFixed(1)}s`, VIEW_W - 10, 104)
+      }
       ctx.restore()
     }
 

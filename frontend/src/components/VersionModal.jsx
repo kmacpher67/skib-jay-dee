@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.36',
+    title: 'Taco Bell, Decoys & Map Refactor',
+    description: 'Added Taco Bell & Decoy pickups to help you survive. We also refactored the map generation code to clean up pixel spaghetti and tucked away a few new secret badges for you to find.',
+  },
+  {
     version: 'v0.4.35',
     title: 'Rolling Pickups & Schleimy Potion',
     description: 'Watch out for Mario-style rolling items bouncing around the map—some help, some hurt. Find the rare Schleimy Potion to shrink your hitbox and slip through tight gaps, at the cost of your speed.',

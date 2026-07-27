@@ -181,6 +181,18 @@ export const BADGES = {
     lore: "It watched you the whole time. It's still watching.",
     emoji: '🦆',
   },
+  'pacifist-warzone': {
+    id: 'pacifist-warzone',
+    name: 'Pacifist Warzone',
+    lore: "Survived Level 4 with a loaded gun, never fired. True willpower.",
+    emoji: '🕊️',
+  },
+  'premature-evacuation': {
+    id: 'premature-evacuation',
+    name: 'Premature Evacuation',
+    lore: "Died in under 5 seconds on Level 1. That's actually impressive.",
+    emoji: '⏱️',
+  },
 }
 
 // Random, low-stakes humor badges scattered across the early levels

@@ -253,9 +253,9 @@ and chaser-bark voice clips, 1:1 with text.
   - **Scaled Death Penalty:** Level 1 (0 loss), Level 2 (10 loss), Level 3 (20 loss), Level 4+ (30 loss, allows negative).
   - **Chaser Speed:** Starts slower (0.8 mod instead of 1.0). Max speed cap now scales by level (0.9 to 1.35) so they never exceed the max for the current level.
   - **Level Rewards:** Base rewards bumped to ensure difficulty increases delivery (50, 75, 100, 150, 200).
-- [ ] **Feature: Cursed & Blessed Map Pickups (The Mario-Style Roller Expansion).** Items rolling around the map that the player can pick up or capture. You don't know if you want to grab them or run from them until it's too late.
+- [x] **Feature: Cursed & Blessed Map Pickups (The Mario-Style Roller Expansion).** Items rolling around the map that the player can pick up or capture. You don't know if you want to grab them or run from them until it's too late.
   - **Taco Bell Grande:** (Double-Edged) +50% Speed for 3 seconds, disables steering. If a Skib hits it, stunned for 2s.
-  - **Soggy Toilet Paper:** (Debuff/Trap) Grab leaves a trail draining stamina. Skibs stepping in trail are slowed by 40% for 5s.
+  - **Soggy Toilet Paper:** (Debuff/Trap) Grab leaves a trail draining stamina. Skibs stepping in trail are slowed by 40% for 5s. (Not yet implemented)
   - **Fake Jayden Decoy:** (Blessed) Drops cardboard cutout. Skibs in 300px radius aggro decoy for 4s.
   - **Heavy Plunger:** (Cursed) -30% Movement Speed while held. Press `F` to swing 360-arc, knocking back Skibs.
 - [x] **Stamina / take-a-hit-and-keep-running.** Ken asked for a "Call of
@@ -306,7 +306,7 @@ and chaser-bark voice clips, 1:1 with text.
   earned yet. If the roll fails, the same pool gets another shot at the
   next level start (so it isn't locked to the "early" levels only). See
   [roadmap-handoff-v0.4.32.md](handoffs/roadmap-handoff-v0.4.32.md).
-- [ ] **Secret Interaction Badges (Humor & Intrigue).** Badges that trigger not from progression, but from players doing stupid things:
+- [x] **Secret Interaction Badges (Humor & Intrigue).** Badges that trigger not from progression, but from players doing stupid things:
   - **Pacifist in a Warzone:** Survive Level 4 for 60 seconds while holding the Jayden Gun, but *never fire it*.
   - **Premature Evacuation:** Get caught within the first 5 seconds of Level 1.
   - **Friendly Fire:** Stun a Skib with the Jayden Gun, but immediately get caught by *that exact same Skib* the millisecond the stun wears off.
@@ -395,7 +395,7 @@ and chaser-bark voice clips, 1:1 with text.
   items land so there's something worth bragging about.
 - [x] **Level expansion.** Added The Ramen Aisle and World Star Parking Lot
   (5 levels total) — landed this session.
-- [ ] **Level data extraction** — roadmap item 1 above. Do this before
+- [x] **Level data extraction** — roadmap item 1 above. Do this before
   hand-authoring a 6th/7th level.
 - [x] **Death/skreem economy.** Lifetime death counter (persisted via
   cookies) and a skreem penalty on capture — landed this session.
