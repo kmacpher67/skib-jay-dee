@@ -465,6 +465,7 @@ and chaser-bark voice clips, 1:1 with text.
   Landed v0.4.50 — Neon Jump-Scare Filter (200 sheebs, magenta/cyan
   capture tint). See
   [roadmap-handoff-v0.4.50.md](handoffs/roadmap-handoff-v0.4.50.md).
+- [ ] **Feature: Neon Jump-Scare Upgrade.** Upgrades the Neon Jump-Scare Filter perk. Cost increases to 250 sheebs. Now gives an extra 500ms headstart after a jump-scare / countdown restart to run away. Deducts 50 Sheebs each time it triggers. See [roadmap-handoff-v0.4.59-plan.md](handoffs/roadmap-handoff-v0.4.59-plan.md).
 - [x] **Menu brag stat: best level + fewest deaths.** Companion goal to the
   Phase 7 risk/reward items above — once losing sheebs/items past
   level 3/4 is real, players will want to see their best run at a glance

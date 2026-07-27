@@ -13,6 +13,9 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.59-plan (docs-only, 2026-07-27):**
+  Mode A pass — created handoff for Neon Jump-Scare Upgrade (`roadmap-handoff-v0.4.59-plan.md`). Changes the existing cosmetic filter into an active mechanic (500ms headstart after a jump-scare), costs 250 sheebs to buy, deducts 50 sheebs each use. Updated `docs/roadmap.md`. Ready to code.
+
 - **v0.4.52 (real code, shipped — 2026-07-27):**
   Turdstone Token — Resurrection Ward. New Epic/Rare map pickup; level-indexed
   spawn chance (1% L1 → 5% L6+); passive ward held in `runner.hasTurdstoneToken`;
