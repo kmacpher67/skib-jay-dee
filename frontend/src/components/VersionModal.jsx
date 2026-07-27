@@ -1,5 +1,9 @@
 const PAST_VERSION_NOTES = [
-
+  {
+    version: 'v0.4.39.1',
+    title: 'Level 4 spawn fix',
+    description: 'Fixed an issue where the runner spawned inside a wall at the start of Level 4.',
+  },
   {
     version: 'v0.4.38',
     title: 'Level 6: Nightmare House & Skib-Daddy',

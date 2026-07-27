@@ -6,6 +6,17 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.39.1 — Level 4 Spawn Fix (2026-07-27)
+
+### What changed
+
+- **Fixed Level 4 spawn point**: Moved the `runnerSpawn` for Level 4 (The Ramen Aisle) in `GameEngine.js` from `x: 430` to `x: 260` and down to `y: WORLD.height - 140` so the runner starts in an open vertical aisle instead of inside a horizontal map wall segment.
+- Bumped `GAME_ITERATION` to `v0.4.39.1` and deployed.
+
+### Design decisions
+
+- The spawn point was directly overlapping a `#` wall segment on the T-intersection, causing immediate stuck state for users. We matched the spawn `x` coordinate (`260`) used safely in Levels 2, 3, and 5.
+
 ## v0.4.39 — Enhanced Death Logs & Parody Warning (2026-07-27)
 
 ### What changed

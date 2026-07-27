@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-27 | v0.4.39.1 | Fixed Level 4 spawn point to stop runner from starting inside a wall
 2026-07-27 | v0.4.39 | Added Enhanced Death Logs telemetry (timePlayed, sessionSheebDelta, sessionSkreemDelta) to deathsHistory
 2026-07-27 | v0.4.39 | Added Fair Use / Parody Warning and GitHub feedback link to Main Menu footer
 2026-07-27 | infra/docs (GPT-5.3-Codex) | Fixed E2E workflow failures: CI local prebuild + preview-only Playwright webServer in CI, production smoke/full split, and RCA documented in dev-notes + README

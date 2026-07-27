@@ -261,7 +261,7 @@ const LEVELS = [
     reward: 120,
     advanceAt: 154,
     chaserSpeed: 172,
-    runnerSpawn: { x: WORLD.width / 2 - 20, y: WORLD.height - 150 },
+    runnerSpawn: { x: 260, y: WORLD.height - 140 },
     chaserSpawn: { x: 80, y: 190 },
     buildMap: buildRamenAisle,
     questBadgeId: 'ramen-vault-keeper',
