@@ -21,9 +21,12 @@ export default defineConfig({
   webServer: isProd
     ? undefined
     : {
-        command: 'npm run build && npm run preview -- --port 4173',
+        // In CI, build happens in the workflow to avoid startup timeout races.
+        command: process.env.CI
+          ? 'npm run preview -- --host 127.0.0.1 --port 4173'
+          : 'npm run build && npm run preview -- --host 127.0.0.1 --port 4173',
         url: 'http://127.0.0.1:4173/',
         reuseExistingServer: !process.env.CI,
-        timeout: 120_000,
+        timeout: process.env.CI ? 300_000 : 120_000,
       },
 })

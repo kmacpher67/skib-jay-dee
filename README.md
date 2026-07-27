@@ -82,15 +82,22 @@ Jayden as the Runner, "Toiletman" as the Chaser.
 cd frontend
 npx playwright install chromium   # first time only
 npm run test:e2e                  # builds, serves, and tests the local build
-npm run test:e2e:prod              # tests the live production URL
+npm run test:e2e:prod              # smoke tests against the live production URL
+npm run test:e2e:prod:full         # full regression suite against live production
 ```
 
-`test:e2e` boots `vite build && vite preview` itself (see
-`playwright.config.js`) and checks the menu loads and Quick Play/Shop work.
-`test:e2e:prod` points the same spec at
+`test:e2e` boots a local preview server itself (see
+`playwright.config.js`) and checks the app behavior against a local build.
+In CI we run `npm run build` first and then only start `vite preview` from
+Playwright's `webServer` to avoid startup timeouts on slower runners.
+
+`test:e2e:prod` points smoke coverage at
 `https://kenmacpherson.com/skib-jay-dee-toilet-game/` with no local
-webServer — run it after any deploy to confirm the live site actually
-serves the game, not just a 200 on some unrelated page.
+webServer — run it after deploys to confirm the live site actually serves
+the game, not just a 200 on some unrelated page.
+
+`test:e2e:prod:full` runs the entire suite against production and is best
+used immediately after a known deploy of the exact tested revision.
 
 Both are automated in [.github/workflows/e2e.yml](.github/workflows/e2e.yml):
 `local` runs on every push/PR touching `frontend/`, and `production` runs

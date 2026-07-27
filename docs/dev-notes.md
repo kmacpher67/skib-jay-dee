@@ -96,3 +96,22 @@ No `chromium-cli` or Playwright available in this sandbox. Verified by:
   cookies only, and the FastAPI scaffold remains unused by the frontend.
 - More character roles / abilities from the PDF roster are still future
   work once the chase loop and content set settle down.
+
+## 2026-07-27 E2E workflow RCA
+
+- Symptom: both jobs in GitHub Actions E2E run `30279865527` failed.
+- Local job root cause: Playwright `webServer` was running `npm run build && npm run preview` with a `120000ms` startup timeout. On the runner, this timed out before preview became reachable.
+- Production job root cause: CI was running the full feature suite against live production. That creates false failures whenever deployed production and repository HEAD are not in feature parity.
+
+Fix applied in this repo:
+
+- `.github/workflows/e2e.yml`: added an explicit `npm run build` before `npm run test:e2e` in the local job.
+- `frontend/playwright.config.js`: in CI, `webServer` now starts preview-only (`npm run preview ...`), binds to `127.0.0.1`, and uses a longer startup timeout.
+- `frontend/package.json`: split production commands:
+  - `test:e2e:prod` runs smoke-only specs against the live URL.
+  - `test:e2e:prod:full` runs the full suite for post-deploy parity checks.
+
+Operational rule going forward:
+
+- Keep scheduled production checks as smoke tests (uptime + core UX).
+- Run full production E2E only right after deploying the same revision.
