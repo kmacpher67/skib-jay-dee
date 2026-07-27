@@ -29,8 +29,7 @@ features not fully vetted, and leave the repo ready for Mode B.
 
 | Priority | Item | Status | Handoff / doc |
 |---|---|---|---|
-| **1 — code next** | Gameplay Rebalancing remainder | Unblocked — numbers already in `docs/roadmap.md` | This file (copy-paste below) |
-| **2 — code next** | Cosmetic shop sink | Unblocked — small, self-contained | `roadmap-handoff-v0.4.50-plan.md` |
+| **1 — code next** | Cosmetic shop sink | Unblocked — small, self-contained | `roadmap-handoff-v0.4.50-plan.md` |
 | **3 — code next** | `.portrait-frame` wide-viewport CSS bug | Unblocked — known fix in `docs/future-versions.md` | Bundled in v0.4.50-plan as optional fast-follow |
 | **4 — specced, Ken confirm** | Broth Slip (`ant-k-raman` chaserType) | Recommended defaults written; needs Ken sign-off on stats | `roadmap-handoff-v0.4.49-plan.md` |
 | **5 — blocked on Ken** | Rewards HUD pills (Slice B) | Open (a)/(b) question | `roadmap-handoff-v0.4.41-plan.md` |

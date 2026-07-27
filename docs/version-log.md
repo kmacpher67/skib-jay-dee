@@ -6,6 +6,17 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.48 — Gameplay Rebalancing Remainder (Composer, 2026-07-27)
+
+Completed the economy tuning slice from `roadmap-handoff-v0.4.48-plan.md`.
+Gun hits now pay +25 sheebs; first-time badge earns pay +50 through
+`handleBadgeEarned`. Death sheeb penalties scale by level (0/10/20/30) while
+keeping the existing debt-vs-floor rules tied to `highestLevel > 3`.
+Chasers start at 0.8 speed mod with a per-level ceiling
+(`0.9 + levelIndex * 0.09`). Level-clear rewards are 50/75/100/150/200/250.
+
+**Next:** cosmetic shop sink (`roadmap-handoff-v0.4.50-plan.md`).
+
 ## v0.4.48-plan — Backlog triage & coding queue (Composer, 2026-07-27)
 
 Mode A pass, docs-only. Full cross-reference of `docs/` against shipped

@@ -351,12 +351,11 @@ and chaser-bark voice clips, 1:1 with text.
   - **Positive pickup list:** Jayden Gun, Schleimy Potion, Taco Bell Grande, and future positive pickup items from `docs/interactive-content-pack.md`.
   - **Badge hook:** keep the `Slippery When Wet` badge aligned with the same close-call escape event so the reward and the brag moment stay in sync.
   - **Scope guard:** do not touch the separate post-capture `resume-countdown` beat; this is only for the pre-kill close-call pause.
-- [ ] **Feature: Gameplay Rebalancing (later follow-up).** **Partially shipped
-  in v0.4.37:** close-call escape +50 and positive-pickup +5 are live.
-  **Code-ready remainder** specced in
-  [roadmap-handoff-v0.4.48-plan.md](handoffs/roadmap-handoff-v0.4.48-plan.md):
-  +25 gun hit, +50 per badge earn, scaled death-penalty table, slower
-  chaser start (0.8 mod), per-level speed cap, level-clear reward bumps.
+- [x] **Feature: Gameplay Rebalancing (later follow-up).** Shipped in
+  v0.4.37 (close-call +50, positive-pickup +5) and **v0.4.48** (remainder:
+  +25 gun hit, +50 badge earn, scaled death penalty, slower chaser start,
+  per-level speed cap, level-clear reward bumps). See
+  [roadmap-handoff-v0.4.48.md](handoffs/roadmap-handoff-v0.4.48.md).
 - [x] **Feature: Cursed & Blessed Map Pickups (The Mario-Style Roller Expansion).** Items rolling around the map that the player can pick up or capture. You don't know if you want to grab them or run from them until it's too late. All four landed for real as of `v0.4.36.1`.
   - **Taco Bell Grande:** (Double-Edged) +50% Speed for 3 seconds, disables steering. If a Skib hits it, stunned for 2s. Shipped v0.4.36.
   - **Soggy Toilet Paper:** (Debuff/Trap) Grab drops a trail behind the runner for 6s; Skibs stepping in a trail segment are slowed 40% for 5s. Shipped `v0.4.36.1` (the effect is a movement-trail slow, not a stamina drain — matches what actually got built).

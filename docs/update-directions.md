@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Composer — 2026-07-27 (v0.4.48-plan backlog triage)
+**Last updated by:** Composer — 2026-07-27 (v0.4.48 gameplay rebalancing shipped)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -13,7 +13,13 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
-- **v0.4.48-plan (docs-only, this session — 2026-07-27):**
+- **v0.4.48 (real code, shipped — 2026-07-27):**
+  Gameplay Rebalancing remainder — gun hit +25, badge earn +50, scaled
+  death penalty (L1 free → L4+ costs 30), chaser speed starts at 0.8 with
+  per-level cap, level rewards 50/75/100/150/200/250. `GAME_ITERATION` =
+  v0.4.48. See `roadmap-handoff-v0.4.48.md`.
+
+- **v0.4.48-plan (docs-only, 2026-07-27):**
   Mode A pass — full backlog triage against shipped `v0.4.47`. Created
   `roadmap-handoff-v0.4.48-plan.md` (queue + Gameplay Rebalancing handoff),
   `roadmap-handoff-v0.4.49-plan.md` (Broth Slip, Ken confirm), and
@@ -355,9 +361,8 @@ manually:
   `v0.4.39.1`, and `v0.4.40` — confirmed against `frontend/src/version.js`
   and corrected two stale unchecked boxes in `docs/roadmap.md` this pass).
   Neither is "the current open handoff" anymore.
-- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.48-plan.md`
-  (Gameplay Rebalancing remainder — code-ready). Queue after that:
-  `roadmap-handoff-v0.4.50-plan.md` (cosmetic sink). Broth Slip
+- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.50-plan.md`
+  (cosmetic shop sink + optional portrait-frame CSS fix). Broth Slip
   (`roadmap-handoff-v0.4.49-plan.md`) waits on Ken. LT items stay in
   `roadmap-handoff-v0.4.43-plan.md`. Planning:
   `docs/next-agent-planning-brief.md`. Coding: `docs/next-agent-coding-brief.md`.
