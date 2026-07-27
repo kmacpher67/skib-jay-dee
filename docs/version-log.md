@@ -6,6 +6,62 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.32 — Early-level progression badges + humor badges shipped (2026-07-26)
+
+### What changed
+
+- Implemented **Feature 1: Retrofit Early Level Badges** from the
+  confirmed v0.4.32-plan design: `LEVELS[0..2]` (Porcelain Palace,
+  Pipeworks, Flooded Annex) each got a new `progressionBadgeId` field.
+  `_spawnProgressionBadge()`, called from `_syncLevelState()` on every
+  level start, drops one `type: 'badge'` pickup at a random walkable
+  point (reusing the Jayden Gun's `_findRandomWalkableSpawn()` helper).
+  Both places a level can clear — the Pipeworks pressure-goal branch and
+  the generic `advanceAt` branch — now additionally require a new
+  `_hasRequiredLevelBadge()` guard, so Levels 1-3 can't be left until
+  their badge is found, on top of every pre-existing condition. Levels
+  4-5 have no `progressionBadgeId` and are unaffected.
+- Design call made during coding (small, non-blocking, per the plan
+  doc's own instruction not to guess on *blocking* items only): a badge
+  already earned in a past run is not re-required on replay —
+  `levelBadgeCollected` is set immediately instead of spawning a
+  redundant pickup, so the gate is a one-time "explore this level once"
+  ask rather than a forced fetch-quest on every playthrough.
+- Implemented **Feature 2: Humor & Intrigue Random Badges**: a new
+  `HUMOR_BADGE_IDS` pool in `frontend/src/gameContent.js`
+  (`mysterious-plunger`, `golden-tp`, `haunted-rubber-ducky`, each a new
+  `BADGES` entry with its own lore/emoji). `_maybeSpawnHumorBadge()`,
+  also called from `_syncLevelState()` on every level (not just 1-3),
+  rolls `HUMOR_BADGE_SPAWN_CHANCE = 18%` and spawns one pickup for a
+  randomly chosen not-yet-earned humor badge on success. These never
+  touch `levelBadgeCollected` or any advance check — pure optional
+  exploration reward. A missed roll at one level gets another shot at
+  the next, matching the plan's "if missed in early levels, they can
+  potentially spawn in later levels."
+- Generalized `_drawPickups()` into a `_pickupStyle()` lookup by
+  `pickup.type` (gun/badge/humor-badge each get distinct colors) instead
+  of one hardcoded gun-only style. Also replaced `_drawBanner()`'s
+  hardcoded badge-emoji if-chain (which had grown a duplicate `'lucky'`
+  line from the concurrent v0.4.31 session's edits) with a dynamic
+  `earnedBadges.map(id => BADGES[id]?.emoji)` lookup — future badges
+  don't need an engine-side rendering change at all.
+- Added `frontend/e2e/progression-badges.spec.js` (blocks-then-unlocks
+  the level-1 advance on badge pickup; humor badge spawn/collect without
+  touching the gate) and fixed a pre-existing flaky assertion in
+  `frontend/e2e/jayden-gun.spec.js` (the stun value naturally decays a
+  few hundredths of a second between being set and read; loosened `>=
+  3` to `>= 2.9` with a comment).
+- `GAME_ITERATION` bumped to `v0.4.32` and deployed
+  (`./scripts/deploy-static.sh badge-retrofit`).
+
+### Non-goals for this pass
+
+- Quest Rooms & Landmark Badges and the Level 4+ 90-second survival
+  floor are a separate, already-scoped backlog item
+  (`docs/handoffs/roadmap-handoff-v0.4.33-plan.md`) — not touched here.
+- No new custom badge art was requested or added; the five new badges
+  render with existing emoji only, same as every badge shipped so far.
+
 ## v0.4.31 — Jayden Gun + Lucky Charm shipped (2026-07-26)
 
 ### What changed

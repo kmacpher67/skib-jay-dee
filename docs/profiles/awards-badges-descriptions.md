@@ -52,6 +52,42 @@ You can stub these in as placeholder tasks so the developer knows what to expect
 * **Concept:** A lucky break paying off.
 * **Description:** A four-leaf clover with a small sparkle/shine burst behind it, in the same simple/legible style as the other badges.
 
+**Asset 6: "Porcelain Prowler" Badge**
+
+* **Trigger:** Finding the mandatory badge pickup hidden in Level 1 (Porcelain Palace) — required to advance past the level. Implemented in v0.4.32 — see `docs/handoffs/roadmap-handoff-v0.4.32.md`.
+* **Concept:** Casing the joint before you leave it.
+* **Description:** A simple porcelain toilet icon with a small magnifying glass or detective's hat resting on the rim.
+
+**Asset 7: "Pipe Dreamer" Badge**
+
+* **Trigger:** Finding the mandatory badge pickup hidden in Level 2 (Pipeworks) — required to advance past the level. Implemented in v0.4.32.
+* **Concept:** Digging through the pipes for the good stuff.
+* **Description:** A wrench crossed over a length of pipe, with a small shine/sparkle to mark the "found it" moment.
+
+**Asset 8: "Annex Relic Hunter" Badge**
+
+* **Trigger:** Finding the mandatory badge pickup hidden in Level 3 (Flooded Annex) — required to advance past the level. Implemented in v0.4.32.
+* **Concept:** An archaeologist wading through the worst puddles in the building.
+* **Description:** A small ceramic urn/relic shape, dripping with a few water droplets.
+
+**Asset 9: "Mysterious Plunger" Badge**
+
+* **Trigger:** Optional, low-odds (18% per level) random pickup — never required to progress. Implemented in v0.4.32.
+* **Concept:** Something in the building that shouldn't be alive, but is.
+* **Description:** A plunger with a faint, eerie glow/aura around the rubber cup.
+
+**Asset 10: "Golden TP" Badge**
+
+* **Trigger:** Same optional random-pickup pool as Asset 9. Implemented in v0.4.32.
+* **Concept:** Absurd, useless luxury.
+* **Description:** A roll of toilet paper rendered in a shiny gold/metallic finish.
+
+**Asset 11: "Haunted Rubber Ducky" Badge**
+
+* **Trigger:** Same optional random-pickup pool as Asset 9. Implemented in v0.4.32.
+* **Concept:** It's watching you.
+* **Description:** A classic yellow rubber duck with unsettling, slightly-too-detailed eyes.
+
 ---
 
-*Note to Dev: Please use simple grey box placeholders for these five items (`earnedBadges[0]` through `earnedBadges[4]`) until the final art assets are attached to this ticket.*
+*Note to Dev: Please use simple grey box placeholders for these eleven items (`earnedBadges[0]` through `earnedBadges[10]`) until the final art assets are attached to this ticket.*

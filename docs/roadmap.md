@@ -267,8 +267,22 @@ and chaser-bark voice clips, 1:1 with text.
 - [ ] **Skib-Chaser Evolution (Level 5+).** After level 4, skib-chasers get more powerful attacks, increased speed, and the terrifying ability to go through walls.
 - [ ] **The "Gawd Particle" (Level 5+).** An ultra-rare pickup item appearing after level 5. It allows runners to run through walls and essentially kill skib-chasers (despawning them entirely, forcing a respawn timer).
 - [ ] **Quest Rooms & Landmark Badges.** Map generation (especially for Level 4+) should feature dedicated landmarks with quest items. Entering these rooms grants specific badges. Rooms must have at least 2 closed walls with small openings. Initial rooms in Level 4 can have openings on each side; harder, higher levels will feature rooms with only one door.
-- [ ] **Retrofit Early Level Badges.** Retrofit lower levels with simple badge items. Finding cool stuff in a level or room becomes a prerequisite to moving beyond the level.
-- [ ] **Humor & Intrigue Random Badges.** Add random badge items in the initial levels that have humor and intrigue to collect. Some may have low spawn rates and won't always show up, but will appear later in some level.
+- [x] **Retrofit Early Level Badges.** Landed v0.4.32 — Levels 1-3
+  (Porcelain Palace, Pipeworks, Flooded Annex) each get a `progressionBadgeId`
+  (`porcelain-prowler`, `pipe-dreamer`, `annex-relic-hunter`) auto-spawned as
+  a map pickup at level start. `GameEngine.js`'s advance checks (both the
+  Pipeworks pressure-goal branch and the generic `advanceAt` branch) now
+  additionally require `_hasRequiredLevelBadge()`, so a level can't clear
+  until its badge is found. If the badge was already earned in a past run,
+  it's not re-required. See
+  [roadmap-handoff-v0.4.32.md](handoffs/roadmap-handoff-v0.4.32.md).
+- [x] **Humor & Intrigue Random Badges.** Landed v0.4.32 alongside the item
+  above — a separate, non-gating `HUMOR_BADGE_IDS` pool (`Mysterious
+  Plunger`, `Golden TP`, `Haunted Rubber Ducky`) rolls an 18% spawn chance
+  each level start, picking from whichever of the three the player hasn't
+  earned yet. If the roll fails, the same pool gets another shot at the
+  next level start (so it isn't locked to the "early" levels only). See
+  [roadmap-handoff-v0.4.32.md](handoffs/roadmap-handoff-v0.4.32.md).
 - [ ] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,
   left over from before the v0.4.16 cookie-default fix. `App.jsx` always

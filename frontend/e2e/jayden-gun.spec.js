@@ -35,8 +35,10 @@ test('gun pickup grants ammo, firing stuns the chaser, and the gun disappears at
   await page.waitForFunction(() => window.__skibEngine.bullets.length === 1)
   await page.waitForFunction(() => window.__skibEngine.chaser.stunnedUntil > 0)
 
+  // Small tolerance: stunnedUntil starts decaying (dt per frame) the instant
+  // it's set, and a frame or two can elapse before this read lands.
   const stunnedUntil = await page.evaluate(() => window.__skibEngine.chaser.stunnedUntil)
-  expect(stunnedUntil).toBeGreaterThanOrEqual(3)
+  expect(stunnedUntil).toBeGreaterThanOrEqual(2.9)
   expect(stunnedUntil).toBeLessThanOrEqual(5)
 
   // A stunned chaser stays frozen instead of closing distance.

@@ -10,6 +10,28 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.32 — 2026-07-26
+
+- Shipped **early-level progression badges**: Levels 1-3 (Porcelain
+  Palace, Pipeworks, Flooded Annex) each auto-spawn a mandatory
+  `progressionBadgeId` map pickup (`porcelain-prowler`, `pipe-dreamer`,
+  `annex-relic-hunter`); both level-advance branches now require
+  `_hasRequiredLevelBadge()` on top of existing skreem/time/chaser
+  conditions. `frontend/src/GameEngine.js`.
+- Shipped **humor/intrigue random badges**: a new `HUMOR_BADGE_IDS` pool
+  (`Mysterious Plunger`, `Golden TP`, `Haunted Rubber Ducky`) rolls an
+  18% spawn chance per level start, non-gating, retries at later levels
+  if missed. `frontend/src/gameContent.js`, `frontend/src/GameEngine.js`.
+- Generalized pickup rendering (`_pickupStyle()`) and the level-clear
+  banner's badge-emoji row (now a dynamic `BADGES` lookup instead of a
+  hardcoded if-chain) so new badges don't need engine-side render
+  changes.
+- Added `frontend/e2e/progression-badges.spec.js`; fixed a pre-existing
+  flaky stun-value assertion in `frontend/e2e/jayden-gun.spec.js`. Full
+  Playwright suite (22 active + 1 pre-existing skip) and `npm run build`
+  pass. `GAME_ITERATION` bumped to `v0.4.32` and deployed. See
+  `docs/handoffs/roadmap-handoff-v0.4.32.md`.
+
 ## v0.4.31 — 2026-07-26
 
 - Shipped the **Jayden Gun**: map pickup (50% base spawn chance/level),

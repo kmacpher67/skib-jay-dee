@@ -133,7 +133,48 @@ export const BADGES = {
     lore: "That gun spawning right where you needed it wasn't fate. It was the clover in your pocket.",
     emoji: '🍀',
   },
+  'porcelain-prowler': {
+    id: 'porcelain-prowler',
+    name: 'Porcelain Prowler',
+    lore: "You didn't just run through the Palace, you cased the joint.",
+    emoji: '🚽',
+  },
+  'pipe-dreamer': {
+    id: 'pipe-dreamer',
+    name: 'Pipe Dreamer',
+    lore: "Found the good stuff hiding in the Pipeworks. Don't ask what it was sitting in.",
+    emoji: '🔧',
+  },
+  'annex-relic-hunter': {
+    id: 'annex-relic-hunter',
+    name: 'Annex Relic Hunter',
+    lore: "Waded through the Flooded Annex's worst puddles for this. Worth it.",
+    emoji: '🏺',
+  },
+  'mysterious-plunger': {
+    id: 'mysterious-plunger',
+    name: 'Mysterious Plunger',
+    lore: 'It hums faintly. It should not hum. Do not ask it questions.',
+    emoji: '🪠',
+  },
+  'golden-tp': {
+    id: 'golden-tp',
+    name: 'Golden TP',
+    lore: "Softest, shiniest, most structurally useless roll in the building.",
+    emoji: '🧻',
+  },
+  'haunted-rubber-ducky': {
+    id: 'haunted-rubber-ducky',
+    name: 'Haunted Rubber Ducky',
+    lore: "It watched you the whole time. It's still watching.",
+    emoji: '🦆',
+  },
 }
+
+// Random, low-stakes humor badges scattered across the early levels
+// (docs/handoffs/roadmap-handoff-v0.4.32-plan.md) — reward exploration but
+// never gate progression, unlike the level 1-3 progression badges above.
+export const HUMOR_BADGE_IDS = ['mysterious-plunger', 'golden-tp', 'haunted-rubber-ducky']
 
 export const SHOP_ITEMS = [
   {

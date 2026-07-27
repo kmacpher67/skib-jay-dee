@@ -4,6 +4,7 @@ Use this as the handoff doc for the next agent working in the repo.
 
 ## Current state
 
+- **v0.4.32 (real code):** implemented both items from the v0.4.32-plan handoff — **Retrofit Early Level Badges** (Levels 1-3 each auto-spawn a mandatory `progressionBadgeId` map pickup that must be found before the level can advance, on top of every existing skreem/time/chaser condition) and **Humor & Intrigue Random Badges** (a separate, non-gating `HUMOR_BADGE_IDS` pool with an 18% spawn chance per level start, retrying at later levels if missed). Also generalized pickup rendering and the level-clear banner's badge-emoji lookup to be data-driven off `BADGES` instead of hardcoded per-id branches. New `frontend/e2e/progression-badges.spec.js`; fixed a pre-existing flaky assertion in `frontend/e2e/jayden-gun.spec.js`. Full 23-test suite (22 active, 1 pre-existing skip) and `npm run build` pass. `GAME_ITERATION` bumped to `v0.4.32` and deployed. See `docs/handoffs/roadmap-handoff-v0.4.32.md`.
 - **Live production bug (black screen on Quick Play) is now resolved:** v0.4.30's Badges integration left `onBadgeEarned` out of `GameEngine`'s constructor destructuring, throwing a `ReferenceError` on boot and crashing the React tree before `<canvas>` could mount. Fixed, verified (18/18 Playwright), and shipped as **v0.4.30.1** — see `docs/handoffs/roadmap-handoff-v0.4.30.md` and `docs/version-log.md`.
 - **v0.4.31 (real code):** implemented both items from the v0.4.31-plan handoff in one session — the **Jayden Gun** (map pickup, 1-2 usable rounds, dedicated `F` key + touch FIRE button, fires in the runner's facing direction, 3-5s chaser stun, gun disappears at 0 ammo) and the **Lucky Charm** shop items + **Lucky** badge (`Lucky Charm` 150/+15%, `Golden Lucky Charm` 250/+25%, stacking; badge fires on the luck bonus's first actual proc via a two-stage spawn roll, confirmed with Ken before coding). New `frontend/e2e/jayden-gun.spec.js` and `frontend/e2e/lucky-charm.spec.js`; full 21-test suite (20 active, 1 pre-existing skip) and `npm run build` pass. `GAME_ITERATION` stays `v0.4.30.1` — bump/deploy was scoped "only if asked" and wasn't. See `docs/handoffs/roadmap-handoff-v0.4.31.md`. Rolling Pickups (Mario-style) is still an undesigned backlog item, unrelated to this session.
 - **Process note:** `docs/skib-sdlc.md` now has an explicit "no code-cowboy sessions" rule — don't fix a bug found mid-planning inline in a `-plan.md`, give it its own Mode B session; and don't mark a design question "unblocked" for coding unless the user actually answered it in conversation.
@@ -83,6 +84,7 @@ Use this as the handoff doc for the next agent working in the repo.
 - `docs/handoffs/roadmap-handoff-v0.4.18-plan.md`
 - `docs/profiles-and-identity.md`
 - `frontend/src/components/ProfileSwitcherModal.jsx`
+- `docs/handoffs/roadmap-handoff-v0.4.32.md`
 - `docs/handoffs/roadmap-handoff-v0.4.31.md`
 - `docs/handoffs/roadmap-handoff-v0.4.31-plan.md`
 - `frontend/e2e/jayden-gun.spec.js`
@@ -140,7 +142,8 @@ manually:
 ## Natural follow-up work
 
 - **Jayden Gun + Lucky Charm/Lucky badge landed in v0.4.31** — no longer on this list. Rolling Pickups (Mario-style) is still a separate, undesigned backlog item.
-- **v0.4.26-plan shipped as v0.4.26** (negative sheebs debt + item loss above level 3/4) — that line is stale, corrected here. The oldest unfinished handoff as of v0.4.31 is **`docs/handoffs/roadmap-handoff-v0.4.32-plan.md`** (retrofit early-level progression badges + humor/random badges), followed by `v0.4.33-plan` (quest rooms/landmark badges, Level 4+ difficulty) and `v0.4.34-plan` (chaser wall-hacks, "Gawd Particle"). All three are fully-specified Mode A plans with no open questions flagged for Ken — unblocked, ready for Mode B in that order.
+- **v0.4.26-plan shipped as v0.4.26** (negative sheebs debt + item loss above level 3/4) — that line is stale, corrected here.
+- **Early-level progression badges + humor/random badges landed in v0.4.32** — no longer on this list. The oldest unfinished handoff is now **`docs/handoffs/roadmap-handoff-v0.4.33-plan.md`** (Quest Rooms with chokepoint entrances + the Level 4+ 90-second survival floor), followed by `v0.4.34-plan` (chaser wall-hacks, "Gawd Particle"). Both are fully-specified Mode A plans with no open questions flagged for Ken — unblocked, ready for Mode B in that order.
 - `v0.4.25` is now shipped: the post-kill profile card, killer-ID logging, and clickable deaths log are in production.
 - **Game identity / multiple cookie-backed save slots landed in v0.4.29** — the profile switcher, `localStorage` registry, and `docs/profiles-and-identity.md` are all in place. No longer on this list.
 - Next unclaimed, unblocked items from the backlog: **cosmetic shop item (sink)** and **menu brag stat (best level + fewest deaths)** are both small and open. The badges/rewards system and the Schleimy Potion/Micro-Skib items are still blocked on product decisions from Ken — see their entries in `docs/roadmap.md`.

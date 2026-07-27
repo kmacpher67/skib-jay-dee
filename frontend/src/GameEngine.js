@@ -11,7 +11,7 @@ import {
   GUN_CLICK_LINES,
   GUN_HIT_LINES,
 } from './dialog.js'
-import { CHASER_FACE_POOL, getChaserProfile, randomFrom } from './gameContent.js'
+import { CHASER_FACE_POOL, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS } from './gameContent.js'
 
 export const WORLD = {
   width: 900,
@@ -267,6 +267,7 @@ const LEVELS = [
     runnerSpawn: { x: WORLD.width / 2 - 20, y: WORLD.height - 200 },
     chaserSpawn: { x: WORLD.width / 2 - 20, y: 150 },
     buildMap: buildPorcelainPalace,
+    progressionBadgeId: 'porcelain-prowler',
   },
   {
     name: 'Pipeworks',
@@ -277,6 +278,7 @@ const LEVELS = [
     runnerSpawn: { x: 260, y: WORLD.height - 132 },
     chaserSpawn: { x: 60, y: 170 },
     buildMap: buildPipeworks,
+    progressionBadgeId: 'pipe-dreamer',
   },
   {
     name: 'Flooded Annex',
@@ -287,6 +289,7 @@ const LEVELS = [
     runnerSpawn: { x: 260, y: WORLD.height - 120 },
     chaserSpawn: { x: WORLD.width - 140, y: 260 },
     buildMap: buildFloodedAnnex,
+    progressionBadgeId: 'annex-relic-hunter',
   },
   {
     name: 'The Ramen Aisle',
@@ -348,6 +351,13 @@ const GUN_BULLET_SIZE = 8
 const GUN_STUN_MIN = 3
 const GUN_STUN_MAX = 5
 const GUN_PICKUP_SIZE = 28
+
+// Humor/intrigue badges (docs/handoffs/roadmap-handoff-v0.4.32-plan.md):
+// low-odds optional pickups scattered across levels. Never gate progression
+// (unlike progressionBadgeId below) — they're a pure exploration reward, so
+// a missed roll one level just means another shot at it next level.
+const HUMOR_BADGE_SPAWN_CHANCE = 0.18
+const HUMOR_BADGE_PICKUP_SIZE = 28
 
 export class GameEngine {
   constructor(
@@ -464,6 +474,7 @@ export class GameEngine {
     this.bullets = []
     this.fireCooldown = 0
     this.luckyBadgeEarned = (earnedBadges || []).includes('lucky')
+    this.levelBadgeCollected = false
 
     this.joystick = { active: false, id: null, cx: 0, cy: 0, dx: 0, dy: 0 }
     this.sprintBtn = { active: false, id: null }
@@ -771,7 +782,10 @@ export class GameEngine {
 
     this.bullets = []
     this.pickups = []
+    this.levelBadgeCollected = false
     this._maybeSpawnGunPickup()
+    this._spawnProgressionBadge()
+    this._maybeSpawnHumorBadge()
 
     if (notify) {
       this.onLevelChange({
@@ -944,7 +958,7 @@ export class GameEngine {
     if (this.chasers.length > 0) this.onSkreem(Math.floor(this.skreems))
 
     if (this.level.name === 'Pipeworks') {
-      if (this.pipeworksSkreems >= PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL) {
+      if (this.pipeworksSkreems >= PIPEWORKS_MAX_PRESSURE_SKREEM_GOAL && this._hasRequiredLevelBadge()) {
         this._startLevelAdvance()
         return
       }
@@ -952,7 +966,8 @@ export class GameEngine {
       this.level.advanceAt &&
       this.levelSkreems >= this.level.advanceAt &&
       this.levelElapsed >= MIN_LEVEL_SECONDS_BEFORE_ADVANCE &&
-      this.chasers.length >= 2
+      this.chasers.length >= 2 &&
+      this._hasRequiredLevelBadge()
     ) {
       this._startLevelAdvance()
       return
@@ -1024,8 +1039,66 @@ export class GameEngine {
       if (pickup.type === 'gun') {
         const ammo = Math.random() < GUN_AMMO_ONE_CHANCE ? 1 : 2
         this.runner.gun = { ammo }
+      } else if (pickup.type === 'badge') {
+        this.levelBadgeCollected = true
+        this.onBadgeEarned(pickup.badgeId)
+      } else if (pickup.type === 'humor-badge') {
+        this.onBadgeEarned(pickup.badgeId)
       }
       return false
+    })
+  }
+
+  // Levels 1-3 (docs/handoffs/roadmap-handoff-v0.4.32-plan.md): finding the
+  // level's badge is now a prerequisite to advancing, not just a bonus.
+  // Levels with no progressionBadgeId (4-5) are unaffected.
+  _hasRequiredLevelBadge() {
+    return !this.level.progressionBadgeId || this.levelBadgeCollected
+  }
+
+  _spawnProgressionBadge() {
+    const badgeId = this.level.progressionBadgeId
+    if (!badgeId) return
+
+    // Already earned in a past run — don't force re-collecting it every
+    // replay, the gate exists to encourage exploring the level once.
+    if (this.earnedBadges.includes(badgeId)) {
+      this.levelBadgeCollected = true
+      return
+    }
+
+    const spawn = this._findRandomWalkableSpawn()
+    if (!spawn) {
+      // Fail-open: never hard-lock progression on a bad map roll.
+      this.levelBadgeCollected = true
+      return
+    }
+
+    this.pickups.push({
+      type: 'badge',
+      badgeId,
+      x: spawn.x,
+      y: spawn.y,
+      w: GUN_PICKUP_SIZE,
+      h: GUN_PICKUP_SIZE,
+    })
+  }
+
+  _maybeSpawnHumorBadge() {
+    const unearned = HUMOR_BADGE_IDS.filter((id) => !this.earnedBadges.includes(id))
+    if (unearned.length === 0) return
+    if (Math.random() >= HUMOR_BADGE_SPAWN_CHANCE) return
+
+    const spawn = this._findRandomWalkableSpawn()
+    if (!spawn) return
+
+    this.pickups.push({
+      type: 'humor-badge',
+      badgeId: randomFrom(unearned),
+      x: spawn.x,
+      y: spawn.y,
+      w: HUMOR_BADGE_PICKUP_SIZE,
+      h: HUMOR_BADGE_PICKUP_SIZE,
     })
   }
 
@@ -1415,19 +1488,30 @@ export class GameEngine {
     })
   }
 
+  _pickupStyle(pickup) {
+    if (pickup.type === 'badge') {
+      return { bg: '#2c1a3a', border: '#c48bff', emoji: BADGES[pickup.badgeId]?.emoji || '⭐' }
+    }
+    if (pickup.type === 'humor-badge') {
+      return { bg: '#1a3a2c', border: '#7dffb3', emoji: BADGES[pickup.badgeId]?.emoji || '❓' }
+    }
+    return { bg: '#3a3a3a', border: '#ffd27a', emoji: '🔫' }
+  }
+
   _drawPickups(ctx) {
     this.pickups.forEach((pickup) => {
+      const style = this._pickupStyle(pickup)
       ctx.save()
-      ctx.fillStyle = '#3a3a3a'
+      ctx.fillStyle = style.bg
       ctx.fillRect(pickup.x, pickup.y, pickup.w, pickup.h)
-      ctx.strokeStyle = '#ffd27a'
+      ctx.strokeStyle = style.border
       ctx.lineWidth = 2
       ctx.strokeRect(pickup.x, pickup.y, pickup.w, pickup.h)
-      ctx.fillStyle = '#ffd27a'
+      ctx.fillStyle = style.border
       ctx.font = 'bold 16px sans-serif'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
-      ctx.fillText('🔫', pickup.x + pickup.w / 2, pickup.y + pickup.h / 2)
+      ctx.fillText(style.emoji, pickup.x + pickup.w / 2, pickup.y + pickup.h / 2)
       ctx.restore()
     })
   }
@@ -1618,17 +1702,12 @@ export class GameEngine {
 
     if (this.earnedBadges && this.earnedBadges.length > 0) {
       ctx.font = '30px sans-serif'
-      let badgeStr = ''
-      for (const badgeId of this.earnedBadges) {
-        if (badgeId === 'financial-wizardry') badgeStr += '📈 '
-        if (badgeId === 'glutton-for-punishment') badgeStr += '💀 '
-        if (badgeId === 'slippery-when-wet') badgeStr += '💧 '
-        if (badgeId === 'devs-owe-me-five-bucks') badgeStr += '💸 '
-        if (badgeId === 'lucky') badgeStr += '🍀 '
-        if (badgeId === 'lucky') badgeStr += '🍀 '
-      }
+      const badgeStr = this.earnedBadges
+        .map((badgeId) => BADGES[badgeId]?.emoji)
+        .filter(Boolean)
+        .join(' ')
       ctx.fillStyle = 'white'
-      ctx.fillText(badgeStr.trim(), VIEW_W / 2, VIEW_H / 2 + 60)
+      ctx.fillText(badgeStr, VIEW_W / 2, VIEW_H / 2 + 60)
     }
     ctx.restore()
   }
