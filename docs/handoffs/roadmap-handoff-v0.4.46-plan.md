@@ -1,7 +1,7 @@
 # Roadmap Handoff v0.4.46-plan — Menu Footer Layout Fix
 
 **Created by:** Antigravity
-**Status:** PROPOSED
+**Status:** SHIPPED as v0.4.46 — see `roadmap-handoff-v0.4.46.md`
 
 ## Goal
 Clean up the layout of the text, links, and color at the bottom of the main menu so it displays correctly on mobile devices without cutting off the links.

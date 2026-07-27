@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Composer — 2026-07-27
+**Last updated by:** Composer — 2026-07-27 (v0.4.48-plan backlog triage)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,27 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+
+- **v0.4.48-plan (docs-only, this session — 2026-07-27):**
+  Mode A pass — full backlog triage against shipped `v0.4.47`. Created
+  `roadmap-handoff-v0.4.48-plan.md` (queue + Gameplay Rebalancing handoff),
+  `roadmap-handoff-v0.4.49-plan.md` (Broth Slip, Ken confirm), and
+  `roadmap-handoff-v0.4.50-plan.md` (cosmetic shop sink). Corrected stale
+  roadmap checkboxes; updated `players-guide.md` with Rod of Poopdom; rewrote
+  shipped handoffs for v0.4.46/v0.4.47. No code.
+
+- **v0.4.47 (real code, shipped — 2026-07-27):**
+  Rod of Poopdom teleport pickup — 5% spawn, 300px warp, wall-block,
+  3s Stinky cooldown. `GAME_ITERATION` = v0.4.47. See
+  `roadmap-handoff-v0.4.47.md`.
+
+- **v0.4.46 (real code, shipped — 2026-07-27):**
+  Menu footer layout fix — scrollable menu, improved footer link styling on
+  short mobile viewports. See `roadmap-handoff-v0.4.46.md`.
+
+- **v0.4.45 (real code, shipped — 2026-07-27):**
+  Player's Guide modal replaced with external GitHub link to
+  `docs/players-guide.md`. See `roadmap-handoff-v0.4.45.md`.
 
 - **v0.4.43 (real code, shipped — 2026-07-27):**
   implemented the **Player's Guide** slice per `roadmap-handoff-v0.4.44-plan.md`
@@ -183,7 +204,7 @@ entry heading so the change trail stays obvious at a glance.
 - `frontend/src/components/ProfileModal.jsx` now renders the shared killer profile card for both fresh kills and log reopens, while `frontend/src/components/DeathsModal.jsx` shows clickable killer-ID pills.
 - `frontend/src/App.jsx` also owns the new menu version log panel, which shows `GAME_ITERATION` plus a short shipped changelog.
 - Planning-only review: the current maps are mechanically fine but need stronger landmark identity, so `docs/interactive-content-pack.md` still seeds the next funny runner/chaser item pack and secret awards. The refined `v0.4.37-plan` now points at the near-capture freeze / reward pass instead of the older content-first polish slice.
-- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently **v0.4.43** (Player's Guide shipped).
+- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently **v0.4.47**.
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
   can dispatch a bounded handoff to local Ollama using the shell's
   `OLLAMA_HOST` or to OpenRouter. A handoff can advertise its target
@@ -334,11 +355,12 @@ manually:
   `v0.4.39.1`, and `v0.4.40` — confirmed against `frontend/src/version.js`
   and corrected two stale unchecked boxes in `docs/roadmap.md` this pass).
   Neither is "the current open handoff" anymore.
-- **Current open handoff:** pull the next unchecked item from `docs/roadmap.md`
-  incremental backlog. LT roadmap items (Level 10 arc, Role Reversal, MOBA)
-  stay parked until Ken answers questions in `roadmap-handoff-v0.4.43-plan.md`.
-  Planning entry point: `docs/next-agent-planning-brief.md`. Coding entry point:
-  `docs/next-agent-coding-brief.md`.
+- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.48-plan.md`
+  (Gameplay Rebalancing remainder — code-ready). Queue after that:
+  `roadmap-handoff-v0.4.50-plan.md` (cosmetic sink). Broth Slip
+  (`roadmap-handoff-v0.4.49-plan.md`) waits on Ken. LT items stay in
+  `roadmap-handoff-v0.4.43-plan.md`. Planning:
+  `docs/next-agent-planning-brief.md`. Coding: `docs/next-agent-coding-brief.md`.
 - Phase 6 (server-side/Mongo profile persistence) now has a starting point — `docs/profiles-and-identity.md` lays out the open identity/auth and sync-strategy decisions a future session needs answered before coding it. Still queued behind Phase 5 (multiplayer) in `docs/roadmap.md`, still planning-only.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it

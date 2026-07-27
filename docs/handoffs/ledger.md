@@ -9,6 +9,9 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-27 | docs (Composer) | v0.4.48-plan backlog triage: created rebalancing/cosmetic/broth-slip handoffs, synced roadmap to v0.4.47, updated players-guide + agent briefs; no code
+2026-07-27 | v0.4.47 | Added Rod of Poopdom teleport pickup (300px warp, Stinky cooldown)
+2026-07-27 | v0.4.46 | Menu footer scroll/layout fix for mobile
 2026-07-27 | v0.4.45 | Replaced in-game Player's Guide modal with an external link to GitHub markdown file, removed PlayersGuideModal
 2026-07-27 | v0.4.43 | Added in-game Player's Guide modal (menu footer link) documenting guns, level transitions, Level 5+ wall-hacks, and Shart Knocker mechanics
 2026-07-27 | v0.4.42 | Added Menu Brag Stat (Best Run) showing highest level and fewest deaths to the main menu

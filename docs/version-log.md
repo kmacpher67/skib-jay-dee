@@ -6,6 +6,29 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.48-plan — Backlog triage & coding queue (Composer, 2026-07-27)
+
+Mode A pass, docs-only. Full cross-reference of `docs/` against shipped
+`v0.4.47` (`frontend/src/version.js`). Corrected stale roadmap snapshot
+(GAME_ITERATION, unchecked shipped items). Created three planning handoffs:
+
+- `roadmap-handoff-v0.4.48-plan.md` — backlog triage table, Cool Play /
+  Micro-Skib MVP scoping, and a **code-ready** Gameplay Rebalancing slice
+  (+25 gun, +50 badge, scaled death penalty, chaser speed tweaks, level
+  reward bumps).
+- `roadmap-handoff-v0.4.49-plan.md` — Broth Slip bounded handoff with
+  recommended stat defaults; still blocked on Ken sign-off per SDLC.
+- `roadmap-handoff-v0.4.50-plan.md` — cosmetic shop sink (Neon Jump-Scare
+  Filter) + optional `.portrait-frame` CSS fix.
+
+Also: rewrote shipped narratives for `roadmap-handoff-v0.4.46.md` and
+`roadmap-handoff-v0.4.47.md`; added Rod of Poopdom to `players-guide.md`;
+refreshed `update-directions.md`, `next-agent-planning-brief.md`, and
+`next-agent-coding-brief.md`. No code touched.
+
+**Recommended coding order:** v0.4.48 (rebalancing) → v0.4.50 (cosmetic) →
+v0.4.49 (Broth Slip, after Ken confirms).
+
 ## v0.4.45 — Player's Guide Link (2026-07-27)
 
 ### What changed

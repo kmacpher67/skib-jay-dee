@@ -56,32 +56,25 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 `frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js`. Shipped as
 `v0.4.36.1`. See `docs/handoffs/roadmap-handoff-v0.4.36.1.md`.
 
-## Frontend open backlog snapshot (2026-07-27, Mode A pass)
+## Frontend open backlog snapshot (2026-07-27, Mode A pass — revised)
 
-**18** unchecked items remain in the incremental backlog below (updated
-2026-07-27: checked off Enhanced Death Logs + Parody Warning, both of
-which had already shipped in v0.4.39 but were left unchecked here, added
-the HUD-live-data / Rewards-History items from Ken's screenshot feedback,
-and added the pickup-consumption-tracking + Play Recap follow-up). All are
-front-end–scoped or front-end–first unless noted. This count doesn't
-include the separate Long-Term roadmap items tracked in
-`roadmap-handoff-v0.4.43-plan.md` (Level 10 arc, Role Reversal, MOBA/PvP)
-or the menu-brag-stat item now specced in `roadmap-handoff-v0.4.42-plan.md`
-— see those handoffs directly.
+**15** unchecked items remain in the incremental backlog below (revised
+2026-07-27: checked off Player's Guide link, Menu brag stat, Rewards &
+History Slice A, Rod of Poopdom; added v0.4.48–v0.4.50 planning handoffs).
+All are front-end–scoped or front-end–first unless noted. LT roadmap items
+(Level 10 arc, Role Reversal, MOBA/PvP) stay in
+`roadmap-handoff-v0.4.43-plan.md`.
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next** | 0 | Pull next item from incremental backlog below |
-| **Shipped** | Player's Guide link → `roadmap-handoff-v0.4.45.md` (v0.4.45); Rewards & History panel (Slice A) → `roadmap-handoff-v0.4.41-plan.md`; Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` |
-| **Queued — specced** | 0 | |
-| **Design-only / TBD** | 8 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip, HUD live-data pills, Rewards & History panel (Slice B), Pickup tracking + Play Recap |
+| **Unblocked — code next** | 2 | Gameplay Rebalancing remainder → `roadmap-handoff-v0.4.48-plan.md`; Cosmetic shop sink → `roadmap-handoff-v0.4.50-plan.md` |
+| **Specced — Ken confirm** | 1 | Broth Slip → `roadmap-handoff-v0.4.49-plan.md` |
+| **Design-only / TBD** | 7 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib, HUD live-data pills (Slice B), Pickup tracking + Play Recap, Interactive content pack |
 | **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
-| **Large / later** | 4 | Interactive content pack, Intro cinematic, Multiplayer (Phase 5), Gameplay Rebalancing remainder |
-| **Small polish** | 1 | Cosmetic shop sink |
+| **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 
-`GAME_ITERATION` is **v0.4.41** (`frontend/src/version.js`). v0.4.41
-(Rewards & History panel Slice A) has **landed** — not in progress. Next code
-slice is pending planning.
+`GAME_ITERATION` is **v0.4.47** (`frontend/src/version.js`). Next code slice:
+**Gameplay Rebalancing** per `roadmap-handoff-v0.4.48-plan.md`.
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.
@@ -359,13 +352,11 @@ and chaser-bark voice clips, 1:1 with text.
   - **Badge hook:** keep the `Slippery When Wet` badge aligned with the same close-call escape event so the reward and the brag moment stay in sync.
   - **Scope guard:** do not touch the separate post-capture `resume-countdown` beat; this is only for the pre-kill close-call pause.
 - [ ] **Feature: Gameplay Rebalancing (later follow-up).** **Partially shipped
-  in v0.4.37:** close-call escape +50 and positive-pickup +5 are live. Still
-  open: +25 gun hit, +50 per badge earn, scaled death-penalty table, slower
-  chaser start (0.8 mod), level-clear reward bumps, max-speed cap by level.
-  - **Sheeb Rewards:** +25 Sheebs for hitting a chaser with the Jayden Gun. +50 Sheebs for the close-call escape reward above *(shipped v0.4.37)*. +5 Sheebs for positive pickup collections *(shipped v0.4.37)*. +50 Sheebs for earning any badge.
-  - **Scaled Death Penalty:** Level 1 (0 loss), Level 2 (10 loss), Level 3 (20 loss), Level 4+ (30 loss, allows negative).
-  - **Chaser Speed:** Starts slower (0.8 mod instead of 1.0). Max speed cap now scales by level (0.9 to 1.35) so they never exceed the max for the current level.
-  - **Level Rewards:** Base rewards bumped to ensure difficulty increases delivery (50, 75, 100, 150, 200).
+  in v0.4.37:** close-call escape +50 and positive-pickup +5 are live.
+  **Code-ready remainder** specced in
+  [roadmap-handoff-v0.4.48-plan.md](handoffs/roadmap-handoff-v0.4.48-plan.md):
+  +25 gun hit, +50 per badge earn, scaled death-penalty table, slower
+  chaser start (0.8 mod), per-level speed cap, level-clear reward bumps.
 - [x] **Feature: Cursed & Blessed Map Pickups (The Mario-Style Roller Expansion).** Items rolling around the map that the player can pick up or capture. You don't know if you want to grab them or run from them until it's too late. All four landed for real as of `v0.4.36.1`.
   - **Taco Bell Grande:** (Double-Edged) +50% Speed for 3 seconds, disables steering. If a Skib hits it, stunned for 2s. Shipped v0.4.36.
   - **Soggy Toilet Paper:** (Debuff/Trap) Grab drops a trail behind the runner for 6s; Skibs stepping in a trail segment are slowed 40% for 5s. Shipped `v0.4.36.1` (the effect is a movement-trail slow, not a stamina drain — matches what actually got built).
@@ -393,11 +384,9 @@ and chaser-bark voice clips, 1:1 with text.
   [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
 - [ ] **Micro-Skib chaser (challenge counterweight to the potion).** A
   smaller chaser variant sized to also fit through the tight cracks the
-  Schleimy Potion opens up, so a "safe" crack isn't unconditionally safe.
-  Deliberately scoped separate from the potion item above — this is new
-  enemy-AI/pathing work, not a single mechanic. No design pass done yet
-  (spawn conditions, which levels, additive vs. replacement chaser). See
-  [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
+  Schleimy Potion opens up. MVP spawn rules scoped in
+  [roadmap-handoff-v0.4.48-plan.md](handoffs/roadmap-handoff-v0.4.48-plan.md)
+  — not code-ready until Ken confirms spawn rule and level gate.
 - [x] **Level 4+ Difficulty Constraints.** Landed in v0.4.33 — Level 4 and higher now requires at least 90 seconds (scaling up with higher levels) of running and evasion of 5 chasers before the level can clear.
 - [x] **Skib-Chaser Evolution (Level 5+).** Landed in v0.4.34 — chasers turned out to have no wall collision at all pre-v0.4.34 (only the runner did), so this gave them real wall-aware movement on Levels 1-4 and kept the always-pass-through behavior plus a `1.15x` speed multiplier for Level 5+ (`levelIndex >= 4`). See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
 - [x] **The "Gawd Particle" (Level 5+).** Landed in v0.4.34 — an 8%-per-level Level 5+ pickup grants the runner a 10s wall-hack buff; touching a chaser while it's active despawns the chaser (15s respawn timer) instead of capturing the runner. See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
@@ -497,10 +486,10 @@ and chaser-bark voice clips, 1:1 with text.
   before handing it to the parent. `_drawEntity()` needed no changes
   since the transparency is baked into the uploaded image itself. See
   `frontend/e2e/face-crop-verify.spec.js`.
-- [ ] **Shop item: cosmetic sink.** Now that sheebs have a real economy
-  (level rewards, death penalty), consider a cosmetic-only shop item
-  (e.g. a jump-scare filter skin) so sheebs have somewhere to go once
-  stat upgrades are maxed. Small, self-contained.
+- [ ] **Shop item: cosmetic sink.** Sheeb sink for maxed-out players.
+  Bounded handoff with a concrete first item (Neon Jump-Scare Filter) in
+  [roadmap-handoff-v0.4.50-plan.md](handoffs/roadmap-handoff-v0.4.50-plan.md).
+  Optional same-session fix for the `.portrait-frame` wide-viewport CSS bug.
 - [x] **Menu brag stat: best level + fewest deaths.** Companion goal to the
   Phase 7 risk/reward items above — once losing sheebs/items past
   level 3/4 is real, players will want to see their best run at a glance
@@ -508,20 +497,11 @@ and chaser-bark voice clips, 1:1 with text.
   `highestLevel` and lifetime deaths/`deathsHistory`, so this is mostly a
   menu display item, not new persistence. Small, do after the risk/reward
   items land so there's something worth bragging about. Shipped v0.4.42.
-- [x] **Player's Guide.** In-game help explaining guns/ammo replacement,
-  level-transition pickup loss, Level 5+ chaser wall-hacks, Gawd Particle,
-  and Shart Knocker (orange FART button is not a protective shield). Source
-  doc: [docs/players-guide.md](players-guide.md). Shipped v0.4.43 as an
-  in-game modal — see
-  [roadmap-handoff-v0.4.44-plan.md](handoffs/roadmap-handoff-v0.4.44-plan.md)
-  and [roadmap-handoff-v0.4.43.md](handoffs/roadmap-handoff-v0.4.43.md).
-  **Reversed 2026-07-27**: the modal duplicated the doc's content in JSX
-  (two sources of truth, every edit needed a deploy). Ken asked for a
-  plain link to the GitHub-rendered `.md` instead, editable without a
-  code change, plus a note pointing readers at GitHub issues for
-  suggestions. Planned in
-  [roadmap-handoff-v0.4.45-plan.md](handoffs/roadmap-handoff-v0.4.45-plan.md),
-  not yet implemented (Mode A only this pass).
+- [x] **Player's Guide.** Shipped v0.4.43 (modal) then simplified to an
+  external GitHub link in v0.4.45 per Ken's request — single source of
+  truth in [docs/players-guide.md](players-guide.md) (includes Rod of
+  Poopdom as of v0.4.47 doc update). See
+  [roadmap-handoff-v0.4.45.md](handoffs/roadmap-handoff-v0.4.45.md).
 - [ ] **Menu HUD: make the Speed/Stamina/Rewards pills reflect real live
   data, not just static shop bonuses.** **New 2026-07-27 (Ken screenshot
   feedback), design-only, not code-ready.** The `perk-strip` in
@@ -541,22 +521,11 @@ and chaser-bark voice clips, 1:1 with text.
   naturally with the history feature below but is a separate, smaller
   slice.
 - [ ] **Feature: Rewards & History panel (player-facing "how did I get
-  this" log).** **New 2026-07-27 (Ken screenshot feedback), design-only,
-  not code-ready.** GOAL: give the player a "cool area" to check the
-  history of how they earned sheebs, badges, and shop purchases —
-  mirroring the existing Deaths pill → `DeathsModal.jsx` pattern, but for
-  positive progression instead of captures. Concretely: make the
-  `Rewards +N%` pill in the `perk-strip` clickable (it currently isn't a
-  button at all) and open a new modal listing badge-earn events, shop
-  purchases, and reward payouts in reverse-chronological order. This is a
-  real persistence gap, not just a UI change — today `profile.ownedItems`
-  and `profile.earnedBadges` are unordered id sets with no timestamp, so
-  there is nothing to render a history *from* yet. Full design writeup,
-  the profile-schema options considered, and the open questions for Ken
-  are in
+  this" log).** **Slice A shipped v0.4.41** — clickable Rewards pill +
+  `RewardsHistoryModal.jsx` + `rewardsHistory` log for badges and purchases.
+  **Slice B still open:** HUD live-data pills (see item below). Pickup
+  tracking + Play Recap addendum still design-only, blocked on Ken — see
   [docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md).
-  Cross-referenced in [docs/profiles-and-identity.md](profiles-and-identity.md)
-  and [docs/badges.md](badges.md).
 - [ ] **Feature: Pickup-consumption tracking + "Play Recap" screen.** **New
   2026-07-27 (Ken follow-up), design-only, not code-ready.** Ken wants every
   map pickup (the mushroom/bomb rolling pickups from v0.4.35, plus the gun,
@@ -705,29 +674,23 @@ and chaser-bark voice clips, 1:1 with text.
   `App.jsx` now shows a "Fair Use / Parody Warning" line linking to
   `https://github.com/kmacpher67/skib-jay-dee/issues`.
 - [ ] **Difficulty Function (separate design track):** Preferred direction is Method C (`The Debt Lock`) plus a lightweight starting selector (`Noob-Noob` / `CEO of Drains`). Keep it separate from the death-log telemetry slice; see `docs/difficulty-mechanics-plan.md`. **Reviewed 2026-07-27:** a rolling deaths/sheebs auto-tune idea was evaluated and folded into that doc as a refinement of Method C (economy-side lever, level-indexed floors, no new `DifficultyManager` class) — still design-only, several TBDs, not ready to code.
-- [ ] **Cool Play (Chaser Evasion):** Polish the mechanics for users running from chasers. Goal is to make evasion feel cooler (e.g. near-miss effects, sliding, dynamic FOV). Needs further definition.
+- [ ] **Cool Play (Chaser Evasion):** Polish evasion feel. MVP options scoped
+  in [roadmap-handoff-v0.4.48-plan.md](handoffs/roadmap-handoff-v0.4.48-plan.md)
+  (near-miss particles, corner-slide visuals). Not code-ready — Ken must pick
+  which slice first.
 - [ ] **New chaser ability: Raman-Aunt-Toilet Lady's "Broth Slip."**
-  **Decided 2026-07-27 (design-only, not code-ready yet)** — a
-  frictionless broth-trail area-denial hazard, the first "environmental
-  hazard" chaser in the roster rather than another pursuit/pull/slow
-  variant. Reuses the existing `ant-k-raman`/`anti-k-raman-2` face (no
-  new asset needed) and the `chaserType` concept already built for
-  Skib-Daddy in v0.4.38. Recommended as a Level 5+ multi-chaser rotation
-  addition (map-agnostic, no new level required), and a likely repeat
-  in Level 7's climax roster alongside the CEO of Drains. Gets her own
-  themed bark pool ("Broth Slip" lines). Still needs exact `chaserType`
-  stat tuning (base speed, trail lifetime/width, drift strength) before
-  this is a bounded handoff. See
-  [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md)
-  ("Flag for Ken" item 6), [characters.md](characters.md), and
-  [dialog_content_chasing.md](dialog_content_chasing.md).
+  **Decided 2026-07-27 (design-only)** — frictionless broth-trail area-denial
+  hazard. Recommended stat defaults and bounded handoff in
+  [roadmap-handoff-v0.4.49-plan.md](handoffs/roadmap-handoff-v0.4.49-plan.md).
+  Still needs Ken sign-off on tuning before Mode B. See also
+  [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md),
+  [characters.md](characters.md), [dialog_content_chasing.md](dialog_content_chasing.md).
 - [ ] **Level 7+ and Beyond: The Mosaic Map of Madness (TBD).** (To be determined - needs refinement & extra data specs). Introduce a mutable puzzle map (Multiverse of Madness parody with Rick and Morty style comedic dialogue).
   - *Features:* Mosaic layouts driven by time functions (e.g. Fibonacci sequence) so it doesn't punish night-time players. Layer-Sync Mirroring, Dimensional Rift Anchors, Mutual Mutation puzzles, Temporal Echoes.
   - *Design Goal:* Keep it fun and interesting, not impossible. See `docs/level-progression-and-endgame-plan.md` for vibe process pre-planning notes.
   - **Reviewed 2026-07-27:** re-evaluated against the "no code-cowboy" rule; one open question was never actually answered (floor trap vs. held item to trigger a dimension shift — see "Flag for Ken" item 7 in `docs/level-progression-and-endgame-plan.md`). Still TBD, still not a ready-to-code handoff.
-- [ ] **Feature: Rod of Poopdom (Teleport Mechanic).** **New design-only.** Award of random teleport.
-  - *Visual Glyph:* Twisted brown wooden staff capped with a glowing emerald. Symbol is a spiral coil with teleport sparks. VFX leaves brown, comical smoke clouds at departure.
-  - *Availability:* Uncommon/Rare tier. 3-5% drop from "Swamp" or "Sewage" biome chests and enemies (or adapted to existing map pickups). Max 1-2 per active map instance.
-  - *Controls:* 'T' or 'F' key (keyboard) or Right Bumper (controller) to instantly teleport to the mouse cursor/reticle location.
-  - *Mechanic:* Activation inflicts a short 3-second "Stinky" debuff, preventing consecutive teleports.
-  - *Balance Note:* Since this is a 2D top-down canvas chase game, the teleport range should likely be capped (e.g., 300px) and needs wall-collision validation so players can't teleport out of bounds. See `docs/handoffs/roadmap-handoff-v0.4.47-plan.md`.
+- [x] **Feature: Rod of Poopdom (Teleport Mechanic).** Shipped v0.4.47 —
+  5% map spawn, 300px facing-direction warp, wall-block at destination,
+  3s Stinky cooldown, `T` + FIRE/WARP button. See
+  [roadmap-handoff-v0.4.47.md](handoffs/roadmap-handoff-v0.4.47.md) and
+  [docs/players-guide.md](players-guide.md).

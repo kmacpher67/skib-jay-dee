@@ -1,7 +1,7 @@
 # Player's Guide — Skib-Jay-Dee-Toilet
 
 **Created by:** Composer — 2026-07-27
-**Last updated by:** Composer — 2026-07-27
+**Last updated by:** Composer — 2026-07-27 (Rod of Poopdom section)
 
 Single source of truth for game mechanics. The in-game footer links here
 directly (see `roadmap-handoff-v0.4.45-plan.md` — the earlier in-game
@@ -17,7 +17,9 @@ and we'll fold it into this guide.
 - **Move:** Arrow keys, WASD, or the on-screen joystick (bottom-left).
 - **Sprint / boost:** Space bar or hold the SPRINT button (bottom-right).
 - **Fire / use item:** `F` key or the on-screen FIRE button (appears when you
-  have a gun, plunger, or Shart charge).
+  have a gun, plunger, Rod of Poopdom, or Shart charge).
+- **Teleport (Rod only):** `T` key or the FIRE button when the rod is held
+  (reads **WARP**).
 
 ## Weapons & ammo (Jayden Gun)
 
@@ -61,6 +63,18 @@ and we'll fold it into this guide.
   per charge. Any lingering brown/orange circle or glow you see afterward is
   just leftover visual feedback — **it does not block captures**. Other
   chasers can still grab you the moment the stun wears off (or if you missed).
+
+## Rod of Poopdom (teleport staff)
+
+- Rare map pickup (~5% spawn chance per level).
+- Picking it up replaces any gun or plunger you were holding.
+- Press **`T`** or tap **WARP** (FIRE button) to teleport up to **300px** in the
+  direction you are facing (or toward your pointer on desktop).
+- **You cannot teleport into walls** — if the destination is blocked, nothing
+  happens.
+- After each warp you get a **3-second Stinky cooldown** (button shows a
+  countdown) before you can warp again.
+- Brown smoke appears at your departure point. Comedic, not protective.
 
 ## Other pickups (quick reference)
 
