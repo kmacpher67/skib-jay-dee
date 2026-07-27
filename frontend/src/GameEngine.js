@@ -14,7 +14,7 @@ import {
   HARD_CHASER_LINES,
 } from './dialog.js'
 import { CHASER_FACE_POOL, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS } from './gameContent.js'
-import { PORCELAIN_GRID, PIPEWORKS_GRID } from './mapGrids.js'
+import { PORCELAIN_GRID, PIPEWORKS_GRID, FLOODED_ANNEX_GRID, RAMEN_AISLE_GRID, WORLD_STAR_GRID } from './mapGrids.js'
 
 export const WORLD = {
   width: 900,
@@ -364,6 +364,23 @@ const GUN_BULLET_SIZE = 8
 const GUN_STUN_MIN = 3
 const GUN_STUN_MAX = 5
 const GUN_PICKUP_SIZE = 28
+const FRIENDLY_FIRE_GRACE_SECONDS = 2 // window after a gun-stun wears off for the "Friendly Fire" badge
+
+const SOGGY_TP_SPAWN_CHANCE = 0.08
+const SOGGY_TP_PICKUP_SIZE = 24
+const SOGGY_TP_DURATION = 6 // seconds the trail keeps dropping after pickup
+const SOGGY_TP_TRAIL_INTERVAL = 0.4 // seconds between dropped trail segments
+const SOGGY_TP_TRAIL_LIFETIME = 5 // seconds a dropped trail segment stays on the map
+const SOGGY_TP_TRAIL_SIZE = 26
+const SOGGY_TP_CHASER_SLOW_MULT = 0.6
+const SOGGY_TP_CHASER_SLOW_SECONDS = 5
+
+const HEAVY_PLUNGER_SPAWN_CHANCE = 0.08
+const HEAVY_PLUNGER_PICKUP_SIZE = 24
+const HEAVY_PLUNGER_SWINGS = 3
+const HEAVY_PLUNGER_SWING_COOLDOWN = 0.5
+const HEAVY_PLUNGER_SWING_RANGE = 120
+const HEAVY_PLUNGER_KNOCKBACK = 80
 
 // Humor/intrigue badges (docs/handoffs/roadmap-handoff-v0.4.32-plan.md):
 // low-odds optional pickups scattered across levels. Never gate progression
@@ -491,12 +508,19 @@ export class GameEngine {
     this.decoyActive = false
     this.decoyTimer = 0
     this.decoyPos = { x: 0, y: 0 }
+    this.soggyTpActive = false
+    this.soggyTpTimer = 0
+    this.soggyTpTrailTimer = 0
+    this.soggyTrails = []
+    this.plungerSwingActive = false
+    this.plungerSwingTimer = 0
     this.chaserRespawnQueue = []
 
     this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0, luckBonus: 0 }
 
     this.pickups = []
     this.rollingPickups = []
+    this.runner.plunger = null
     this.bullets = []
     this.fireCooldown = 0
     this.luckyBadgeEarned = (earnedBadges || []).includes('lucky')
@@ -692,7 +716,7 @@ export class GameEngine {
     const distSprint = Math.hypot(x - s.x, y - s.y)
     const distFire = Math.hypot(x - f.x, y - f.y)
 
-    if (this.runner.gun && distFire < 34) {
+    if ((this.runner.gun || this.runner.plunger) && distFire < 34) {
       this.fireBtn.active = true
       this.fireBtn.id = e.pointerId
       this._tryFire()
@@ -826,12 +850,14 @@ export class GameEngine {
     this.rollingPickups = []
     this.levelBadgeCollected = false
     this._maybeSpawnGunPickup()
+    this._spawnQuestRoomBadge()
     this._spawnProgressionBadge()
-    this._maybeSpawnGunPickup()
     this._maybeSpawnHumorBadge()
     this._maybeSpawnGawdParticle()
     this._maybeSpawnTacoBell()
     this._maybeSpawnDecoy()
+    this._maybeSpawnSoggyToiletPaper()
+    this._maybeSpawnHeavyPlunger()
     this._maybeSpawnSchleimyPotion()
     this._spawnRollingPickups()
 
@@ -930,7 +956,7 @@ export class GameEngine {
       return
     }
 
-    if (this.phase === 'playing') {
+    if (this.phase === 'chase' || this.phase === 'near-capture') {
       this.levelSeconds += dt
       const wasExhausted = this.stamina <= 0
 
@@ -949,6 +975,26 @@ export class GameEngine {
       if (this.decoyActive) {
         this.decoyTimer = Math.max(0, this.decoyTimer - dt)
         if (this.decoyTimer <= 0) this.decoyActive = false
+      }
+      if (this.soggyTpActive) {
+        this.soggyTpTimer = Math.max(0, this.soggyTpTimer - dt)
+        this.soggyTpTrailTimer -= dt
+        if (this.soggyTpTrailTimer <= 0) {
+          this.soggyTpTrailTimer = SOGGY_TP_TRAIL_INTERVAL
+          this.soggyTrails.push({
+            x: this.runner.x + this.runner.w / 2 - SOGGY_TP_TRAIL_SIZE / 2,
+            y: this.runner.y + this.runner.h / 2 - SOGGY_TP_TRAIL_SIZE / 2,
+            w: SOGGY_TP_TRAIL_SIZE,
+            h: SOGGY_TP_TRAIL_SIZE,
+            lifetime: SOGGY_TP_TRAIL_LIFETIME,
+          })
+        }
+        if (this.soggyTpTimer <= 0) this.soggyTpActive = false
+      }
+      if (this.soggyTrails.length > 0) {
+        this.soggyTrails = this.soggyTrails
+          .map((trail) => ({ ...trail, lifetime: trail.lifetime - dt }))
+          .filter((trail) => trail.lifetime > 0)
       }
     }
     
@@ -974,6 +1020,7 @@ export class GameEngine {
 
     let speed = this.runner.baseSpeed * (this.tacoBellActive ? 1.5 : 1) * (sprinting ? 1.8 : 1)
     if (this.schleimyPotionActive) speed *= 0.8
+    if (this.runner.plunger) speed *= 0.7
     const move = this._getMoveVector()
     if (move.x !== 0 || move.y !== 0) this.runner.facing = { x: move.x, y: move.y }
     if (this.gawdParticleActive) {
@@ -1008,11 +1055,25 @@ export class GameEngine {
 
       if (chaser.stunnedUntil > 0) {
         chaser.stunnedUntil = Math.max(0, chaser.stunnedUntil - dt)
+        if (chaser.stunnedUntil <= 0 && chaser.gunStunned) {
+          chaser.gunStunned = false
+          chaser.stunGracePeriod = FRIENDLY_FIRE_GRACE_SECONDS
+        }
       } else {
         chaser.joinRamp = Math.min(1, (chaser.joinRamp ?? 1) + dt / CHASER_JOIN_RAMP_SECONDS)
+        if (chaser.stunGracePeriod > 0) chaser.stunGracePeriod -= dt
         const joinRampMod = lerp(CHASER_JOIN_RAMP_START, 1, chaser.joinRamp)
         let speedMult = wallHackLevel ? LEVEL5_PLUS_CHASER_SPEED_MULT : 1
         if (this.schleimyPotionActive) speedMult *= 1.2
+        for (const trail of this.soggyTrails) {
+          if (rectsIntersect(chaser, trail)) {
+            chaser.soggySlowTimer = SOGGY_TP_CHASER_SLOW_SECONDS
+          }
+        }
+        if (chaser.soggySlowTimer > 0) {
+          chaser.soggySlowTimer -= dt
+          speedMult *= SOGGY_TP_CHASER_SLOW_MULT
+        }
         const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod * speedMult
         const stepX = (dir.x / dist) * chaserSpeed * dt
         const stepY = (dir.y / dist) * chaserSpeed * dt
@@ -1091,6 +1152,9 @@ export class GameEngine {
     this.chaserLineTimer = Math.max(0, this.chaserLineTimer - dt)
 
     if (caught) {
+      if (caughtBy && caughtBy.stunGracePeriod > 0) {
+        this.onBadgeEarned('friendly-fire')
+      }
       this._triggerCaught(caughtBy)
     } else if (nearCapture) {
       this._triggerNearCapture()
@@ -1181,6 +1245,16 @@ export class GameEngine {
         this.decoyActive = true
         this.decoyTimer = 4
         this.decoyPos = { x: pickup.x, y: pickup.y }
+      } else if (pickup.type === 'soggy-tp') {
+        this.soggyTpActive = true
+        this.soggyTpTimer = SOGGY_TP_DURATION
+        this.soggyTpTrailTimer = 0
+        this.runnerLine = 'Ugh, soggy...'
+        this.runnerLineTimer = 1.5
+      } else if (pickup.type === 'heavy-plunger') {
+        this.runner.plunger = { swings: HEAVY_PLUNGER_SWINGS }
+        this.runnerLine = 'Got a plunger. Time to swing.'
+        this.runnerLineTimer = 1.5
       }
       return false
     })
@@ -1344,6 +1418,34 @@ export class GameEngine {
     })
   }
 
+  _maybeSpawnSoggyToiletPaper() {
+    if (Math.random() > SOGGY_TP_SPAWN_CHANCE) return
+    const spawn = this._findRandomWalkableSpawn()
+    if (!spawn) return
+    this.pickups.push({
+      type: 'soggy-tp',
+      x: spawn.x,
+      y: spawn.y,
+      w: SOGGY_TP_PICKUP_SIZE,
+      h: SOGGY_TP_PICKUP_SIZE,
+      sprite: '🧻',
+    })
+  }
+
+  _maybeSpawnHeavyPlunger() {
+    if (Math.random() > HEAVY_PLUNGER_SPAWN_CHANCE) return
+    const spawn = this._findRandomWalkableSpawn()
+    if (!spawn) return
+    this.pickups.push({
+      type: 'heavy-plunger',
+      x: spawn.x,
+      y: spawn.y,
+      w: HEAVY_PLUNGER_PICKUP_SIZE,
+      h: HEAVY_PLUNGER_PICKUP_SIZE,
+      sprite: '🪠',
+    })
+  }
+
   _maybeSpawnSchleimyPotion() {
     if (Math.random() > 0.15) return
     const cx = WORLD.width / 2
@@ -1427,7 +1529,39 @@ export class GameEngine {
     return null
   }
 
+  _swingPlunger() {
+    if (!this.runner.plunger || this.runner.plunger.swings <= 0 || this.fireCooldown > 0) return
+    this.fireCooldown = HEAVY_PLUNGER_SWING_COOLDOWN
+    this.runner.plunger.swings -= 1
+    this.plungerSwingActive = true
+    this.plungerSwingTimer = 0.2
+
+    for (const chaser of this.chasers) {
+      const dist = Math.hypot(
+        (chaser.x + chaser.w / 2) - (this.runner.x + this.runner.w / 2),
+        (chaser.y + chaser.h / 2) - (this.runner.y + this.runner.h / 2),
+      )
+      if (dist < HEAVY_PLUNGER_SWING_RANGE) {
+        const dx = chaser.x - this.runner.x
+        const dy = chaser.y - this.runner.y
+        const dir = Math.hypot(dx, dy) || 1
+        const stepX = (dx / dir) * HEAVY_PLUNGER_KNOCKBACK
+        const stepY = (dy / dir) * HEAVY_PLUNGER_KNOCKBACK
+        this._moveWithCollision(chaser, stepX, stepY)
+      }
+    }
+
+    if (this.runner.plunger.swings <= 0) {
+      this.runner.plunger = null
+    }
+  }
+
   _tryFire() {
+    if (this.runner.plunger) {
+      this._swingPlunger()
+      return
+    }
+
     if (this.runner.gun) {
       this.gunFiredThisLevel = true
       if (this.runner.gun.chambers <= 0 || this.fireCooldown > 0) return
@@ -1467,6 +1601,7 @@ export class GameEngine {
       for (const chaser of this.chasers) {
         if (rectsIntersect(bullet, chaser) && !(chaser.stunnedUntil > 0)) {
           chaser.stunnedUntil = GUN_STUN_MIN + Math.random() * (GUN_STUN_MAX - GUN_STUN_MIN)
+          chaser.gunStunned = true
           this.chaserLine = GUN_HIT_LINES[Math.floor(Math.random() * GUN_HIT_LINES.length)]
           this.chaserLineTimer = 2
           this.onChaserBark(this.chaserLine)
@@ -1728,7 +1863,22 @@ export class GameEngine {
     ctx.save()
     this._applyCamera(ctx)
     this._drawMap(ctx)
+    ctx.fillStyle = "rgba(150, 200, 255, 0.4)"
+    this.soggyTrails.forEach(t => {
+       ctx.beginPath()
+       ctx.arc(t.x + t.w/2, t.y + t.h/2, t.w/2, 0, Math.PI * 2)
+       ctx.fill()
+    })
     this._drawPickups(ctx)
+    if (this.plungerSwingTimer > 0) {
+       ctx.save()
+       ctx.strokeStyle = "rgba(139, 69, 19, 0.7)"
+       ctx.lineWidth = 6
+       ctx.beginPath()
+       ctx.arc(this.runner.x + this.runner.w/2, this.runner.y + this.runner.h/2, 80, 0, Math.PI * 2)
+       ctx.stroke()
+       ctx.restore()
+    }
     this.chasers.forEach((chaser) => {
       this._drawEntity(ctx, chaser)
       if (chaser.stunnedUntil > 0) this._drawStunEffect(ctx, chaser)
@@ -1974,10 +2124,22 @@ export class GameEngine {
       ctx.restore()
     }
 
-    if (this.gawdParticleActive || this.tacoBellActive || this.decoyActive) {
+    if (this.runner.plunger) {
       ctx.save()
       ctx.fillStyle = 'rgba(0,0,0,0.4)'
-      ctx.fillRect(VIEW_W - 140, 54, 130, 60)
+      ctx.fillRect(0, 54, 110, 20)
+      ctx.fillStyle = '#8b6ad1'
+      ctx.font = 'bold 11px sans-serif'
+      ctx.textAlign = 'left'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(`🪠 SWINGS: ${this.runner.plunger.swings}`, 10, 64)
+      ctx.restore()
+    }
+
+    if (this.gawdParticleActive || this.tacoBellActive || this.decoyActive || this.soggyTpActive) {
+      ctx.save()
+      ctx.fillStyle = 'rgba(0,0,0,0.4)'
+      ctx.fillRect(VIEW_W - 140, 54, 130, 80)
       ctx.fillStyle = '#ffe066'
       ctx.font = 'bold 11px sans-serif'
       ctx.textAlign = 'right'
@@ -1993,6 +2155,10 @@ export class GameEngine {
       if (this.decoyActive) {
         ctx.fillStyle = '#44ffff'
         ctx.fillText(`🧍 DECOY: ${this.decoyTimer.toFixed(1)}s`, VIEW_W - 10, 104)
+      }
+      if (this.soggyTpActive) {
+        ctx.fillStyle = '#96c8ff'
+        ctx.fillText(`🧻 SOGGY: ${this.soggyTpTimer.toFixed(1)}s`, VIEW_W - 10, 124)
       }
       ctx.restore()
     }
@@ -2056,11 +2222,11 @@ export class GameEngine {
     ctx.fillText('SPACE', s.x, s.y + 16)
     ctx.restore()
 
-    if (this.runner.gun) {
+    if (this.runner.gun || this.runner.plunger) {
       const f = this._fireOrigin()
       ctx.save()
       ctx.globalAlpha = this.fireBtn.active ? 0.95 : 0.6
-      ctx.fillStyle = '#ffd27a'
+      ctx.fillStyle = this.runner.plunger ? '#8b6ad1' : '#ffd27a'
       ctx.beginPath()
       ctx.arc(f.x, f.y, 34, 0, Math.PI * 2)
       ctx.fill()
@@ -2069,7 +2235,7 @@ export class GameEngine {
       ctx.font = 'bold 12px sans-serif'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
-      ctx.fillText('FIRE', f.x, f.y)
+      ctx.fillText(this.runner.plunger ? 'SWING' : 'FIRE', f.x, f.y)
       ctx.font = 'bold 9px sans-serif'
       ctx.fillText('F', f.x, f.y + 14)
       ctx.restore()

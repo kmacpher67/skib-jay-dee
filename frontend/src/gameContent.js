@@ -109,6 +109,12 @@ export const BADGES = {
     lore: "You didn't just survive the map; you survived the IRS. Your offshore accounts are safe.",
     emoji: '📈',
   },
+  'friendly-fire': {
+    id: 'friendly-fire',
+    name: 'Friendly Fire',
+    lore: "You stunned them... and then they immediately returned the favor. Betrayal hurts.",
+    emoji: '🤝',
+  },
   'glutton-for-punishment': {
     id: 'glutton-for-punishment',
     name: 'Glutton for Punishment',

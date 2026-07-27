@@ -4,23 +4,27 @@ Use this as the handoff doc for the next agent working in the repo.
 
 ## Current state
 
-- **⚠️ Uncommitted working tree (found 2026-07-27, unresolved).** `git
-  status` shows local modifications to `frontend/src/GameEngine.js`,
-  `frontend/src/gameContent.js`, and `frontend/src/mapGrids.js` on top of
-  the shipped `v0.4.36` commit, plus untracked `scratch_apply_all*.js`
-  files at the repo root. It reads like an interrupted Code Monkey
-  attempt at exactly the follow-ups `v0.4.36`'s own handoff named next
-  (Soggy Toilet Paper, Heavy Plunger, a `Friendly Fire` badge stub, and
-  placeholder/empty `FLOODED_ANNEX_GRID`/`RAMEN_AISLE_GRID`/
-  `WORLD_STAR_GRID` exports in `mapGrids.js`). **It has not been built or
-  tested** and was left uncommitted. The next Mode B session should
-  inspect it with `git diff` before doing anything else (two spots that
-  look like they need a second look: `_spawnQuestRoomBadge()` is called
-  twice in one function, and `this.phase === 'playing'` was changed to
-  `this.phase === 'chase' || this.phase === 'near-capture'`), then either
-  finish it for real and verify it as its own version, or `git checkout
-  --` it back out and delete the scratch files. Same callout at the top
-  of `docs/roadmap.md`.
+- **v0.4.36.1 (real code, most recent shipped version):** finished the
+  uncommitted, half-wired diff flagged earlier this same session (see the
+  v0.4.38-plan entry below) — it was a real but incomplete attempt at
+  `v0.4.36`'s own named follow-ups. Fixed the duplicate
+  `_spawnQuestRoomBadge()` and duplicate `_maybeSpawnGunPickup()` calls at
+  level start; confirmed the `this.phase === 'playing'` → `'chase' ||
+  'near-capture'` change was actually a real bug fix (`'playing'` was
+  never a valid phase value, so several pickup timers were dead code
+  before it); wired real pickup-collection for `soggy-tp`/`heavy-plunger`
+  (previously spawned but uncollectible), a trail-drop + chaser-slow
+  effect for Soggy Toilet Paper, a `_swingPlunger()` knockback hooked to
+  the existing F-key/FIRE-button input for the Heavy Plunger, and a real
+  trigger for the `Friendly Fire` badge (grace-window tracking on a
+  gun-stunned chaser). `FLOODED_ANNEX_GRID`/`RAMEN_AISLE_GRID`/
+  `WORLD_STAR_GRID` in `mapGrids.js` are still unused empty placeholders —
+  migrating those 3 levels off hardcoded pixel rects is still open.
+  Verified with `npm run build` and the full Playwright suite (29 active,
+  1 pre-existing skip), including new
+  `frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js`. `GAME_ITERATION`
+  bumped to `v0.4.36.1` and deployed. See
+  `docs/handoffs/roadmap-handoff-v0.4.36.1.md`.
 - **v0.4.38-plan (docs-only, this session, 2026-07-27):** scoped Level 6
   ("Jayden's Nightmare House") and its new chaser, Skib-Daddy-Toilet Guy,
   into a ready-to-code handoff — previously blocked on a face-asset
@@ -199,11 +203,8 @@ manually:
 
 ## Natural follow-up work
 
-- **Resolve the uncommitted working tree first.** See the callout at the
-  top of this file and `docs/roadmap.md` — don't start `v0.4.37-plan`,
-  `v0.4.38-plan`, or any new Mode B work until that diff is inspected and
-  either finished/verified or reverted, since it touches the same file
-  (`GameEngine.js`) any of these sessions would also touch.
+- **The uncommitted working tree from earlier this session is resolved** —
+  finished and shipped as `v0.4.36.1`. No longer on this list.
 - **Level 6 ("Jayden's Nightmare House") is now a ready handoff** —
   `docs/handoffs/roadmap-handoff-v0.4.38-plan.md`. Recommended to pull
   *after* finishing the level-data-extraction migration for Flooded

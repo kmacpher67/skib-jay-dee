@@ -37,11 +37,9 @@ pass stays crisp.
 ## Item Seeds
 
 **Status note (2026-07-27):** Taco Bell Grande and Fake Jayden Decoy
-shipped in `v0.4.36`. Soggy Toilet Paper and Heavy Plunger are **not**
-shipped — a partial, unverified attempt at both exists only in the
-repo's currently uncommitted working-tree diff (see the callout at the
-top of `docs/roadmap.md`); treat them as still open until that diff is
-finished, tested, and committed for real.
+shipped in `v0.4.36`. Soggy Toilet Paper and Heavy Plunger shipped in
+`v0.4.36.1` (finished a half-wired attempt found uncommitted earlier the
+same day — see `docs/handoffs/roadmap-handoff-v0.4.36.1.md`).
 
 | Name | Side | Effect | Tone |
 |---|---|---|---|

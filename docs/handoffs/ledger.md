@@ -10,6 +10,29 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.36.1 — 2026-07-27 (real code)
+
+- Finished the uncommitted, half-wired diff flagged in the v0.4.38-plan
+  planning pass — a real but incomplete attempt at `v0.4.36`'s own named
+  follow-ups (Soggy Toilet Paper, Heavy Plunger, `Friendly Fire` badge).
+- Fixed a duplicate `_spawnQuestRoomBadge()` call and a duplicate
+  `_maybeSpawnGunPickup()` call at level start.
+- Confirmed `this.phase === 'playing'` → `'chase' || 'near-capture'` was
+  a real bug fix — `'playing'` was never a valid phase, so the Gawd
+  Particle/Schleimy Potion/Taco Bell/Decoy timers were dead code before it.
+- Wired real pickup-collection for `soggy-tp` and `heavy-plunger`
+  (previously spawned but uncollectible).
+- Added a trail-drop + chaser-slow effect for the Soggy Toilet Paper and
+  a `_swingPlunger()` knockback hooked to the existing F-key/FIRE-button
+  input for the Heavy Plunger.
+- Wired a real trigger for the `Friendly Fire` badge via a grace-window
+  flag on gun-stunned chasers.
+- Removed the leftover `scratch_apply_all*.js` debug files from the repo
+  root.
+- Added `frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js`; full
+  29-test suite (29 active, 1 pre-existing skip) and `npm run build` pass.
+- Bumped `GAME_ITERATION` to `v0.4.36.1` and deployed.
+
 ## v0.4.38-plan — 2026-07-27 (docs-only)
 
 - Found and flagged an uncommitted, unverified diff already sitting in

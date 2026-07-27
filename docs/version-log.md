@@ -6,6 +6,68 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.36.1 — Finished the interrupted v0.4.36 follow-ups (2026-07-27)
+
+### What changed
+
+- Ken asked to commit/version/deploy the state found during the
+  v0.4.38-plan planning pass. Before doing that, reviewed the flagged
+  uncommitted diff in detail and found it genuinely broken: `soggy-tp`
+  and `heavy-plunger` pickups spawned on the map but had no collection
+  branch in `_checkPickups()`, so they were permanent uncollectible
+  clutter; `_swingPlunger()` was defined but never called from any input
+  path; the `Friendly Fire` badge flag was set but never read; and
+  `_spawnQuestRoomBadge()`/`_maybeSpawnGunPickup()` were each called
+  twice at level start.
+- Asked Ken whether to revert this WIP and ship the already-solid
+  `v0.4.36` state, or finish it properly — he chose to finish it.
+- Fixed the duplicate level-start calls, wired real pickup-collection
+  logic for both new item types, implemented the Soggy Toilet Paper's
+  trail-drop/chaser-slow effect and the Heavy Plunger's knockback swing
+  (routed through the existing `_tryFire()`/F-key/FIRE-button input, with
+  its own HUD swings readout and a distinct purple FIRE-button color when
+  a plunger is held instead of a gun), and wired the `Friendly Fire`
+  badge's actual trigger condition (a chaser carries a 2s grace window
+  after a gun-stun expires; getting caught by that exact chaser inside
+  the window awards the badge).
+- Confirmed the `this.phase === 'playing'` change already in the diff was
+  a genuine, separate bug fix, not a risk — `'playing'` was never a valid
+  phase value anywhere else in `GameEngine.js`, so several existing
+  pickup timers (Gawd Particle, Schleimy Potion, Taco Bell, Decoy) never
+  actually decremented before this change.
+- Added `frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js` covering
+  all three fixes directly against the engine (same pattern as
+  `jayden-gun.spec.js`), removed the leftover `scratch_apply_all*.js`
+  files, ran the full Playwright suite (29 active, 1 pre-existing skip)
+  and `npm run build` — both clean.
+
+### Design decisions
+
+- Named the shipped constants (`SOGGY_TP_*`, `HEAVY_PLUNGER_*`,
+  `FRIENDLY_FIRE_GRACE_SECONDS`) instead of leaving the magic numbers
+  from the original WIP diff, matching the rest of `GameEngine.js`'s
+  style.
+- Gave the Heavy Plunger's swing action a 3-swing budget and routed it
+  through the same F-key/touch-FIRE input as the Jayden Gun rather than a
+  new control, since a runner can only be holding one of the two at a
+  time and the existing button/HUD real estate already fits the pattern.
+- Versioned this as `v0.4.36.1` (a patch on `v0.4.36`, precedent:
+  `v0.4.30.1`) rather than `v0.4.37`, since the already-open
+  `roadmap-handoff-v0.4.37-plan.md` describes a different, unrelated
+  feature (close-call freeze/reward pass) — using `v0.4.37` here would
+  have made that handoff's version number describe the wrong shipped
+  content.
+
+### Non-goals
+
+- Did not migrate `buildFloodedAnnex`/`buildRamenAisle`/
+  `buildWorldStarParkingLot` to the grid format — `mapGrids.js`'s
+  `FLOODED_ANNEX_GRID`/`RAMEN_AISLE_GRID`/`WORLD_STAR_GRID` exports stay
+  unused empty placeholders, tracked as the existing "Level data
+  extraction" backlog item.
+- Did not touch Level 6 ("Jayden's Nightmare House") — that's
+  `roadmap-handoff-v0.4.38-plan.md`'s own separate scope.
+
 ## v0.4.38-plan — Level 6 scoped, uncommitted working-tree flagged (2026-07-27)
 
 ### What changed

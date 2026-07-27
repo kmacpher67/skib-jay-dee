@@ -15,27 +15,38 @@ fallback to `OLLAMA_HOST` or switch to `desktop-gaming` /
 OpenRouter when needed. The handoff's own bounded copy-paste block is
 the prompt body.
 
-## ⚠️ Uncommitted working tree (found 2026-07-27, unresolved)
+## ✅ Uncommitted working tree — RESOLVED as v0.4.36.1 (2026-07-27)
 
-A Mode A planning pass found the working tree already dirty with
-unverified, uncommitted code — `frontend/src/GameEngine.js`,
-`frontend/src/gameContent.js`, and `frontend/src/mapGrids.js` all have
-local modifications on top of the shipped `v0.4.36` commit, plus several
-untracked `scratch_apply_all*.js` files at the repo root. It reads like an
-interrupted Code Monkey attempt at exactly the follow-ups `v0.4.36`'s own
-handoff named next (Soggy Toilet Paper, Heavy Plunger, a `Friendly Fire`
-badge stub, and empty/placeholder grid exports for Flooded Annex, Ramen
-Aisle, and World Star in `mapGrids.js`). It has **not** been built or
-tested (`npm run build` / Playwright never ran against it) and was left
-uncommitted. Do not build new work on top of it blindly, and do not
-discard it without looking first — the next Mode B session should
-`git diff`/`git status` it, decide whether to finish, fix, or drop it
-(the `_spawnQuestRoomBadge()` call appearing twice in one function and a
-`this.phase === 'playing'` → `'chase' || 'near-capture'` change both look
-like they need a second look), verify with the full checklist, then either
-commit it as its own real version or `git checkout --` it back out and
-clean up the scratch files. See `docs/update-directions.md` for the same
-callout.
+The dirty working tree flagged earlier this session (uncommitted,
+unverified `GameEngine.js`/`gameContent.js`/`mapGrids.js` changes plus
+`scratch_apply_all*.js` litter) turned out to be a real but half-wired
+attempt at `v0.4.36`'s own named follow-ups. Finished it for real this
+session:
+
+- Fixed the duplicate `_spawnQuestRoomBadge()` **and** duplicate
+  `_maybeSpawnGunPickup()` calls at level start (both were called twice).
+- Confirmed the `this.phase === 'playing'` → `'chase' || 'near-capture'`
+  change was actually a **bug fix** — `'playing'` was never a valid phase
+  value in this engine, so the Gawd Particle/Schleimy Potion/Taco
+  Bell/Decoy timers were silently dead code before this change.
+- Wired real pickup-collection handling for `soggy-tp` and
+  `heavy-plunger` (previously spawned on the map but uncollectible),
+  timed trail-dropping + chaser slow-on-touch for the Soggy Toilet
+  Paper, and a `_swingPlunger()` knockback hooked up to the existing
+  F-key/FIRE-button input for the Heavy Plunger.
+- Wired the `Friendly Fire` badge trigger for real (was a set-but-never-
+  read flag): a chaser now carries a grace window after a gun-stun wears
+  off, and getting caught by that exact chaser within it awards the
+  badge.
+- Left `FLOODED_ANNEX_GRID`/`RAMEN_AISLE_GRID`/`WORLD_STAR_GRID` in
+  `mapGrids.js` as empty placeholders, unused — migrating those three
+  levels off hardcoded pixel rects is still open, see the "Level data
+  extraction" item below.
+
+Verified with `npm run build` and the full Playwright suite (29 active,
+1 pre-existing skip), including a new
+`frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js`. Shipped as
+`v0.4.36.1`. See `docs/handoffs/roadmap-handoff-v0.4.36.1.md`.
 
 ## Where things stand (as of this session)
 
@@ -274,11 +285,11 @@ and chaser-bark voice clips, 1:1 with text.
   - **Scaled Death Penalty:** Level 1 (0 loss), Level 2 (10 loss), Level 3 (20 loss), Level 4+ (30 loss, allows negative).
   - **Chaser Speed:** Starts slower (0.8 mod instead of 1.0). Max speed cap now scales by level (0.9 to 1.35) so they never exceed the max for the current level.
   - **Level Rewards:** Base rewards bumped to ensure difficulty increases delivery (50, 75, 100, 150, 200).
-- [x] **Feature: Cursed & Blessed Map Pickups (The Mario-Style Roller Expansion).** Items rolling around the map that the player can pick up or capture. You don't know if you want to grab them or run from them until it's too late.
-  - **Taco Bell Grande:** (Double-Edged) +50% Speed for 3 seconds, disables steering. If a Skib hits it, stunned for 2s.
-  - **Soggy Toilet Paper:** (Debuff/Trap) Grab leaves a trail draining stamina. Skibs stepping in trail are slowed by 40% for 5s. (Not yet implemented)
-  - **Fake Jayden Decoy:** (Blessed) Drops cardboard cutout. Skibs in 300px radius aggro decoy for 4s.
-  - **Heavy Plunger:** (Cursed) -30% Movement Speed while held. Press `F` to swing 360-arc, knocking back Skibs.
+- [x] **Feature: Cursed & Blessed Map Pickups (The Mario-Style Roller Expansion).** Items rolling around the map that the player can pick up or capture. You don't know if you want to grab them or run from them until it's too late. All four landed for real as of `v0.4.36.1`.
+  - **Taco Bell Grande:** (Double-Edged) +50% Speed for 3 seconds, disables steering. If a Skib hits it, stunned for 2s. Shipped v0.4.36.
+  - **Soggy Toilet Paper:** (Debuff/Trap) Grab drops a trail behind the runner for 6s; Skibs stepping in a trail segment are slowed 40% for 5s. Shipped `v0.4.36.1` (the effect is a movement-trail slow, not a stamina drain — matches what actually got built).
+  - **Fake Jayden Decoy:** (Blessed) Drops cardboard cutout. Skibs in 300px radius aggro decoy for 4s. Shipped v0.4.36.
+  - **Heavy Plunger:** (Cursed) -30% Movement Speed while held. Press `F`/FIRE to swing a knockback arc on nearby Skibs (3 swings, then the plunger is spent). Shipped `v0.4.36.1`.
 - [x] **Stamina / take-a-hit-and-keep-running.** Ken asked for a "Call of
   Duty style" stamina feature and guessed it might already exist — it
   does. `GameEngine.js` already has a full stamina system (`maxStamina`,
@@ -327,10 +338,10 @@ and chaser-bark voice clips, 1:1 with text.
   earned yet. If the roll fails, the same pool gets another shot at the
   next level start (so it isn't locked to the "early" levels only). See
   [roadmap-handoff-v0.4.32.md](handoffs/roadmap-handoff-v0.4.32.md).
-- [~] **Secret Interaction Badges (Humor & Intrigue).** Badges that trigger not from progression, but from players doing stupid things. **Correction (2026-07-27 planning pass):** only the first two are actually shipped/committed (as `pacifist-warzone`/`premature-evacuation` in `v0.4.36`) — checked `[x]` here previously but that overstated it. `Friendly Fire` only exists as an unwired `BADGES` entry in the currently **uncommitted** working-tree diff (see the callout near the top of this file); it has no trigger logic yet and hasn't been built or tested.
+- [x] **Secret Interaction Badges (Humor & Intrigue).** Badges that trigger not from progression, but from players doing stupid things. All three shipped for real as of `v0.4.36.1`.
   - **Pacifist in a Warzone:** Survive Level 4 for 60 seconds while holding the Jayden Gun, but *never fire it*. Shipped v0.4.36.
   - **Premature Evacuation:** Get caught within the first 5 seconds of Level 1. Shipped v0.4.36.
-  - **Friendly Fire:** Stun a Skib with the Jayden Gun, but immediately get caught by *that exact same Skib* the millisecond the stun wears off. Not shipped — badge id stub only, uncommitted, no trigger wired.
+  - **Friendly Fire:** Stun a Skib with the Jayden Gun, but immediately get caught by *that exact same Skib* within a 2s grace window after the stun wears off. Shipped `v0.4.36.1` — was an unwired badge-id stub as of the earlier planning pass this session, now has real trigger logic (`chaser.gunStunned`/`chaser.stunGracePeriod` in `GameEngine.js`).
 - [x] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,
   left over from before the v0.4.16 cookie-default fix. `App.jsx` always

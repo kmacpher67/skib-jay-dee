@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.36.1',
+    title: 'Soggy TP, Heavy Plunger & Friendly Fire',
+    description: 'Step in a Soggy Toilet Paper trail to leave a slick that slows any toilet who steps in it. Grab a Heavy Plunger and press FIRE to swing a knockback arc. And watch your timing with the Jayden Gun — get caught by the exact toilet you just stunned the instant it wakes up, and you’ll earn the "Friendly Fire" badge.',
+  },
+  {
     version: 'v0.4.36',
     title: 'Taco Bell, Decoys & Map Refactor',
     description: 'Added Taco Bell & Decoy pickups to help you survive. We also refactored the map generation code to clean up pixel spaghetti and tucked away a few new secret badges for you to find.',
