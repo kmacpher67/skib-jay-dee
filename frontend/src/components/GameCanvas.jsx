@@ -21,6 +21,7 @@ export default function GameCanvas({
   loadoutStaminaBonus,
   loadoutRewardBonus,
   loadoutLuckBonus,
+  neonJumpscareFilter,
   initialSheebs,
   initialDeaths,
   highestLevel,
@@ -70,6 +71,7 @@ export default function GameCanvas({
         rewardBonus: loadoutRewardBonus,
         luckBonus: loadoutLuckBonus,
       },
+      neonJumpscareFilter,
     })
     engineRef.current = engine
     onEngineReady?.(engine)

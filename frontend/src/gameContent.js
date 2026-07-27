@@ -269,6 +269,14 @@ export const SHOP_ITEMS = [
     description: 'The upgraded charm. Even shinier, even luckier. Stacks with the regular one.',
     effectLabel: '+25% positive pickup odds',
   },
+  {
+    id: 'jump-scare-filter-neon',
+    name: 'Neon Jump-Scare Filter',
+    cost: 200,
+    description: 'Tints your capture jump-scare overlay with a sick magenta/cyan glitch.',
+    effectLabel: 'Cosmetic only',
+    cosmetic: true,
+  },
 ]
 
 export function randomFrom(items) {

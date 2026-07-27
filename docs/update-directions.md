@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Composer — 2026-07-27 (Ken product decisions recorded)
+**Last updated by:** Composer — 2026-07-27 (v0.4.50 cosmetic sink shipped)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,16 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+
+- **v0.4.50 (real code, shipped — 2026-07-27):**
+  Cosmetic shop sink — Neon Jump-Scare Filter (200 sheebs, magenta/cyan
+  capture tint, no stat effect). Fixed `.portrait-frame` wide-viewport CSS
+  clipping footer controls on desktop. `GAME_ITERATION` = v0.4.50. See
+  `roadmap-handoff-v0.4.50.md`.
+
+- **v0.4.49 (real code, shipped — 2026-07-27):**
+  Broth Slip — `raman-aunt` chaserType with hot-ramen trail on Level 5+.
+  `GAME_ITERATION` = v0.4.49. See `roadmap-handoff-v0.4.49.md`.
 
 - **v0.4.48-plan Ken decisions (docs-only, 2026-07-27):** recorded Ken's
   answers in handoffs — Slice B shop labels, Play Recap, Broth Slip defaults,

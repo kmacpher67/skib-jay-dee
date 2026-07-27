@@ -569,6 +569,7 @@ export default function App() {
               loadoutStaminaBonus={loadout.staminaBonus}
               loadoutRewardBonus={loadout.rewardBonus}
               loadoutLuckBonus={loadout.luckBonus}
+              neonJumpscareFilter={profile.ownedItems.includes('jump-scare-filter-neon')}
               initialSheebs={profile.sheebs}
               initialDeaths={profile.deaths}
               highestLevel={profile.highestLevel}

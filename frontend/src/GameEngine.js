@@ -420,6 +420,7 @@ export class GameEngine {
       highestLevel = 0,
       earnedBadges = [],
       loadout = {},
+      neonJumpscareFilter = false,
     } = {},
   ) {
     this.canvas = canvas
@@ -540,6 +541,7 @@ export class GameEngine {
     this.chaserRespawnQueue = []
 
     this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0, luckBonus: 0 }
+    this.neonJumpscareFilter = !!neonJumpscareFilter
 
     this.pickups = []
     this.rollingPickups = []
@@ -2643,7 +2645,11 @@ export class GameEngine {
   _drawJumpscare(ctx) {
     const flash = Math.sin(performance.now() / 60) > 0
     ctx.save()
-    ctx.fillStyle = flash ? 'rgba(255,0,0,0.45)' : 'rgba(120,0,0,0.35)'
+    if (this.neonJumpscareFilter) {
+      ctx.fillStyle = flash ? 'rgba(255,0,255,0.45)' : 'rgba(0,255,255,0.35)'
+    } else {
+      ctx.fillStyle = flash ? 'rgba(255,0,0,0.45)' : 'rgba(120,0,0,0.35)'
+    }
     ctx.fillRect(0, 0, VIEW_W, VIEW_H)
 
     ctx.textAlign = 'center'

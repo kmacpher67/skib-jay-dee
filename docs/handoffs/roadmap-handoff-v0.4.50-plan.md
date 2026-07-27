@@ -2,7 +2,7 @@
 
 **Created by:** Composer — 2026-07-27
 **Last updated by:** Composer — 2026-07-27
-**Session mode:** Mode A (Planning — docs only, no code changes)
+**Session mode:** Mode B (shipped v0.4.50)
 
 ## Goal
 

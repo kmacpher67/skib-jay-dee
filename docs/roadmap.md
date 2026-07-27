@@ -73,13 +73,12 @@ All are front-end–scoped or front-end–first unless noted. LT roadmap items
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 
-**Coding queue after v0.4.48 (Gameplay Rebalancing):** v0.4.50 cosmetic sink →
-v0.4.49 Broth Slip → v0.4.41 Slice B (shop labels) → v0.4.41 Play Recap →
-v0.4.54 near-miss burst → v0.4.55 Micro-Skib → v0.4.56 runner pose collapse →
-v0.4.51 wall-pinch map fix (Ken widen-vs-seal still open).
+**Coding queue after v0.4.50 (Cosmetic Sink):** v0.4.41 Slice B (shop labels) →
+v0.4.41 Play Recap → v0.4.54 near-miss burst → v0.4.55 Micro-Skib →
+v0.4.56 runner pose collapse → v0.4.51 wall-pinch map fix (Ken widen-vs-seal still open).
 
-`GAME_ITERATION` is **v0.4.48** (`frontend/src/version.js`). Next code slice:
-**cosmetic shop sink** per `roadmap-handoff-v0.4.50-plan.md`.
+`GAME_ITERATION` is **v0.4.50** (`frontend/src/version.js`). Next code slice:
+**Slice B shop labels** per `roadmap-handoff-v0.4.41-plan.md`.
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.
@@ -460,10 +459,10 @@ and chaser-bark voice clips, 1:1 with text.
   before handing it to the parent. `_drawEntity()` needed no changes
   since the transparency is baked into the uploaded image itself. See
   `frontend/e2e/face-crop-verify.spec.js`.
-- [ ] **Shop item: cosmetic sink.** Sheeb sink for maxed-out players.
-  Bounded handoff with a concrete first item (Neon Jump-Scare Filter) in
-  [roadmap-handoff-v0.4.50-plan.md](handoffs/roadmap-handoff-v0.4.50-plan.md).
-  Optional same-session fix for the `.portrait-frame` wide-viewport CSS bug.
+- [x] **Shop item: cosmetic sink.** Sheeb sink for maxed-out players.
+  Landed v0.4.50 — Neon Jump-Scare Filter (200 sheebs, magenta/cyan
+  capture tint). See
+  [roadmap-handoff-v0.4.50.md](handoffs/roadmap-handoff-v0.4.50.md).
 - [x] **Menu brag stat: best level + fewest deaths.** Companion goal to the
   Phase 7 risk/reward items above — once losing sheebs/items past
   level 3/4 is real, players will want to see their best run at a glance

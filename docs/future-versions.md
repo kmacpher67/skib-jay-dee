@@ -39,21 +39,12 @@ is a parking lot, not an archive).
   wait for `onEnded` or the 11s safety timeout. Add a tap-to-skip
   overlay control.
 
-## Known bug found during v0.4.0 testing (not fixed)
+## Known bug found during v0.4.0 testing — FIXED in v0.4.50
 
 - `.portrait-frame`'s `@media (min-aspect-ratio: 9/16)` rule in
-  `frontend/src/index.css` inverts on wide desktop viewports: at a
-  standard 1280×720 test viewport it switches to `width:100%; height:auto`
-  which (combined with `aspect-ratio: 9/16`) makes the frame ~2275px tall,
-  vertically centered and clipped by `.stage`'s `overflow:hidden`. Content
-  anchored to the true center (like `.play-btn`) still renders on-screen
-  by luck, but anything absolutely positioned near the frame's top/bottom
-  edge (the new `.mute-btn-menu`, the existing `.exit-btn`) ends up
-  clipped off-screen. Worked around in the new Playwright mute-toggle test
-  by forcing a phone-portrait viewport rather than fixing the CSS — the
-  media query's actual intent needs to be worked out (it was presumably
-  meant for real phones held in landscape, not desktop browser windows)
-  before touching it for real.
+  `frontend/src/index.css` inverted on wide desktop viewports and clipped
+  footer controls. Removed the media query; covered by
+  `frontend/e2e/cosmetic-sink.spec.js` at 1280×720.
 
 ## Test coverage gap (follow-up to the chaser face randomization fix)
 
@@ -77,7 +68,8 @@ get lost:
 - Intro cinematic (the PDF's "World Star" open).
 - Oval/masked face-crop on upload instead of stretch.
 - Level data extraction out of hardcoded `buildXxx()` map functions.
-- Shop item: cosmetic sink (or another cosmetic-only sheeb sink).
+- Shop item: cosmetic sink (or another cosmetic-only sheeb sink). Landed
+  v0.4.50 as Neon Jump-Scare Filter.
 - New character/ability from the PDF roster (Raman-Aunt-Toilet Lady).
   Skib-Daddy landed in v0.4.38.
 - Multiplayer spike (Phase 5) — biggest single item, do last.

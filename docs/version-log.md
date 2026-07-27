@@ -6,6 +6,15 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.50 — Cosmetic Shop Sink (Composer, 2026-07-27)
+
+Added **Neon Jump-Scare Filter** cosmetic shop item (200 sheebs, no stat
+effect). When owned, the capture jump-scare overlay flashes magenta/cyan
+instead of red. Also fixed `.portrait-frame` wide-viewport CSS that clipped
+menu footer controls on desktop.
+
+**Next:** Slice B shop labels or Play Recap (`roadmap-handoff-v0.4.41-plan.md`).
+
 ## v0.4.49 — Broth Slip (Raman-Aunt-Toilet Lady) (Composer, 2026-07-27)
 
 Implemented `raman-aunt` as a Level 5+ extra-chaser rotation pick (12% spawn

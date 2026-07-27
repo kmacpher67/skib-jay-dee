@@ -44,13 +44,6 @@ body {
   overflow: hidden;
 }
 
-@media (min-aspect-ratio: 9/16) {
-  .portrait-frame {
-    height: auto;
-    width: 100%;
-  }
-}
-
 .portrait-frame canvas {
   display: block;
   width: 100%;
