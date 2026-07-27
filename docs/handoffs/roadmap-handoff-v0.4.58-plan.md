@@ -1,7 +1,7 @@
 # Roadmap Handoff Plan v0.4.58 — Desktop Screen Size & Aspect Ratio
 
 **Created by:** Antigravity — 2026-07-27
-**Last updated by:** Claude — 2026-07-27 (added generic scaling reference)
+**Last updated by:** Claude — 2026-07-27 (added Option A implementation sketch)
 **Session mode:** Mode A (Planning / investigate — docs only, no code)
 **Status:** BLOCKED ON DESIGN DECISION (Field of view balance) — Ken has reviewed the discussion below and is still undecided between Option A and Option C.
 
@@ -71,6 +71,29 @@ Ken also pulled a generic (engine-agnostic) answer on how a mobile 9:16 game is 
 Since this project renders via `GameEngine.js` on an HTML canvas (not Unity/Godot/Phaser/Construct), the equivalent touchpoints here are: the canvas resize/scale logic in `GameEngine.js`, the `viewCoords`-based camera math in `_drawWorld`, and the portrait container styling in `frontend/src/App.jsx`. This lines up with the Fix plan below — whichever option (A/B/C) is chosen still touches these same three spots.
 
 Source: AI-generated overview citing gamemaker.io's mobile resolution-scaling tutorial and Android large-screen resizability docs; general background, not vetted against this codebase.
+
+### Discussion: Option A implementation sketch (Fog of War)
+
+Follow-up discussion leaning specifically into Option A (Fog of War / vignette), confirming it as "the best way to keep the game fair while still updating the layout for desktop viewports." Restates the core problem — an unrestricted wider viewport lets desktop players see chasers approaching much earlier and plan escapes too easily — then sketches an implementation:
+
+**Balancing the viewport:**
+- Keep the core visual gameplay arena (the area actually visible/legible to the player) identical in size across mobile and desktop.
+- Render the canvas in 16:9 so it fills the desktop screen, but shroud everything outside the original 9:16 vertical boundary using the existing darkness logic.
+
+**Darkness overlay — two variants to choose between:**
+- A brightly lit vertical column in the center of the screen matching the mobile width (keeps the "portrait strip in the middle" look), or
+- A circular light radius centered on Jayden that doesn't expand past the mobile field of view (a true vignette that follows the player instead of staying centered on screen).
+
+**Implementation notes:**
+- CSS: a radial-gradient overlay centered on the player's screen coordinates to shroud the extended desktop edges in black.
+- Canvas: if drawing directly on the HTML canvas, `globalCompositeOperation = 'destination-in'` can clip/mask outer visibility instead of (or in addition to) a CSS overlay.
+
+**UI/control adjustments that come with widening to desktop (apply regardless of which FOV option is chosen):**
+- Keep the top stats bar (SHEEBS, DEATHS) stretched/centered across the wider top layout.
+- Hide the virtual joystick and red SPRINT button when a desktop screen width is detected.
+- Show the ARROWS / WASD + SPACE keyboard prompt exclusively for desktop users.
+
+This sharpens the Option A entry in the Fix plan below (radial gradient overlay in `_drawWorld`) with concrete CSS/canvas techniques, but it's still gated on Ken picking Option A over B/C — no code has been written yet.
 
 ## Fix plan (Mode B — single session)
 
