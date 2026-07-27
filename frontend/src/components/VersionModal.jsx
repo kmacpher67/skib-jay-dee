@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.51',
+    title: 'Wall-Pinch Collision Traps',
+    description: 'Sealed two unreachable sub-40px corridor pinches in Ramen Aisle and Jayden\'s Nightmare House that trapped runners mid-map (looked like a collision bug, was map data).',
+  },
+  {
     version: 'v0.4.50',
     title: 'Neon Jump-Scare Filter',
     description: 'New cosmetic shop item (200 sheebs) tints your capture jump-scare overlay magenta/cyan. Also fixed the portrait frame clipping footer controls on wide desktop viewports.',

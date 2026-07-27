@@ -6,6 +6,20 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.51 — Wall-Pinch Collision Traps (Cursor Grok 4.5, 2026-07-27)
+
+Ken reported getting stuck mid-map on Level 4 between two close wall faces.
+Root cause was map data, not AABB collision: two interior floor runs were
+narrower than the 40px runner hitbox (30px), so they looked like passable
+lanes but bounced the runner forever. Sealed both pinches to `#`
+(Ramen Aisle shelf band + Nightmare House vertical channel) rather than
+widening — Ken had not answered widen-vs-seal, and the plan's default was
+seal-off. Left the Ramen quest-room wall seam alone. Added a dev-only
+width-audit script and a Playwright seal check. Collision / spawn code
+untouched (still correct from v0.4.39.1).
+
+**Next:** Slice B shop labels or Play Recap (`roadmap-handoff-v0.4.41-plan.md`).
+
 ## v0.4.50 — Cosmetic Shop Sink (Composer, 2026-07-27)
 
 Added **Neon Jump-Scare Filter** cosmetic shop item (200 sheebs, no stat

@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Composer — 2026-07-27 (v0.4.50 cosmetic sink shipped)
+**Last updated by:** Cursor Grok 4.5 — 2026-07-27 (v0.4.51 wall-pinch seals shipped)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,13 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+
+- **v0.4.51 (real code, shipped — 2026-07-27):**
+  Wall-pinch collision traps — sealed two sub-40px corridor pinches in
+  `RAMEN_AISLE_GRID` (L4) and `JAYDENS_NIGHTMARE_HOUSE_GRID` (L6) that
+  trapped the 40px runner mid-map. Map-data-only fix; collision code
+  untouched. Added `scripts/audit-map-widths.py` + e2e seal checks.
+  `GAME_ITERATION` = v0.4.51. See `roadmap-handoff-v0.4.51.md`.
 
 - **v0.4.50 (real code, shipped — 2026-07-27):**
   Cosmetic shop sink — Neon Jump-Scare Filter (200 sheebs, magenta/cyan
@@ -226,7 +233,7 @@ entry heading so the change trail stays obvious at a glance.
 - `frontend/src/components/ProfileModal.jsx` now renders the shared killer profile card for both fresh kills and log reopens, while `frontend/src/components/DeathsModal.jsx` shows clickable killer-ID pills.
 - `frontend/src/App.jsx` also owns the new menu version log panel, which shows `GAME_ITERATION` plus a short shipped changelog.
 - Planning-only review: the current maps are mechanically fine but need stronger landmark identity, so `docs/interactive-content-pack.md` still seeds the next funny runner/chaser item pack and secret awards. The refined `v0.4.37-plan` now points at the near-capture freeze / reward pass instead of the older content-first polish slice.
-- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently **v0.4.47**.
+- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently **v0.4.51**.
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
   can dispatch a bounded handoff to local Ollama using the shell's
   `OLLAMA_HOST` or to OpenRouter. A handoff can advertise its target
@@ -377,11 +384,11 @@ manually:
   `v0.4.39.1`, and `v0.4.40` — confirmed against `frontend/src/version.js`
   and corrected two stale unchecked boxes in `docs/roadmap.md` this pass).
   Neither is "the current open handoff" anymore.
-- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.50-plan.md`
-  (cosmetic shop sink). **Also code-ready after Ken 2026-07-27:** Broth Slip
-  (`v0.4.49`), Slice B + Play Recap (`v0.4.41-plan`), near-miss burst
-  (`v0.4.54`), Micro-Skib (`v0.4.55`), pose collapse (`v0.4.56`). Still
-  blocked: Audio 2 recordings, Yoodeling Unc-2, Tombstone (`v0.4.52`),
+- **Current open handoff:** Slice B shop labels / Play Recap in
+  `docs/handoffs/roadmap-handoff-v0.4.41-plan.md`. **Also code-ready:**
+  near-miss burst (`v0.4.54`), Micro-Skib (`v0.4.55`), pose collapse
+  (`v0.4.56`). Wall-pinch seals shipped as `v0.4.51`. Still blocked:
+  Audio 2 recordings, Yoodeling Unc-2, Turdstone Token (`v0.4.52`),
   Role Reversal kit (`v0.4.53`). Planning: `next-agent-planning-brief.md`.
   Coding: `next-agent-coding-brief.md`.
 - Do **not** start Audio 2 until Ken records **capture-line** clips (phase 1

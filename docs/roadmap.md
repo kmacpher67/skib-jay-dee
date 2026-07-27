@@ -73,11 +73,12 @@ All are front-end–scoped or front-end–first unless noted. LT roadmap items
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 
-**Coding queue after v0.4.50 (Cosmetic Sink):** v0.4.41 Slice B (shop labels) →
+**Coding queue after v0.4.51 (Wall-Pinch Seals):** v0.4.41 Slice B (shop labels) →
 v0.4.41 Play Recap → v0.4.54 near-miss burst → v0.4.55 Micro-Skib →
-v0.4.56 runner pose collapse → v0.4.51 wall-pinch map fix (Ken widen-vs-seal still open).
+v0.4.56 runner pose collapse. Wall-pinch map fix shipped as `v0.4.51`
+(seal-off default; widen-vs-seal was unanswered).
 
-`GAME_ITERATION` is **v0.4.50** (`frontend/src/version.js`). Next code slice:
+`GAME_ITERATION` is **v0.4.51** (`frontend/src/version.js`). Next code slice:
 **Slice B shop labels** per `roadmap-handoff-v0.4.41-plan.md`.
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.

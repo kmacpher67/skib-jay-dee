@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-27 | v0.4.51 | Sealed sub-40px corridor pinches in Ramen Aisle (L4) and Nightmare House (L6); added map-width audit script + e2e
 2026-07-27 | v0.4.50 | Cosmetic shop sink: Neon Jump-Scare Filter (200 sheebs, magenta/cyan capture tint) + portrait-frame wide-viewport CSS fix
 2026-07-27 | v0.4.49 | Broth Slip: raman-aunt chaserType with hot-ramen trail friction debuff on Level 5+ extra-chaser rotation
 2026-07-27 | docs (Composer) | Recorded Ken product decisions; unblocked Broth Slip, Slice B, Play Recap, Cool Play, Micro-Skib, pose collapse; LT arc + Role Reversal v1 scope; handoffs v0.4.53–v0.4.56

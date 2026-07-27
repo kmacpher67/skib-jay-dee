@@ -1,8 +1,10 @@
 # Roadmap Handoff v0.4.51-plan — Wall-Pinch Collision Traps (Level 4 & Level 6)
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
+**Last updated by:** Cursor Grok 4.5 — 2026-07-27
 **Session mode:** Mode A (Planning — docs only, no code changes)
-**Status:** PROPOSED — one open decision for Ken, otherwise unblocked
+**Status:** SHIPPED as `v0.4.51` (Mode B sealed both pinches; see
+`roadmap-handoff-v0.4.51.md`)
 
 ## Note on concurrent work
 

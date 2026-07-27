@@ -1,10 +1,10 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Composer — 2026-07-27
+**Last updated by:** Cursor Grok 4.5 — 2026-07-27
 
-`frontend/src/version.js` confirms **v0.4.50** is current (Cosmetic Shop
-Sink shipped).
+`frontend/src/version.js` confirms **v0.4.51** is current (Wall-Pinch
+Collision Traps sealed and shipped).
 
 ## Session focus
 
@@ -25,6 +25,7 @@ Add descriptive labels to shop items (Ken confirmed in v0.4.48-plan).
 
 - `cd frontend && npm run build`
 - `cd frontend && npx playwright test`
+- Optional map regression: `python3 scripts/audit-map-widths.py`
 
 ## Read first
 
