@@ -243,6 +243,11 @@ and chaser-bark voice clips, 1:1 with text.
   fails) so the "Lucky" badge fires exactly on the luck bonus's first
   actual proc, per Ken's confirmed trigger. See
   [roadmap-handoff-v0.4.31.md](handoffs/roadmap-handoff-v0.4.31.md).
+- [ ] **Feature: Gameplay Rebalancing (v0.4.37-plan).**
+  - **Sheeb Rewards:** +25 Sheebs for hitting a chaser with the Jayden Gun. +50 Sheebs for earning any badge.
+  - **Scaled Death Penalty:** Level 1 (0 loss), Level 2 (10 loss), Level 3 (20 loss), Level 4+ (30 loss, allows negative).
+  - **Chaser Speed:** Starts slower (0.8 mod instead of 1.0). Max speed cap now scales by level (0.9 to 1.35) so they never exceed the max for the current level.
+  - **Level Rewards:** Base rewards bumped to ensure difficulty increases delivery (50, 75, 100, 150, 200).
 - [ ] **Feature: Cursed & Blessed Map Pickups (The Mario-Style Roller Expansion).** Items rolling around the map that the player can pick up or capture. You don't know if you want to grab them or run from them until it's too late.
   - **Taco Bell Grande:** (Double-Edged) +50% Speed for 3 seconds, disables steering. If a Skib hits it, stunned for 2s.
   - **Soggy Toilet Paper:** (Debuff/Trap) Grab leaves a trail draining stamina. Skibs stepping in trail are slowed by 40% for 5s.
