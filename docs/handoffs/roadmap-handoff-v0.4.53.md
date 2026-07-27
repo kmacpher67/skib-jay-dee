@@ -1,8 +1,8 @@
-# Roadmap Handoff Plan v0.4.53 — Role Reversal v1 (Menu Mode)
+# Roadmap Handoff v0.4.53 — Role Reversal v1 (Menu Mode)
 
 **Created by:** Composer — 2026-07-27
 **Last updated by:** Composer — 2026-07-27
-**Session mode:** Mode A — **partially blocked** (Ken confirmed scope, not kit)
+**Session mode:** Mode B — **shipped**
 
 ## Source
 
