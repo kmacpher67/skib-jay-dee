@@ -6,6 +6,59 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.41-plan — Rewards & History panel + HUD live-data pills (Claude Sonnet 5, 2026-07-27)
+
+Mode A pass, docs-only. Source: Ken sent a menu screenshot annotated with two
+asks — (1) the Speed/Stamina/Rewards status pills should reflect "current
+speed and stamina based on difficulty and history actions [and] store buys,"
+and (2) the Rewards pill should be enabled to show a history of rewards and
+buys. GOAL stated: a "cool area" for the player to check the history of how
+they got stuff — badges, awards, purchases.
+
+Read the code before planning: confirmed `frontend/src/App.jsx`'s
+`perk-strip` pills are plain `<span>`s (not clickable) sourced entirely from
+`buildLoadout(profile.ownedItems)` in `gameContent.js` — a pure shop-bonus
+delta with no difficulty or history signal feeding it today. Confirmed
+`profile.ownedItems`/`profile.earnedBadges` are unordered id sets with no
+timestamps, so there's nothing to build a history view from yet — the
+`deathsHistory` + `DeathsModal.jsx` pattern (capped last-50, timestamped,
+opened via a pill button) is the direct template to reuse.
+
+Split the ask into two independently shippable slices:
+
+- **Slice A — Rewards & History panel.** A new capped `rewardsHistory` log
+  on the profile (`{ timestamp, type: 'badge'|'purchase', label, amount,
+  level, levelName }`), written alongside the existing
+  `earnedBadges`/`ownedItems` writes (additive only, no gating-logic
+  changes), rendered in a new `RewardsHistoryModal.jsx` opened from a
+  newly-clickable `Rewards` pill. No retroactive backfill — starts logging
+  from whenever this ships. This is the actual "cool area" GOAL and is
+  code-ready now.
+- **Slice B — HUD pills reflecting more than shop bonus.** Blocked on a
+  decision from Ken: does "difficulty and history actions" mean (a) just
+  clarify/label the existing (already-accurate) shop-bonus numbers, or (b)
+  actually build a new difficulty/history-linked stat modifier (new
+  game-balance design, candidate for `docs/difficulty-mechanics-plan.md`,
+  not something to invent unprompted here)? Recommended (a) as the cheap
+  fix and (b) as a separately-decided design item — do not start Slice B in
+  a coding session until Ken answers.
+
+Also corrected doc staleness found while reviewing the backlog for this
+pass: `docs/roadmap.md` still had "Enhanced Death Logs" and "Parody Warning
+& Feedback Link" unchecked despite both having shipped in `v0.4.39`
+(confirmed via `frontend/src/version.js` = `v0.4.40` and
+`docs/update-directions.md`'s already-correct current-state bullet) —
+checked them off with a note. `docs/next-agent-planning-brief.md` and
+`docs/next-agent-coding-brief.md` both still pointed at the shipped
+`v0.4.39-plan`/`v0.4.40-plan` handoffs as the active queue — rewritten to
+point at `v0.4.41-plan` instead.
+
+Full design writeup, the profile-schema options considered, and the
+copy-paste coding brief (Slice A only) are in
+`docs/handoffs/roadmap-handoff-v0.4.41-plan.md`. Cross-referenced in
+`docs/profiles-and-identity.md` and `docs/badges.md`. No code touched this
+pass, per Mode A.
+
 ## v0.4.40 — Shart Knocker (2026-07-27)
 
 ### What changed

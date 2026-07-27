@@ -310,13 +310,20 @@ manually:
 - The next map-architecture follow-up is parked in `docs/handoffs/roadmap-handoff-v0.4.36-plan.md` so the v0.4.35 content-polish slice can stay small.
 - `v0.4.25` is now shipped: the post-kill profile card, killer-ID logging, and clickable deaths log are in production.
 - **Game identity / multiple cookie-backed save slots landed in v0.4.29** — the profile switcher, `localStorage` registry, and `docs/profiles-and-identity.md` are all in place. No longer on this list.
-- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.39-plan.md`.
-  Next coding slice: **Enhanced Death Logs** + **Parody Warning & Feedback
-  Link** (`https://github.com/kmacpher67/skib-jay-dee/issues`). Queued after
-  that: `docs/handoffs/roadmap-handoff-v0.4.40-plan.md` (Shart Knocker).
-  v0.4.38 (Level 6) is shipped — not in progress. Planning entry point:
+- **v0.4.39-plan and v0.4.40-plan are both shipped** (as `v0.4.39`,
+  `v0.4.39.1`, and `v0.4.40` — confirmed against `frontend/src/version.js`
+  and corrected two stale unchecked boxes in `docs/roadmap.md` this pass).
+  Neither is "the current open handoff" anymore.
+- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.41-plan.md`
+  (docs-only, 2026-07-27) — Rewards & History panel + HUD live-data pills,
+  from Ken's menu-screenshot feedback. **Slice A (Rewards & History panel)**
+  is ready to code: add a capped `rewardsHistory` log to the profile, make
+  the `Rewards` pill open a new history modal (mirrors `Deaths` →
+  `DeathsModal.jsx`). **Slice B (HUD pills reflecting difficulty/history,
+  not just shop bonus)** is blocked on a decision from Ken — see the "Open
+  question" section in that plan before coding it. Planning entry point:
   `docs/next-agent-planning-brief.md`. Coding entry point:
-  `docs/next-agent-coding-brief.md`. Frontend backlog: **16** open unchecked
+  `docs/next-agent-coding-brief.md`. Frontend backlog: **17** open unchecked
   items — see snapshot table in `docs/roadmap.md`.
 - Phase 6 (server-side/Mongo profile persistence) now has a starting point — `docs/profiles-and-identity.md` lays out the open identity/auth and sync-strategy decisions a future session needs answered before coding it. Still queued behind Phase 5 (multiplayer) in `docs/roadmap.md`, still planning-only.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.

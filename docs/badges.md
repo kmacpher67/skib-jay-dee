@@ -46,3 +46,15 @@ without needing new backend systems:
 - **Flaming Ass:** Trigger the Shart Knocker fart hit on a chaser in a Level 4+ chase. The icon should be the running stick figure with a tiny fire glyph coming out the back, just for maximum rude comedy.
 
 See [docs/interactive-content-pack.md](interactive-content-pack.md) for the broader item catalog that could feed these badge ideas.
+
+## Badge history (planned, not yet built)
+
+`profile.earnedBadges` is currently just an unordered array of badge ids —
+no timestamp, no "how/when did I get this" data. A planned `rewardsHistory`
+log (design in
+[docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md))
+would record a timestamped entry every time `handleBadgeEarned` fires,
+feeding a new player-facing history panel opened from the menu's `Rewards`
+pill (same pattern as the `Deaths` pill → `DeathsModal.jsx`). This is
+additive only — it does not change how badges are gated or which array the
+game reads to check if a badge is already earned.

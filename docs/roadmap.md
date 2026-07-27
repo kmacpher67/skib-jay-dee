@@ -59,15 +59,18 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 ## Frontend open backlog snapshot (2026-07-27, Mode A pass)
 
 **17** unchecked items remain in the incremental backlog below (updated
-2026-07-27 with the Broth Slip decision below). All are front-end–scoped
-or front-end–first unless noted.
+2026-07-27: checked off Enhanced Death Logs + Parody Warning, both of
+which had already shipped in v0.4.39 but were left unchecked here, and
+added the two new HUD-live-data / Rewards-History items from Ken's
+screenshot feedback). All are front-end–scoped or front-end–first unless
+noted.
 
 | Status | Count | Items |
 |---|---|---|
 | **Unblocked — code next** | 0 | |
-| **Shipped** | Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` |
+| **Shipped** | Shart Knocker → `roadmap-handoff-v0.4.40-plan.md`; Enhanced Death Logs + Parody Warning → `roadmap-handoff-v0.4.39.md` |
 | **Queued — specced** | 0 | |
-| **Design-only / TBD** | 5 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip |
+| **Design-only / TBD** | 7 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip, HUD live-data pills, Rewards & History panel |
 | **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
 | **Large / later** | 4 | Interactive content pack, Intro cinematic, Multiplayer (Phase 5), Gameplay Rebalancing remainder |
 | **Small polish** | 2 | Cosmetic shop sink, menu brag stat |
@@ -461,6 +464,41 @@ and chaser-bark voice clips, 1:1 with text.
   `highestLevel` and lifetime deaths/`deathsHistory`, so this is mostly a
   menu display item, not new persistence. Small, do after the risk/reward
   items land so there's something worth bragging about.
+- [ ] **Menu HUD: make the Speed/Stamina/Rewards pills reflect real live
+  data, not just static shop bonuses.** **New 2026-07-27 (Ken screenshot
+  feedback), design-only, not code-ready.** The `perk-strip` in
+  `MainMenu` (`frontend/src/App.jsx:663-668`) currently reads
+  `speedBonus`/`staminaBonus`/`rewardBonus` straight out of
+  `buildLoadout(profile.ownedItems)` in `frontend/src/gameContent.js` —
+  i.e. it only ever reflects Shleeb Shop purchases. Ken's annotation
+  asked for these numbers to reflect "current speed and stamina based on
+  difficulty and history actions [and] store buys," which this doesn't
+  do today: there's no difficulty-tier or run-history signal feeding the
+  menu display at all. Needs a design decision before coding — see the
+  new [docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md)
+  for the options considered (show effective totals vs. deltas, whether
+  the debt/high-level risk state above level 3/4 should visibly
+  discount these numbers, whether "history actions" means badge-derived
+  bonuses or just a richer breakdown of the existing shop bonus). Pairs
+  naturally with the history feature below but is a separate, smaller
+  slice.
+- [ ] **Feature: Rewards & History panel (player-facing "how did I get
+  this" log).** **New 2026-07-27 (Ken screenshot feedback), design-only,
+  not code-ready.** GOAL: give the player a "cool area" to check the
+  history of how they earned sheebs, badges, and shop purchases —
+  mirroring the existing Deaths pill → `DeathsModal.jsx` pattern, but for
+  positive progression instead of captures. Concretely: make the
+  `Rewards +N%` pill in the `perk-strip` clickable (it currently isn't a
+  button at all) and open a new modal listing badge-earn events, shop
+  purchases, and reward payouts in reverse-chronological order. This is a
+  real persistence gap, not just a UI change — today `profile.ownedItems`
+  and `profile.earnedBadges` are unordered id sets with no timestamp, so
+  there is nothing to render a history *from* yet. Full design writeup,
+  the profile-schema options considered, and the open questions for Ken
+  are in
+  [docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md).
+  Cross-referenced in [docs/profiles-and-identity.md](profiles-and-identity.md)
+  and [docs/badges.md](badges.md).
 - [x] **Level expansion.** Added The Ramen Aisle and World Star Parking Lot
   (5 levels total) — landed this session.
 - [x] **Level data extraction** — roadmap item 1 above. **Correction
@@ -570,16 +608,18 @@ and chaser-bark voice clips, 1:1 with text.
   verification for the lvl2 timing fix confirmed the video only appears
   after Pipeworks clears, so it no longer overlaps the catch state on
   arrival.
-- [ ] **Enhanced Death Logs:** **Unblocked — current coding slice**
-  (`roadmap-handoff-v0.4.39-plan.md`). Record `timePlayed`, raw session
-  deltas (`sessionSheebDelta`, `sessionSkreemDelta`), and the level the
-  player died on in the profile history log. Keep this as telemetry first;
-  do not fold difficulty math into this slice.
-- [ ] **Parody Warning & Feedback Link:** **Unblocked — same slice as death
-  logs.** Add a clear warning in the UI (e.g. settings or intro screen)
-  stating that the game is a parody and sarcasm about life games, plumbing,
-  and society (Fair Use applies). Link:
-  `https://github.com/kmacpher67/skib-jay-dee/issues` for complaints/feedback.
+- [x] **Enhanced Death Logs.** Landed v0.4.39 (checkbox corrected
+  2026-07-27 planning pass — `docs/update-directions.md` and
+  `docs/version-log.md` already recorded this as shipped, this file had
+  gone stale). `GameEngine.js` tracks `sessionSeconds`/`initialSheebs`
+  and reports `timePlayed`, `sessionSheebDelta`, `sessionSkreemDelta` on
+  capture; `deathsHistory` entries in `cookies.js` carry the new fields
+  and `DeathsModal.jsx` renders them (degrading gracefully for legacy
+  entries without them). See `roadmap-handoff-v0.4.39.md`.
+- [x] **Parody Warning & Feedback Link.** Landed v0.4.39 alongside the
+  death logs (checkbox corrected same pass as above). `MainMenu` in
+  `App.jsx` now shows a "Fair Use / Parody Warning" line linking to
+  `https://github.com/kmacpher67/skib-jay-dee/issues`.
 - [ ] **Difficulty Function (separate design track):** Preferred direction is Method C (`The Debt Lock`) plus a lightweight starting selector (`Noob-Noob` / `CEO of Drains`). Keep it separate from the death-log telemetry slice; see `docs/difficulty-mechanics-plan.md`. **Reviewed 2026-07-27:** a rolling deaths/sheebs auto-tune idea was evaluated and folded into that doc as a refinement of Method C (economy-side lever, level-indexed floors, no new `DifficultyManager` class) — still design-only, several TBDs, not ready to code.
 - [ ] **Cool Play (Chaser Evasion):** Polish the mechanics for users running from chasers. Goal is to make evasion feel cooler (e.g. near-miss effects, sliding, dynamic FOV). Needs further definition.
 - [ ] **New chaser ability: Raman-Aunt-Toilet Lady's "Broth Slip."**

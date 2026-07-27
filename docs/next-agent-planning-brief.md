@@ -20,33 +20,39 @@ Use this when Ken opens a **Mode A** session (planning / vibes / research —
    top of open items).
 6. `docs/future-versions.md` — parked work not yet queued.
 7. Active handoffs in `docs/handoffs/`:
-   - **Current coding queue:** `roadmap-handoff-v0.4.39-plan.md` (death
-     logs + parody warning — unblocked).
-   - **Next queued coding slice:** `roadmap-handoff-v0.4.40-plan.md`
-     (Shart Knocker — after v0.4.39).
+   - `roadmap-handoff-v0.4.39-plan.md` (death logs + parody warning) and
+     `roadmap-handoff-v0.4.40-plan.md` (Shart Knocker) are both **shipped**
+     (`v0.4.39`, `v0.4.39.1`, `v0.4.40`) — no longer the active queue.
+   - **Current open handoff:** `roadmap-handoff-v0.4.41-plan.md` (Rewards &
+     History panel + HUD live-data pills, from Ken's screenshot feedback).
+     Slice A (history panel) is code-ready; Slice B (HUD pill numbers) is
+     blocked on a decision from Ken — see that file's "Open question"
+     section.
 8. Design tracks (vibes / not ready to code):
    - `docs/difficulty-mechanics-plan.md` — Method C / Debt Lock; auto-tune
      refinement section has open TBDs (window size, floor/ceiling).
    - `docs/level-progression-and-endgame-plan.md` — Level 7+ Mosaic map;
      **Flag for Ken item 7** (dimension-shift trigger) still unanswered.
 
-## Current production state (2026-07-27)
+## Current production state (2026-07-27, revised)
 
-- `GAME_ITERATION`: **v0.4.38** (Level 6 Jayden's Nightmare House, Skib-Daddy,
-  grid migration for Levels 3–5, Garage Survivor badge).
-- v0.4.37 shipped close-call freeze + sheeb rewards.
-- v0.4.39 is **not** code yet — it's the open `-plan` handoff.
+- `GAME_ITERATION`: **v0.4.40** (Shart Knocker on top of the v0.4.39 death
+  logs/parody warning, and v0.4.39.1's Level 4 spawn fix). Confirmed
+  against `frontend/src/version.js` — the previous "v0.4.38" note here was
+  stale, corrected this pass.
+- Nothing is mid-flight in code right now. The active work is planning-only:
+  `roadmap-handoff-v0.4.41-plan.md` (Rewards & History panel + HUD
+  live-data pills).
 
 ## Frontend backlog count
 
-**16** unchecked items remain in `docs/roadmap.md`'s incremental backlog.
+**17** unchecked items remain in `docs/roadmap.md`'s incremental backlog.
 See the snapshot table in that file for status tags. Summary:
 
 | Bucket | Count | Examples |
 |---|---|---|
-| Unblocked next | 2 (1 handoff) | Enhanced Death Logs, Parody Warning |
-| Queued / specced | 1 | Shart Knocker (`v0.4.40-plan`) |
-| Needs more design | 4 | Micro-Skib, Cool Play, Difficulty Function, Mosaic L7+ |
+| Unblocked next | 0 | Slice A of v0.4.41-plan is code-ready but not yet claimed |
+| Needs more design | 7 | Micro-Skib, Cool Play, Difficulty Function, Mosaic L7+, Broth Slip, HUD live-data pills (Slice B), Rewards & History panel design nuances |
 | Blocked on Ken | 3 | Audio 2 clips, Yoodeling Unc photo, distinct runner poses |
 | Large / later | 4 | Content pack, Intro cinematic, Multiplayer, Rebalancing remainder |
 | Small polish | 2 | Cosmetic shop sink, menu brag stat |
@@ -94,10 +100,10 @@ Read AGENTS.md, docs/skib-sdlc.md, docs/update-directions.md,
 frontend/src/version.js, docs/roadmap.md, docs/future-versions.md,
 docs/next-agent-planning-brief.md.
 
-Ken wants planning / vibes / research. Current shipped version is v0.4.38.
-Open coding handoff: docs/handoffs/roadmap-handoff-v0.4.39-plan.md.
-Queued after that: docs/handoffs/roadmap-handoff-v0.4.40-plan.md (Shart
-Knocker).
+Ken wants planning / vibes / research. Current shipped version is v0.4.40.
+Open planning handoff: docs/handoffs/roadmap-handoff-v0.4.41-plan.md
+(Rewards & History panel + HUD live-data pills). Slice A is code-ready;
+Slice B is blocked on a decision from Ken (see that file).
 
 Before writing new plans, check git log and version.js — docs may be
 stale relative to parallel coding sessions.

@@ -107,11 +107,22 @@ same as `deathsHistory` should have been documented the session it grew
 Pulled together here so a future session doesn't have to re-grep the
 whole roadmap to find everything that touches identity/profile:
 
-- **Rewards/badges system** (open) — the natural next consumer of
-  per-profile persistent state; badge ids would live alongside
-  `ownedItems`/`deathsHistory` in the same profile object, so they
-  automatically become per-save-slot once this session's switcher landed
-  first. No design done yet on trigger list or render location.
+- **Rewards/badges system** (landed v0.4.30) — badge ids live alongside
+  `ownedItems`/`deathsHistory` in the same profile object as
+  `earnedBadges`, automatically per-save-slot since the switcher landed
+  first.
+- **Rewards & History panel / HUD live-data pills** (design-only,
+  2026-07-27) — a planned `rewardsHistory` field (capped last-50 log of
+  badge-earn and purchase events, same shape convention as
+  `deathsHistory`) so the menu's `Rewards` pill can open a history modal
+  the same way the `Deaths` pill opens `DeathsModal.jsx`. Not yet
+  implemented — `ownedItems`/`earnedBadges` today are unordered id sets
+  with no timestamp, so there is nothing to build a history view from
+  until this field exists. Full design writeup, open questions, and the
+  copy-paste coding brief are in
+  [docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md).
+  When this lands, add `rewardsHistory` to the profile-shape block above
+  and a new row to the field-ownership table below.
 - **Menu brag stat: best level + fewest deaths** (open) — purely a
   display feature over existing `highestLevel`/`deathsHistory`, would
   read especially well now that a player can have more than one save
