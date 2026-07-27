@@ -10,6 +10,16 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.35 — 2026-07-27
+
+- Implemented **Rolling Pickups**: Mario-style items bouncing around the map granting random helpful/harmful effects on touch (speed, stamina, sheebs vs slow, damage).
+- Implemented **Schleimy Potion**: Rare map pickup that shrinks the runner's hitbox by 65% for 4 seconds to squeeze through tight gaps, trading off 20% speed and increasing chaser speed. Added a UI timer bar next to stamina.
+- Added **Coolness Lines** triggered on narrow escapes, using the potion, and using the Gawd Particle.
+- Added **Hard Chaser Lines** triggered when entering Level 4+ and when the debt economy hits (dying with negative sheebs penalty).
+- Cleaned up the old `initialSheebs = 200` leftover default in `GameEngine.js`.
+- Verified changes with Playwright (`npm run playwright test`) and `npm run build`.
+- Bumped `GAME_ITERATION` to `v0.4.35` and deployed.
+
 ## v0.4.35-plan — 2026-07-27
 
 - Seeded `docs/interactive-content-pack.md` with the next wave of

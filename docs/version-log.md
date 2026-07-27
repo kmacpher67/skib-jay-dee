@@ -6,6 +6,23 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.35 — Rolling Pickups & Schleimy Potion shipped (2026-07-27)
+
+### What changed
+
+- Implemented the v0.4.35 content-polish slice exactly as planned.
+- **Rolling Pickups:** Added 2-4 randomly moving items per level that bounce off walls. They grant helpful (speed boost, stamina refill, 20 sheebs) or harmful (stamina drain, 10 skreems damage) effects when touched, colored green/red with mushroom/bomb emojis.
+- **Schleimy Potion:** Added a rare map pickup (15% base chance) that shrinks the runner's hitbox (from 40x40 to 14x14) for 4 seconds, allowing players to slip through tight map gaps. While active, the runner's speed drops by 20% and the chasers gain a 20% speed boost. A green UI timer bar appears next to the stamina bar while active.
+- **Dialog Triggers:** Added `COOLNESS_LINES` and `HARD_CHASER_LINES` to `dialog.js`. Coolness lines trigger on narrow escapes (`near-capture`), using the Schleimy Potion, and using the Gawd Particle. Hard Chaser lines trigger randomly from chaser barks in Level 4+, and unconditionally when the player is caught in Level 4+ and suffers a debt penalty.
+- Removed the dead `initialSheebs = 200` default from the `GameEngine.js` constructor, cleaning up stale code.
+- Verified changes with a full `npm run build` and `npx playwright test`. All 26 tests passed.
+
+### Design decisions
+
+- Decided to shrink both `w` and `h` dimensions of the runner when the potion is active, along with updating `x` and `y` to keep the runner centered during the shrink/grow effect.
+- Tied the potion duration to 4 seconds and the effect to a green UI bar next to the stamina bar, matching the spec.
+- Allowed the rolling pickups to use `_hitsWall` to bounce off map geometry, making them dynamic map elements.
+
 ## v0.4.35-plan — Content review and secret-item spec seeded (2026-07-27)
 
 ### What changed

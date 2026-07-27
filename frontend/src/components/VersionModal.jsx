@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.35',
+    title: 'Rolling Pickups & Schleimy Potion',
+    description: 'Watch out for Mario-style rolling items bouncing around the map—some help, some hurt. Find the rare Schleimy Potion to shrink your hitbox and slip through tight gaps, at the cost of your speed.',
+  },
+  {
     version: 'v0.4.34',
     title: 'Level 5+: Wall Hacks & the Gawd Particle',
     description: 'Starting at Level 5, the toilets stop respecting walls and move faster. Find the ultra-rare Gawd Particle to flip the script: run through walls yourself for 10 seconds, and touching a chaser despawns it instead of catching you (it respawns after 15s).',

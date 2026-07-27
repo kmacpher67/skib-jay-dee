@@ -73,3 +73,19 @@ export const LEVEL_4_RULES = {
   ],
   button: 'I ACCEPT MY FATE',
 }
+
+// Runner "Coolness" Lines (narrow escapes / item use):
+export const COOLNESS_LINES = [
+  'Too fast for the bowl!',
+  'Slippery like soap!',
+  'Not today, plumbing!',
+  'I am the Gawd Particle!',
+]
+
+// Chaser "Challenge" Lines (Level 4+ / Wall Hacks):
+export const HARD_CHASER_LINES = [
+  "WALLS CAN'T SAVE YOU NOW!",
+  "NO WHERE TO HIDE!",
+  "I AM INEVITABLE. I AM SKIBIDI.",
+  "YOUR DEBT IS DUE!",
+]

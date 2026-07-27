@@ -260,7 +260,7 @@ and chaser-bark voice clips, 1:1 with text.
   a chaser without dying on first contact. No build needed; closed as an
   audit item. See
   [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
-- [ ] **Schleimy Potion.** New collectible that temporarily shrinks the
+- [x] **Schleimy Potion.** New collectible that temporarily shrinks the
   runner's hitbox so it can slip through the map's tight wall gaps/corner
   chokepoints (Ken confirmed these traps are "cool map design" and wants
   to keep them, just give players a tool to counter-play them). This is
@@ -305,7 +305,7 @@ and chaser-bark voice clips, 1:1 with text.
   - **Pacifist in a Warzone:** Survive Level 4 for 60 seconds while holding the Jayden Gun, but *never fire it*.
   - **Premature Evacuation:** Get caught within the first 5 seconds of Level 1.
   - **Friendly Fire:** Stun a Skib with the Jayden Gun, but immediately get caught by *that exact same Skib* the millisecond the stun wears off.
-- [ ] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
+- [x] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,
   left over from before the v0.4.16 cookie-default fix. `App.jsx` always
   passes the real profile value so this never fires in practice, but it's

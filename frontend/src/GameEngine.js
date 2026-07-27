@@ -10,6 +10,8 @@ import {
   NEAR_CAPTURE_LINES,
   GUN_CLICK_LINES,
   GUN_HIT_LINES,
+  COOLNESS_LINES,
+  HARD_CHASER_LINES,
 } from './dialog.js'
 import { CHASER_FACE_POOL, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS } from './gameContent.js'
 
@@ -516,11 +518,14 @@ export class GameEngine {
     this._pipeworksHallCoverageGrid = null
     this.gawdParticleActive = false
     this.gawdParticleTimer = 0
+    this.schleimyPotionActive = false
+    this.schleimyPotionTimer = 0
     this.chaserRespawnQueue = []
 
     this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0, luckBonus: 0 }
 
     this.pickups = []
+    this.rollingPickups = []
     this.bullets = []
     this.fireCooldown = 0
     this.luckyBadgeEarned = (earnedBadges || []).includes('lucky')
@@ -818,6 +823,8 @@ export class GameEngine {
     this.chaserRespawnQueue = []
     this.gawdParticleActive = false
     this.gawdParticleTimer = 0
+    this.schleimyPotionActive = false
+    this.schleimyPotionTimer = 0
     this.extraChaserTimer = EXTRA_CHASER_INTERVAL
     this.nearCaptureCooldown = 15
     this._resetPipeworksGateState()
@@ -836,12 +843,20 @@ export class GameEngine {
 
     this.bullets = []
     this.pickups = []
+    this.rollingPickups = []
     this.levelBadgeCollected = false
     this._maybeSpawnGunPickup()
     this._spawnProgressionBadge()
     this._maybeSpawnHumorBadge()
     this._spawnQuestRoomBadge()
     this._maybeSpawnGawdParticle()
+    this._maybeSpawnSchleimyPotion()
+    this._spawnRollingPickups()
+
+    if (this.levelIndex >= 3) {
+      this.chaserLine = HARD_CHASER_LINES[Math.floor(Math.random() * HARD_CHASER_LINES.length)]
+      this.chaserLineTimer = 3
+    }
 
     if (notify) {
       this.onLevelChange({
@@ -958,7 +973,19 @@ export class GameEngine {
       if (this.gawdParticleTimer <= 0) this.gawdParticleActive = false
     }
 
-    const speed = this.runner.baseSpeed * (sprinting ? 1.8 : 1)
+    if (this.schleimyPotionActive) {
+      this.schleimyPotionTimer = Math.max(0, this.schleimyPotionTimer - dt)
+      if (this.schleimyPotionTimer <= 0) {
+        this.schleimyPotionActive = false
+        this.runner.x -= 13
+        this.runner.y -= 13
+        this.runner.w = 40
+        this.runner.h = 40
+      }
+    }
+
+    let speed = this.runner.baseSpeed * (sprinting ? 1.8 : 1)
+    if (this.schleimyPotionActive) speed *= 0.8
     const move = this._getMoveVector()
     if (move.x !== 0 || move.y !== 0) this.runner.facing = { x: move.x, y: move.y }
     if (this.gawdParticleActive) {
@@ -972,6 +999,7 @@ export class GameEngine {
     this._firePrevHeld = fireHeld
 
     this._updateBullets(dt)
+    this._updateRollingPickups(dt)
     this._checkPickups()
 
     this._maybeSpawnExtraChaser(dt)
@@ -995,7 +1023,8 @@ export class GameEngine {
       } else {
         chaser.joinRamp = Math.min(1, (chaser.joinRamp ?? 1) + dt / CHASER_JOIN_RAMP_SECONDS)
         const joinRampMod = lerp(CHASER_JOIN_RAMP_START, 1, chaser.joinRamp)
-        const speedMult = wallHackLevel ? LEVEL5_PLUS_CHASER_SPEED_MULT : 1
+        let speedMult = wallHackLevel ? LEVEL5_PLUS_CHASER_SPEED_MULT : 1
+        if (this.schleimyPotionActive) speedMult *= 1.2
         const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod * speedMult
         const stepX = (dx / dist) * chaserSpeed * dt
         const stepY = (dy / dist) * chaserSpeed * dt
@@ -1059,7 +1088,11 @@ export class GameEngine {
     }
 
     if (closestDist < 200 && this.chaserLineTimer <= 0) {
-      this.chaserLine = CHASER_LINES[Math.floor(Math.random() * CHASER_LINES.length)]
+      let linePool = CHASER_LINES
+      if (this.levelIndex >= 3 && Math.random() < 0.3) {
+        linePool = HARD_CHASER_LINES
+      }
+      this.chaserLine = linePool[Math.floor(Math.random() * linePool.length)]
       this.chaserLineTimer = 2
       this.onChaserBark(this.chaserLine)
     }
@@ -1135,8 +1168,62 @@ export class GameEngine {
       } else if (pickup.type === 'gawd-particle') {
         this.gawdParticleActive = true
         this.gawdParticleTimer = GAWD_PARTICLE_BUFF_SECONDS
+        this.runnerLine = COOLNESS_LINES[Math.floor(Math.random() * COOLNESS_LINES.length)]
+        this.runnerLineTimer = 2
+      } else if (pickup.type === 'schleimy-potion') {
+        this.schleimyPotionActive = true
+        this.schleimyPotionTimer = 4
+        this.runner.x += 13
+        this.runner.y += 13
+        this.runner.w = 14
+        this.runner.h = 14
+        this.runnerLine = COOLNESS_LINES[Math.floor(Math.random() * COOLNESS_LINES.length)]
+        this.runnerLineTimer = 2
       }
       return false
+    })
+  }
+
+  _updateRollingPickups(dt) {
+    if (this.rollingPickups.length === 0) return
+    this.rollingPickups = this.rollingPickups.filter(pickup => {
+      pickup.x += pickup.vx * dt
+      if (this._hitsWall(pickup)) {
+        pickup.x -= pickup.vx * dt
+        pickup.vx *= -1
+      }
+      pickup.y += pickup.vy * dt
+      if (this._hitsWall(pickup)) {
+        pickup.y -= pickup.vy * dt
+        pickup.vy *= -1
+      }
+      
+      if (rectsIntersect(this.runner, pickup)) {
+        if (pickup.isGood) {
+          if (pickup.effect === 'speed') {
+            this.runnerLine = 'Speed boost!'
+            this.runnerLineTimer = 1.5
+            this.stamina = this.maxStamina
+          } else if (pickup.effect === 'stamina') {
+            this.stamina = this.maxStamina
+          } else if (pickup.effect === 'sheebs') {
+            this.sheebs += 20
+            this.onSheebsChange(this.sheebs)
+          }
+        } else {
+          if (pickup.effect === 'slow') {
+            this.runnerLine = 'Ugh, so slow!'
+            this.runnerLineTimer = 1.5
+            this.stamina = 0
+          } else if (pickup.effect === 'damage') {
+            this.skreems += 10
+            this.levelSkreems += 10
+            this.onSkreem(Math.floor(this.skreems))
+          }
+        }
+        return false
+      }
+      return true
     })
   }
 
@@ -1271,6 +1358,40 @@ export class GameEngine {
       w: GAWD_PARTICLE_PICKUP_SIZE,
       h: GAWD_PARTICLE_PICKUP_SIZE,
     })
+  }
+
+  _maybeSpawnSchleimyPotion() {
+    if (Math.random() >= 0.15) return
+    const spawn = this._findRandomWalkableSpawn()
+    if (!spawn) return
+
+    this.pickups.push({
+      type: 'schleimy-potion',
+      x: spawn.x,
+      y: spawn.y,
+      w: 28,
+      h: 28,
+    })
+  }
+
+  _spawnRollingPickups() {
+    const count = 2 + Math.floor(Math.random() * 3)
+    for (let i = 0; i < count; i++) {
+      const spawn = this._findRandomWalkableSpawn()
+      if (!spawn) continue
+      const isGood = Math.random() > 0.4
+      const angle = Math.random() * Math.PI * 2
+      this.rollingPickups.push({
+        x: spawn.x,
+        y: spawn.y,
+        w: 24,
+        h: 24,
+        vx: Math.cos(angle) * 110,
+        vy: Math.sin(angle) * 110,
+        isGood,
+        effect: isGood ? randomFrom(['speed', 'stamina', 'sheebs']) : randomFrom(['slow', 'damage']),
+      })
+    }
   }
 
   _findRandomWalkableSpawn() {
@@ -1458,6 +1579,8 @@ export class GameEngine {
     if (this.highestLevel > 3) {
       sheebsLost = baseSheebsLost
       this.sheebs = this.sheebs - sheebsLost
+      this.chaserLine = HARD_CHASER_LINES[Math.floor(Math.random() * HARD_CHASER_LINES.length)]
+      this.chaserLineTimer = 3
     } else {
       sheebsLost = Math.min(this.sheebs, baseSheebsLost)
       this.sheebs = Math.max(0, this.sheebs - sheebsLost)
@@ -1520,6 +1643,8 @@ export class GameEngine {
       this.chaserRespawnQueue = []
       this.gawdParticleActive = false
       this.gawdParticleTimer = 0
+      this.schleimyPotionActive = false
+      this.schleimyPotionTimer = 0
       this.extraChaserTimer = EXTRA_CHASER_INTERVAL
       this.zoom = 1
       this.stamina = this.maxStamina
@@ -1563,6 +1688,8 @@ export class GameEngine {
     this.zoom = 1
     this.nearCaptureLine = NEAR_CAPTURE_LINES[Math.floor(Math.random() * NEAR_CAPTURE_LINES.length)]
     this.nearCaptureCooldown = 15
+    this.runnerLine = COOLNESS_LINES[Math.floor(Math.random() * COOLNESS_LINES.length)]
+    this.runnerLineTimer = 2
   }
 
   _updateNearCapture(dt) {
@@ -1672,6 +1799,9 @@ export class GameEngine {
     if (pickup.type === 'gawd-particle') {
       return { bg: '#3a2f0a', border: '#ffe066', emoji: '✨' }
     }
+    if (pickup.type === 'schleimy-potion') {
+      return { bg: '#2b5c19', border: '#5cff33', emoji: '🧪' }
+    }
     return { bg: '#3a3a3a', border: '#ffd27a', emoji: '🔫' }
   }
 
@@ -1689,6 +1819,22 @@ export class GameEngine {
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.fillText(style.emoji, pickup.x + pickup.w / 2, pickup.y + pickup.h / 2)
+      ctx.restore()
+    })
+
+    this.rollingPickups.forEach(pickup => {
+      ctx.save()
+      ctx.fillStyle = pickup.isGood ? '#195c2b' : '#5c1919'
+      ctx.fillRect(pickup.x, pickup.y, pickup.w, pickup.h)
+      ctx.strokeStyle = pickup.isGood ? '#33ff5c' : '#ff3333'
+      ctx.lineWidth = 2
+      ctx.strokeRect(pickup.x, pickup.y, pickup.w, pickup.h)
+      ctx.fillStyle = pickup.isGood ? '#33ff5c' : '#ff3333'
+      ctx.font = 'bold 16px sans-serif'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      const emoji = pickup.isGood ? '🍄' : '💣'
+      ctx.fillText(emoji, pickup.x + pickup.w / 2, pickup.y + pickup.h / 2)
       ctx.restore()
     })
   }
@@ -1826,6 +1972,15 @@ export class GameEngine {
     ctx.fillStyle = this.stamina > 25 ? '#3ddc55' : '#e0403f'
     ctx.fillRect(VIEW_W / 2 - 60, 6, 120 * (this.stamina / this.maxStamina), 8)
     ctx.restore()
+
+    if (this.schleimyPotionActive) {
+      ctx.save()
+      ctx.fillStyle = 'rgba(0,0,0,0.4)'
+      ctx.fillRect(VIEW_W / 2 + 64, 6, 60, 8)
+      ctx.fillStyle = '#5cff33'
+      ctx.fillRect(VIEW_W / 2 + 64, 6, 60 * (this.schleimyPotionTimer / 4), 8)
+      ctx.restore()
+    }
   }
 
   _drawControls(ctx) {

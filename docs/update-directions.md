@@ -4,7 +4,8 @@ Use this as the handoff doc for the next agent working in the repo.
 
 ## Current state
 
-- **v0.4.34 (real code, most recent session):** implemented the Level 5+
+- **v0.4.35 (real code, most recent session):** implemented the **Rolling Pickups** and **Schleimy Potion** items from `docs/handoffs/roadmap-handoff-v0.4.35-plan.md`. Mario-style items bounce around the map granting random helpful/harmful effects (speed, stamina, sheebs vs slow, damage). The Schleimy Potion shrinks the runner's hitbox by 65% for 4 seconds, trading speed for the ability to squeeze through tight gaps. Also wired `COOLNESS_LINES` and `HARD_CHASER_LINES` into `GameEngine.js`. Removed the dead `initialSheebs = 200` default. Verified with full Playwright suite (26 active) and `npm run build`. `GAME_ITERATION` bumped to `v0.4.35` and deployed. See `docs/handoffs/roadmap-handoff-v0.4.35.md`.
+- **v0.4.34 (real code):** implemented the Level 5+
   end-game escalation from `docs/handoffs/roadmap-handoff-v0.4.34-plan.md`
   — **Chaser Wall Hacks** and the **Gawd Particle**. Found while reading
   `GameEngine.js` that chasers never had wall collision at all (only the
