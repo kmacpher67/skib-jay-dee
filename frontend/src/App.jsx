@@ -486,6 +486,7 @@ export default function App() {
               loadoutSpeedBonus={loadout.speedBonus}
               loadoutStaminaBonus={loadout.staminaBonus}
               loadoutRewardBonus={loadout.rewardBonus}
+              loadoutLuckBonus={loadout.luckBonus}
               initialSheebs={profile.sheebs}
               initialDeaths={profile.deaths}
               highestLevel={profile.highestLevel}
@@ -650,6 +651,7 @@ function MainMenu({
         <span>Speed +{loadout.speedBonus}</span>
         <span>Stamina +{loadout.staminaBonus}</span>
         <span>Rewards +{Math.round(loadout.rewardBonus * 100)}%</span>
+        {loadout.luckBonus > 0 && <span>Luck +{Math.round(loadout.luckBonus * 100)}%</span>}
       </div>
 
       <p className="hint">

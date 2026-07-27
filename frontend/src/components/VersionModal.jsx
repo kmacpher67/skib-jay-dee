@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.31',
+    title: 'The Jayden Gun + Lucky Charm',
+    description: 'Find the Jayden Gun on the map and press F (or the FIRE button) to stun a chaser for a few seconds. The new Lucky Charm shop items boost the odds of finding it, and earn the "Lucky" badge when your luck pays off.',
+  },
+  {
     version: 'v0.4.29',
     title: 'Multiple save slots',
     description: 'Tap your username on the menu to see every profile saved in this browser, switch between them, or start a new one.',

@@ -10,6 +10,23 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.31 — 2026-07-26
+
+- Shipped the **Jayden Gun**: map pickup (50% base spawn chance/level),
+  1-2 usable rounds, dedicated `F` key + touch FIRE button fires in the
+  runner's facing direction, 3-5s chaser stun on hit, gun disappears at
+  0 ammo. `frontend/src/GameEngine.js`.
+- Shipped the **Lucky Charm** shop items (`Lucky Charm` 150/+15%,
+  `Golden Lucky Charm` 250/+25%, stacking) and the **Lucky** badge,
+  firing on the luck bonus's first actual proc (two-stage roll) per
+  Ken's confirmed trigger. `frontend/src/gameContent.js`,
+  `frontend/src/GameEngine.js`.
+- Added `frontend/e2e/jayden-gun.spec.js` and
+  `frontend/e2e/lucky-charm.spec.js`. Full Playwright suite (20
+  active + 1 pre-existing skip) and `npm run build` pass.
+  `GAME_ITERATION` stays `v0.4.30.1` (no deploy requested). See
+  `docs/handoffs/roadmap-handoff-v0.4.31.md`.
+
 ## v0.4.31-plan — 2026-07-26 (docs-only)
 
 - Finalized design for two backlog items: the "Jayden" Gun (randomized

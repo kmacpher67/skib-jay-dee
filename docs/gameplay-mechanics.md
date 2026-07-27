@@ -52,23 +52,26 @@ plan — see `docs/roadmap.md` for open work.
 - **Sheebs penalty:** `sheebsLost = Math.min(this.sheebs, DEATH_SHEEBS_PENALTY)`
   where `DEATH_SHEEBS_PENALTY = 20` is applied (never letting balance go negative).
 
-## Loadout attributes (Speed / Stamina / Rewards)
+## Loadout attributes (Speed / Stamina / Rewards / Luck)
 
 Shown on the menu's perk strip (`App.jsx`: `Speed +{loadout.speedBonus}`,
-`Stamina +{loadout.staminaBonus}`, `Rewards +{...rewardBonus}`), computed
-by `buildLoadout(profile.ownedItems)` in `frontend/src/gameContent.js`
-from purchased Shleeb Shop items:
+`Stamina +{loadout.staminaBonus}`, `Rewards +{...rewardBonus}`, and
+`Luck +{...luckBonus}` once non-zero), computed by
+`buildLoadout(profile.ownedItems)` in `frontend/src/gameContent.js` from
+purchased Shleeb Shop items:
 
 | Shop item | Attribute | Effect |
 |---|---|---|
 | `turbo-clogs` | Speed | `+28` |
 | `deep-breath-tank` | Stamina | `+30` |
 | `sheeb-magnet` | Rewards | `+25%` |
+| `lucky-charm` | Luck | `+15%` |
+| `golden-lucky-charm` | Luck | `+25%` (stacks with `lucky-charm`) |
 
-These three numbers flow into `GameCanvas.jsx` as
-`loadoutSpeedBonus`/`loadoutStaminaBonus`/`loadoutRewardBonus` props,
-then into `GameEngine`'s constructor, which applies them once at game
-start (`GameEngine.js:462-468`):
+These numbers flow into `GameCanvas.jsx` as
+`loadoutSpeedBonus`/`loadoutStaminaBonus`/`loadoutRewardBonus`/`loadoutLuckBonus`
+props, then into `GameEngine`'s constructor, which applies them once at
+game start (`GameEngine.js:462-468`):
 
 - `this.runner.baseSpeed = 180 + loadout.speedBonus` — raises the
   runner's flat movement speed (before the `x1.8` sprint multiplier).
@@ -76,6 +79,8 @@ start (`GameEngine.js:462-468`):
   meter's ceiling, so sprint lasts longer before "tired" kicks in.
 - Reward bonus is applied per level clear, not at construction: `reward
   * (1 + loadout.rewardBonus)` (`GameEngine.js:712`).
+- Luck bonus feeds the Jayden Gun's per-level spawn roll — see
+  "The Jayden Gun" below.
 
 If it's at `0`, the item isn't owned yet — the perk strip always reads
 straight off the currently-owned loadout, it isn't a separate "attribute
@@ -84,6 +89,35 @@ future-versions parking lot also references a separate, unbuilt "Parody
 Attribute System" (Panic/Grip/Scream/Sus) — that's an unrelated, not-yet
 started idea, don't conflate it with the shop-loadout bonuses described
 here.)
+
+## The Jayden Gun
+
+- Once per level, `_maybeSpawnGunPickup()` (`GameEngine.js`) rolls a
+  `GUN_BASE_SPAWN_CHANCE = 50%` chance to spawn a gun pickup at a random
+  walkable point on the map (at least 150px from the runner's spawn). If
+  that base roll fails, a second roll checks the player's `luckBonus`
+  (see the loadout table above) — succeeding there still spawns the
+  pickup, and marks it as a genuine luck proc.
+- The "Lucky" badge fires the first time that second, luck-only roll
+  succeeds — not on purchase, and not on every gun spawn (a spawn from
+  the base 50% roll alone doesn't count, since the luck bonus didn't
+  cause it).
+- Picking up the gun (`_checkPickups()`) grants 1 usable round 70% of
+  the time, 2 the rest (`GUN_AMMO_ONE_CHANCE`). This represents "1-2
+  live rounds out of a mostly-empty 6-round cylinder" as flavor, not a
+  literal per-shot chamber simulation.
+- Fire with the dedicated `F` key or the on-canvas FIRE button (only
+  rendered while a gun is held), on a `GUN_FIRE_COOLDOWN = 0.6s`
+  cooldown. The bullet travels in the runner's current facing direction
+  (`runner.facing`, updated continuously off the movement vector) at
+  `GUN_BULLET_SPEED = 480`px/s and is removed on leaving the world
+  bounds or hitting a wall.
+- A hit stuns the chaser for a random `GUN_STUN_MIN..GUN_STUN_MAX =
+  3-5s` (frozen in place, dazed sprite overlay) — never a permanent
+  despawn, by design, to keep the chase difficult long-term.
+- Firing with no gun (or 0 ammo) is a harmless comedic no-op — a
+  `GUN_CLICK_LINES` speech bubble, no gameplay effect. Firing the last
+  round removes the gun from `runner.gun` entirely.
 
 ## Extra chasers (multi-chaser pressure mechanic)
 

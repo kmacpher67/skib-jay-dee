@@ -5,7 +5,7 @@ Use this as the handoff doc for the next agent working in the repo.
 ## Current state
 
 - **Live production bug (black screen on Quick Play) is now resolved:** v0.4.30's Badges integration left `onBadgeEarned` out of `GameEngine`'s constructor destructuring, throwing a `ReferenceError` on boot and crashing the React tree before `<canvas>` could mount. Fixed, verified (18/18 Playwright), and shipped as **v0.4.30.1** — see `docs/handoffs/roadmap-handoff-v0.4.30.md` and `docs/version-log.md`.
-- **Next up (design finalized, ready for a Mode B session):** the "Jayden" Gun and a new "Lucky Charm" Shleeb Shop item + "Lucky" badge. Full confirmed design in `docs/handoffs/roadmap-handoff-v0.4.31-plan.md` — read it before coding, it has the copy-paste block and the still-open (non-blocking) small decisions to flag for Ken along the way. Rolling Pickups (Mario-style) is still an undesigned backlog item, separate from this plan.
+- **v0.4.31 (real code):** implemented both items from the v0.4.31-plan handoff in one session — the **Jayden Gun** (map pickup, 1-2 usable rounds, dedicated `F` key + touch FIRE button, fires in the runner's facing direction, 3-5s chaser stun, gun disappears at 0 ammo) and the **Lucky Charm** shop items + **Lucky** badge (`Lucky Charm` 150/+15%, `Golden Lucky Charm` 250/+25%, stacking; badge fires on the luck bonus's first actual proc via a two-stage spawn roll, confirmed with Ken before coding). New `frontend/e2e/jayden-gun.spec.js` and `frontend/e2e/lucky-charm.spec.js`; full 21-test suite (20 active, 1 pre-existing skip) and `npm run build` pass. `GAME_ITERATION` stays `v0.4.30.1` — bump/deploy was scoped "only if asked" and wasn't. See `docs/handoffs/roadmap-handoff-v0.4.31.md`. Rolling Pickups (Mario-style) is still an undesigned backlog item, unrelated to this session.
 - **Process note:** `docs/skib-sdlc.md` now has an explicit "no code-cowboy sessions" rule — don't fix a bug found mid-planning inline in a `-plan.md`, give it its own Mode B session; and don't mark a design question "unblocked" for coding unless the user actually answered it in conversation.
 - **Live production bug (broken face preview images) is now resolved:** the `v0.4.25` deploy included the fix where `App.jsx` was coercing the face pool object to `[object Object]`. The production menu now correctly shows the selected face assets.
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
@@ -83,6 +83,10 @@ Use this as the handoff doc for the next agent working in the repo.
 - `docs/handoffs/roadmap-handoff-v0.4.18-plan.md`
 - `docs/profiles-and-identity.md`
 - `frontend/src/components/ProfileSwitcherModal.jsx`
+- `docs/handoffs/roadmap-handoff-v0.4.31.md`
+- `docs/handoffs/roadmap-handoff-v0.4.31-plan.md`
+- `frontend/e2e/jayden-gun.spec.js`
+- `frontend/e2e/lucky-charm.spec.js`
 - `scripts/run_code_monkey.sh`
 - `scripts/code_monkey_direct.py`
 
@@ -122,6 +126,7 @@ manually:
 - If the runner survives a level too long without getting caught, extra toilets join the chase (capped, resets on capture or level change) — the HUD shows "TOILETS ON YOU" once more than one is active.
 - A discreet version/iteration label now appears in the menu and the in-game HUD so deploys can be matched to a visible build tag.
 - New chaser/runner faces are added by dropping an image in `frontend/src/assets/` and adding one entry to `RUNNER_FACE_POOL` / `CHASER_FACE_POOL` in `frontend/src/gameContent.js` — see `crazy-jack-chaser` for the pattern.
+- The runner can find a Jayden Gun map pickup (once per level, odds boosted by the Lucky Charm shop items); fire it with `F` or the on-canvas FIRE button to stun the closest chaser you're facing for 3-5s.
 
 ## Where to edit things
 
@@ -134,6 +139,7 @@ manually:
 
 ## Natural follow-up work
 
+- **Jayden Gun + Lucky Charm/Lucky badge landed in v0.4.31** — no longer on this list. Rolling Pickups (Mario-style) is still a separate, undesigned backlog item.
 - Oldest unfinished handoff is **v0.4.26-plan (sheebs debt above level 3, losable shop items above level 4)**, but it is explicitly **blocked on product decisions from Ken** — see the "Flag for Ken" section of `docs/handoffs/roadmap-handoff-v0.4.26-plan.md`. Don't start coding it until those are answered.
 - `v0.4.25` is now shipped: the post-kill profile card, killer-ID logging, and clickable deaths log are in production.
 - **Game identity / multiple cookie-backed save slots landed in v0.4.29** — the profile switcher, `localStorage` registry, and `docs/profiles-and-identity.md` are all in place. No longer on this list.

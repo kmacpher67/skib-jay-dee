@@ -47,6 +47,22 @@ export const NEAR_CAPTURE_LINES = [
   'Skib is right behind you!',
 ]
 
+// Shown near the runner when the Jayden Gun is fired with no rounds left.
+export const GUN_CLICK_LINES = [
+  '*click*',
+  'EMPTY CHAMBER, GENIUS.',
+  'SAVE THE DRAMA, IT AIN\'T LOADED.',
+]
+
+// Shown in a speech bubble above a chaser the instant it gets stunned.
+export const GUN_HIT_LINES = [
+  'OW MY BUTTHOLE!',
+  'NOT THE FACE!',
+  'WHY DOES IT SMELL LIKE GUNPOWDER?!',
+  'BRO SHOT ME?!',
+  'DAZED AND CONFUSED!',
+]
+
 // Level 4 "Stakes Are Real" transition screen text.
 export const LEVEL_4_RULES = {
   header: 'WARNING: WELCOME TO LEVEL 4. THE STAKES ARE REAL.',

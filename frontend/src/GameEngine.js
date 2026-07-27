@@ -3,7 +3,14 @@
 // Keeps the action in one place so React stays out of the hot path.
 
 import { GAME_ITERATION } from './version.js'
-import { CAPTURE_LINES, CHASER_LINES, TIRED_LINES, NEAR_CAPTURE_LINES } from './dialog.js'
+import {
+  CAPTURE_LINES,
+  CHASER_LINES,
+  TIRED_LINES,
+  NEAR_CAPTURE_LINES,
+  GUN_CLICK_LINES,
+  GUN_HIT_LINES,
+} from './dialog.js'
 import { CHASER_FACE_POOL, getChaserProfile, randomFrom } from './gameContent.js'
 
 export const WORLD = {
@@ -330,6 +337,18 @@ const CHASER_SPEED_MOD_LEVEL_STEP = 0.06
 const CHASER_JOIN_RAMP_START = 0.7
 const CHASER_JOIN_RAMP_SECONDS = 5
 
+// The Jayden Gun: a rare map pickup, not a power fantasy. Only 1-2 of the
+// 6 chambers are ever usable, it never permanently removes a chaser, and
+// it vanishes the moment it's out of ammo.
+const GUN_BASE_SPAWN_CHANCE = 0.5
+const GUN_AMMO_ONE_CHANCE = 0.7 // otherwise rolls 2
+const GUN_FIRE_COOLDOWN = 0.6
+const GUN_BULLET_SPEED = 480
+const GUN_BULLET_SIZE = 8
+const GUN_STUN_MIN = 3
+const GUN_STUN_MAX = 5
+const GUN_PICKUP_SIZE = 28
+
 export class GameEngine {
   constructor(
     canvas,
@@ -386,6 +405,8 @@ export class GameEngine {
       isCustom: false,
       gettingCapturedFace: null,
       capturedFace: null,
+      facing: { x: 0, y: 1 },
+      gun: null,
     }
     this.chaser = {
       x: WORLD.width / 2 - 20,
@@ -395,6 +416,7 @@ export class GameEngine {
       baseSpeed: 130,
       color: '#8a5a34',
       face: null,
+      stunnedUntil: 0,
     }
     // Extra toilets that join in if the runner survives one level too long.
     // this.chaser is always chasers[0]; extras are cloned from it.
@@ -436,11 +458,18 @@ export class GameEngine {
     this.pipeworksTransitionReady = false
     this._pipeworksHallCoverageGrid = null
 
-    this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0 }
+    this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0, luckBonus: 0 }
+
+    this.pickups = []
+    this.bullets = []
+    this.fireCooldown = 0
+    this.luckyBadgeEarned = (earnedBadges || []).includes('lucky')
 
     this.joystick = { active: false, id: null, cx: 0, cy: 0, dx: 0, dy: 0 }
     this.sprintBtn = { active: false, id: null }
-    this.keys = { up: false, down: false, left: false, right: false, sprint: false }
+    this.fireBtn = { active: false, id: null }
+    this.keys = { up: false, down: false, left: false, right: false, sprint: false, fire: false }
+    this._firePrevHeld = false
 
     this.setLoadout(loadout)
     this._syncLevelState({ resetPositions: true, notify: false })
@@ -475,6 +504,7 @@ export class GameEngine {
 
   setEarnedBadges(badges) {
     this.earnedBadges = badges || []
+    this.luckyBadgeEarned = this.earnedBadges.includes('lucky')
   }
 
   setLoadout(loadout = {}) {
@@ -482,6 +512,7 @@ export class GameEngine {
       speedBonus: Number.isFinite(loadout.speedBonus) ? loadout.speedBonus : 0,
       staminaBonus: Number.isFinite(loadout.staminaBonus) ? loadout.staminaBonus : 0,
       rewardBonus: Number.isFinite(loadout.rewardBonus) ? loadout.rewardBonus : 0,
+      luckBonus: Number.isFinite(loadout.luckBonus) ? loadout.luckBonus : 0,
     }
 
     this.runner.baseSpeed = 180 + this.loadout.speedBonus
@@ -549,11 +580,15 @@ export class GameEngine {
     this.joystick.dy = 0
     this.sprintBtn.active = false
     this.sprintBtn.id = null
+    this.fireBtn.active = false
+    this.fireBtn.id = null
     this.keys.up = false
     this.keys.down = false
     this.keys.left = false
     this.keys.right = false
     this.keys.sprint = false
+    this.keys.fire = false
+    this._firePrevHeld = false
   }
 
   _handleKey(e, isDown) {
@@ -580,6 +615,9 @@ export class GameEngine {
       case 'Space':
         this.keys.sprint = isDown
         break
+      case 'KeyF':
+        this.keys.fire = isDown
+        break
       default:
         handled = false
     }
@@ -602,12 +640,26 @@ export class GameEngine {
     return { x: VIEW_W - 55, y: VIEW_H - 90 }
   }
 
+  _fireOrigin() {
+    return { x: VIEW_W - 55, y: VIEW_H - 165 }
+  }
+
   _handlePointerDown(e) {
     const { x, y } = this._toViewCoords(e)
     const j = this._joystickOrigin()
     const s = this._sprintOrigin()
+    const f = this._fireOrigin()
     const distJoy = Math.hypot(x - j.x, y - j.y)
     const distSprint = Math.hypot(x - s.x, y - s.y)
+    const distFire = Math.hypot(x - f.x, y - f.y)
+
+    if (this.runner.gun && distFire < 34) {
+      this.fireBtn.active = true
+      this.fireBtn.id = e.pointerId
+      this._tryFire()
+      this.canvas.setPointerCapture?.(e.pointerId)
+      return
+    }
 
     if (distSprint < 45) {
       this.sprintBtn.active = true
@@ -644,6 +696,11 @@ export class GameEngine {
     if (e.pointerId === this.sprintBtn.id) {
       this.sprintBtn.active = false
       this.sprintBtn.id = null
+    }
+
+    if (e.pointerId === this.fireBtn.id) {
+      this.fireBtn.active = false
+      this.fireBtn.id = null
     }
 
     try {
@@ -711,6 +768,10 @@ export class GameEngine {
       this.chaser.y = this.level.chaserSpawn.y
       this.stamina = this.maxStamina
     }
+
+    this.bullets = []
+    this.pickups = []
+    this._maybeSpawnGunPickup()
 
     if (notify) {
       this.onLevelChange({
@@ -820,10 +881,19 @@ export class GameEngine {
     this.runnerLineTimer = Math.max(0, this.runnerLineTimer - dt)
     this.nearCaptureCooldown = Math.max(0, this.nearCaptureCooldown - dt)
     this.levelElapsed += dt
+    this.fireCooldown = Math.max(0, this.fireCooldown - dt)
 
     const speed = this.runner.baseSpeed * (sprinting ? 1.8 : 1)
     const move = this._getMoveVector()
+    if (move.x !== 0 || move.y !== 0) this.runner.facing = { x: move.x, y: move.y }
     this._moveWithCollision(this.runner, move.x * speed * dt, move.y * speed * dt)
+
+    const fireHeld = this.keys.fire || this.fireBtn.active
+    if (fireHeld && !this._firePrevHeld) this._tryFire()
+    this._firePrevHeld = fireHeld
+
+    this._updateBullets(dt)
+    this._checkPickups()
 
     this._maybeSpawnExtraChaser(dt)
     this._updatePipeworksGateProgress(dt)
@@ -837,13 +907,18 @@ export class GameEngine {
       const dx = this.runner.x - chaser.x
       const dy = this.runner.y - chaser.y
       const dist = Math.hypot(dx, dy) || 1
-      chaser.joinRamp = Math.min(1, (chaser.joinRamp ?? 1) + dt / CHASER_JOIN_RAMP_SECONDS)
-      const joinRampMod = lerp(CHASER_JOIN_RAMP_START, 1, chaser.joinRamp)
-      const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod
-      chaser.x += (dx / dist) * chaserSpeed * dt
-      chaser.y += (dy / dist) * chaserSpeed * dt
-      chaser.x = clamp(chaser.x, 24, WORLD.width - 24 - chaser.w)
-      chaser.y = clamp(chaser.y, 24, WORLD.height - 24 - chaser.h)
+
+      if (chaser.stunnedUntil > 0) {
+        chaser.stunnedUntil = Math.max(0, chaser.stunnedUntil - dt)
+      } else {
+        chaser.joinRamp = Math.min(1, (chaser.joinRamp ?? 1) + dt / CHASER_JOIN_RAMP_SECONDS)
+        const joinRampMod = lerp(CHASER_JOIN_RAMP_START, 1, chaser.joinRamp)
+        const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod
+        chaser.x += (dx / dist) * chaserSpeed * dt
+        chaser.y += (dy / dist) * chaserSpeed * dt
+        chaser.x = clamp(chaser.x, 24, WORLD.width - 24 - chaser.w)
+        chaser.y = clamp(chaser.y, 24, WORLD.height - 24 - chaser.h)
+      }
 
       if (dist < 300) {
         const gain = dt * (300 - dist) * 0.06
@@ -928,6 +1003,7 @@ export class GameEngine {
       h: 44,
       baseSpeed: this.chaser.baseSpeed,
       joinRamp: 0,
+      stunnedUntil: 0,
       color: this.chaser.color,
       face: extraFace,
       faceId: extraFaceId,
@@ -936,6 +1012,111 @@ export class GameEngine {
       count: this.chasers.length,
       index: this.chasers.length - 1,
       faceId: extraFaceId,
+    })
+  }
+
+  _checkPickups() {
+    if (this.pickups.length === 0) return
+
+    this.pickups = this.pickups.filter((pickup) => {
+      if (!rectsIntersect(this.runner, pickup)) return true
+
+      if (pickup.type === 'gun') {
+        const ammo = Math.random() < GUN_AMMO_ONE_CHANCE ? 1 : 2
+        this.runner.gun = { ammo }
+      }
+      return false
+    })
+  }
+
+  _maybeSpawnGunPickup() {
+    const luckBonus = this.loadout.luckBonus || 0
+    const baseRoll = Math.random() < GUN_BASE_SPAWN_CHANCE
+    let luckProced = false
+
+    if (!baseRoll && luckBonus > 0) {
+      luckProced = Math.random() < luckBonus
+    }
+
+    if (!baseRoll && !luckProced) return
+
+    const spawn = this._findRandomWalkableSpawn()
+    if (!spawn) return
+
+    this.pickups.push({
+      type: 'gun',
+      x: spawn.x,
+      y: spawn.y,
+      w: GUN_PICKUP_SIZE,
+      h: GUN_PICKUP_SIZE,
+    })
+
+    if (luckProced && !this.luckyBadgeEarned) {
+      this.luckyBadgeEarned = true
+      this.onBadgeEarned('lucky')
+    }
+  }
+
+  _findRandomWalkableSpawn() {
+    for (let attempt = 0; attempt < 30; attempt++) {
+      const x = 60 + Math.random() * (WORLD.width - 120)
+      const y = 60 + Math.random() * (WORLD.height - 120)
+      const rect = { x, y, w: GUN_PICKUP_SIZE, h: GUN_PICKUP_SIZE }
+      if (this._hitsWall(rect)) continue
+
+      const distFromRunnerSpawn = Math.hypot(x - this.level.runnerSpawn.x, y - this.level.runnerSpawn.y)
+      if (distFromRunnerSpawn < 150) continue
+
+      return { x, y }
+    }
+    return null
+  }
+
+  _tryFire() {
+    if (this.phase !== 'chase' || this.fireCooldown > 0) return
+    this.fireCooldown = GUN_FIRE_COOLDOWN
+
+    if (!this.runner.gun || this.runner.gun.ammo <= 0) {
+      this.runnerLine = GUN_CLICK_LINES[Math.floor(Math.random() * GUN_CLICK_LINES.length)]
+      this.runnerLineTimer = 1.2
+      return
+    }
+
+    this.runner.gun.ammo -= 1
+    const dir = this.runner.facing
+    this.bullets.push({
+      x: this.runner.x + this.runner.w / 2 - GUN_BULLET_SIZE / 2,
+      y: this.runner.y + this.runner.h / 2 - GUN_BULLET_SIZE / 2,
+      w: GUN_BULLET_SIZE,
+      h: GUN_BULLET_SIZE,
+      vx: dir.x * GUN_BULLET_SPEED,
+      vy: dir.y * GUN_BULLET_SPEED,
+    })
+
+    if (this.runner.gun.ammo <= 0) this.runner.gun = null
+  }
+
+  _updateBullets(dt) {
+    if (this.bullets.length === 0) return
+
+    this.bullets = this.bullets.filter((bullet) => {
+      bullet.x += bullet.vx * dt
+      bullet.y += bullet.vy * dt
+
+      if (bullet.x < 0 || bullet.x > WORLD.width || bullet.y < 0 || bullet.y > WORLD.height) return false
+      if (this._hitsWall(bullet)) return false
+
+      for (const chaser of this.chasers) {
+        if (rectsIntersect(bullet, chaser) && !(chaser.stunnedUntil > 0)) {
+          chaser.stunnedUntil = GUN_STUN_MIN + Math.random() * (GUN_STUN_MAX - GUN_STUN_MIN)
+          this.chaserLine = GUN_HIT_LINES[Math.floor(Math.random() * GUN_HIT_LINES.length)]
+          this.chaserLineTimer = 2
+          this.onChaserBark(this.chaserLine)
+          return false
+        }
+      }
+
+      return true
     })
   }
 
@@ -1094,6 +1275,7 @@ export class GameEngine {
       this.runner.y = this.level.runnerSpawn.y
       this.chaser.x = this.level.chaserSpawn.x
       this.chaser.y = this.level.chaserSpawn.y
+      this.chaser.stunnedUntil = 0
       this.chasers = [this.chaser]
       this.extraChaserTimer = EXTRA_CHASER_INTERVAL
       this.zoom = 1
@@ -1155,8 +1337,13 @@ export class GameEngine {
     ctx.save()
     this._applyCamera(ctx)
     this._drawMap(ctx)
-    this.chasers.forEach((chaser) => this._drawEntity(ctx, chaser))
+    this._drawPickups(ctx)
+    this.chasers.forEach((chaser) => {
+      this._drawEntity(ctx, chaser)
+      if (chaser.stunnedUntil > 0) this._drawStunEffect(ctx, chaser)
+    })
     this._drawEntity(ctx, this.runner)
+    this._drawBullets(ctx)
     ctx.restore()
 
     this._drawHud(ctx)
@@ -1228,6 +1415,45 @@ export class GameEngine {
     })
   }
 
+  _drawPickups(ctx) {
+    this.pickups.forEach((pickup) => {
+      ctx.save()
+      ctx.fillStyle = '#3a3a3a'
+      ctx.fillRect(pickup.x, pickup.y, pickup.w, pickup.h)
+      ctx.strokeStyle = '#ffd27a'
+      ctx.lineWidth = 2
+      ctx.strokeRect(pickup.x, pickup.y, pickup.w, pickup.h)
+      ctx.fillStyle = '#ffd27a'
+      ctx.font = 'bold 16px sans-serif'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText('🔫', pickup.x + pickup.w / 2, pickup.y + pickup.h / 2)
+      ctx.restore()
+    })
+  }
+
+  _drawBullets(ctx) {
+    ctx.save()
+    ctx.fillStyle = '#ffd27a'
+    this.bullets.forEach((bullet) => {
+      ctx.beginPath()
+      ctx.arc(bullet.x + bullet.w / 2, bullet.y + bullet.h / 2, bullet.w / 2, 0, Math.PI * 2)
+      ctx.fill()
+    })
+    ctx.restore()
+  }
+
+  _drawStunEffect(ctx, chaser) {
+    ctx.save()
+    ctx.fillStyle = 'rgba(255, 220, 80, 0.35)'
+    ctx.fillRect(chaser.x, chaser.y, chaser.w, chaser.h)
+    ctx.font = 'bold 14px sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText('💫', chaser.x + chaser.w / 2, chaser.y - 10)
+    ctx.restore()
+  }
+
   _drawEntity(ctx, entity) {
     if (entity.face) {
       ctx.save()
@@ -1286,6 +1512,18 @@ export class GameEngine {
     }
     ctx.restore()
 
+    if (this.runner.gun) {
+      ctx.save()
+      ctx.fillStyle = 'rgba(0,0,0,0.4)'
+      ctx.fillRect(0, 54, 110, 20)
+      ctx.fillStyle = '#ffd27a'
+      ctx.font = 'bold 11px sans-serif'
+      ctx.textAlign = 'left'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(`🔫 AMMO: ${this.runner.gun.ammo}`, 10, 64)
+      ctx.restore()
+    }
+
     ctx.save()
     ctx.fillStyle = 'rgba(255,255,255,0.32)'
     ctx.font = 'bold 9px sans-serif'
@@ -1336,6 +1574,25 @@ export class GameEngine {
     ctx.fillText('SPACE', s.x, s.y + 16)
     ctx.restore()
 
+    if (this.runner.gun) {
+      const f = this._fireOrigin()
+      ctx.save()
+      ctx.globalAlpha = this.fireBtn.active ? 0.95 : 0.6
+      ctx.fillStyle = '#ffd27a'
+      ctx.beginPath()
+      ctx.arc(f.x, f.y, 34, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.globalAlpha = 1
+      ctx.fillStyle = '#1c1f2b'
+      ctx.font = 'bold 12px sans-serif'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText('FIRE', f.x, f.y)
+      ctx.font = 'bold 9px sans-serif'
+      ctx.fillText('F', f.x, f.y + 14)
+      ctx.restore()
+    }
+
     ctx.save()
     ctx.fillStyle = 'rgba(255,255,255,0.68)'
     ctx.font = 'bold 11px sans-serif'
@@ -1367,6 +1624,8 @@ export class GameEngine {
         if (badgeId === 'glutton-for-punishment') badgeStr += '💀 '
         if (badgeId === 'slippery-when-wet') badgeStr += '💧 '
         if (badgeId === 'devs-owe-me-five-bucks') badgeStr += '💸 '
+        if (badgeId === 'lucky') badgeStr += '🍀 '
+        if (badgeId === 'lucky') badgeStr += '🍀 '
       }
       ctx.fillStyle = 'white'
       ctx.fillText(badgeStr.trim(), VIEW_W / 2, VIEW_H / 2 + 60)

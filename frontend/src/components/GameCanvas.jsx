@@ -20,6 +20,7 @@ export default function GameCanvas({
   loadoutSpeedBonus,
   loadoutStaminaBonus,
   loadoutRewardBonus,
+  loadoutLuckBonus,
   initialSheebs,
   initialDeaths,
   highestLevel,
@@ -65,6 +66,7 @@ export default function GameCanvas({
         speedBonus: loadoutSpeedBonus,
         staminaBonus: loadoutStaminaBonus,
         rewardBonus: loadoutRewardBonus,
+        luckBonus: loadoutLuckBonus,
       },
     })
     engineRef.current = engine
@@ -111,8 +113,9 @@ export default function GameCanvas({
       speedBonus: loadoutSpeedBonus,
       staminaBonus: loadoutStaminaBonus,
       rewardBonus: loadoutRewardBonus,
+      luckBonus: loadoutLuckBonus,
     })
-  }, [loadoutSpeedBonus, loadoutStaminaBonus, loadoutRewardBonus])
+  }, [loadoutSpeedBonus, loadoutStaminaBonus, loadoutRewardBonus, loadoutLuckBonus])
 
   useEffect(() => {
     if (!engineRef.current) return

@@ -6,6 +6,87 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.31 — Jayden Gun + Lucky Charm shipped (2026-07-26)
+
+### What changed
+
+- Implemented the **Jayden Gun** exactly per the confirmed v0.4.31-plan
+  design: `frontend/src/GameEngine.js` now spawns a map pickup once per
+  level (`GUN_BASE_SPAWN_CHANCE = 50%`, `_maybeSpawnGunPickup()`),
+  grants 1-2 usable rounds on collection (`GUN_AMMO_ONE_CHANCE = 70%`
+  for 1, else 2), fires a bullet in the runner's current facing
+  direction on a dedicated `F` key (plus an on-canvas touch FIRE button
+  that only renders while a gun is held), stuns whatever chaser it hits
+  for a random 3-5s (frozen in place, dazed sprite overlay, no
+  despawn), and removes the gun from inventory the instant ammo hits
+  zero. Runner facing is now tracked continuously off the existing move
+  vector (`runner.facing`) instead of a new input scheme.
+- Implemented the **Lucky Charm** Shleeb Shop items and the **Lucky**
+  badge. Ken's answer to the cost/odds prompt was "both" tiers: `Lucky
+  Charm` (150 sheebs, +15% positive-pickup odds) and `Golden Lucky
+  Charm` (250 sheebs, +25%), added to `SHOP_ITEMS` in
+  `frontend/src/gameContent.js` and stacking additively in
+  `buildLoadout()`'s new `luckBonus` field (same pattern as the
+  existing speed/stamina/reward bonuses). The gun's spawn roll is a
+  two-stage check — a base roll against 50%, and only if that fails, a
+  second roll against the owned `luckBonus` — so a spawn that only
+  succeeded because of the second roll is unambiguously "the luck bonus
+  actually procing," matching Ken's confirmed trigger. The `lucky`
+  badge fires (once, deduped like the other badges) the first time that
+  second roll succeeds.
+- Comedic flavor (left open, non-blocking, decided during coding): an
+  empty-handed `F` press shows a `*click*`-style speech bubble
+  (`GUN_CLICK_LINES` in `frontend/src/dialog.js`); a landed shot shows a
+  dazed reaction line above the chaser (`GUN_HIT_LINES`). Fire cooldown
+  set to `GUN_FIRE_COOLDOWN = 0.6s` between shots.
+- Added `frontend/e2e/jayden-gun.spec.js` (pickup → ammo → aimed shot →
+  stun window → gun-disappears-at-0-ammo → empty-handed click, all via
+  direct engine state manipulation like the existing specs) and
+  `frontend/e2e/lucky-charm.spec.js` (forces the base roll to fail and
+  the luck roll to succeed via a scoped `Math.random` override, asserts
+  the bonus pickup spawns and the `lucky` badge fires exactly once).
+  Full 21-test suite (20 active, 1 pre-existing `test.skip`) passes;
+  `npm run build` is clean.
+- Manually verified in a headless preview (screenshots, not just
+  assertions): the gun pickup sprite renders on the map, the ammo HUD
+  and FIRE button appear once held, and both new shop cards render with
+  correct copy/cost/effect labels.
+
+### Design decisions
+
+- Kept ammo pickups as "already-usable rounds" (1-2) rather than
+  simulating literal empty chambers during firing — the "6-round
+  cylinder, mostly empty" framing from the plan is flavor/lore for why
+  the roll is so stingy, not a per-shot RNG layer. This keeps the skill
+  ceiling on aiming, not luck-of-the-draw misfires.
+- Chose the two-stage roll (base, then luck-only-if-base-failed) for
+  the badge trigger instead of just checking "did the player own a
+  charm when something spawned," because the plan's confirmed trigger
+  is specifically "the bonus procs," i.e. causes a spawn that wouldn't
+  have happened otherwise — the two-stage roll is the direct, honest
+  implementation of that counterfactual instead of an approximation.
+- Made the two Lucky Charm tiers independent, stacking shop items
+  (matching every other shop item's ownership-check pattern) rather
+  than an upgrade/replace pair, since Ken's answer was "both" — buying
+  both nets the full +40%.
+- Placed the touch FIRE button above the SPRINT button and gated its
+  render on actually holding a gun, so the mobile control layout stays
+  uncluttered for the (common) case of not currently having one.
+- `GAME_ITERATION` stays `v0.4.30.1` — bump/deploy was explicitly scoped
+  to "only if asked" for this session, and it wasn't.
+
+### Known non-goals for this pass
+
+- No Rolling Pickups (Mario-style) work — separate, still-undesigned
+  backlog item, out of scope per the plan doc.
+- No Schleimy Potion — still its own blocked-on-tuning backlog item; the
+  Lucky Charm's "future good items" framing is forward-looking, not a
+  claim that the potion exists yet.
+- Didn't retroactively add the missing v0.4.30/v0.4.30.1 entries to
+  `VersionModal.jsx`'s `PAST_VERSION_NOTES` (a pre-existing gap, not
+  something this session's scope touched) — only this version's own
+  entry was added.
+
 ## v0.4.31-plan — Jayden Gun + Lucky Charm design finalized (2026-07-26)
 
 ### What changed

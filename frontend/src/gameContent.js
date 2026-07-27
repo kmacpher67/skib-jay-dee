@@ -127,6 +127,12 @@ export const BADGES = {
     lore: "Honestly, we didn't think you'd make it this far. The developers were taking bets against you.",
     emoji: '💸',
   },
+  'lucky': {
+    id: 'lucky',
+    name: 'Lucky',
+    lore: "That gun spawning right where you needed it wasn't fate. It was the clover in your pocket.",
+    emoji: '🍀',
+  },
 }
 
 export const SHOP_ITEMS = [
@@ -150,6 +156,20 @@ export const SHOP_ITEMS = [
     cost: 160,
     description: 'Level rewards get boosted when you clear the madness.',
     effectLabel: '+25% level payouts',
+  },
+  {
+    id: 'lucky-charm',
+    name: 'Lucky Charm',
+    cost: 150,
+    description: 'A four-leaf clover taped to your keys. Good stuff starts turning up more.',
+    effectLabel: '+15% positive pickup odds',
+  },
+  {
+    id: 'golden-lucky-charm',
+    name: 'Golden Lucky Charm',
+    cost: 250,
+    description: 'The upgraded charm. Even shinier, even luckier. Stacks with the regular one.',
+    effectLabel: '+25% positive pickup odds',
   },
 ]
 
@@ -178,10 +198,13 @@ export function buildLoadout(ownedItems = []) {
   let speedBonus = 0
   let staminaBonus = 0
   let rewardBonus = 0
+  let luckBonus = 0
 
   if (owned.has('turbo-clogs')) speedBonus += 28
   if (owned.has('deep-breath-tank')) staminaBonus += 30
   if (owned.has('sheeb-magnet')) rewardBonus += 0.25
+  if (owned.has('lucky-charm')) luckBonus += 0.15
+  if (owned.has('golden-lucky-charm')) luckBonus += 0.25
 
-  return { speedBonus, staminaBonus, rewardBonus }
+  return { speedBonus, staminaBonus, rewardBonus, luckBonus }
 }

@@ -48,7 +48,7 @@ You can stub these in as placeholder tasks so the developer knows what to expect
 
 **Asset 5: "Lucky" Badge**
 
-* **Trigger:** The "Lucky Charm" Shleeb Shop item's luck bonus actually procs — i.e. it causes an extra positive map pickup (Jayden Gun, Schleimy Potion, or future good item) to spawn that wouldn't have otherwise. Not awarded just for buying the item — see the open design item in `docs/roadmap.md` (Ken to confirm before coding).
+* **Trigger:** The "Lucky Charm" Shleeb Shop item's luck bonus actually procs — i.e. it causes an extra positive map pickup (Jayden Gun, Schleimy Potion, or future good item) to spawn that wouldn't have otherwise. Not awarded just for buying the item. Confirmed by Ken and implemented in v0.4.31 — see `docs/handoffs/roadmap-handoff-v0.4.31.md`.
 * **Concept:** A lucky break paying off.
 * **Description:** A four-leaf clover with a small sparkle/shine burst behind it, in the same simple/legible style as the other badges.
 
