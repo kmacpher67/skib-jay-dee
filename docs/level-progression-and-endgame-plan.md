@@ -1,5 +1,8 @@
 # Level Progression & Endgame Arc — Plan
 
+**Created by:** Claude (Sonnet 5) — 2026-07-26
+**Last updated by:** Claude Sonnet 5 — 2026-07-27
+
 **Status:** Parked planning note, not a handoff. Written 2026-07-26 in
 response to Ken's ask: "add level 6 and plans for beyond... detailed
 design docs for each level to improve play, add content and complete
@@ -114,6 +117,21 @@ toward, rather than staying endless forever.
     - *Temporal Echoes:* Record player movement for 5 seconds to repeat that path as a switch-holder in an alternate world.
   - **Puzzle Flow & Pacing:** Use distinct color palettes (Visual Clarity) for each universe. Start with one-way state changes, layer into two-way loops, and always include a quick-reset button for fail-safe resets to avoid soft-locks.
   - **Design Goal:** Keep it fun and interesting, not impossible.
+  - **Reviewed 2026-07-27 (vibe pass, no changes to the concept above):**
+    re-read this section against the "no code-cowboy" rule in
+    `docs/skib-sdlc.md` (don't quietly upgrade an open creative question
+    to "decided"). One real gap found: the outside-AI discussion that
+    proposed this section explicitly asked *how the player triggers a
+    dimension shift* — a static floor trap they run over, or an active
+    held item like the Jayden Gun — and that question was never actually
+    answered by Ken, only left open in the source transcript. Recording
+    it here as its own explicit open question (folded into "Flag for
+    Ken" below) rather than letting a future session assume one answer.
+    Also cross-referencing `docs/difficulty-mechanics-plan.md`'s
+    "Predictability vs. findability" note: the Mosaic map's room/artifact
+    shuffle is exactly the kind of "findable if you learn the seed"
+    feature that auto-tuning difficulty should *not* touch — the economy
+    knob flexes, the map rules don't.
 
 ## Flag for Ken — creative decisions this doc does not make up
 
@@ -150,6 +168,12 @@ session builds Level 6 or 7:
    PDF) is still unclaimed by any level in this plan — worth deciding
    whether she's a Level 6/7 addition too, or stays parked for a later
    phase.
+7. **NEW (flagged 2026-07-27): how does the player trigger a Mosaic
+   dimension shift?** A static "Glitch Puddle" the player has to run
+   over, or an active held item like the Jayden Gun/Heavy Plunger that
+   they choose when to use? This changes the mechanic's whole feel
+   (forced/random vs. player-controlled) and needs your call before any
+   Mode B session builds the Glitch Zones/Rift Anchors mechanics above.
 
 ## Roadmap/backlog updates this doc makes
 

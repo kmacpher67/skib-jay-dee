@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Claude (Sonnet 5) — 2026-07-27
+**Last updated by:** Claude Sonnet 5 — 2026-07-27
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -13,6 +13,24 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.39-plan addendum (docs-only, most recent session, 2026-07-27):**
+  interactive vibe discussion with Ken on auto-tuning difficulty (rolling
+  deaths/sheebs ratio) and the parked Level 7+ Mosaic Map of Madness
+  concept. Extended the open `v0.4.39-plan` handoff rather than opening a
+  new one. Verdict on auto-tuning: keep the ratio signal, drop the
+  outside-AI-proposed `DifficultyManager` class, extend Method C's
+  existing knobs instead, prefer an economy-side lever (pickup odds /
+  payouts) over touching chaser speed/AI so the chase stays predictable,
+  and reuse the `CHASER_SPEED_MOD_MIN/MAX` clamp pattern for level floors
+  — full writeup in `docs/difficulty-mechanics-plan.md`'s new
+  "Auto-tuning refinement" section, still design-only with explicit TBDs
+  (window size, floor/ceiling values). Also reviewed the Mosaic map
+  concept and flagged one real gap — the dimension-shift trigger
+  mechanism (floor trap vs. held item) was never actually answered by
+  Ken, only left open in the source transcript — as a new "Flag for Ken"
+  item in `docs/level-progression-and-endgame-plan.md` rather than
+  assuming an answer. No scope change to the death-log telemetry /
+  parody-warning slice that's still the actual unblocked next code slice.
 - **v0.4.37 (real code, most recent shipped version — 2026-07-27):**
   implemented the **Close-Call Freeze & Rewards** slice from
   `docs/close-call-freeze.md` / `docs/handoffs/roadmap-handoff-v0.4.37-plan.md`.
@@ -49,6 +67,12 @@ entry heading so the change trail stays obvious at a glance.
   `git log`/`frontend/src/version.js` for the actual current
   `GAME_ITERATION`, not just the newest doc file** — a doc can be stale
   relative to code shipped by a parallel session.
+- **v0.4.39-plan refinement (docs-only, 2026-07-27):** narrowed the open
+  handoff to raw death-log telemetry (`timePlayed`, `sessionSheebDelta`,
+  `sessionSkreemDelta`, and death level) plus the parody warning / GitHub
+  feedback link. The broader difficulty math is now explicitly parked in
+  `docs/difficulty-mechanics-plan.md` as the Method C / Debt Lock track,
+  so it does not get tangled up with the death-log UI pass.
 - **Planning addendum (docs-only, 2026-07-27):** the Taco Bell Grande
   follow-up is now explicitly queued as a Level 4+ `Shart Knocker`
   slice: one Taco Bell grants one kill-fart charge, a hit stalls the
@@ -272,7 +296,7 @@ manually:
 - The next map-architecture follow-up is parked in `docs/handoffs/roadmap-handoff-v0.4.36-plan.md` so the v0.4.35 content-polish slice can stay small.
 - `v0.4.25` is now shipped: the post-kill profile card, killer-ID logging, and clickable deaths log are in production.
 - **Game identity / multiple cookie-backed save slots landed in v0.4.29** — the profile switcher, `localStorage` registry, and `docs/profiles-and-identity.md` are all in place. No longer on this list.
-- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.39-plan.md` (corrected in this session to match what's actually shipped — see the "Process note" above). Its recommended next slice is **Enhanced Death Logs** (record time-played + session sheeb/skreem delta in `deathsHistory`) plus the **Parody Warning & Feedback Link** UI addition, both small and unblocked. Level 6 (`v0.4.38-plan`) and the level-data-extraction migration remain queued behind it. The badges/rewards system follow-ons and the Schleimy Potion/Micro-Skib items are still blocked on product decisions from Ken — see their entries in `docs/roadmap.md`. `docs/interactive-content-pack.md` stays the source of truth for any extra secret-item / award ideas. The **Difficulty Function** item now has a real design doc, `docs/difficulty-mechanics-plan.md` (three implementation methods sketched) — needs Ken's method choice before coding, don't guess it.
+- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.39-plan.md` (corrected in this session to match what's actually shipped — see the "Process note" above). Its recommended next slice is **Enhanced Death Logs** (record raw `timePlayed`, `sessionSheebDelta`, `sessionSkreemDelta`, and the death level in `deathsHistory`) plus the **Parody Warning & Feedback Link** UI addition, both small and unblocked. Level 6 (`v0.4.38-plan`) and the level-data-extraction migration remain queued behind it. The badges/rewards system follow-ons and the Schleimy Potion/Micro-Skib items are still blocked on product decisions from Ken — see their entries in `docs/roadmap.md`. `docs/interactive-content-pack.md` stays the source of truth for any extra secret-item / award ideas. The **Difficulty Function** item now has a dedicated design note, `docs/difficulty-mechanics-plan.md`, and the preferred direction is Method C / Debt Lock with a lightweight starting selector — keep it separate from this telemetry pass.
 - Phase 6 (server-side/Mongo profile persistence) now has a starting point — `docs/profiles-and-identity.md` lays out the open identity/auth and sync-strategy decisions a future session needs answered before coding it. Still queued behind Phase 5 (multiplayer) in `docs/roadmap.md`, still planning-only.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it

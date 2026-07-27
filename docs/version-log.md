@@ -6,6 +6,84 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.39-plan addendum — Auto-tuning difficulty reviewed, Mosaic map annotated (Claude Sonnet 5, 2026-07-27)
+
+### What changed
+
+- Docs-only, no code. Extended the open `docs/handoffs/roadmap-handoff-v0.4.39-plan.md`
+  handoff rather than opening a new one, per the SDLC's "extend an
+  in-flight plan" rule.
+- Held an interactive vibe discussion with Ken on whether the debt-lock
+  difficulty track (`docs/difficulty-mechanics-plan.md`) should become a
+  rolling deaths/sheebs-earned auto-tuner, prompted by an outside-AI
+  (Gemini) suggestion to add a dedicated `DifficultyManager` class.
+- Added an "Auto-tuning refinement" section to
+  `docs/difficulty-mechanics-plan.md`: keep the rolling-ratio signal, drop
+  the standalone manager class, prefer an economy-side lever (pickup odds
+  / payouts) over touching chaser speed/AI so the chase stays predictable
+  and learnable, and reuse the existing `CHASER_SPEED_MOD_MIN/MAX`-style
+  clamp pattern for level-indexed floors instead of a new mechanic.
+  Rolling-window size and exact floor/ceiling values left explicit TBD.
+- Reviewed the previously-landed **Level 7+ Mosaic Map of Madness**
+  concept in `docs/level-progression-and-endgame-plan.md` against the
+  "no code-cowboy" rule (don't silently upgrade an open creative question
+  to "decided"). Found the prior planning pass never actually got an
+  answer to "how does the player trigger a dimension shift — floor trap
+  or held item?" from the source transcript; added it as a new explicit
+  "Flag for Ken" item (7) instead of assuming one. No mechanic changed.
+- Added provenance headers (`Created by`/`Last updated by`) to
+  `docs/difficulty-mechanics-plan.md` and
+  `docs/level-progression-and-endgame-plan.md`, which predated the
+  provenance-header requirement.
+- Annotated both backlog lines in `docs/roadmap.md` (Difficulty Function,
+  Level 7+ Mosaic) as reviewed this session, without changing their
+  open/TBD status.
+
+### Design decisions
+
+- Chose to extend Method C's existing knobs instead of adopting the
+  outside AI's `DifficultyManager` class proposal — matches this repo's
+  own no-premature-abstraction rule, and avoids a second speed-control
+  path that would have to be reconciled against the existing per-run
+  rubber-band (`CHASER_SPEED_MOD_DEATH_STEP`/`_LEVEL_STEP`).
+- Chose the economy (pickup odds/payouts) as the preferred auto-tune
+  lever over enemy speed/AI specifically to serve Ken's stated goal that
+  predictable, "findable" map/chase behavior is part of player
+  satisfaction — the chase rules stay constant, only the yield flexes.
+
+### Known non-goals for this pass
+
+- No code, no tuning constants, no `DifficultyManager` implementation.
+- Did not resolve the Mosaic map's dimension-shift trigger question —
+  flagged for Ken, not decided here.
+- Did not touch the death-log telemetry or parody-warning scope already
+  defined in `docs/handoffs/roadmap-handoff-v0.4.39-plan.md`.
+
+## v0.4.39-plan refinement — Death log telemetry clarified, difficulty parked (2026-07-27)
+
+### What changed
+
+- Refined the open v0.4.39 planning slice so the next code pass records
+  raw run telemetry in the death history instead of a blended score.
+- Kept the Parody Warning / GitHub feedback link in the same slice.
+- Parked the broader difficulty math in `docs/difficulty-mechanics-plan.md`
+  as a separate Method C (`The Debt Lock`) design track.
+
+### Design decisions
+
+- The death-log record should preserve the raw inputs (`timePlayed`,
+  `sessionSheebDelta`, `sessionSkreemDelta`, and death level) so later
+  UI or brag surfaces can derive whatever summary they need from source
+  data.
+- The difficulty system should stay economy-driven and separate from the
+  telemetry pass; do not bundle the debt-lock math into the death-log
+  UI work.
+
+### Non-goals
+
+- No gameplay code changed.
+- No build, test, deploy, or `GAME_ITERATION` bump ran.
+
 ## v0.4.37 — Close-Call Freeze & Rewards (2026-07-27)
 
 ### What changed

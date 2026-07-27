@@ -14,6 +14,10 @@ update `docs/version-log.md`.
 2026-07-27 | v0.4.37 | Positive pickups award +5 sheebs on collection
 2026-07-27 | v0.4.37 | Added e2e test for close-call rewards and freeze
 2026-07-27 | docs (Claude, Sonnet 5) | Backfilled missing `roadmap-handoff-v0.4.37.md`; corrected stale `v0.4.39-plan` (already-shipped items, resolved worktree); fixed a misplaced v0.4.36 fragment in `version-log.md`; rewrote `next-agent-coding-brief.md`; no code changed
+2026-07-27 | docs (Codex, GPT-5) | Refined `v0.4.39-plan`, `next-agent-coding-brief.md`, and `difficulty-mechanics-plan.md` to keep Enhanced Death Logs on raw telemetry and park difficulty math in Method C / Debt Lock
+2026-07-27 | docs (Claude, Sonnet 5) | Reviewed rolling deaths/sheebs auto-tuning idea; added "Auto-tuning refinement" to `difficulty-mechanics-plan.md` (extend Method C, no `DifficultyManager` class, economy-side lever, level-indexed floors — TBD window/values)
+2026-07-27 | docs (Claude, Sonnet 5) | Annotated Level 7+ Mosaic Map of Madness concept as reviewed; flagged the unanswered dimension-shift-trigger question (floor trap vs. held item) for Ken instead of assuming an answer
+2026-07-27 | docs (Claude, Sonnet 5) | Added provenance headers to `difficulty-mechanics-plan.md` and `level-progression-and-endgame-plan.md`; addendum appended to open `v0.4.39-plan` handoff
 
 ## docs-only planning pass — 2026-07-27
 
