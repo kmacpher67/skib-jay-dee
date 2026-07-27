@@ -22,7 +22,7 @@ test.describe('Close-call freeze and sheeb rewards', () => {
       )
     })
     await page.reload()
-    await page.locator('.play-btn').click()
+    await page.locator('.play-btn').first().click()
     await expect(page.locator('canvas')).toBeVisible()
 
     // Skip intro and menu

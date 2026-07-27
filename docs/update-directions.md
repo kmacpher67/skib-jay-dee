@@ -12,6 +12,9 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.57 (real code, shipped — 2026-07-27):**
+  Hotfix for Rod of Poopdom. Decremented `stinkyTimer` in chase loop to allow a second teleport. Fixed `smokeEffects` particle persistence. `GAME_ITERATION` = v0.4.57. See `roadmap-handoff-v0.4.57.md`.
+
 
 - **v0.4.59-plan (docs-only, 2026-07-27):**
   Mode A pass — created handoff for Neon Jump-Scare Upgrade (`roadmap-handoff-v0.4.59-plan.md`). Changes the existing cosmetic filter into an active mechanic (500ms headstart after a jump-scare), costs 250 sheebs to buy, deducts 50 sheebs each use. Updated `docs/roadmap.md`. Ready to code.

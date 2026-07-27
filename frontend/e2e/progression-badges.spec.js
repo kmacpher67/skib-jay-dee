@@ -7,7 +7,7 @@ import { test, expect } from '@playwright/test'
 // already satisfied.
 test('progression badge blocks level advance until collected', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
@@ -49,7 +49,7 @@ test('progression badge blocks level advance until collected', async ({ page }) 
 // progression the way the Feature 1 badges above do.
 test('humor badges are optional spawns that award a badge without gating progress', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 

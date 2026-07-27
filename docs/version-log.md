@@ -1845,3 +1845,12 @@ Executing the `v0.4.38-plan` handoff. Migrating the old maps to grids sets up th
 **Design Decisions:**
 - Default teleport range capped at 300px
 - Blocks teleport if the target destination hits a wall
+
+## v0.4.57 (2026-07-27) - Rod of Poopdom Second-Teleport Hotfix
+
+- **What changed:**
+  - In `frontend/src/GameEngine.js`, added decrement for `stinkyTimer` in the chase update loop. This allows the Rod of Poopdom's teleport to be used more than once per level.
+  - Added aging and filtering for `smokeEffects` to ensure the smoke dissipates properly.
+  - Updated `frontend/e2e/rod-of-poopdom.spec.js` to call engine `_tryFire` instead of simulating fast keypresses, eliminating test flakiness.
+- **Why:** The first teleport set the `stinkyTimer` cooldown correctly, but the timer was never decremented during the chase phase. This left the user permanently locked out of subsequent teleports.
+- **What's next:** Proceed to feature slices (e.g. Slice B HUD Pills, Near-Miss Burst, or Play Recap).

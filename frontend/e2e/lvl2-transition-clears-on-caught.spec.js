@@ -29,7 +29,7 @@ async function primePipeworks(page, { advance = false } = {}) {
 
 test('lvl2 transition overlay is dismissed when a capture starts', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
 
   await primePipeworks(page, { advance: true })
@@ -57,7 +57,7 @@ test('lvl2 transition finishes without a crash after playback ends', async ({ pa
   })
 
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
 
   await primePipeworks(page, { advance: true })

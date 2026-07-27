@@ -7,7 +7,7 @@ import { test, expect } from '@playwright/test'
 // just on purchase.
 test('a luck-bonus proc spawns a bonus gun pickup and fires the Lucky badge', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 

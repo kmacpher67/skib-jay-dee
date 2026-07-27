@@ -9,7 +9,7 @@ import { test, expect } from '@playwright/test'
 
 test('turdstone token pickup sets hasTurdstoneToken on runner', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.getByRole('button', { name: 'QUICK PLAY' }).click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
@@ -34,7 +34,7 @@ test('turdstone token pickup sets hasTurdstoneToken on runner', async ({ page })
 
 test('turdstone save: caught with token does not bump levelIndex or reduce sheebs, and consumes the token', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.getByRole('button', { name: 'QUICK PLAY' }).click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
@@ -83,7 +83,7 @@ test('turdstone save: caught with token does not bump levelIndex or reduce sheeb
 
 test('normal death (no token) still advances levelIndex', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.getByRole('button', { name: 'QUICK PLAY' }).click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 

@@ -25,7 +25,7 @@ test('loses item on capture if highestLevel > 4', async ({ page }) => {
   }, JSON.stringify(seededProfile))
   
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   
   await page.evaluate(() => {
@@ -62,7 +62,7 @@ test('keeps item on capture if highestLevel <= 4', async ({ page }) => {
   }, JSON.stringify(seededProfile))
   
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   
   await page.evaluate(() => {

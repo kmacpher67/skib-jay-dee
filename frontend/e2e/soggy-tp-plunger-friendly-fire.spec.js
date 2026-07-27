@@ -9,7 +9,7 @@ import { test, expect } from '@playwright/test'
 
 test('soggy toilet paper pickup drops a trail that slows a chaser stepping in it', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
@@ -35,7 +35,7 @@ test('soggy toilet paper pickup drops a trail that slows a chaser stepping in it
 
 test('heavy plunger pickup lets the runner swing via fire input and knock a nearby chaser back', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
@@ -69,7 +69,7 @@ test('heavy plunger pickup lets the runner swing via fire input and knock a near
 
 test('friendly fire badge fires when the runner is caught by the exact chaser they just gun-stunned', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 

@@ -27,7 +27,7 @@ test('neon jump-scare filter can be purchased and tints the capture overlay', as
   await expect(page.getByText('Balance: 300 sheebs')).toBeVisible()
   await page.locator('.close-pill').click()
 
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
@@ -52,7 +52,7 @@ test('neon jump-scare filter can be purchased and tints the capture overlay', as
 test('default jump-scare overlay stays red without the cosmetic filter', async ({ page }) => {
   await seedProfile(page, BASE_PROFILE)
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 

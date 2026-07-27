@@ -1,4 +1,4 @@
-# Roadmap Handoff Plan v0.4.57 — Rod of Poopdom: second teleport dead
+# Roadmap Handoff v0.4.57 — Rod of Poopdom: second teleport dead
 
 **Created by:** Cursor Grok 4.5 — 2026-07-27
 **Last updated by:** Cursor Grok 4.5 — 2026-07-27
@@ -112,31 +112,3 @@ ship, confirm second warp feels right on mobile (facing-only targeting).
 
 ---
 
-## Copy-paste: next coding session (Mode B)
-
-```text
-Mode B hotfix only. Read docs/skib-sdlc.md, docs/update-directions.md,
-docs/handoffs/roadmap-handoff-v0.4.57-plan.md. Do not start Slice B /
-Play Recap / v0.4.54–56 until this ships.
-
-Bug: Rod of Poopdom first teleport works; second never does.
-Root cause: GameEngine.js sets this.stinkyTimer = ROD_OF_POOPDOM_COOLDOWN
-in _tryTeleport but never decrements stinkyTimer in the chase update loop
-(unlike tacoBellTimer / fireCooldown / etc.). Gate at
-_tryTeleport `if (this.stinkyTimer > 0) return` then blocks forever.
-
-Fix:
-1. In the chase-phase timer block in frontend/src/GameEngine.js, add
-   this.stinkyTimer = Math.max(0, this.stinkyTimer - dt).
-2. Same block: age/filter this.smokeEffects so brown smoke fades.
-3. Add frontend/e2e/rod-of-poopdom.spec.js: force runner.rod, warp,
-   advance past 3s cooldown, warp again; assert second position change.
-4. Bump GAME_ITERATION to v0.4.57; update VersionModal PAST_VERSION_NOTES,
-   docs/version-log.md, docs/handoffs/ledger.md, write
-   docs/handoffs/roadmap-handoff-v0.4.57.md; refresh update-directions +
-   coding brief. Deploy only if Ken asks.
-
-Verify: cd frontend && npm run build && npx playwright test
-Do not change spawn chance, range, or wall-deny policy.
-Do not rewrite pointer→world targeting in this slice.
-```

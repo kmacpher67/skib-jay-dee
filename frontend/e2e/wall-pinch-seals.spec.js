@@ -6,7 +6,7 @@ import { test, expect } from '@playwright/test'
 
 test('sealed Ramen Aisle shelf pinch blocks the runner', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
@@ -38,7 +38,7 @@ test('sealed Ramen Aisle shelf pinch blocks the runner', async ({ page }) => {
 
 test('sealed Nightmare House channel blocks the runner', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 

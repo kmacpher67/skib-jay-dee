@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 test.describe('Broth Slip (Raman-Aunt)', () => {
   test('stepping in broth trail applies drift steering multiplier', async ({ page }) => {
     await page.goto('/')
-    await page.locator('.play-btn').click()
+    await page.locator('.play-btn').first().click()
     await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
     await page.evaluate(() => {

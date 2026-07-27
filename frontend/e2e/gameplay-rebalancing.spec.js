@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test('gun hit awards +25 sheebs', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
@@ -43,7 +43,7 @@ test('scaled death penalty applies 10 on level 2 and 30 on level 4 when debt is 
   }, JSON.stringify(seededProfile))
 
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
 
   await page.evaluate(() => {
@@ -58,7 +58,7 @@ test('scaled death penalty applies 10 on level 2 and 30 on level 4 when debt is 
   await expect(page.locator('.debt-badge')).toHaveCount(0)
   await expect(page.getByText('90 sheebs')).toBeVisible()
 
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
 
   await page.evaluate(() => {
@@ -76,7 +76,7 @@ test('scaled death penalty applies 10 on level 2 and 30 on level 4 when debt is 
 
 test('chaser speed mod starts at 0.8 on a fresh run', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 

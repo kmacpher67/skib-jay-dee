@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Level 6: Jaydens Nightmare House', () => {
   test('Plunger Launch pulls the runner toward Skib-Daddy', async ({ page }) => {
     await page.goto('/');
-    await page.locator('.play-btn').click();
+    await page.locator('.play-btn').first().click();
     await expect(page.locator('canvas')).toBeVisible();
 
     await page.evaluate(() => {

@@ -767,7 +767,7 @@ export class GameEngine {
 
     this.pointerPos = { x, y }
 
-    if ((this.runner.gun || this.runner.plunger || this.runner.rod) && distFire < 34) {
+    if ((this.runner.gun || this.runner.plunger || this.runner.rod || this.shartCharge > 0) && distFire < 34) {
       this.fireBtn.active = true
       this.fireBtn.id = e.pointerId
       this._tryFire()
@@ -1088,6 +1088,17 @@ export class GameEngine {
         this.decoyTimer = Math.max(0, this.decoyTimer - dt)
         if (this.decoyTimer <= 0) this.decoyActive = false
       }
+      if (this.stinkyTimer > 0) {
+        this.stinkyTimer = Math.max(0, this.stinkyTimer - dt)
+      }
+      
+      if (this.smokeEffects.length > 0) {
+        this.smokeEffects = this.smokeEffects.filter((s) => {
+          s.age += dt
+          return s.age < s.life
+        })
+      }
+
       if (this.soggyTpActive) {
         this.soggyTpTimer = Math.max(0, this.soggyTpTimer - dt)
         this.soggyTpTrailTimer -= dt

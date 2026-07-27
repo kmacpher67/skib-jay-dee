@@ -7,7 +7,7 @@ import { test, expect } from '@playwright/test'
 // collecting it never touches the (unrelated) progression-badge gate.
 test('quest room badge spawns in the room and awards a badge without gating progress', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
@@ -63,7 +63,7 @@ test('quest room badge spawns in the room and awards a badge without gating prog
 // (not replacing) the existing skreems threshold.
 test('Level 4 advance requires the 90s+5-chaser floor on top of the skreems threshold', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 

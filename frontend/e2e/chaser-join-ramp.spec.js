@@ -6,7 +6,7 @@ import { test, expect } from '@playwright/test'
 // seconds, layered on top of the existing chaserSpeedMod rubber-band.
 test('freshly spawned extra chaser ramps from a discount up to full speed', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
 
   await page.waitForFunction(() => window.__skibEngine?.chasers?.length === 1)

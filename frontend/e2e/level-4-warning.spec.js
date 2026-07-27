@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test('level 4 warning overlay shows once per run and pauses game', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
 
   // Transition to Level 4 directly using the engine hook

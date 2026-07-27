@@ -29,7 +29,7 @@ async function primePipeworks(page, { hallCoverage, fourSkibSeconds, advance = f
 
 test('Pipeworks keeps the lvl2 transition hidden until the hall coverage and 4-skib gate is met', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
 
   await primePipeworks(page, { hallCoverage: 0.79, fourSkibSeconds: 14.9, advance: true })
@@ -37,7 +37,7 @@ test('Pipeworks keeps the lvl2 transition hidden until the hall coverage and 4-s
   await expect(page.locator('.lvl2-transition')).toHaveCount(0)
 
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
 
   await primePipeworks(page, { hallCoverage: 0.8, fourSkibSeconds: 15, advance: true })

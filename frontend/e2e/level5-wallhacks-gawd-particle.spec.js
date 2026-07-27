@@ -10,7 +10,7 @@ import { test, expect } from '@playwright/test'
 
 test('chasers pass through walls at Level 5 but are blocked before it', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
@@ -51,7 +51,7 @@ test('chasers pass through walls at Level 5 but are blocked before it', async ({
 
 test('Gawd Particle only spawns Level 5+, buffs the runner, and despawns a touched chaser', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 

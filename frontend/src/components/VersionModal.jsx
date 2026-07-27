@@ -1,4 +1,10 @@
 const PAST_VERSION_NOTES = [
+  { version: "v0.4.57", notes: ["Rod of Poopdom Second-Teleport Hotfix", "Fixed missing cooldown decrement", "Fixed smoke particle persistence"] },
+  {
+    version: 'v0.4.57',
+    title: 'Rod of Poopdom Hotfix',
+    description: 'Fixed a bug where the Rod of Poopdom\'s warp cooldown never decremented, preventing the rod from being used more than once per level. Also fixed smoke effects lingering forever.',
+  },
   {
     version: 'v0.4.52',
     title: 'The Turdstone Token',

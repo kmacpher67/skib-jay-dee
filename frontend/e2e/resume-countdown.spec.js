@@ -6,7 +6,7 @@ test.skip('runner and chaser resume countdown plays out after caught phase', asy
   // GameEngine.js as a separate path, but this user-visible flow no longer
   // exercises it directly.
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
 
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')

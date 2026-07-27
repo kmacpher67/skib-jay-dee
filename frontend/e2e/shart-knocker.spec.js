@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test('shart knocker is granted on level 4 taco bell and stuns chaser on hit', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.getByRole('button', { name: 'QUICK PLAY' }).click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 

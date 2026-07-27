@@ -6,7 +6,7 @@ import { test, expect } from '@playwright/test'
 // finishes, then show the chaser profile card before returning to the menu.
 test('runner face swaps through getting-captured/captured poses on capture, then shows the chaser profile', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
 
   await page.waitForFunction(() => window.__skibEngine?.runner?.face)

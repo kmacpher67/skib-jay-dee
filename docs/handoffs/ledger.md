@@ -700,3 +700,8 @@ update `docs/version-log.md`.
 
 ## v0.4.47 — 2026-07-27
 - Added the Rod of Poopdom (Teleport Mechanic)
+
+## v0.4.57 — 2026-07-27
+- Hotfix: Decrement `stinkyTimer` in chase loop to allow second teleport for Rod of Poopdom.
+- Hotfix: Age and filter `smokeEffects` properly so brown smoke dissipates.
+- Update `rod-of-poopdom.spec.js` test to use engine `_tryFire` instead of quick DOM inputs, fixing flake.

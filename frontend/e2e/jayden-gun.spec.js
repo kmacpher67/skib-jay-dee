@@ -6,7 +6,7 @@ import { test, expect } from '@playwright/test'
 // and the gun disappears once ammo hits zero.
 test('gun pickup grants ammo, firing stuns the chaser, and the gun disappears at 0 ammo', async ({ page }) => {
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 

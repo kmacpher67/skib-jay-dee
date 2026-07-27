@@ -17,7 +17,7 @@ test('balance goes negative on capture if highestLevel > 3', async ({ page }) =>
   }, JSON.stringify(seededProfile))
   
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   
   // Force a capture on Level 4 (30 sheeb penalty) via the exposed __skibEngine
@@ -60,7 +60,7 @@ test('balance floors at 0 on capture if highestLevel <= 3', async ({ page }) => 
   }, JSON.stringify(seededProfile))
   
   await page.goto('./')
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   await expect(page.locator('canvas')).toBeVisible()
   
   // Level 2 death costs 10 sheebs; profile floors at 0 when highestLevel <= 3

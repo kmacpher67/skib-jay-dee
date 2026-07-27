@@ -7,7 +7,7 @@ test('menu loads and quick play boots the canvas', async ({ page }) => {
   await expect(page.getByText('SKIB-JAY-DEE-TOILET')).toBeVisible()
   await expect(page.locator('.play-btn')).toBeVisible()
 
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
 
   await expect(page.locator('canvas')).toBeVisible()
   await expect(page.locator('.exit-btn')).toBeVisible()
@@ -86,7 +86,7 @@ test('mute toggle switches icon on menu and in game', async ({ page }) => {
   await menuMute.click()
   await expect(menuMute).toHaveText('🔇')
 
-  await page.locator('.play-btn').click()
+  await page.locator('.play-btn').first().click()
   const inGameMute = page.locator('.mute-btn').last()
   await expect(inGameMute).toHaveText('🔇')
 })
