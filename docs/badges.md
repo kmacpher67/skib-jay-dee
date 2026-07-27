@@ -29,5 +29,17 @@ These have a very low spawn rate and provide comedic relief.
 
 ### Landmark Badges (Level 4+)
 Found inside high-risk Quest Rooms (chokepoints with 1 or 2 exits).
-- **The Ramen Aisle Survivor (Level 4):** Retrieved from a dual-exit Quest Room.
-- **World Star Legend (Level 5):** Retrieved from a single-exit death trap Quest Room. Requires immense skill or the Gawd Particle to escape alive.
+- **Ramen Vault Keeper (Level 4):** Retrieved from the dual-exit Ramen Aisle stockroom.
+- **World Star Witness (Level 5):** Retrieved from the single-door World Star booth. Requires immense skill or the Gawd Particle to escape alive.
+
+## Future Badge Seeds (not yet queued)
+
+These are the next funny awards that fit the content-pack direction
+without needing new backend systems:
+
+- **Bathroom Tourist:** Visit every landmark room in a level.
+- **Dead-End Daredevil:** Survive a one-door quest room and keep going.
+- **Gremlin in the Pipes:** Clear a level after touching a bad item.
+- **Chaser Tax Audit:** Beat a chaser-specific hazard or trap.
+
+See [docs/interactive-content-pack.md](interactive-content-pack.md) for the broader item catalog that could feed these badge ideas.

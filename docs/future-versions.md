@@ -83,3 +83,17 @@ get lost:
 - New character/ability from the PDF roster (Skib-Daddy, Raman-Aunt-Toilet
   Lady).
 - Multiplayer spike (Phase 5) — biggest single item, do last.
+
+## Interactive content seasoning (follow-up to v0.4.35)
+
+The next funniest pass should keep leaning on map identity and small
+tradeoff items, not just bigger numbers.
+
+- Map personality pass: anchor room, risky shortcut, gag room, reward
+  room. The levels are playable now, but they still need more memorable
+  landmarks.
+- Secret item catalog: runner-good, runner-bad, chaser-good, and
+  chaser-bad pickups, all documented in
+  [docs/interactive-content-pack.md](interactive-content-pack.md).
+- Future badge seeds: `Bathroom Tourist`, `Dead-End Daredevil`,
+  `Gremlin in the Pipes`, and `Chaser Tax Audit`.

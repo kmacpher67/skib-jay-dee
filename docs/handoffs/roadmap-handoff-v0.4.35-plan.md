@@ -26,6 +26,14 @@ Integrate the newly drafted "Coolness Dialog" and do a minor cleanup.
 - **Triggers:** Trigger coolness lines when the runner has a near-miss or uses an item (like Schleimy Potion or Gawd Particle). Trigger hard chaser lines when Level 4+ starts or when the debt economy applies.
 - **Cleanup:** Remove the dead `initialSheebs = 200` default parameter in `GameEngine.js` constructor, as this was obsoleted by the cookie profile manager.
 
+## Follow-on content note
+
+The next content-heavy follow-up should use
+[`docs/interactive-content-pack.md`](../interactive-content-pack.md) as
+the source of truth for the funny secret-item / award pass. Keep that
+work separate from the three-feature slice above so the rolling pickups /
+Schleimy Potion / dialog session stays small and readable.
+
 ## Execution order
 
 ```text

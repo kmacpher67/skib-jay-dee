@@ -95,6 +95,10 @@ lands, wire a `chaserType` per level.
    That's a genuinely different rendering/collision model (procedural
    chunk generation around the player) — treat as its own future phase,
    only after tile-based authoring (2) exists to generate chunks from.
+6. **Landmark / personality pass.** After quest rooms exist, keep each
+   level readable on sight. The next map pass should lean on distinct
+   room shapes, a memorable hazard, and one funny reward room so the
+   level is more than a corridor chain.
 
 Do not start implementing any of this without picking one numbered item
 and treating it as its own increment — this section is a plan, not a
@@ -109,6 +113,10 @@ this small.
 The current difficulty-ramp direction is to keep progression
 interactive: each new level should add a decision, a tradeoff, or a
 counterpressure the player can feel in motion, not just a bigger number.
+The maps are playable now, but they still need stronger landmark
+identity: one anchor room, one risky shortcut, one gag room, and one
+reward room per level would make the chase easier to read and more
+memorable.
 
 - [x] **URGENT — live prod bug: broken runner/chaser face preview images.** Landed in the `v0.4.25` deploy. The deployed menu now correctly unwraps the `.src` string instead of coercing the pool object to `[object Object]`. Full RCA in [roadmap-handoff-v0.4.27-plan.md](handoffs/roadmap-handoff-v0.4.27-plan.md).
 
@@ -235,7 +243,11 @@ and chaser-bark voice clips, 1:1 with text.
   fails) so the "Lucky" badge fires exactly on the luck bonus's first
   actual proc, per Ken's confirmed trigger. See
   [roadmap-handoff-v0.4.31.md](handoffs/roadmap-handoff-v0.4.31.md).
-- [ ] **Feature: Rolling Pickups (Mario-Style).** Items rolling around the map that the player can pick up or capture. Must be a mix of good items (buffs/points) and bad items (debuffs/damage).
+- [ ] **Feature: Cursed & Blessed Map Pickups (The Mario-Style Roller Expansion).** Items rolling around the map that the player can pick up or capture. You don't know if you want to grab them or run from them until it's too late.
+  - **Taco Bell Grande:** (Double-Edged) +50% Speed for 3 seconds, disables steering. If a Skib hits it, stunned for 2s.
+  - **Soggy Toilet Paper:** (Debuff/Trap) Grab leaves a trail draining stamina. Skibs stepping in trail are slowed by 40% for 5s.
+  - **Fake Jayden Decoy:** (Blessed) Drops cardboard cutout. Skibs in 300px radius aggro decoy for 4s.
+  - **Heavy Plunger:** (Cursed) -30% Movement Speed while held. Press `F` to swing 360-arc, knocking back Skibs.
 - [x] **Stamina / take-a-hit-and-keep-running.** Ken asked for a "Call of
   Duty style" stamina feature and guessed it might already exist — it
   does. `GameEngine.js` already has a full stamina system (`maxStamina`,
@@ -263,10 +275,11 @@ and chaser-bark voice clips, 1:1 with text.
   enemy-AI/pathing work, not a single mechanic. No design pass done yet
   (spawn conditions, which levels, additive vs. replacement chaser). See
   [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
-- [ ] **Level 4+ Difficulty Constraints.** Level 4 and higher now requires at least 90 seconds (scaling up with higher levels) of running and evasion of 5 chasers before the level can clear.
+- [x] **Level 4+ Difficulty Constraints.** Landed in v0.4.33 — Level 4 and higher now requires at least 90 seconds (scaling up with higher levels) of running and evasion of 5 chasers before the level can clear.
 - [ ] **Skib-Chaser Evolution (Level 5+).** After level 4, skib-chasers get more powerful attacks, increased speed, and the terrifying ability to go through walls.
 - [ ] **The "Gawd Particle" (Level 5+).** An ultra-rare pickup item appearing after level 5. It allows runners to run through walls and essentially kill skib-chasers (despawning them entirely, forcing a respawn timer).
-- [ ] **Quest Rooms & Landmark Badges.** Map generation (especially for Level 4+) should feature dedicated landmarks with quest items. Entering these rooms grants specific badges. Rooms must have at least 2 closed walls with small openings. Initial rooms in Level 4 can have openings on each side; harder, higher levels will feature rooms with only one door.
+- [x] **Quest Rooms & Landmark Badges.** Landed in v0.4.33 — Level 4 and Level 5 now each have a dedicated landmark room with a quest badge, with Level 4 keeping two exits and Level 5 tightening into a one-door chokepoint.
+- [ ] **Interactive content pack: secret items, gag awards, and map personality.** Add a small data-driven catalog of runner/chaser good and bad items plus exploration awards so levels feel more alive, funny, and readable instead of just harder. See [docs/interactive-content-pack.md](interactive-content-pack.md).
 - [x] **Retrofit Early Level Badges.** Landed v0.4.32 — Levels 1-3
   (Porcelain Palace, Pipeworks, Flooded Annex) each get a `progressionBadgeId`
   (`porcelain-prowler`, `pipe-dreamer`, `annex-relic-hunter`) auto-spawned as
@@ -283,6 +296,10 @@ and chaser-bark voice clips, 1:1 with text.
   earned yet. If the roll fails, the same pool gets another shot at the
   next level start (so it isn't locked to the "early" levels only). See
   [roadmap-handoff-v0.4.32.md](handoffs/roadmap-handoff-v0.4.32.md).
+- [ ] **Secret Interaction Badges (Humor & Intrigue).** Badges that trigger not from progression, but from players doing stupid things:
+  - **Pacifist in a Warzone:** Survive Level 4 for 60 seconds while holding the Jayden Gun, but *never fire it*.
+  - **Premature Evacuation:** Get caught within the first 5 seconds of Level 1.
+  - **Friendly Fire:** Stun a Skib with the Jayden Gun, but immediately get caught by *that exact same Skib* the millisecond the stun wears off.
 - [ ] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,
   left over from before the v0.4.16 cookie-default fix. `App.jsx` always

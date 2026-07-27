@@ -10,6 +10,23 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.35-plan — 2026-07-27
+
+- Seeded `docs/interactive-content-pack.md` with the next wave of
+  runner-good, runner-bad, chaser-good, and chaser-bad item ideas plus
+  four exploration award seeds.
+- Updated `docs/roadmap.md` to call out map personality as a real
+  quality goal, mark the shipped v0.4.33 quest-room / Level 4+ floor
+  work as done, and add the interactive content pack as a backlog item.
+- Updated `docs/future-versions.md`, `docs/badges.md`, and
+  `docs/update-directions.md` so the next agent has one obvious place to
+  look for the funny secret-item / award follow-up.
+- Added a short follow-on note to the open `v0.4.35-plan` handoff,
+  keeping the existing rolling-pickups / potion / dialog plan as the
+  primary open slice.
+- Seeded a new `v0.4.36` handoff for the next map-refactor / cursed-
+  pickup / secret-badge slice.
+
 ## v0.4.32 — 2026-07-26
 
 - Shipped **early-level progression badges**: Levels 1-3 (Porcelain

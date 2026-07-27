@@ -6,6 +6,49 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.35-plan — Content review and secret-item spec seeded (2026-07-27)
+
+### What changed
+
+- Reviewed the current gameplay chain with the v0.4.31 gun/lucky charm
+  pair, the v0.4.32 badge pass, and the shipped v0.4.33 quest-room /
+  Level 4+ floor slice in mind. The verdict from the docs review is
+  that the game is mechanically in a good place, but the maps still
+  need stronger landmark identity and the content layer needs more
+  funny tradeoffs.
+- Added a new content-spec doc, `docs/interactive-content-pack.md`,
+  collecting the next wave of runner-good, runner-bad, chaser-good, and
+  chaser-bad items plus a few exploration awards.
+- Updated `docs/roadmap.md` to explicitly call out the map personality
+  goal and to add the interactive content pack as a backlog item.
+- Updated `docs/future-versions.md`, `docs/badges.md`, and
+  `docs/update-directions.md` so the next agent has one place to look
+  for the funny secret-item / award follow-up.
+- Added a short follow-on note to the open `v0.4.35-plan` handoff so
+  the current rolling-pickups / potion / dialog plan has a clean link to
+  the new content pack instead of spawning a competing plan file.
+- Seeded a new follow-on handoff, `docs/handoffs/roadmap-handoff-v0.4.36-plan.md`,
+  for the next map-refactor / cursed-pickup / secret-badge slice.
+
+### Design decisions
+
+- Kept the new item ideas data-driven and front-end only. The point of
+  this pass is to make levels feel more memorable, not to add another
+  engine architecture branch.
+- Chose a separate content-spec file rather than stuffing the new item
+  catalog into the existing handoff prose. That keeps the open plan
+  readable while still giving the next coding session a durable source
+  of truth.
+- Treated map quality as a readability problem as much as a challenge
+  problem. The next good map should be describable in one sentence, not
+  just measured by how many walls it has.
+
+### Non-goals
+
+- No gameplay code changed in this session.
+- No build, test, deploy, or version bump was run.
+- No new art assets or production badge icons were added.
+
 ## v0.4.32 — Early-level progression badges + humor badges shipped (2026-07-26)
 
 ### What changed

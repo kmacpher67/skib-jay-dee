@@ -1,10 +1,10 @@
 # Level Progression & Endgame Arc — Plan
 
-**Status:** Mode A (planning only, no code). Written 2026-07-26 in response
-to Ken's ask: "add level 6 and plans for beyond... detailed design docs
-for each level to improve play, add content and complete the arch of the
-games end plot... which isn't quite yet at level 5, so we have to add
-harder stuff in more chasers faster etc."
+**Status:** Parked planning note, not a handoff. Written 2026-07-26 in
+response to Ken's ask: "add level 6 and plans for beyond... detailed
+design docs for each level to improve play, add content and complete
+the arch of the games end plot... which isn't quite yet at level 5, so
+we have to add harder stuff in more chasers faster etc."
 
 This doc is the level-by-level design reference the source PDF
 (`Skib-jay-dee-toilet game-init-v1.pdf`) never got past its first five
@@ -147,8 +147,7 @@ session builds Level 6 or 7:
 - `docs/roadmap.md`'s phase table (Phase 3, "More characters/abilities
   per PDF roster") now points here instead of staying a bare "Not
   started" row.
-- A new Mode A handoff, `docs/handoffs/roadmap-handoff-v0.4.35-plan.md`,
-  scopes **Level 6: Nightmare House + Skib-Daddy** as its own
+- The next handoff that actually builds Level 6 should be its own
   single-session-sized Mode B slice once questions 1 and 2 above are
   answered — deliberately kept separate from v0.4.33 (Quest Rooms +
   Level 4-5 difficulty floor) and v0.4.34 (wall-hacks + Gawd Particle)
