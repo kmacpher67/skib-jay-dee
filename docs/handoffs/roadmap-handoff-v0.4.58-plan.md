@@ -2,10 +2,14 @@
 
 **Created by:** Antigravity — 2026-07-27
 **Created on:** 2026-07-27
-**Last updated by:** Cursor Grok 4.5 — 2026-07-27 (Mode A refine: decision brief, soft-park B, dual Mode B branches)
+**Last updated by:** Claude — 2026-07-27 (Ken's decision: FOV tied to difficulty tier)
 **Last updated on:** 2026-07-27
 **Session mode:** Mode A (Planning only — docs only, no code)
-**Status:** BLOCKED ON KEN — live choice is **Option A vs Option C** (Option B soft-parked)
+**Status:** DECISION MADE — FOV is not a single global A-vs-C pick. Ken wants
+FOV tied to a difficulty setting: Easy = Option B (full screen), Normal =
+in-between, Hardest ("4chan-tier") = Option A (tight fog-of-war window
+following the player). Mode B still not started — implementation details
+below need to be fleshed out before coding.
 
 ## Trigger
 
@@ -36,9 +40,49 @@ widescreen camera is a real advantage — jump-scare tension, multi-chaser
 pressure, decoy placement, and Level 5+ wall-hack surprise all assume limited
 sight distance. Do not ship Option B casually.
 
-## ⚠️ Flag for Ken (required before Mode B)
+## Ken's decision — 2026-07-27: FOV tied to difficulty
 
-**Pick one:**
+Ken's reply reframes the A-vs-C choice below: instead of picking one FOV
+policy for all desktop players, tie the field of view to a difficulty
+setting so the previously "soft-parked" Option B becomes the *Easy* tier
+instead of being rejected outright.
+
+> "game play difficultly should have easy = full screen. normal, inbetween
+> full and the 9:16. 4chan-st = HOV fog of war window around the user as
+> they glide around."
+
+| Difficulty | FOV behavior | Maps to |
+| --- | --- | --- |
+| **Easy** | Full screen / full widescreen camera — see the whole map | Option B (previously soft-parked; now scoped to Easy only) |
+| **Normal** | In-between full screen and the strict 9:16 mobile FOV | New middle tier — not yet spec'd (see open questions) |
+| **Hardest ("4chan-tier")** | Tight fog-of-war window that follows the player as they move ("HOV" window gliding with Jayden) | Option A2 (circular vignette around the player, reuses the v0.4.54 `createRadialGradient` pattern) |
+
+This resolves the "is full FOV expand ever acceptable" question from the
+Soft-park note below: yes, but only on Easy, where the balance risk is an
+accepted tradeoff for accessibility, not an oversight.
+
+**Open questions before this can move to Mode B (still Mode A / planning):**
+- Is there an existing difficulty-select surface in the app already, or does
+  this handoff need to scope a new difficulty picker (menu/settings screen)
+  as a prerequisite? Needs a repo check before estimating Mode B size.
+- "Normal — in-between full and 9:16": is this a fixed intermediate aspect
+  ratio/FOV radius, or a value Ken wants tunable? Needs a concrete number
+  (e.g. a specific vignette radius or aspect ratio) before coding.
+- Confirm difficulty-tier naming ("4chan-tier" is Ken's shorthand in chat,
+  not yet a name that should ship in-game UI) — needs a player-facing label.
+- Does difficulty already gate other systems (chaser count, spawn timers,
+  Level 5+ wall-hacks)? If so, FOV should likely hang off the same
+  difficulty enum/config rather than a new standalone setting.
+
+## ⚠️ Flag for Ken (superseded by the difficulty-tier decision above)
+
+The table below was the original single-policy framing (pick A or C for
+everyone). Ken's answer replaced it with the three-tier difficulty mapping
+above, so this table is kept for context/history only — do not use it to
+gate Mode B anymore. Still useful: the A1/A2 sub-choice and the concrete
+code touchpoints it names are directly reused by the Hardest tier.
+
+**Original framing (historical):**
 
 | Option | What the player gets | FOV vs mobile | Constraint note |
 | --- | --- | --- | --- |
@@ -46,14 +90,18 @@ sight distance. Do not ship Option B casually.
 | **C — Scale + side art** | Same 9:16 playfield, scaled up to monitor height; themed side panels/art instead of black bars | Identical FOV to mobile | Preserves the 9:16 constraint; lowest balance risk |
 | ~~B — Full FOV expand~~ | Full widescreen camera, see more map | **Bigger** than mobile | Soft-parked (see below) |
 
-**Reply with `A` or `C`.** Until then, do not start Mode B and do not dispatch
-Code Monkey on this handoff.
+~~**Reply with `A` or `C`.**~~ Superseded — see "Ken's decision" above.
+Mode B is still blocked, but now on the open questions listed there (mainly:
+does a difficulty picker already exist, and what's the concrete Normal-tier
+FOV value), not on an A-vs-C pick.
 
-### Soft-park: Option B
+### Soft-park: Option B — now un-parked, scoped to Easy only
 
-Discussion consensus: full FOV expand breaks horror tension and item/chase
-balance. Keep B only if Ken explicitly overrides; otherwise treat as
-**rejected for v1 desktop support**.
+Discussion consensus was that full FOV expand breaks horror tension and
+item/chase balance if applied to everyone. Ken's decision resolves this by
+scoping full FOV to the **Easy** difficulty tier specifically, where trading
+balance for accessibility is an intentional, opt-in choice rather than a
+default. Do not default new/unset players into Easy's full-FOV behavior.
 
 ### If Ken picks A — secondary choice (can answer with A)
 
@@ -124,11 +172,14 @@ monitor + keep horror.” Do not code until Ken picks.
 ```text
 Mode B for Desktop Screen Support is BLOCKED.
 
-Do not implement docs/handoffs/roadmap-handoff-v0.4.58-plan.md until Ken
-replies A or C in that handoff (Option B is soft-parked).
-
-After Ken answers, a planning session must paste the chosen branch into this
-block, then Mode B may run that branch only.
+Ken has decided FOV should be tied to a difficulty tier (Easy = full screen,
+Normal = in-between, Hardest = fog-of-war window following the player) —
+see "Ken's decision — 2026-07-27" in
+docs/handoffs/roadmap-handoff-v0.4.58-plan.md. This is no longer an A-vs-C
+pick, but Mode B still can't start until a follow-up Mode A pass answers the
+open questions in that section (existing difficulty picker or not, concrete
+Normal-tier FOV value, player-facing tier naming, and whether FOV should
+hang off an existing difficulty config).
 
 Until then, pick the next unblocked coding slice from
 docs/next-agent-coding-brief.md (not this handoff).
