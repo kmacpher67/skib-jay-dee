@@ -686,3 +686,6 @@ update `docs/version-log.md`.
   new v0.4.34 one.
 - `GAME_ITERATION` bumped to `v0.4.34`, deployed.
 - **v0.4.36**: Level Data Extraction, Taco Bell & Decoy Pickups, Secret Badges. (docs/handoffs/roadmap-handoff-v0.4.36.md)
+
+## v0.4.47 — 2026-07-27
+- Added the Rod of Poopdom (Teleport Mechanic)

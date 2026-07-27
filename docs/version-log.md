@@ -1629,3 +1629,14 @@ Executing the `v0.4.38-plan` handoff. Migrating the old maps to grids sets up th
 **What's next:**
 - Audio improvements for capture-lines/chaser-barks (Audio 2).
 - Level 7 (CEO of Drains) and further roadmap progression.
+
+## v0.4.47 - 2026-07-27
+
+**What changed:**
+- Implemented the Rod of Poopdom item
+- Added teleport mechanic mapped to T/F keys
+- Added smoke VFX and cooldown mechanics
+
+**Design Decisions:**
+- Default teleport range capped at 300px
+- Blocks teleport if the target destination hits a wall

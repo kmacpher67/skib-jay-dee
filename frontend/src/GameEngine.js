@@ -239,7 +239,7 @@ const LEVELS = [
     reward: 60,
     advanceAt: 68,
     chaserSpeed: 145,
-    runnerSpawn: { x: 260, y: WORLD.height - 132 },
+    runnerSpawn: { x: 440, y: WORLD.height - 132 },
     chaserSpawn: { x: 60, y: 170 },
     buildMap: buildPipeworks,
     progressionBadgeId: 'pipe-dreamer',
@@ -250,7 +250,7 @@ const LEVELS = [
     reward: 90,
     advanceAt: 112,
     chaserSpeed: 162,
-    runnerSpawn: { x: 260, y: WORLD.height - 120 },
+    runnerSpawn: { x: 400, y: WORLD.height - 120 },
     chaserSpawn: { x: WORLD.width - 140, y: 260 },
     buildMap: buildFloodedAnnex,
     progressionBadgeId: 'annex-relic-hunter',
@@ -261,7 +261,7 @@ const LEVELS = [
     reward: 120,
     advanceAt: 154,
     chaserSpeed: 172,
-    runnerSpawn: { x: 260, y: WORLD.height - 140 },
+    runnerSpawn: { x: 225, y: WORLD.height - 140 },
     chaserSpawn: { x: 80, y: 190 },
     buildMap: buildRamenAisle,
     questBadgeId: 'ramen-vault-keeper',
@@ -272,7 +272,7 @@ const LEVELS = [
     reward: 160,
     advanceAt: 196,
     chaserSpeed: 182,
-    runnerSpawn: { x: 260, y: WORLD.height - 140 },
+    runnerSpawn: { x: 295, y: WORLD.height - 140 },
     chaserSpawn: { x: WORLD.width - 150, y: 230 },
     buildMap: buildWorldStarParkingLot,
     questBadgeId: 'world-star-witness',
@@ -369,6 +369,11 @@ const HEAVY_PLUNGER_SWING_COOLDOWN = 0.5
 const HEAVY_PLUNGER_SWING_RANGE = 120
 const HEAVY_PLUNGER_KNOCKBACK = 80
 
+const ROD_OF_POOPDOM_SPAWN_CHANCE = 0.05
+const ROD_OF_POOPDOM_PICKUP_SIZE = 24
+const ROD_OF_POOPDOM_COOLDOWN = 3
+const ROD_OF_POOPDOM_RANGE = 300
+
 // Humor/intrigue badges (docs/handoffs/roadmap-handoff-v0.4.32-plan.md):
 // low-odds optional pickups scattered across levels. Never gate progression
 // (unlike progressionBadgeId below) — they're a pure exploration reward, so
@@ -436,6 +441,7 @@ export class GameEngine {
       capturedFace: null,
       facing: { x: 0, y: 1 },
       gun: null,
+      rod: false,
     }
     this.chaser = {
       chaserType: null,
@@ -498,6 +504,9 @@ export class GameEngine {
     this.schleimyPotionTimer = 0
     this.tacoBellActive = false
     this.tacoBellTimer = 0
+    this.stinkyTimer = 0
+    this.smokeEffects = []
+    this.pointerPos = { x: 0, y: 0 }
     this.decoyActive = false
     this.decoyTimer = 0
     this.decoyPos = { x: 0, y: 0 }
@@ -515,6 +524,7 @@ export class GameEngine {
     this.pickups = []
     this.rollingPickups = []
     this.runner.plunger = null
+    this.runner.rod = false
     this.bullets = []
     this.fireCooldown = 0
     this.luckyBadgeEarned = (earnedBadges || []).includes('lucky')
@@ -673,6 +683,7 @@ export class GameEngine {
         this.keys.sprint = isDown
         break
       case 'KeyF':
+      case 'KeyT':
         this.keys.fire = isDown
         break
       default:
@@ -710,7 +721,9 @@ export class GameEngine {
     const distSprint = Math.hypot(x - s.x, y - s.y)
     const distFire = Math.hypot(x - f.x, y - f.y)
 
-    if ((this.runner.gun || this.runner.plunger) && distFire < 34) {
+    this.pointerPos = { x, y }
+
+    if ((this.runner.gun || this.runner.plunger || this.runner.rod) && distFire < 34) {
       this.fireBtn.active = true
       this.fireBtn.id = e.pointerId
       this._tryFire()
@@ -736,8 +749,9 @@ export class GameEngine {
   }
 
   _handlePointerMove(e) {
+    this.pointerPos = this._toViewCoords(e)
     if (this.joystick.active && e.pointerId === this.joystick.id && !this.tacoBellActive) {
-      const { x, y } = this._toViewCoords(e)
+      const { x, y } = this.pointerPos
       this._updateJoystickVector(x, y)
     }
   }
@@ -824,6 +838,9 @@ export class GameEngine {
     this.schleimyPotionTimer = 0
     this.tacoBellActive = false
     this.tacoBellTimer = 0
+    this.stinkyTimer = 0
+    this.smokeEffects = []
+    this.pointerPos = { x: 0, y: 0 }
     this.decoyActive = false
     this.decoyTimer = 0
     this.extraChaserTimer = EXTRA_CHASER_INTERVAL
@@ -852,6 +869,7 @@ export class GameEngine {
     this._spawnProgressionBadge()
     this._maybeSpawnHumorBadge()
     this._maybeSpawnGawdParticle()
+    this._maybeSpawnRodOfPoopdom()
     this._maybeSpawnTacoBell()
     this._maybeSpawnDecoy()
     this._maybeSpawnSoggyToiletPaper()
@@ -1287,7 +1305,15 @@ export class GameEngine {
         this.runnerLineTimer = 1.5
       } else if (pickup.type === 'heavy-plunger') {
         this.runner.plunger = { swings: HEAVY_PLUNGER_SWINGS }
+        this.runner.gun = null
+        this.runner.rod = false
         this.runnerLine = 'Got a plunger. Time to swing.'
+        this.runnerLineTimer = 1.5
+      } else if (pickup.type === 'rod-of-poopdom') {
+        this.runner.rod = true
+        this.runner.plunger = null
+        this.runner.gun = null
+        this.runnerLine = 'The Rod of Poopdom!'
         this.runnerLineTimer = 1.5
       }
       return false
@@ -1483,6 +1509,20 @@ export class GameEngine {
     })
   }
 
+  _maybeSpawnRodOfPoopdom() {
+    if (Math.random() > ROD_OF_POOPDOM_SPAWN_CHANCE) return
+    const spawn = this._findRandomWalkableSpawn()
+    if (!spawn) return
+    this.pickups.push({
+      type: 'rod-of-poopdom',
+      x: spawn.x,
+      y: spawn.y,
+      w: ROD_OF_POOPDOM_PICKUP_SIZE,
+      h: ROD_OF_POOPDOM_PICKUP_SIZE,
+      sprite: '🪄',
+    })
+  }
+
   _maybeSpawnSchleimyPotion() {
     if (Math.random() > 0.15) return
     const cx = WORLD.width / 2
@@ -1590,7 +1630,58 @@ export class GameEngine {
 
     if (this.runner.plunger.swings <= 0) {
       this.runner.plunger = null
+    this.runner.rod = false
     }
+  }
+
+  _tryTeleport() {
+    if (this.stinkyTimer > 0) return
+
+    let targetX = this.pointerPos.x
+    let targetY = this.pointerPos.y
+    const dx = targetX - (this.runner.x + this.runner.w / 2)
+    const dy = targetY - (this.runner.y + this.runner.h / 2)
+    const dist = Math.hypot(dx, dy)
+
+    let finalDx = dx
+    let finalDy = dy
+    
+    // Default fallback if pointer is not set (e.g. mobile joystick initial)
+    if (targetX === 0 && targetY === 0) {
+      finalDx = this.runner.facing.x * ROD_OF_POOPDOM_RANGE
+      finalDy = this.runner.facing.y * ROD_OF_POOPDOM_RANGE
+    } else if (dist > ROD_OF_POOPDOM_RANGE) {
+      finalDx = (dx / dist) * ROD_OF_POOPDOM_RANGE
+      finalDy = (dy / dist) * ROD_OF_POOPDOM_RANGE
+    }
+
+    let finalX = this.runner.x + this.runner.w / 2 + finalDx
+    let finalY = this.runner.y + this.runner.h / 2 + finalDy
+
+    // Collision check
+    const testRect = { x: finalX - this.runner.w / 2, y: finalY - this.runner.h / 2, w: this.runner.w, h: this.runner.h }
+    if (this._hitsWall(testRect) || finalX < 0 || finalY < 0 || finalX > WORLD.width || finalY > WORLD.height) {
+      this.runnerLine = 'Cannot teleport there!'
+      this.runnerLineTimer = 1.0
+      return
+    }
+
+    // Departure smoke effect
+    this.smokeEffects = this.smokeEffects || []
+    for (let i = 0; i < 8; i++) {
+      this.smokeEffects.push({
+        x: this.runner.x + this.runner.w / 2 + (Math.random() - 0.5) * 30,
+        y: this.runner.y + this.runner.h / 2 + (Math.random() - 0.5) * 30,
+        age: 0,
+        life: 0.5 + Math.random() * 0.5,
+        r: 10 + Math.random() * 15
+      })
+    }
+
+    // Do teleport
+    this.runner.x = testRect.x
+    this.runner.y = testRect.y
+    this.stinkyTimer = ROD_OF_POOPDOM_COOLDOWN
   }
 
   _tryShartKnocker() {
@@ -1625,6 +1716,11 @@ export class GameEngine {
   }
 
   _tryFire() {
+    if (this.runner.rod) {
+      this._tryTeleport()
+      return
+    }
+
     if (this.runner.plunger) {
       this._swingPlunger()
       return
@@ -1999,6 +2095,14 @@ export class GameEngine {
        ctx.stroke()
        ctx.restore()
     }
+    if (this.smokeEffects) {
+      for (const s of this.smokeEffects) {
+        ctx.fillStyle = `rgba(139, 69, 19, ${1 - s.age / s.life})`
+        ctx.beginPath()
+        ctx.arc(s.x, s.y, s.r * (1 + s.age / s.life), 0, Math.PI * 2)
+        ctx.fill()
+      }
+    }
     this.chasers.forEach((chaser) => {
       this._drawEntity(ctx, chaser)
       if (chaser.stunnedUntil > 0) this._drawStunEffect(ctx, chaser)
@@ -2342,11 +2446,11 @@ export class GameEngine {
     ctx.fillText('SPACE', s.x, s.y + 16)
     ctx.restore()
 
-    if (this.runner.gun || this.runner.plunger || this.shartCharge > 0) {
+    if (this.runner.gun || this.runner.plunger || this.runner.rod || this.shartCharge > 0) {
       const f = this._fireOrigin()
       ctx.save()
       ctx.globalAlpha = this.fireBtn.active ? 0.95 : 0.6
-      ctx.fillStyle = this.runner.plunger ? '#8b6ad1' : (this.shartCharge > 0 ? '#ff5500' : '#ffd27a')
+      ctx.fillStyle = this.runner.rod ? (this.stinkyTimer > 0 ? '#555555' : '#8b5a2b') : (this.runner.plunger ? '#8b6ad1' : (this.shartCharge > 0 ? '#ff5500' : '#ffd27a'))
       ctx.beginPath()
       ctx.arc(f.x, f.y, 34, 0, Math.PI * 2)
       ctx.fill()
@@ -2355,7 +2459,7 @@ export class GameEngine {
       ctx.font = 'bold 12px sans-serif'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
-      ctx.fillText(this.runner.plunger ? 'SWING' : (this.shartCharge > 0 ? 'FART' : 'FIRE'), f.x, f.y)
+      ctx.fillText(this.runner.rod ? (this.stinkyTimer > 0 ? Math.ceil(this.stinkyTimer) + 's' : 'WARP') : (this.runner.plunger ? 'SWING' : (this.shartCharge > 0 ? 'FART' : 'FIRE')), f.x, f.y)
       ctx.font = 'bold 9px sans-serif'
       ctx.fillText('F', f.x, f.y + 14)
       ctx.restore()
