@@ -12,6 +12,7 @@ import levelStartUrl from './assets/audio/level-start-igottago.mp3'
 import levelClearUrl from './assets/audio/level-win-cant-catch-me.mp3'
 import boostStartUrl from './assets/audio/boost-start-igottago-x2.mp3'
 import tiredUrl from './assets/audio/runner-tired-run.mp3'
+import shartKnockerStubUrl from './assets/audio/shart-knocker-stub.mp3'
 import chaseAmbientUrl from './assets/audio/chase-ambient-bopbop.mp3'
 import chaserBarkCloseUrl from './assets/audio/chaser-bark-close-toiletking.mp3'
 import chaserBarkMissAUrl from './assets/audio/chaser-bark-miss-ayayay.mp3'
@@ -138,6 +139,7 @@ export default function App() {
 
   const handleBoostStart = () => playOneShot(boostStartUrl, 0.35)
   const handleTired = () => playOneShot(tiredUrl, 0.35)
+  const handleShart = () => playOneShot(shartKnockerStubUrl, 0.5)
   const handleChaserBark = () => playRandomOneShot(CHASER_BARK_URLS, 0.32)
   const handleLevelClear = ({ index, showLvl2Transition = false } = {}) => {
     playOneShot(levelClearUrl, 0.4)
@@ -512,6 +514,7 @@ export default function App() {
               onExtraChaserSpawn={handleExtraChaserSpawn}
               onCaughtProfileReady={handleCaughtProfileReady}
               onBadgeEarned={handleBadgeEarned}
+              onShart={handleShart}
               onEngineReady={(engine) => {
                 engineRef.current = engine
               }}

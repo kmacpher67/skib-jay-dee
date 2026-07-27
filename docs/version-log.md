@@ -6,6 +6,22 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.40 — Shart Knocker (2026-07-27)
+
+### What changed
+
+- Implemented **Shart Knocker** active ability: Picking up a Taco Bell Grande on Level 4+ now grants one `shartCharge`. The runner can trigger it via the F key or the on-canvas FIRE button (which turns orange and reads "FART" while charged).
+- Triggers a fart that stuns the nearest chaser for 3-12 seconds (randomized).
+- A successful hit pays +50 sheebs; a miss pays +5 sheebs. 
+- Added the `Flaming Ass` badge, awarded on the first successful hit.
+- Added `shart-knocker-stub.mp3` as a placeholder sound effect.
+- Added `frontend/e2e/shart-knocker.spec.js` for end-to-end verification.
+- Bumped `GAME_ITERATION` to `v0.4.40` and deployed.
+
+### Design decisions
+
+- Overloaded the existing Jayden Gun FIRE button so the mobile UI isn't cluttered with another button. The text label and color update to indicate what the button will do.
+
 ## v0.4.39.1 — Level 4 Spawn Fix (2026-07-27)
 
 ### What changed

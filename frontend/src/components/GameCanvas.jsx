@@ -37,6 +37,7 @@ export default function GameCanvas({
   onExtraChaserSpawn,
   onCaughtProfileReady,
   onBadgeEarned,
+  onShart,
   onEngineReady,
 }) {
   const canvasRef = useRef(null)
@@ -58,6 +59,7 @@ export default function GameCanvas({
       onExtraChaserSpawn,
       onCaughtProfileReady,
       onBadgeEarned,
+      onShart,
       initialSheebs,
       initialDeaths,
       highestLevel,

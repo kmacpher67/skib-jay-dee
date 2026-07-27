@@ -13,6 +13,10 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.40 (real code, shipped — 2026-07-27):**
+  implemented the **Shart Knocker** slice from `docs/handoffs/roadmap-handoff-v0.4.40-plan.md`. Picking up a Taco Bell Grande on Level 4+ now grants one `shartCharge`. The runner can trigger it via the F key or the on-canvas FIRE button (which turns orange and reads "FART" while charged). Triggers a fart that stuns the nearest chaser for 3-12 seconds (randomized). A successful hit pays +50 sheebs; a miss pays +5 sheebs. Added the `Flaming Ass` badge, awarded on the first successful hit. Added `shart-knocker-stub.mp3` as a placeholder sound effect. Verified with full Playwright suite including new `frontend/e2e/shart-knocker.spec.js`. `GAME_ITERATION` bumped to `v0.4.40` and deployed.
+- **v0.4.39.1 (real code, shipped — 2026-07-27):**
+  Fixed the Level 4 spawn point by moving it from `x: 430` to `x: 260` and down to `y: WORLD.height - 140` so the runner starts in an open vertical aisle instead of inside a horizontal map wall segment. `GAME_ITERATION` bumped to `v0.4.39.1` and deployed.
 - **v0.4.39 (real code, shipped — 2026-07-27):**
   implemented the **Enhanced Death Logs** + **Parody Warning & Feedback Link** slice from `docs/handoffs/roadmap-handoff-v0.4.39-plan.md`. `GameEngine.js` tracks `sessionSeconds` and `initialSheebs`, reporting `timePlayed`, `sessionSheebDelta`, and `sessionSkreemDelta` on death. `DeathsModal.jsx` renders this telemetry for new records and degrades gracefully for legacy ones. A "Fair Use / Parody Warning" with a link to the GitHub issues tracker (`https://github.com/kmacpher67/skib-jay-dee/issues`) is now displayed at the bottom of the Main Menu. Verified with `npm run build` and `npx playwright test`. `GAME_ITERATION` bumped to `v0.4.39` and deployed.
 - **v0.4.39-plan roadmap snapshot (docs-only, 2026-07-27):**

@@ -392,6 +392,7 @@ export class GameEngine {
       onExtraChaserSpawn,
       onCaughtProfileReady,
       onBadgeEarned,
+      onShart,
       initialSheebs,
       initialDeaths = 0,
       highestLevel = 0,
@@ -420,6 +421,7 @@ export class GameEngine {
     this.onExtraChaserSpawn = onExtraChaserSpawn || (() => {})
     this.onCaughtProfileReady = onCaughtProfileReady || (() => {})
     this.onBadgeEarned = onBadgeEarned || (() => {})
+    this.onShart = onShart || (() => {})
 
     this.runner = {
       x: WORLD.width / 2 - 20,
@@ -505,6 +507,7 @@ export class GameEngine {
     this.soggyTrails = []
     this.plungerSwingActive = false
     this.plungerSwingTimer = 0
+    this.shartCharge = 0
     this.chaserRespawnQueue = []
 
     this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0, luckBonus: 0 }
@@ -1261,6 +1264,9 @@ export class GameEngine {
       } else if (pickup.type === 'taco-bell') {
         this.tacoBellActive = true
         this.tacoBellTimer = 3
+        if (this.levelIndex >= 3) {
+          this.shartCharge = (this.shartCharge || 0) + 1
+        }
         if (this.joystick.dx === 0 && this.joystick.dy === 0) {
           this.joystick.dy = -1
         }
@@ -1582,9 +1588,45 @@ export class GameEngine {
     }
   }
 
+  _tryShartKnocker() {
+    if (this.fireCooldown > 0) return
+    this.fireCooldown = 0.5
+    this.shartCharge -= 1
+    this.onShart()
+
+    let nearestChaser = null
+    let minDist = Infinity
+    for (const chaser of this.chasers) {
+      const dist = Math.hypot(
+        (chaser.x + chaser.w / 2) - (this.runner.x + this.runner.w / 2),
+        (chaser.y + chaser.h / 2) - (this.runner.y + this.runner.h / 2),
+      )
+      if (dist < 200 && dist < minDist) {
+        minDist = dist
+        nearestChaser = chaser
+      }
+    }
+
+    if (nearestChaser) {
+      const stunSecs = 3 + Math.random() * 9
+      nearestChaser.stunnedUntil = this.levelSeconds + stunSecs
+      this.sheebs += 50
+      this.onSheebsChange(this.sheebs)
+      this.onBadgeEarned('flaming-ass')
+    } else {
+      this.sheebs += 5
+      this.onSheebsChange(this.sheebs)
+    }
+  }
+
   _tryFire() {
     if (this.runner.plunger) {
       this._swingPlunger()
+      return
+    }
+
+    if (this.shartCharge > 0) {
+      this._tryShartKnocker()
       return
     }
 
@@ -2295,11 +2337,11 @@ export class GameEngine {
     ctx.fillText('SPACE', s.x, s.y + 16)
     ctx.restore()
 
-    if (this.runner.gun || this.runner.plunger) {
+    if (this.runner.gun || this.runner.plunger || this.shartCharge > 0) {
       const f = this._fireOrigin()
       ctx.save()
       ctx.globalAlpha = this.fireBtn.active ? 0.95 : 0.6
-      ctx.fillStyle = this.runner.plunger ? '#8b6ad1' : '#ffd27a'
+      ctx.fillStyle = this.runner.plunger ? '#8b6ad1' : (this.shartCharge > 0 ? '#ff5500' : '#ffd27a')
       ctx.beginPath()
       ctx.arc(f.x, f.y, 34, 0, Math.PI * 2)
       ctx.fill()
@@ -2308,7 +2350,7 @@ export class GameEngine {
       ctx.font = 'bold 12px sans-serif'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
-      ctx.fillText(this.runner.plunger ? 'SWING' : 'FIRE', f.x, f.y)
+      ctx.fillText(this.runner.plunger ? 'SWING' : (this.shartCharge > 0 ? 'FART' : 'FIRE'), f.x, f.y)
       ctx.font = 'bold 9px sans-serif'
       ctx.fillText('F', f.x, f.y + 14)
       ctx.restore()

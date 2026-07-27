@@ -65,16 +65,16 @@ or front-end–first unless noted.
 | Status | Count | Items |
 |---|---|---|
 | **Unblocked — code next** | 0 | |
-| **Shipped** | Enhanced Death Logs, Parody Warning & Feedback Link → `roadmap-handoff-v0.4.39.md` |
-| **Queued — specced** | 1 | Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` (after v0.4.39) |
+| **Shipped** | Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` |
+| **Queued — specced** | 0 | |
 | **Design-only / TBD** | 5 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip |
 | **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
 | **Large / later** | 4 | Interactive content pack, Intro cinematic, Multiplayer (Phase 5), Gameplay Rebalancing remainder |
 | **Small polish** | 2 | Cosmetic shop sink, menu brag stat |
 
-`GAME_ITERATION` is **v0.4.39** (`frontend/src/version.js`). v0.4.39
-(Enhanced Death Logs + Parody Warning) has **landed** — not in progress. Next code
-slice is v0.4.40-plan.
+`GAME_ITERATION` is **v0.4.40** (`frontend/src/version.js`). v0.4.40
+(Shart Knocker) has **landed** — not in progress. Next code
+slice is pending planning.
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.
@@ -356,10 +356,8 @@ and chaser-bark voice clips, 1:1 with text.
 - [x] **The "Gawd Particle" (Level 5+).** Landed in v0.4.34 — an 8%-per-level Level 5+ pickup grants the runner a 10s wall-hack buff; touching a chaser while it's active despawns the chaser (15s respawn timer) instead of capturing the runner. See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
 - [x] **Quest Rooms & Landmark Badges.** Landed in v0.4.33 — Level 4 and Level 5 now each have a dedicated landmark room with a quest badge, with Level 4 keeping two exits and Level 5 tightening into a one-door chokepoint.
 - [ ] **Interactive content pack: secret items, gag awards, and map personality.** Add a small data-driven catalog of runner/chaser good and bad items plus exploration awards so levels feel more alive, funny, and readable instead of just harder. See [docs/interactive-content-pack.md](interactive-content-pack.md).
-- [ ] **Feature: Shart Knocker (Taco Bell Grande follow-up).** **Specced in
-  `docs/handoffs/roadmap-handoff-v0.4.40-plan.md`** — pull after v0.4.39,
-  not before. Keep the shipped Taco Bell Grande pickup as-is, but add a
-  separate Level 4+ active ability on top of it: one Taco Bell = one `Kill Fart` charge. While being chased, the runner can trigger it to blast a giant fart that stops the nearest chaser for 3-12 seconds. A hit pays +50 sheebs; a miss still pays +5 sheebs. The move is one-shot per Taco Bell and should land with a flaming-ass badge/award icon plus a stubbed fart SFX file in `frontend/src/assets/audio/` so the code path can play something before the final recording exists.
+- [x] **Feature: Shart Knocker (Taco Bell Grande follow-up).** Shipped in `v0.4.40`. 
+  One Taco Bell on Level 4+ grants one `Kill Fart` charge. Triggered by FIRE button to blast a giant fart that stops the nearest chaser for 3-12 seconds. Hit pays +50 sheebs; miss pays +5 sheebs. Tied to Flaming Ass badge.
 - [x] **Retrofit Early Level Badges.** Landed v0.4.32 — Levels 1-3
   (Porcelain Palace, Pipeworks, Flooded Annex) each get a `progressionBadgeId`
   (`porcelain-prowler`, `pipe-dreamer`, `annex-relic-hunter`) auto-spawned as

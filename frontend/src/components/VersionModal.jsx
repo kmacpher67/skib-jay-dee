@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.40',
+    title: 'The Shart Knocker',
+    description: 'Added the Shart Knocker ability! Eat a Taco Bell Grande on Level 4+ to charge it, then hit F/FIRE to unleash a blast that stuns the nearest Skib. Comes with a brand new Flaming Ass badge for your first hit.',
+  },
+  {
     version: 'v0.4.39.1',
     title: 'Level 4 spawn fix',
     description: 'Fixed an issue where the runner spawned inside a wall at the start of Level 4.',

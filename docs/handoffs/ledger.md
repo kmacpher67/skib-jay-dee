@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-27 | v0.4.40 | Added Shart Knocker active ability (charge from Taco Bell Grande, hit FIRE to stun chaser) and Flaming Ass badge
 2026-07-27 | v0.4.39.1 | Fixed Level 4 spawn point to stop runner from starting inside a wall
 2026-07-27 | v0.4.39 | Added Enhanced Death Logs telemetry (timePlayed, sessionSheebDelta, sessionSkreemDelta) to deathsHistory
 2026-07-27 | v0.4.39 | Added Fair Use / Parody Warning and GitHub feedback link to Main Menu footer

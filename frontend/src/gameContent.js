@@ -103,6 +103,12 @@ export function getChaserProfile(faceId) {
 }
 
 export const BADGES = {
+  'flaming-ass': {
+    id: 'flaming-ass',
+    name: 'Flaming Ass',
+    lore: 'First successful shart hit on Level 4+.',
+    emoji: '🏃🔥',
+  },
   'garage-survivor': {
     id: 'garage-survivor',
     name: 'Garage Survivor',
