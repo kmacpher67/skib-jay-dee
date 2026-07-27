@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-27 | docs (Claude Sonnet 5) | Recorded Ken's Long-Term (LT) roadmap dictation — Level 10 grand-arc finale, Role Reversal, MOBA/PvP — as a new "Long-Term (LT) Roadmap" section in `roadmap.md`, a full writeup with refinement questions in `roadmap-handoff-v0.4.43-plan.md`, an open reconciliation note in `level-progression-and-endgame-plan.md` (Level 10 vs. existing Level 7 "CEO of Drains" climax), and pointers in `future-versions.md`; no code changed
 2026-07-27 | docs (Claude Sonnet 5) | Planned Rewards & History panel + HUD live-data pills from Ken's screenshot feedback (`roadmap-handoff-v0.4.41-plan.md`); corrected stale unchecked Enhanced Death Logs/Parody Warning boxes in `roadmap.md`; refreshed `next-agent-planning-brief.md`/`next-agent-coding-brief.md` off the shipped v0.4.39/v0.4.40 handoffs
 2026-07-27 | v0.4.40 | Added Shart Knocker active ability (charge from Taco Bell Grande, hit FIRE to stun chaser) and Flaming Ass badge
 2026-07-27 | v0.4.39.1 | Fixed Level 4 spawn point to stop runner from starting inside a wall

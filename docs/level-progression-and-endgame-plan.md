@@ -9,6 +9,21 @@ design docs for each level to improve play, add content and complete
 the arch of the games end plot... which isn't quite yet at level 5, so
 we have to add harder stuff in more chasers faster etc."
 
+> **⚠️ OPEN RECONCILIATION (2026-07-27):** In the same session that
+> introduced the Long-Term (LT) roadmap
+> ([roadmap-handoff-v0.4.43-plan.md](handoffs/roadmap-handoff-v0.4.43-plan.md)),
+> Ken said "I think LVL10 will be the final scene and complete the
+> arch." That doesn't match this doc's existing plan below, which names
+> **Level 7** ("CEO of Drains") as the climax. This is recorded as an
+> **open question, not resolved** — per `docs/skib-sdlc.md`'s
+> "no code-cowboy" rule, nothing below has been renumbered or rewritten
+> to guess an answer. Open: does the Level 7 "CEO of Drains" content stay
+> as a mid-arc boss, move to Level 10 as the final boss, or get replaced?
+> What fills Levels 8-9? Ken is actively working on level development
+> right now (outside this planning pass) — the next Mode A session should
+> check in on that work before touching this doc's Level 7+ sections for
+> real.
+
 This doc is the level-by-level design reference the source PDF
 (`Skib-jay-dee-toilet game-init-v1.pdf`) never got past its first five
 map ideas for. It recaps what's shipped, then proposes Level 6 and a
@@ -216,6 +231,11 @@ session builds Level 6 or 7:
    they choose when to use? This changes the mechanic's whole feel
    (forced/random vs. player-controlled) and needs your call before any
    Mode B session builds the Glitch Zones/Rift Anchors mechanics above.
+8. **NEW (flagged 2026-07-27): Level 10 vs. Level 7 climax.** See the
+   "OPEN RECONCILIATION" note at the top of this doc — does "CEO of
+   Drains" stay at Level 7, move to Level 10, or get replaced? What's the
+   Level 8-9 bridge content? Full context in
+   [roadmap-handoff-v0.4.43-plan.md](handoffs/roadmap-handoff-v0.4.43-plan.md).
 
 ## Roadmap/backlog updates this doc makes
 

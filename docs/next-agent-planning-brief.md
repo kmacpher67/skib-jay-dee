@@ -28,11 +28,23 @@ Use this when Ken opens a **Mode A** session (planning / vibes / research —
      Slice A (history panel) is code-ready; Slice B (HUD pill numbers) is
      blocked on a decision from Ken — see that file's "Open question"
      section.
+   - Also open: `roadmap-handoff-v0.4.42-plan.md` (menu brag stat, code-
+     ready) and `roadmap-handoff-v0.4.43-plan.md` (Long-Term roadmap:
+     Level 10 grand-arc finale, Role Reversal, MOBA/PvP — design-only,
+     several "Flag for Ken" questions, not code-ready).
 8. Design tracks (vibes / not ready to code):
    - `docs/difficulty-mechanics-plan.md` — Method C / Debt Lock; auto-tune
      refinement section has open TBDs (window size, floor/ceiling).
    - `docs/level-progression-and-endgame-plan.md` — Level 7+ Mosaic map;
      **Flag for Ken item 7** (dimension-shift trigger) still unanswered.
+     Also carries a new **open reconciliation note** (2026-07-27): Ken
+     said Level 10 will be the grand-arc finale, which doesn't match this
+     doc's existing Level 7 "CEO of Drains" climax plan — unresolved, see
+     `roadmap-handoff-v0.4.43-plan.md`.
+   - `roadmap-handoff-v0.4.43-plan.md` — LT roadmap (Level 10 arc, Role
+     Reversal, MOBA/PvP). Ken's own sequencing: finish the arc, then Role
+     Reversal, then MOBA. Multiple "Flag for Ken" questions block any of
+     the three from becoming a bounded coding handoff yet.
 
 ## Current production state (2026-07-27, revised)
 

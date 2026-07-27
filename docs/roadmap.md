@@ -124,11 +124,51 @@ for the full session write-up and
 | 1.5 | Content pass: more levels, shop, persistence, death/skreem economy | Done (this session) |
 | 2 | Audio pass | First pass done (v0.4.0) — see [sound-effects-howto.md](sound-effects-howto.md) and [future-versions.md](future-versions.md) for polish left |
 | 2.5 | World Star intro cinematic | Not started (an experimental lvl2 video-transition clip landed as a rough proof of concept, see below) |
-| 3 | More characters/abilities per PDF roster, role-swapping | Level 6 (Jayden's Nightmare House + Skib-Daddy-Toilet Guy w/ Plunger Launch) landed in v0.4.38 — see [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md) and [roadmap-handoff-v0.4.38.md](handoffs/roadmap-handoff-v0.4.38.md). Level 7 climax ("CEO of Drains") stays parked, not scoped this pass. |
+| 3 | More characters/abilities per PDF roster, role-swapping | Level 6 (Jayden's Nightmare House + Skib-Daddy-Toilet Guy w/ Plunger Launch) landed in v0.4.38 — see [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md) and [roadmap-handoff-v0.4.38.md](handoffs/roadmap-handoff-v0.4.38.md). Level 7 climax ("CEO of Drains") stays parked, not scoped this pass. "Role-swapping" (player-controlled chaser) is now scoped as an LT roadmap item — see [Long-Term (LT) Roadmap](#long-term-lt-roadmap) below and [roadmap-handoff-v0.4.43-plan.md](handoffs/roadmap-handoff-v0.4.43-plan.md). |
 | 4 | Oval/masked face-crop on upload instead of stretch | Done (v0.4.14) |
-| 5 | FastAPI WebSocket multiplayer, server-authoritative roles | Backend scaffolded only |
+| 5 | FastAPI WebSocket multiplayer, server-authoritative roles | Backend scaffolded only. Both the multiplayer Role Reversal variant and the MOBA/PvP idea in the [Long-Term (LT) Roadmap](#long-term-lt-roadmap) depend on this phase actually landing first. |
 | 6 | Mongo-backed profile (replaces cookies) | Not started — local multi-profile groundwork (registry, `label`/`updatedAt`) landed v0.4.29; open decisions on identity/auth, sync strategy, and migration written up in [docs/profiles-and-identity.md](profiles-and-identity.md) |
 | 7 | Risk/reward escalation for experienced players (negative sheebs, losable shop items past level 3/4) | Debt economy + item loss landed v0.4.26; difficulty transition screen and badges/awards still pending — see incremental backlog below |
+
+## Long-Term (LT) Roadmap
+
+**New 2026-07-27, design-only.** Ken dictated three LT-horizon items this
+session, in his own stated priority order: finish the game's "grand arch"
+first, then Role Reversal, then a PvP/MOBA mode. None of these are
+code-ready — each has open refinement questions that need Ken's input
+before a coding session can pick them up. Full writeup, current-state
+recap, and per-item refinement questions are in
+[roadmap-handoff-v0.4.43-plan.md](handoffs/roadmap-handoff-v0.4.43-plan.md).
+Summary:
+
+1. **Finish the grand arc — Level 10 as the final scene.** Ken is
+   actively working on level development now. This is new information
+   against the existing plan in
+   [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md),
+   which currently names **Level 7** ("CEO of Drains") as the climax —
+   see that doc's new note reconciling the two. Open question: does the
+   Level 7 boss content stay put as a mid-arc beat, move to Level 10, or
+   get replaced? Not resolved yet — flagged for Ken.
+2. **Role Reversal — players choose chaser or runner.** Today only the
+   runner is playable; all chasers are AI. This is a real new control
+   scheme and mode-boundary design, not a reskin. Recommended smallest
+   first slice (still needs Ken's sign-off): single-player, human plays
+   chaser vs. an AI-controlled runner — proves out whether chaser POV is
+   fun before any networking work. The full multiplayer version (human
+   runner vs. human chaser) depends on Phase 5 above.
+3. **MOBA/PvP mode (2v2 or 4v4 deathmatch-style).** Ken's own framing:
+   "we need bodies for this and maybe decent servers." Largest-scope item
+   of the three — depends on Phase 5 multiplayer landing for real first,
+   and on Role Reversal's multiplayer variant proving out the underlying
+   asymmetric-roles gameplay. Format (asymmetric team chase vs. symmetric
+   deathmatch), infra commitment, and player-base/matchmaking scope are
+   all open.
+
+Sequencing per Ken's own words: **Level 10 arc → Role Reversal → MOBA**.
+Don't start coding any of these without a dedicated, smaller bounded
+handoff once the relevant "Flag for Ken" questions in
+[roadmap-handoff-v0.4.43-plan.md](handoffs/roadmap-handoff-v0.4.43-plan.md)
+are answered.
 
 ## Plan: handling levels and new maps (plan only — not implemented)
 
@@ -564,7 +604,11 @@ and chaser-bark voice clips, 1:1 with text.
   solid. Make the frontend actually connect to `/ws/match`, sync two
   browser tabs, server decides who's Chaser. This is the biggest single
   item in the whole backlog — expect it to span multiple sessions, and
-  explicitly plan the sub-increments before writing code.
+  explicitly plan the sub-increments before writing code. Now also a
+  hard dependency for the LT roadmap's multiplayer Role Reversal variant
+  and the MOBA/PvP idea — see
+  [Long-Term (LT) Roadmap](#long-term-lt-roadmap) and
+  [roadmap-handoff-v0.4.43-plan.md](handoffs/roadmap-handoff-v0.4.43-plan.md).
 - [x] **Lvl2 transition video fires too early — gate it to clearing
   Pipeworks, not arriving at it.** Landed v0.4.10 — `GameEngine.js`
   now calls `onLevelClear({ index: this.levelIndex + 1, name:

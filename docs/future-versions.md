@@ -84,6 +84,22 @@ get lost:
   Skib-Daddy landed in v0.4.38.
 - Multiplayer spike (Phase 5) — biggest single item, do last.
 
+## Long-Term (LT) roadmap (new 2026-07-27)
+
+Three LT-horizon items dictated by Ken, design-only, sequenced by his own
+priority order (finish the arc, then Role Reversal, then MOBA/PvP): see
+[docs/roadmap.md](roadmap.md#long-term-lt-roadmap) for the summary and
+[roadmap-handoff-v0.4.43-plan.md](handoffs/roadmap-handoff-v0.4.43-plan.md)
+for the full writeup and refinement questions.
+
+- Finish the grand arc — Level 10 as the final scene (open reconciliation
+  against the existing Level 7 "CEO of Drains" climax plan in
+  [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md)).
+- Role Reversal — players choose chaser or runner. Recommended smallest
+  first slice: single-player vs. an AI runner, before any multiplayer work.
+- MOBA/PvP mode (2v2 or 4v4 deathmatch-style) — depends on the Phase 5
+  multiplayer spike above landing for real first.
+
 ## Interactive content seasoning (follow-up to v0.4.35)
 
 The next funniest pass should keep leaning on map identity and small

@@ -6,6 +6,30 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.43-plan — Long-Term Roadmap: Role Reversal, MOBA/PvP, Level 10 Arc (Claude Sonnet 5, 2026-07-27)
+
+Mode A pass, docs-only. Ken dictated three Long-Term (LT) roadmap items
+directly in-session, in his own priority order: (1) finish the "grand
+arch" — he now expects **Level 10** to be the final scene, which is new
+information against the existing plan in
+`docs/level-progression-and-endgame-plan.md` naming Level 7 ("CEO of
+Drains") as the climax; (2) Role Reversal — let players choose to play as
+chaser or runner, which Ken flagged himself as "big change needs
+refinement details"; (3) a MOBA/PvP mode (2v2 or 4v4 deathmatch-style),
+which Ken flagged as needing "bodies... and maybe decent servers."
+
+Recorded all three in a new `docs/roadmap.md` "Long-Term (LT) Roadmap"
+section and in full in `roadmap-handoff-v0.4.43-plan.md`, with per-item
+refinement questions rather than inventing answers — none of the three
+are code-ready. Key open questions: does the existing Level 7 "CEO of
+Drains" content stay put, move to Level 10, or get replaced (flagged as
+an explicit unresolved reconciliation in the endgame doc, not decided
+here); whether Role Reversal ships single-player-vs-AI first before any
+multiplayer work; and that both the multiplayer Role Reversal variant and
+the MOBA idea are hard-blocked on Phase 5 (multiplayer spike) actually
+landing. Sequencing follows Ken's own stated order: Level 10 arc → Role
+Reversal → MOBA. See `roadmap-handoff-v0.4.43-plan.md` for full detail.
+
 ## v0.4.41-plan — Rewards & History panel + HUD live-data pills (Claude Sonnet 5, 2026-07-27)
 
 Mode A pass, docs-only. Source: Ken sent a menu screenshot annotated with two
