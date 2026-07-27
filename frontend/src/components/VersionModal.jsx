@@ -1,9 +1,23 @@
 const PAST_VERSION_NOTES = [
-  { version: "v0.4.57", notes: ["Rod of Poopdom Second-Teleport Hotfix", "Fixed missing cooldown decrement", "Fixed smoke particle persistence"] },
   {
     version: 'v0.4.57',
     title: 'Rod of Poopdom Hotfix',
     description: 'Fixed a bug where the Rod of Poopdom\'s warp cooldown never decremented, preventing the rod from being used more than once per level. Also fixed smoke effects lingering forever.',
+  },
+  {
+    version: 'v0.4.56',
+    title: 'Runner Pose Pool Collapse',
+    description: 'Simplified the runner face pool to 3 distinct poses (default, skibby, and captured).',
+  },
+  {
+    version: 'v0.4.55',
+    title: 'Micro-Skib Chaser',
+    description: 'Introduced the Micro-Skib, a smaller and slower chaser with a 15% chance to spawn starting on Level 3.',
+  },
+  {
+    version: 'v0.4.54',
+    title: 'Near-Miss Burst',
+    description: 'Added a near-miss particle burst and subtle vignette pulse when escaping a close call.',
   },
   {
     version: 'v0.4.52',
