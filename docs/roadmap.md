@@ -56,6 +56,27 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 `frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js`. Shipped as
 `v0.4.36.1`. See `docs/handoffs/roadmap-handoff-v0.4.36.1.md`.
 
+## Frontend open backlog snapshot (2026-07-27, Mode A pass)
+
+**16** unchecked items remain in the incremental backlog below. All are
+front-end–scoped or front-end–first unless noted.
+
+| Status | Count | Items |
+|---|---|---|
+| **Unblocked — code next** | 2 (1 handoff) | Enhanced Death Logs, Parody Warning & Feedback Link → `roadmap-handoff-v0.4.39-plan.md` |
+| **Queued — specced** | 1 | Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` (after v0.4.39) |
+| **Design-only / TBD** | 4 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial) |
+| **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
+| **Large / later** | 4 | Interactive content pack, Intro cinematic, Multiplayer (Phase 5), Gameplay Rebalancing remainder |
+| **Small polish** | 2 | Cosmetic shop sink, menu brag stat |
+
+`GAME_ITERATION` is **v0.4.38** (`frontend/src/version.js`). v0.4.38
+(Level 6 + grid migration) has **landed** — not in progress. Next code
+slice is v0.4.39-plan, not another v0.4.38 pass.
+
+Planning-session entry point: `docs/next-agent-planning-brief.md`.
+Coding-session entry point: `docs/next-agent-coding-brief.md`.
+
 ## Where things stand (as of this session)
 
 Done: core chase loop, jump-scare capture, face upload + random default
@@ -288,8 +309,11 @@ and chaser-bark voice clips, 1:1 with text.
   - **Positive pickup list:** Jayden Gun, Schleimy Potion, Taco Bell Grande, and future positive pickup items from `docs/interactive-content-pack.md`.
   - **Badge hook:** keep the `Slippery When Wet` badge aligned with the same close-call escape event so the reward and the brag moment stay in sync.
   - **Scope guard:** do not touch the separate post-capture `resume-countdown` beat; this is only for the pre-kill close-call pause.
-- [ ] **Feature: Gameplay Rebalancing (later follow-up).**
-  - **Sheeb Rewards:** +25 Sheebs for hitting a chaser with the Jayden Gun. +50 Sheebs for the close-call escape reward above. +5 Sheebs for positive pickup collections. +50 Sheebs for earning any badge.
+- [ ] **Feature: Gameplay Rebalancing (later follow-up).** **Partially shipped
+  in v0.4.37:** close-call escape +50 and positive-pickup +5 are live. Still
+  open: +25 gun hit, +50 per badge earn, scaled death-penalty table, slower
+  chaser start (0.8 mod), level-clear reward bumps, max-speed cap by level.
+  - **Sheeb Rewards:** +25 Sheebs for hitting a chaser with the Jayden Gun. +50 Sheebs for the close-call escape reward above *(shipped v0.4.37)*. +5 Sheebs for positive pickup collections *(shipped v0.4.37)*. +50 Sheebs for earning any badge.
   - **Scaled Death Penalty:** Level 1 (0 loss), Level 2 (10 loss), Level 3 (20 loss), Level 4+ (30 loss, allows negative).
   - **Chaser Speed:** Starts slower (0.8 mod instead of 1.0). Max speed cap now scales by level (0.9 to 1.35) so they never exceed the max for the current level.
   - **Level Rewards:** Base rewards bumped to ensure difficulty increases delivery (50, 75, 100, 150, 200).
@@ -330,7 +354,10 @@ and chaser-bark voice clips, 1:1 with text.
 - [x] **The "Gawd Particle" (Level 5+).** Landed in v0.4.34 — an 8%-per-level Level 5+ pickup grants the runner a 10s wall-hack buff; touching a chaser while it's active despawns the chaser (15s respawn timer) instead of capturing the runner. See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
 - [x] **Quest Rooms & Landmark Badges.** Landed in v0.4.33 — Level 4 and Level 5 now each have a dedicated landmark room with a quest badge, with Level 4 keeping two exits and Level 5 tightening into a one-door chokepoint.
 - [ ] **Interactive content pack: secret items, gag awards, and map personality.** Add a small data-driven catalog of runner/chaser good and bad items plus exploration awards so levels feel more alive, funny, and readable instead of just harder. See [docs/interactive-content-pack.md](interactive-content-pack.md).
-- [ ] **Feature: Shart Knocker (Taco Bell Grande follow-up).** Keep the shipped Taco Bell Grande pickup as-is, but add a separate Level 4+ active ability on top of it: one Taco Bell = one `Kill Fart` charge. While being chased, the runner can trigger it to blast a giant fart that stops the nearest chaser for 3-12 seconds. A hit pays +50 sheebs; a miss still pays +5 sheebs. The move is one-shot per Taco Bell and should land with a flaming-ass badge/award icon plus a stubbed fart SFX file in `frontend/src/assets/audio/` so the code path can play something before the final recording exists.
+- [ ] **Feature: Shart Knocker (Taco Bell Grande follow-up).** **Specced in
+  `docs/handoffs/roadmap-handoff-v0.4.40-plan.md`** — pull after v0.4.39,
+  not before. Keep the shipped Taco Bell Grande pickup as-is, but add a
+  separate Level 4+ active ability on top of it: one Taco Bell = one `Kill Fart` charge. While being chased, the runner can trigger it to blast a giant fart that stops the nearest chaser for 3-12 seconds. A hit pays +50 sheebs; a miss still pays +5 sheebs. The move is one-shot per Taco Bell and should land with a flaming-ass badge/award icon plus a stubbed fart SFX file in `frontend/src/assets/audio/` so the code path can play something before the final recording exists.
 - [x] **Retrofit Early Level Badges.** Landed v0.4.32 — Levels 1-3
   (Porcelain Palace, Pipeworks, Flooded Annex) each get a `progressionBadgeId`
   (`porcelain-prowler`, `pipe-dreamer`, `annex-relic-hunter`) auto-spawned as
@@ -543,8 +570,16 @@ and chaser-bark voice clips, 1:1 with text.
   verification for the lvl2 timing fix confirmed the video only appears
   after Pipeworks clears, so it no longer overlaps the catch state on
   arrival.
-- [ ] **Enhanced Death Logs:** Record `timePlayed`, raw session deltas (`sessionSheebDelta`, `sessionSkreemDelta`), and the level the player died on in the profile history log. Keep this as telemetry first; do not fold difficulty math into this slice.
-- [ ] **Parody Warning & Feedback Link:** Add a clear warning in the UI (e.g. settings or intro screen) stating that the game is a parody and sarcasm about life games, plumbing, and society (Fair Use applies). Add a link to the GitHub issues page to "place complaints".
+- [ ] **Enhanced Death Logs:** **Unblocked — current coding slice**
+  (`roadmap-handoff-v0.4.39-plan.md`). Record `timePlayed`, raw session
+  deltas (`sessionSheebDelta`, `sessionSkreemDelta`), and the level the
+  player died on in the profile history log. Keep this as telemetry first;
+  do not fold difficulty math into this slice.
+- [ ] **Parody Warning & Feedback Link:** **Unblocked — same slice as death
+  logs.** Add a clear warning in the UI (e.g. settings or intro screen)
+  stating that the game is a parody and sarcasm about life games, plumbing,
+  and society (Fair Use applies). Link:
+  `https://github.com/kmacpher67/skib-jay-dee/issues` for complaints/feedback.
 - [ ] **Difficulty Function (separate design track):** Preferred direction is Method C (`The Debt Lock`) plus a lightweight starting selector (`Noob-Noob` / `CEO of Drains`). Keep it separate from the death-log telemetry slice; see `docs/difficulty-mechanics-plan.md`. **Reviewed 2026-07-27:** a rolling deaths/sheebs auto-tune idea was evaluated and folded into that doc as a refinement of Method C (economy-side lever, level-indexed floors, no new `DifficultyManager` class) — still design-only, several TBDs, not ready to code.
 - [ ] **Cool Play (Chaser Evasion):** Polish the mechanics for users running from chasers. Goal is to make evasion feel cooler (e.g. near-miss effects, sliding, dynamic FOV). Needs further definition.
 - [ ] **Level 7+ and Beyond: The Mosaic Map of Madness (TBD).** (To be determined - needs refinement & extra data specs). Introduce a mutable puzzle map (Multiverse of Madness parody with Rick and Morty style comedic dialogue).

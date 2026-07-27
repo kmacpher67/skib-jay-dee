@@ -6,6 +6,51 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.39-plan roadmap snapshot — backlog count, v0.4.40 queued (Claude Sonnet 5, 2026-07-27)
+
+### What changed
+
+- Docs-only Mode A pass. No code, build, or deploy.
+- Added a **frontend open backlog snapshot** to `docs/roadmap.md`: **16**
+  unchecked incremental items, tagged by status (unblocked, queued,
+  design-only, blocked on Ken, large/later, small polish).
+- Confirmed production is **v0.4.38** — Level 6 and grid migration landed;
+  corrected stale references that still called v0.4.38 "in progress."
+- Created `docs/handoffs/roadmap-handoff-v0.4.40-plan.md` for the Shart
+  Knocker follow-up (queued after v0.4.39, not parallel).
+- Created `docs/next-agent-planning-brief.md` for future Mode A / vibes
+  sessions with open questions Ken can answer without coding.
+- Annotated Gameplay Rebalancing roadmap item with v0.4.37 partial ship
+  (close-call +50, pickup +5 already live).
+- Set GitHub issues URL for parody-feedback slice:
+  `https://github.com/kmacpher67/skib-jay-dee/issues`.
+- Marked `roadmap-handoff-v0.4.38-plan.md` as shipped — do not code from it.
+
+### Handoff completeness review (last 4 landed: v0.4.36, v0.4.36.1, v0.4.37, v0.4.38)
+
+| Handoff | Metadata | Verification | Design decisions | Not done | Copy-paste next |
+|---|---|---|---|---|---|
+| v0.4.38 | ✓ (backfilled) | ✓ | ✓ | ✓ | ✗ |
+| v0.4.37 | ✓ (backfilled) | ✓ | ✓ | ✓ | ✗ |
+| v0.4.36.1 | partial | ✓ | partial | ✓ | ✗ |
+| v0.4.36 | ✗ | ✗ | ✗ | partial | ✗ |
+
+Gaps: none block the next coding slice, but v0.4.36 remains a thin stub
+(missing provenance, verification, copy-paste block). v0.4.37 and v0.4.38
+were backfilled post-ship without fenced next-agent blocks — acceptable
+because `v0.4.39-plan` now owns the copy-paste contract.
+
+### Design decisions
+
+- Queue order is explicit: telemetry/parody UI first, Shart Knocker second,
+  unless Ken reorders in chat.
+- Parody warning default placement: compact menu footer (least new UI).
+
+### Non-goals
+
+- No handoff backfill edits to v0.4.36–v0.4.38 shipped files this pass.
+- No difficulty math or Mosaic map decisions beyond what's already flagged.
+
 ## v0.4.39-plan addendum — Auto-tuning difficulty reviewed, Mosaic map annotated (Claude Sonnet 5, 2026-07-27)
 
 ### What changed

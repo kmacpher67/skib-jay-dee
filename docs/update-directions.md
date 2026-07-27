@@ -13,7 +13,14 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
-- **v0.4.39-plan addendum (docs-only, most recent session, 2026-07-27):**
+- **v0.4.39-plan roadmap snapshot (docs-only, this session, 2026-07-27):**
+  Mode A pass — **16** open unchecked items in `docs/roadmap.md` incremental
+  backlog (frontend snapshot table added). Confirmed v0.4.38 **has landed**
+  (`GAME_ITERATION` = v0.4.38; not in progress). Locked queue: v0.4.39
+  (death logs + parody warning) → v0.4.40 (Shart Knocker). Created
+  `roadmap-handoff-v0.4.40-plan.md` and `next-agent-planning-brief.md`.
+  Reviewed landed handoffs v0.4.36–v0.4.38 for SDLC completeness. No code.
+- **v0.4.39-plan addendum (docs-only, prior session, 2026-07-27):**
   interactive vibe discussion with Ken on auto-tuning difficulty (rolling
   deaths/sheebs ratio) and the parked Level 7+ Mosaic Map of Madness
   concept. Extended the open `v0.4.39-plan` handoff rather than opening a
@@ -31,7 +38,7 @@ entry heading so the change trail stays obvious at a glance.
   item in `docs/level-progression-and-endgame-plan.md` rather than
   assuming an answer. No scope change to the death-log telemetry /
   parody-warning slice that's still the actual unblocked next code slice.
-- **v0.4.38 (real code, most recent shipped version — 2026-07-27):**
+- **v0.4.38 (real code, shipped — 2026-07-27):**
   migrated `Flooded Annex`, `Ramen Aisle`, and `World Star Parking Lot` to the grid format, extracted from hardcoded pixel-rects. Added Level 6 (`Jayden's Nightmare House`) using a looping hallway grid map. Added Skib-Daddy-Toilet Guy using a new heavy `chaserType` pattern with a `Plunger Launch` ability (using the `dad-case` face for now). Added a `Garage Survivor` landmark badge and quest room for Level 6. Tests passed and deployment succeeded. `GAME_ITERATION` bumped to `v0.4.38`.
 - **v0.4.37 (real code):**
   implemented the **Close-Call Freeze & Rewards** slice from
@@ -150,7 +157,7 @@ entry heading so the change trail stays obvious at a glance.
 - `frontend/src/components/ProfileModal.jsx` now renders the shared killer profile card for both fresh kills and log reopens, while `frontend/src/components/DeathsModal.jsx` shows clickable killer-ID pills.
 - `frontend/src/App.jsx` also owns the new menu version log panel, which shows `GAME_ITERATION` plus a short shipped changelog.
 - Planning-only review: the current maps are mechanically fine but need stronger landmark identity, so `docs/interactive-content-pack.md` still seeds the next funny runner/chaser item pack and secret awards. The refined `v0.4.37-plan` now points at the near-capture freeze / reward pass instead of the older content-first polish slice.
-- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently `v0.4.34` (Level 5+ chaser wall-hacks + the Gawd Particle shipped).
+- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently **v0.4.38** (Level 6 + grid migration shipped).
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
   can dispatch a bounded handoff to local Ollama using the shell's
   `OLLAMA_HOST` or to OpenRouter. A handoff can advertise its target
@@ -223,6 +230,8 @@ entry heading so the change trail stays obvious at a glance.
 - `docs/handoffs/roadmap-handoff-v0.4.37.md`
 - `docs/handoffs/roadmap-handoff-v0.4.38-plan.md`
 - `docs/handoffs/roadmap-handoff-v0.4.39-plan.md`
+- `docs/handoffs/roadmap-handoff-v0.4.40-plan.md`
+- `docs/next-agent-planning-brief.md`
 - `docs/difficulty-mechanics-plan.md`
 - `docs/level-progression-and-endgame-plan.md`
 - `frontend/src/mapGrids.js`
@@ -295,7 +304,14 @@ manually:
 - The next map-architecture follow-up is parked in `docs/handoffs/roadmap-handoff-v0.4.36-plan.md` so the v0.4.35 content-polish slice can stay small.
 - `v0.4.25` is now shipped: the post-kill profile card, killer-ID logging, and clickable deaths log are in production.
 - **Game identity / multiple cookie-backed save slots landed in v0.4.29** — the profile switcher, `localStorage` registry, and `docs/profiles-and-identity.md` are all in place. No longer on this list.
-- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.39-plan.md` (corrected in this session to match what's actually shipped — see the "Process note" above). Its recommended next slice is **Enhanced Death Logs** (record raw `timePlayed`, `sessionSheebDelta`, `sessionSkreemDelta`, and the death level in `deathsHistory`) plus the **Parody Warning & Feedback Link** UI addition, both small and unblocked. Level 6 (`v0.4.38`) is already shipped. The badges/rewards system follow-ons and the Schleimy Potion/Micro-Skib items are still blocked on product decisions from Ken — see their entries in `docs/roadmap.md`. `docs/interactive-content-pack.md` stays the source of truth for any extra secret-item / award ideas. The **Difficulty Function** item now has a dedicated design note, `docs/difficulty-mechanics-plan.md`, and the preferred direction is Method C / Debt Lock with a lightweight starting selector — keep it separate from this telemetry pass.
+- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.39-plan.md`.
+  Next coding slice: **Enhanced Death Logs** + **Parody Warning & Feedback
+  Link** (`https://github.com/kmacpher67/skib-jay-dee/issues`). Queued after
+  that: `docs/handoffs/roadmap-handoff-v0.4.40-plan.md` (Shart Knocker).
+  v0.4.38 (Level 6) is shipped — not in progress. Planning entry point:
+  `docs/next-agent-planning-brief.md`. Coding entry point:
+  `docs/next-agent-coding-brief.md`. Frontend backlog: **16** open unchecked
+  items — see snapshot table in `docs/roadmap.md`.
 - Phase 6 (server-side/Mongo profile persistence) now has a starting point — `docs/profiles-and-identity.md` lays out the open identity/auth and sync-strategy decisions a future session needs answered before coding it. Still queued behind Phase 5 (multiplayer) in `docs/roadmap.md`, still planning-only.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it

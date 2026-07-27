@@ -1,5 +1,12 @@
 # Roadmap Handoff: v0.4.36
 
+**Created by:** unknown (pre-provenance) — shipped 2026-07-27
+**Last updated by:** Claude Sonnet 5 — 2026-07-27 (metadata backfill only)
+
+> **Thin stub.** This file predates the SDLC handoff template. See
+> `roadmap-handoff-v0.4.36.1.md` and `version-log.md` for verification and
+> follow-on work. Do not use as a coding entry point.
+
 ## What was requested
 - **Level Data Extraction**: Convert Porcelain Palace and Pipeworks to 2D grid arrays, using `parseMapGrid` to dynamically generate wall rectangles, cleaning up hardcoded pixel spaghetti.
 - **Cursed & Blessed Map Pickups**: Implement Taco Bell Grande (+50% Speed, disables steering) and Fake Jayden Decoy (Drops cardboard cutout, Skibs in radius aggro decoy for 4s).

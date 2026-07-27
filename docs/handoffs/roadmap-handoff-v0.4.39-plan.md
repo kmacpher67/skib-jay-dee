@@ -1,7 +1,7 @@
 # Roadmap Handoff Plan v0.4.39
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Claude Sonnet 5 — 2026-07-27
+**Last updated by:** Claude Sonnet 5 — 2026-07-27 (roadmap snapshot + v0.4.40 queue)
 **Session mode:** Mode A (Planning - docs only, no code changes)
 
 This is a Mode A planning pass. It refines the next code slice so the
@@ -21,8 +21,9 @@ design track.
      gracefully.
 2. **Parody Warning & Feedback Link stays in the same slice.**
    - Add a clear parody / fair-use warning in the main menu or a small
-     settings surface.
-   - Add a GitHub issues link for complaints and feedback.
+     settings surface (default: compact footer on the menu — least new UI).
+   - Add a GitHub issues link for complaints and feedback:
+     `https://github.com/kmacpher67/skib-jay-dee/issues`.
 3. **Difficulty math is intentionally parked.**
    - The preferred future direction is `Method C (The Debt Lock)` plus a
      lightweight starting selector.
@@ -69,6 +70,17 @@ math, but reviewed the same session): found and flagged one real open
 question that a prior planning pass left unanswered (floor trap vs. held
 item to trigger a dimension shift) rather than letting it get silently
 assumed later. See that doc's "Flag for Ken" item 7.
+
+## Addendum — 2026-07-27 (roadmap snapshot pass): queue order locked
+
+- Confirmed **v0.4.38 has landed** (`GAME_ITERATION` = v0.4.38). This
+  handoff remains the only unblocked coding slice.
+- Created **`roadmap-handoff-v0.4.40-plan.md`** for Shart Knocker as the
+  queued follow-on — do not start it until v0.4.39 ships unless Ken
+  reorders.
+- Added `docs/next-agent-planning-brief.md` for future Mode A sessions.
+- Frontend backlog count: **16** open unchecked items in `docs/roadmap.md`
+  (see snapshot table there).
 
 ## Explicitly not in scope
 

@@ -1,5 +1,9 @@
 # Roadmap Handoff - v0.4.38-plan
 
+> **SHIPPED as v0.4.38 (2026-07-27).** See
+> `docs/handoffs/roadmap-handoff-v0.4.38.md`. Do not code from this file —
+> use `roadmap-handoff-v0.4.39-plan.md` for the next slice.
+
 **Session mode:** Mode A (Planning - docs only, no code changes)
 
 This handoff scopes **Level 6: "Jayden's Nightmare House"** and its new

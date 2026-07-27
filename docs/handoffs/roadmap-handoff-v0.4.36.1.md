@@ -1,5 +1,8 @@
 # Handoff: v0.4.36.1 (Shipped)
 
+**Created by:** unknown — 2026-07-27
+**Last updated by:** Claude Sonnet 5 — 2026-07-27 (metadata backfill only)
+
 ## What was done
 
 A Mode A planning pass earlier the same day found the working tree

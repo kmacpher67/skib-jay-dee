@@ -100,8 +100,8 @@ tradeoff items, not just bigger numbers.
 
 ## Content-pass follow-up to v0.4.37-plan
 
-- The close-call freeze / reward pass is now the next scheduled slice,
-  so keep this content polish work parked until that lands.
+- The close-call freeze / reward pass **landed in v0.4.37** — no longer the
+  next slice.
 - If the next content slice gets too large, defer any extra level-callout
   variants or menu-brag subfields here so the first pass stays small.
 - Keep the balance-number tuning as a separate future item instead of

@@ -10,9 +10,9 @@ previously pointed at the close-call freeze / reward slice
 to point at the next unclaimed, unblocked slice instead.
 
 If you are about to code, start with
-`docs/handoffs/roadmap-handoff-v0.4.39-plan.md` (read its correction
-block first — it was itself written slightly stale and has since been
-fixed) and use this as the condensed checklist.
+`docs/handoffs/roadmap-handoff-v0.4.39-plan.md` and use this as the
+condensed checklist. After v0.4.39 ships, the queued follow-on is
+`docs/handoffs/roadmap-handoff-v0.4.40-plan.md` (Shart Knocker).
 
 The next best slice is front-end only: **Enhanced Death Logs** (record
 time-played plus raw session deltas on each capture) plus the **Parody
@@ -40,9 +40,10 @@ Read first:
    the capture event, and render them in `DeathsModal.jsx` alongside the
    existing timestamp/level/killer-ID fields.
 2. **Parody Warning & Feedback Link:** add a short parody/fair-use
-   disclaimer plus a link to the repo's GitHub issues page, in the main
-   menu or a small settings modal in `App.jsx` — whichever fits the
-   existing menu layout with the least new UI.
+   disclaimer plus a link to
+   `https://github.com/kmacpher67/skib-jay-dee/issues`, in the main
+   menu or a small settings modal in `App.jsx` — default: compact menu
+   footer.
 
 ## Constraints
 
