@@ -103,6 +103,13 @@ export function getChaserProfile(faceId) {
 }
 
 export const BADGES = {
+  'garage-survivor': {
+    id: 'garage-survivor',
+    name: 'Garage Survivor',
+    lore: 'Escaped the Nightmare House garage. Still smells like exhaust and terror.',
+    emoji: '🚗',
+  },
+
   'financial-wizardry': {
     id: 'financial-wizardry',
     name: 'Financial Wizardry (or Fraud)',

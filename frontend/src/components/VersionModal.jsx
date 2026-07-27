@@ -1,4 +1,16 @@
 const PAST_VERSION_NOTES = [
+
+  {
+    version: 'v0.4.38',
+    summary: 'Level 6 (Nightmare House) & Skib-Daddy',
+    notes: [
+      'Migrated early maps to the grid system.',
+      'Added Level 6: Jayden\'s Nightmare House.',
+      'New chaser: Skib-Daddy with Plunger Launch.',
+      'Added Garage Survivor badge.'
+    ],
+  },
+
   {
     version: 'v0.4.37',
     title: 'Close-Call Freeze & Rewards',

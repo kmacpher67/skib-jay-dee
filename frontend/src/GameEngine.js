@@ -14,7 +14,7 @@ import {
   HARD_CHASER_LINES,
 } from './dialog.js'
 import { CHASER_FACE_POOL, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS } from './gameContent.js'
-import { PORCELAIN_GRID, PIPEWORKS_GRID, FLOODED_ANNEX_GRID, RAMEN_AISLE_GRID, WORLD_STAR_GRID } from './mapGrids.js'
+import { PORCELAIN_GRID, PIPEWORKS_GRID, FLOODED_ANNEX_GRID, RAMEN_AISLE_GRID, WORLD_STAR_GRID, JAYDENS_NIGHTMARE_HOUSE_GRID } from './mapGrids.js'
 
 export const WORLD = {
   width: 900,
@@ -115,20 +115,7 @@ function buildFloodedAnnex() {
   const walls = []
   const puddles = []
   makeBoundaryWalls(walls)
-
-  walls.push({ x: 120, y: 170, w: 660, h: 52 })
-  walls.push({ x: 120, y: 330, w: 110, h: 420 })
-  walls.push({ x: 310, y: 330, w: 110, h: 190 })
-  walls.push({ x: 310, y: 610, w: 110, h: 140 })
-  walls.push({ x: 500, y: 330, w: 110, h: 390 })
-  walls.push({ x: 690, y: 330, w: 90, h: 190 })
-  walls.push({ x: 690, y: 610, w: 90, h: 340 })
-  walls.push({ x: 180, y: 860, w: 160, h: 120 })
-  walls.push({ x: 400, y: 900, w: 150, h: 100 })
-  walls.push({ x: 600, y: 980, w: 180, h: 180 })
-  walls.push({ x: 130, y: 1160, w: 170, h: 160 })
-  walls.push({ x: 360, y: 1180, w: 180, h: 130 })
-  walls.push({ x: 610, y: 1320, w: 160, h: 100 })
+  parseMapGrid(walls, FLOODED_ANNEX_GRID, 10)
 
   puddles.push(
     { x: 200, y: 520, r: 80 },
@@ -153,21 +140,7 @@ function buildRamenAisle() {
   const walls = []
   const puddles = []
   makeBoundaryWalls(walls)
-
-  // Long, narrow vertical aisles blocked by knocked-over shopping carts.
-  const startX = 100, startY = 160, cols = 4, rows = 6, gapX = 190, gapY = 220, tileW = 60, tileH = 170;
-  for (let row = 0; row < rows; row++) {
-    const rowOffset = 0;
-    const y = startY + row * gapY
-    for (let col = 0; col < cols; col++) {
-      const x = startX + rowOffset + col * gapX
-      walls.push({ x, y, w: tileW, h: tileH })
-    }
-  }
-
-  walls.push({ x: 40, y: 700, w: 140, h: 60 })
-  walls.push({ x: 700, y: 500, w: 140, h: 60 })
-  walls.push({ x: 380, y: 1300, w: 160, h: 60 })
+  parseMapGrid(walls, RAMEN_AISLE_GRID, 10)
 
   puddles.push(
     { x: 220, y: 340, r: 50 },
@@ -179,12 +152,6 @@ function buildRamenAisle() {
   // openings on opposite sides (north/south), per the "openings on each
   // side" spec for Level 4. Sits clear of the aisle grid and puddles.
   const questRoom = { x: 740, y: 200, w: 120, h: 200 }
-  walls.push({ x: questRoom.x, y: questRoom.y, w: 20, h: questRoom.h }) // west
-  walls.push({ x: questRoom.x + questRoom.w - 20, y: questRoom.y, w: 20, h: questRoom.h }) // east
-  walls.push({ x: questRoom.x, y: questRoom.y, w: 35, h: 20 }) // north-left
-  walls.push({ x: questRoom.x + questRoom.w - 35, y: questRoom.y, w: 35, h: 20 }) // north-right
-  walls.push({ x: questRoom.x, y: questRoom.y + questRoom.h - 20, w: 35, h: 20 }) // south-left
-  walls.push({ x: questRoom.x + questRoom.w - 35, y: questRoom.y + questRoom.h - 20, w: 35, h: 20 }) // south-right
 
   return {
     walls,
@@ -203,20 +170,7 @@ function buildWorldStarParkingLot() {
   const walls = []
   const puddles = []
   makeBoundaryWalls(walls)
-
-  // Rows of parked "cars" with lanes between them.
-  const startX = 90, startY = 200, cols = 3, rows = 5, gapX = 260, gapY = 240, tileW = 150, tileH = 90, staggerEvery = 2, staggerOffset = 90;
-  for (let row = 0; row < rows; row++) {
-    const rowOffset = staggerEvery && row % staggerEvery === 1 ? staggerOffset : 0
-    const y = startY + row * gapY
-    for (let col = 0; col < cols; col++) {
-      const x = startX + rowOffset + col * gapX
-      walls.push({ x, y, w: tileW, h: tileH })
-    }
-  }
-
-  walls.push({ x: 60, y: 1300, w: 200, h: 70 })
-  walls.push({ x: 620, y: 1320, w: 200, h: 70 })
+  parseMapGrid(walls, WORLD_STAR_GRID, 10)
 
   puddles.push(
     { x: 260, y: 1160, r: 60 },
@@ -227,11 +181,6 @@ function buildWorldStarParkingLot() {
   // real chokepoint, per the "Level 5+ single door" spec. Sits in the open
   // band above the car grid.
   const questRoom = { x: 760, y: 50, w: 110, h: 120 }
-  walls.push({ x: questRoom.x, y: questRoom.y, w: questRoom.w, h: 20 }) // north
-  walls.push({ x: questRoom.x, y: questRoom.y, w: 20, h: questRoom.h }) // west
-  walls.push({ x: questRoom.x + questRoom.w - 20, y: questRoom.y, w: 20, h: questRoom.h }) // east
-  walls.push({ x: questRoom.x, y: questRoom.y + questRoom.h - 20, w: 30, h: 20 }) // south-left
-  walls.push({ x: questRoom.x + questRoom.w - 30, y: questRoom.y + questRoom.h - 20, w: 30, h: 20 }) // south-right
 
   return {
     walls,
@@ -242,6 +191,32 @@ function buildWorldStarParkingLot() {
       wallFill: '#3a3f52',
       wallStroke: '#0d0f16',
       puddleFill: 'rgba(255, 255, 255, 0.08)',
+    },
+  }
+}
+
+
+function buildJaydensNightmareHouse() {
+  const walls = []
+  const puddles = []
+  makeBoundaryWalls(walls)
+  parseMapGrid(walls, JAYDENS_NIGHTMARE_HOUSE_GRID, 10)
+
+  const questRoom = { x: 670, y: 70, w: 160, h: 210 }
+  puddles.push(
+    { x: 400, y: 300, r: 55 },
+    { x: 150, y: 900, r: 45 },
+  )
+
+  return {
+    walls,
+    puddles,
+    questRoom,
+    theme: {
+      background: '#1a1a24',
+      wallFill: '#5c4b51',
+      wallStroke: '#3d3034',
+      puddleFill: 'rgba(0, 0, 0, 0.4)',
     },
   }
 }
@@ -295,13 +270,25 @@ const LEVELS = [
     name: 'World Star Parking Lot',
     banner: 'LEVEL 5: WORLD STAR PARKING LOT',
     reward: 160,
-    advanceAt: null,
+    advanceAt: 196,
     chaserSpeed: 182,
     runnerSpawn: { x: 260, y: WORLD.height - 140 },
     chaserSpawn: { x: WORLD.width - 150, y: 230 },
     buildMap: buildWorldStarParkingLot,
     questBadgeId: 'world-star-witness',
   },
+  {
+    name: 'Jayden\'s Nightmare House',
+    banner: 'LEVEL 6: JAYDEN\'S NIGHTMARE HOUSE',
+    reward: 200,
+    advanceAt: null,
+    chaserSpeed: 190,
+    runnerSpawn: { x: 200, y: 1300 },
+    chaserSpawn: { x: WORLD.width - 200, y: 200 },
+    buildMap: buildJaydensNightmareHouse,
+    questBadgeId: 'garage-survivor',
+  },
+
 ]
 
 const MAX_CHASERS = 5
@@ -449,6 +436,8 @@ export class GameEngine {
       gun: null,
     }
     this.chaser = {
+      chaserType: null,
+      plungerCooldown: 0,
       x: WORLD.width / 2 - 20,
       y: 150,
       w: 44,
@@ -818,9 +807,12 @@ export class GameEngine {
     this.levelSkreems = 0
     this.levelElapsed = 0
     this.pipeworksSkreems = 0
+    this.chaser.chaserType = this.chaser.faceId === 'dad-case' ? 'skib-daddy' : null
+    this.chaser.plungerCooldown = 2
     this.chasers = [this.chaser]
     this.chaser.spawn = this.level.chaserSpawn
     this.chaserRespawnQueue = []
+    this.chaserProjectiles = []
     this.gawdParticleActive = false
     this.gawdParticleTimer = 0
     this.schleimyPotionActive = false
@@ -846,6 +838,7 @@ export class GameEngine {
     }
 
     this.bullets = []
+    this.chaserProjectiles = []
     this.pickups = []
     this.rollingPickups = []
     this.levelBadgeCollected = false
@@ -1039,6 +1032,7 @@ export class GameEngine {
     this._firePrevHeld = fireHeld
 
     this._updateBullets(dt)
+    this._updateChaserProjectiles(dt)
     this._updateRollingPickups(dt)
     this._checkPickups()
 
@@ -1079,9 +1073,25 @@ export class GameEngine {
           chaser.soggySlowTimer -= dt
           speedMult *= SOGGY_TP_CHASER_SLOW_MULT
         }
-        const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod * speedMult
+        const chaserTypeSpeedMod = chaser.chaserType === 'skib-daddy' ? 0.8 : 1
+        const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod * speedMult * chaserTypeSpeedMod
         const stepX = (dir.x / dist) * chaserSpeed * dt
         const stepY = (dir.y / dist) * chaserSpeed * dt
+        if (chaser.chaserType === 'skib-daddy') {
+          chaser.plungerCooldown -= dt
+          if (chaser.plungerCooldown <= 0 && dist > 100 && dist < 400) {
+            chaser.plungerCooldown = 3
+            this.chaserProjectiles.push({
+              x: chaser.x + chaser.w / 2 - 10,
+              y: chaser.y + chaser.h / 2 - 10,
+              w: 20,
+              h: 20,
+              vx: (dir.x / dist) * 350,
+              vy: (dir.y / dist) * 350,
+              owner: chaser,
+            })
+          }
+        }
         if (wallHackLevel) {
           this._moveIgnoringWalls(chaser, stepX, stepY)
         } else {
@@ -1599,6 +1609,31 @@ export class GameEngine {
     })
 
     if (this.runner.gun.ammo <= 0) this.runner.gun = null
+  }
+
+  
+  _updateChaserProjectiles(dt) {
+    if (this.chaserProjectiles.length === 0) return
+
+    this.chaserProjectiles = this.chaserProjectiles.filter((proj) => {
+      proj.x += proj.vx * dt
+      proj.y += proj.vy * dt
+
+      if (proj.x < 0 || proj.x > WORLD.width || proj.y < 0 || proj.y > WORLD.height) return false
+      if (this._hitsWall(proj)) return false
+
+      if (rectsIntersect(proj, this.runner)) {
+        // pull runner towards chaser
+        const dx = proj.owner.x - this.runner.x
+        const dy = proj.owner.y - this.runner.y
+        const dist = Math.hypot(dx, dy) || 1
+        const pullDist = 60
+        this._moveWithCollision(this.runner, (dx/dist)*pullDist, (dy/dist)*pullDist)
+        return false
+      }
+
+      return true
+    })
   }
 
   _updateBullets(dt) {
