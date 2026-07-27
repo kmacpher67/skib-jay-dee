@@ -20,14 +20,17 @@ test('balance goes negative on capture if highestLevel > 3', async ({ page }) =>
   await page.locator('.play-btn').click()
   await expect(page.locator('canvas')).toBeVisible()
   
-  // Force a capture via the exposed __skibEngine
+  // Force a capture on Level 4 (30 sheeb penalty) via the exposed __skibEngine
   await page.evaluate(() => {
-    window.__skibEngine._triggerCaught(window.__skibEngine.chasers[0])
+    const engine = window.__skibEngine
+    engine.levelIndex = 3
+    engine._syncLevelState({ resetPositions: false, notify: false })
+    engine._triggerCaught(engine.chasers[0])
   })
   
   // HUD should eventually show the negative balance in the debt badge
   await expect(page.locator('.toast-panel')).toBeVisible()
-  await page.waitForTimeout(3000) // wait for capture animation to end and menu/HUD to show if it transitions, wait, it stays on GameCanvas. GameCanvas shows the DEBT.
+  await page.waitForTimeout(3000)
   
   // Wait for the profile modal to appear after capture
   await expect(page.getByRole('dialog', { name: 'Chaser profile' })).toBeVisible()
@@ -37,7 +40,7 @@ test('balance goes negative on capture if highestLevel > 3', async ({ page }) =>
   
   // In the main menu, the debt badge should be visible
   await expect(page.locator('.debt-badge')).toBeVisible()
-  await expect(page.locator('.debt-badge')).toHaveText('DEBT: -15')
+  await expect(page.locator('.debt-badge')).toHaveText('DEBT: -25')
 })
 
 test('balance floors at 0 on capture if highestLevel <= 3', async ({ page }) => {
@@ -60,9 +63,12 @@ test('balance floors at 0 on capture if highestLevel <= 3', async ({ page }) => 
   await page.locator('.play-btn').click()
   await expect(page.locator('canvas')).toBeVisible()
   
-  // Force a capture via the exposed __skibEngine
+  // Level 2 death costs 10 sheebs; profile floors at 0 when highestLevel <= 3
   await page.evaluate(() => {
-    window.__skibEngine._triggerCaught(window.__skibEngine.chasers[0])
+    const engine = window.__skibEngine
+    engine.levelIndex = 1
+    engine._syncLevelState({ resetPositions: false, notify: false })
+    engine._triggerCaught(engine.chasers[0])
   })
   
   await expect(page.locator('.toast-panel')).toBeVisible()

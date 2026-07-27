@@ -49,7 +49,7 @@ test('shart knocker is granted on level 4 taco bell and stuns chaser on hit', as
   expect(state.stunnedUntil).toBeLessThanOrEqual(levelSeconds + 12)
 
   expect(state.shartCharge).toBe(0)
-  expect(state.sheebs).toBe(50) // 50 sheebs for hit
+  expect(state.sheebs).toBe(100) // 50 sheebs for hit + 50 for first Flaming Ass badge
   expect(state.earnedBadges).toContain('flaming-ass')
 
   // Now test a miss

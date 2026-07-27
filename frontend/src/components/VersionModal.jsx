@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.48',
+    title: 'Gameplay Rebalancing',
+    description: 'Gun hits pay +25 sheebs, new badges pay +50, death penalties scale by level (L1 free through L4+ costing 30), chasers start slower with per-level speed caps, and level-clear rewards are bumped across all six levels.',
+  },
+  {
     version: 'v0.4.43',
     title: "Player's Guide",
     description: "Added an in-game Player's Guide modal (menu footer link) explaining guns, level transitions, Level 5+ wall-hacks, and the Shart Knocker — including that the orange FART button is not a protective shield.",

@@ -58,9 +58,9 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 
 ## Frontend open backlog snapshot (2026-07-27, Mode A pass — revised)
 
-**15** unchecked items remain in the incremental backlog below (revised
+**16** unchecked items remain in the incremental backlog below (revised
 2026-07-27: checked off Player's Guide link, Menu brag stat, Rewards &
-History Slice A, Rod of Poopdom; added v0.4.48–v0.4.50 planning handoffs).
+History Slice A, Rod of Poopdom; added v0.4.48–v0.4.52 planning handoffs).
 All are front-end–scoped or front-end–first unless noted. LT roadmap items
 (Level 10 arc, Role Reversal, MOBA/PvP) stay in
 `roadmap-handoff-v0.4.43-plan.md`.
@@ -68,7 +68,7 @@ All are front-end–scoped or front-end–first unless noted. LT roadmap items
 | Status | Count | Items |
 |---|---|---|
 | **Unblocked — code next** | 2 | Gameplay Rebalancing remainder → `roadmap-handoff-v0.4.48-plan.md`; Cosmetic shop sink → `roadmap-handoff-v0.4.50-plan.md` |
-| **Specced — Ken confirm** | 1 | Broth Slip → `roadmap-handoff-v0.4.49-plan.md` |
+| **Specced — Ken confirm** | 2 | Broth Slip → `roadmap-handoff-v0.4.49-plan.md`; Tombstone Perk → `roadmap-handoff-v0.4.52-plan.md` |
 | **Design-only / TBD** | 7 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib, HUD live-data pills (Slice B), Pickup tracking + Play Recap, Interactive content pack |
 | **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
@@ -689,6 +689,20 @@ and chaser-bark voice clips, 1:1 with text.
   - *Features:* Mosaic layouts driven by time functions (e.g. Fibonacci sequence) so it doesn't punish night-time players. Layer-Sync Mirroring, Dimensional Rift Anchors, Mutual Mutation puzzles, Temporal Echoes.
   - *Design Goal:* Keep it fun and interesting, not impossible. See `docs/level-progression-and-endgame-plan.md` for vibe process pre-planning notes.
   - **Reviewed 2026-07-27:** re-evaluated against the "no code-cowboy" rule; one open question was never actually answered (floor trap vs. held item to trigger a dimension shift — see "Flag for Ken" item 7 in `docs/level-progression-and-endgame-plan.md`). Still TBD, still not a ready-to-code handoff.
+- [ ] **New pickup: Tombstone Perk (Resurrection Ward).** **Specced
+  2026-07-27** — rare passive map pickup (Ken's shorthand: "Tombstone
+  Poop," CoD Tombstone-perk comparison). Held until death, then
+  intercepts that one death: skips the sheebs/skreems penalty and,
+  notably, skips the engine's existing "death always advances
+  `levelIndex`" behavior (`GameEngine.js:1948`) so the player respawns
+  on the *same* level instead of the next one — the one real behavior
+  change here, since loadout retention (gun/plunger/Rod of Poopdom) is
+  already the status quo on death. Single-use. Full engine analysis,
+  proposed `'tombstone'` pickup type, and six open tuning/UX questions
+  for Ken (spawn rarity, whether `deaths`/`chaserSpeedMod` still
+  advance on a save, save-moment UX, HUD visibility, final name) in
+  [roadmap-handoff-v0.4.52-plan.md](handoffs/roadmap-handoff-v0.4.52-plan.md).
+  Not code-ready until Ken answers.
 - [x] **Feature: Rod of Poopdom (Teleport Mechanic).** Shipped v0.4.47 —
   5% map spawn, 300px facing-direction warp, wall-block at destination,
   3s Stinky cooldown, `T` + FIRE/WARP button. See

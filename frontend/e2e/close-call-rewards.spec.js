@@ -68,7 +68,7 @@ test.describe('Close-call freeze and sheeb rewards', () => {
     expect(phaseAfterFreeze).toBe('chase')
 
     const sheebsAfter = await page.evaluate(() => window.__skibEngine.sheebs)
-    expect(sheebsAfter).toBe(sheebsBefore + 50)
+    expect(sheebsAfter).toBe(sheebsBefore + 100)
     
     const hasBadge = await page.evaluate(() => window.__skibEngine.earnedBadges.includes('slippery-when-wet'))
     expect(hasBadge).toBe(true)
@@ -96,12 +96,15 @@ test.describe('Close-call freeze and sheeb rewards', () => {
     // POSITIVE_PICKUPS includes 'taco-bell' so sheebs should increment by 5
     expect(sheebsAfterPositive).toBe(sheebsBefore + 5)
 
-    // Spawn a non-positive pickup (badge, which is not in POSITIVE_PICKUPS)
+    // Spawn a non-positive rolling pickup (slow debuff, not in POSITIVE_PICKUPS)
     await page.evaluate(() => {
       const engine = window.__skibEngine
-      engine.pickups.push({
-        type: 'badge',
-        badgeId: 'some-badge',
+      engine.rollingPickups.push({
+        type: 'rolling',
+        effect: 'slow',
+        isGood: false,
+        vx: 0,
+        vy: 0,
         x: engine.runner.x,
         y: engine.runner.y,
         w: engine.runner.w,

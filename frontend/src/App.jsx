@@ -328,7 +328,7 @@ export default function App() {
         timestamp: Date.now(),
         type: 'badge',
         label: badge ? badge.name : badgeId,
-        amount: null,
+        amount: 50,
         level: engineRef.current ? engineRef.current.levelIndex + 1 : null,
         levelName: engineRef.current && engineRef.current.levels && engineRef.current.levels[engineRef.current.levelIndex] ? engineRef.current.levels[engineRef.current.levelIndex].name : null,
       }
@@ -339,6 +339,12 @@ export default function App() {
         rewardsHistory: [...(current.rewardsHistory || []), historyEntry].slice(-50),
       }
     })
+
+    if (engineRef.current) {
+      const nextSheebs = engineRef.current.sheebs + 50
+      engineRef.current.setSheebs(nextSheebs)
+      handleSheebsChange(nextSheebs)
+    }
 
     const badge = BADGES[badgeId]
     if (badge) {

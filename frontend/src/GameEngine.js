@@ -225,7 +225,7 @@ const LEVELS = [
   {
     name: 'Porcelain Palace',
     banner: 'LEVEL 1: PORCELAIN PALACE',
-    reward: 40,
+    reward: 50,
     advanceAt: 26,
     chaserSpeed: 130,
     runnerSpawn: { x: WORLD.width / 2 - 20, y: WORLD.height - 200 },
@@ -236,7 +236,7 @@ const LEVELS = [
   {
     name: 'Pipeworks',
     banner: 'LEVEL 2: PIPEWORKS',
-    reward: 60,
+    reward: 75,
     advanceAt: 68,
     chaserSpeed: 145,
     runnerSpawn: { x: 440, y: WORLD.height - 132 },
@@ -247,7 +247,7 @@ const LEVELS = [
   {
     name: 'Flooded Annex',
     banner: 'LEVEL 3: FLOODED ANNEX',
-    reward: 90,
+    reward: 100,
     advanceAt: 112,
     chaserSpeed: 162,
     runnerSpawn: { x: 400, y: WORLD.height - 120 },
@@ -258,7 +258,7 @@ const LEVELS = [
   {
     name: 'The Ramen Aisle',
     banner: 'LEVEL 4: THE RAMEN AISLE',
-    reward: 120,
+    reward: 150,
     advanceAt: 154,
     chaserSpeed: 172,
     runnerSpawn: { x: 225, y: WORLD.height - 140 },
@@ -269,7 +269,7 @@ const LEVELS = [
   {
     name: 'World Star Parking Lot',
     banner: 'LEVEL 5: WORLD STAR PARKING LOT',
-    reward: 160,
+    reward: 200,
     advanceAt: 196,
     chaserSpeed: 182,
     runnerSpawn: { x: 295, y: WORLD.height - 140 },
@@ -280,7 +280,7 @@ const LEVELS = [
   {
     name: 'Jayden\'s Nightmare House',
     banner: 'LEVEL 6: JAYDEN\'S NIGHTMARE HOUSE',
-    reward: 200,
+    reward: 250,
     advanceAt: null,
     chaserSpeed: 190,
     runnerSpawn: { x: 200, y: 1300 },
@@ -309,7 +309,19 @@ const PIPEWORKS_GATE_REQUIRED_CHASERS = 4
 const PIPEWORKS_GATE_REQUIRED_SECONDS = 15
 const PIPEWORKS_HALL_GRID_SIZE = 30
 const DEATH_SKREEM_PENALTY = 0.3 // fraction of skreems lost on capture
-const DEATH_SHEEBS_PENALTY = 20
+const GUN_HIT_SHEEBS = 25
+const CHASER_SPEED_MOD_START = 0.8
+
+function deathSheebsPenaltyForLevel(levelIndex) {
+  if (levelIndex <= 0) return 0
+  if (levelIndex === 1) return 10
+  if (levelIndex === 2) return 20
+  return 30
+}
+
+function chaserSpeedModMaxForLevel(levelIndex) {
+  return clamp(0.9 + levelIndex * 0.09, CHASER_SPEED_MOD_MIN, CHASER_SPEED_MOD_MAX)
+}
 
 // Level 5+ end-game escalation (docs/handoffs/roadmap-handoff-v0.4.34-plan.md):
 // at Level 5 (levelIndex 4) chasers stop respecting walls (below that they
@@ -491,7 +503,7 @@ export class GameEngine {
     this.runnerLineTimer = 0
     this.wasSprinting = false
     this.staminaExhaustedFired = false
-    this.chaserSpeedMod = 1
+    this.chaserSpeedMod = CHASER_SPEED_MOD_START
     this.nearCaptureCooldown = 15
     this.nearCaptureLine = ''
     this.pipeworksHallCoverage = 0
@@ -914,7 +926,7 @@ export class GameEngine {
     this.chaserSpeedMod = clamp(
       this.chaserSpeedMod + CHASER_SPEED_MOD_LEVEL_STEP,
       CHASER_SPEED_MOD_MIN,
-      CHASER_SPEED_MOD_MAX,
+      chaserSpeedModMaxForLevel(this.pendingLevelIndex),
     )
     this.onLevelClear({
       index: this.levelIndex + 1,
@@ -1799,6 +1811,8 @@ export class GameEngine {
           this.chaserLine = GUN_HIT_LINES[Math.floor(Math.random() * GUN_HIT_LINES.length)]
           this.chaserLineTimer = 2
           this.onChaserBark(this.chaserLine)
+          this.sheebs += GUN_HIT_SHEEBS
+          this.onSheebsChange(this.sheebs)
           return false
         }
       }
@@ -1919,13 +1933,15 @@ export class GameEngine {
       this.onBadgeEarned('glutton-for-punishment')
     }
     const skreemsLost = Math.round(this.skreems * DEATH_SKREEM_PENALTY)
-    const baseSheebsLost = DEATH_SHEEBS_PENALTY
+    const baseSheebsLost = deathSheebsPenaltyForLevel(this.levelIndex)
     let sheebsLost = 0
     if (this.highestLevel > 3) {
       sheebsLost = baseSheebsLost
       this.sheebs = this.sheebs - sheebsLost
-      this.chaserLine = HARD_CHASER_LINES[Math.floor(Math.random() * HARD_CHASER_LINES.length)]
-      this.chaserLineTimer = 3
+      if (baseSheebsLost > 0) {
+        this.chaserLine = HARD_CHASER_LINES[Math.floor(Math.random() * HARD_CHASER_LINES.length)]
+        this.chaserLineTimer = 3
+      }
     } else {
       sheebsLost = Math.min(this.sheebs, baseSheebsLost)
       this.sheebs = Math.max(0, this.sheebs - sheebsLost)
@@ -1949,7 +1965,7 @@ export class GameEngine {
     this.chaserSpeedMod = clamp(
       this.chaserSpeedMod + CHASER_SPEED_MOD_DEATH_STEP,
       CHASER_SPEED_MOD_MIN,
-      CHASER_SPEED_MOD_MAX,
+      chaserSpeedModMaxForLevel(this.levelIndex),
     )
 
     this.onDeath({
