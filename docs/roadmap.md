@@ -68,7 +68,7 @@ All are front-end–scoped or front-end–first unless noted. LT roadmap items
 | Status | Count | Items |
 |---|---|---|
 | **Unblocked — code next** | 8+ | See updated queue below |
-| **Specced — Ken confirm** | 1 | Tombstone Perk → `roadmap-handoff-v0.4.52-plan.md` |
+| **Specced — Ken confirm** | 1 | Turdstone Token (named, needs tuning answers) → `roadmap-handoff-v0.4.52-plan.md` |
 | **Design-only / TBD** | 4 | Difficulty Function, Level 7+ Mosaic, Interactive content pack, Role Reversal kit (partial) |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
@@ -616,18 +616,22 @@ and chaser-bark voice clips, 1:1 with text.
   - *Features:* Mosaic layouts driven by time functions (e.g. Fibonacci sequence) so it doesn't punish night-time players. Layer-Sync Mirroring, Dimensional Rift Anchors, Mutual Mutation puzzles, Temporal Echoes.
   - *Design Goal:* Keep it fun and interesting, not impossible. See `docs/level-progression-and-endgame-plan.md` for vibe process pre-planning notes.
   - **Reviewed 2026-07-27:** re-evaluated against the "no code-cowboy" rule; one open question was never actually answered (floor trap vs. held item to trigger a dimension shift — see "Flag for Ken" item 7 in `docs/level-progression-and-endgame-plan.md`). Still TBD, still not a ready-to-code handoff.
-- [ ] **New pickup: Tombstone Perk (Resurrection Ward).** **Specced
-  2026-07-27** — rare passive map pickup (Ken's shorthand: "Tombstone
-  Poop," CoD Tombstone-perk comparison). Held until death, then
-  intercepts that one death: skips the sheebs/skreems penalty and,
-  notably, skips the engine's existing "death always advances
-  `levelIndex`" behavior (`GameEngine.js:1948`) so the player respawns
-  on the *same* level instead of the next one — the one real behavior
-  change here, since loadout retention (gun/plunger/Rod of Poopdom) is
-  already the status quo on death. Single-use. Full engine analysis,
-  proposed `'tombstone'` pickup type, and six open tuning/UX questions
-  for Ken (spawn rarity, whether `deaths`/`chaserSpeedMod` still
-  advance on a save, save-moment UX, HUD visibility, final name) in
+- [ ] **New pickup: The Turdstone Token (Resurrection Ward).** **Specced
+  2026-07-27, named 2026-07-27** — rare passive map pickup, CoD
+  Tombstone-perk homage (in-chat shorthand: "TurdPOOP Perk"; sprite
+  concept "The Holy Crap" — a gray CoD-style gravestone redrawn as a
+  toilet; naming brainstorm in
+  [docs/perk-naming-notebook.md](perk-naming-notebook.md)). Held until
+  death, then intercepts that one death: skips the sheebs/skreems
+  penalty and, notably, skips the engine's existing "death always
+  advances `levelIndex`" behavior (`GameEngine.js:1948`) so the player
+  respawns on the *same* level instead of the next one — the one real
+  behavior change here, since loadout retention (gun/plunger/Rod of
+  Poopdom) is already the status quo on death. Single-use. Full engine
+  analysis, proposed `'turdstone-token'` pickup type, and five open
+  tuning/UX questions for Ken (spawn rarity, whether
+  `deaths`/`chaserSpeedMod` still advance on a save, save-moment UX,
+  HUD visibility, plus a "Holy Crap" sprite asset still needed) in
   [roadmap-handoff-v0.4.52-plan.md](handoffs/roadmap-handoff-v0.4.52-plan.md).
   Not code-ready until Ken answers.
 - [x] **Feature: Rod of Poopdom (Teleport Mechanic).** Shipped v0.4.47 —
