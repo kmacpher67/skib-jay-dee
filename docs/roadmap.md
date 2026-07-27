@@ -71,13 +71,13 @@ or the menu-brag-stat item now specced in `roadmap-handoff-v0.4.42-plan.md`
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next** | 1 | Player's Guide Modal → `roadmap-handoff-v0.4.44-plan.md` |
-| **Shipped** | Rewards & History panel (Slice A) → `roadmap-handoff-v0.4.41-plan.md`; Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` |
+| **Unblocked — code next** | 0 | Pull next item from incremental backlog below |
+| **Shipped** | Player's Guide modal → `roadmap-handoff-v0.4.44-plan.md` (v0.4.43); Rewards & History panel (Slice A) → `roadmap-handoff-v0.4.41-plan.md`; Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` |
 | **Queued — specced** | 0 | |
 | **Design-only / TBD** | 8 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip, HUD live-data pills, Rewards & History panel (Slice B), Pickup tracking + Play Recap |
 | **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
 | **Large / later** | 4 | Interactive content pack, Intro cinematic, Multiplayer (Phase 5), Gameplay Rebalancing remainder |
-| **Small polish** | 2 | Cosmetic shop sink, menu brag stat |
+| **Small polish** | 1 | Cosmetic shop sink |
 
 `GAME_ITERATION` is **v0.4.41** (`frontend/src/version.js`). v0.4.41
 (Rewards & History panel Slice A) has **landed** — not in progress. Next code
@@ -508,6 +508,12 @@ and chaser-bark voice clips, 1:1 with text.
   `highestLevel` and lifetime deaths/`deathsHistory`, so this is mostly a
   menu display item, not new persistence. Small, do after the risk/reward
   items land so there's something worth bragging about. Shipped v0.4.42.
+- [x] **Player's Guide modal.** In-game help explaining guns/ammo replacement,
+  level-transition pickup loss, Level 5+ chaser wall-hacks, Gawd Particle,
+  and Shart Knocker (orange FART button is not a protective shield). Source
+  doc: [docs/players-guide.md](players-guide.md). Shipped v0.4.43 — see
+  [roadmap-handoff-v0.4.44-plan.md](handoffs/roadmap-handoff-v0.4.44-plan.md)
+  and [roadmap-handoff-v0.4.43.md](handoffs/roadmap-handoff-v0.4.43.md).
 - [ ] **Menu HUD: make the Speed/Stamina/Rewards pills reflect real live
   data, not just static shop bonuses.** **New 2026-07-27 (Ken screenshot
   feedback), design-only, not code-ready.** The `perk-strip` in

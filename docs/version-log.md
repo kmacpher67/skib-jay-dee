@@ -6,6 +6,28 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.43 — Player's Guide (2026-07-27)
+
+### What changed
+
+- Implemented the Player's Guide slice (specced in `roadmap-handoff-v0.4.44-plan.md`,
+  picked up per the v0.4.43-plan copy-paste instruction to pull the next
+  unblocked backlog item).
+- Added `docs/players-guide.md` covering controls, Jayden Gun ammo replacement
+  rules, level-transition pickup loss, Level 5+ chaser wall-hacks, Gawd
+  Particle, Shart Knocker (clarifying the orange FART button is not a shield),
+  plus quick-reference sections for other pickups and Level 4+ economy risk.
+- Added `PlayersGuideModal.jsx` and a menu-footer **Player's Guide** link above
+  the GitHub issues link.
+- Verified with `npm run build`. Bumped `GAME_ITERATION` to `v0.4.43` and deployed.
+
+### Design decisions
+
+- Used an in-game React modal (not an external markdown link) so players stay
+  in the app — matches the default assumption in the v0.4.44-plan.
+- Documented current gun ammo behavior (replacement, no stacking) without
+  changing gameplay; a separate slice is needed if Ken wants additive ammo.
+
 ## v0.4.42 — Menu brag stat (2026-07-27)
 
 ### What changed

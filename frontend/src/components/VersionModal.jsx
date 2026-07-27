@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.43',
+    title: "Player's Guide",
+    description: "Added an in-game Player's Guide modal (menu footer link) explaining guns, level transitions, Level 5+ wall-hacks, and the Shart Knocker — including that the orange FART button is not a protective shield.",
+  },
+  {
     version: 'v0.4.42',
     title: 'Menu Brag Stat',
     description: 'Added a Best Run stat to the main menu that tracks the highest level you reached in a single run and the fewest deaths it took to get there.',

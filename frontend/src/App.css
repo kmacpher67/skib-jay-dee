@@ -236,6 +236,7 @@
 .shop-modal,
 .version-modal,
 .deaths-modal,
+.players-guide-modal,
 .caught-profile-modal,
 .profile-modal {
   position: absolute;
@@ -252,6 +253,7 @@
 .shop-panel,
 .version-panel,
 .deaths-panel,
+.players-guide-panel,
 .caught-profile-panel,
 .profile-panel {
   width: min(100%, 330px);
@@ -699,4 +701,39 @@
   letter-spacing: 0.3px;
   text-align: center;
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+}
+
+.footer-link-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #8ec8ff;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.players-guide-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.players-guide-section h3 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: #ffcf3f;
+}
+
+.players-guide-section ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #d5dbe3;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.players-guide-section li + li {
+  margin-top: 4px;
 }

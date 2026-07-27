@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Claude Sonnet 5 — 2026-07-27
+**Last updated by:** Composer — 2026-07-27
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,21 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+
+- **v0.4.43 (real code, shipped — 2026-07-27):**
+  implemented the **Player's Guide** slice per `roadmap-handoff-v0.4.44-plan.md`
+  (next unblocked item after the v0.4.43-plan LT roadmap docs pass). Added
+  `docs/players-guide.md`, `PlayersGuideModal.jsx`, and a menu-footer link
+  above the GitHub issues link. Clarifies guns/ammo replacement, level-transition
+  pickup loss, Level 5+ wall-hacks, and that the Shart Knocker orange FART
+  button is not a protective shield. `GAME_ITERATION` bumped to `v0.4.43`
+  and deployed.
+
+- **v0.4.43-plan (docs-only, shipped — 2026-07-27):**
+  Mode A pass — recorded Ken's Long-Term roadmap dictation (Level 10 grand arc,
+  Role Reversal, MOBA/PvP) in `docs/roadmap.md`, `roadmap-handoff-v0.4.43-plan.md`,
+  and reconciliation note in `level-progression-and-endgame-plan.md`. No code;
+  all three LT items remain parked pending Ken's answers.
 
 - **v0.4.42 (real code, shipped — 2026-07-27):**
   implemented the **Menu Brag Stat** slice from `docs/handoffs/roadmap-handoff-v0.4.42-plan.md`. Added a `bestRun` field to the profile that tracks the highest level reached in a single run and the fewest deaths taken. `App.jsx` now tracks session deaths and updates `bestRun` on level clear, displaying it on the main menu. `GAME_ITERATION` bumped to `v0.4.42` and deployed.
@@ -168,7 +183,7 @@ entry heading so the change trail stays obvious at a glance.
 - `frontend/src/components/ProfileModal.jsx` now renders the shared killer profile card for both fresh kills and log reopens, while `frontend/src/components/DeathsModal.jsx` shows clickable killer-ID pills.
 - `frontend/src/App.jsx` also owns the new menu version log panel, which shows `GAME_ITERATION` plus a short shipped changelog.
 - Planning-only review: the current maps are mechanically fine but need stronger landmark identity, so `docs/interactive-content-pack.md` still seeds the next funny runner/chaser item pack and secret awards. The refined `v0.4.37-plan` now points at the near-capture freeze / reward pass instead of the older content-first polish slice.
-- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently **v0.4.38** (Level 6 + grid migration shipped).
+- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently **v0.4.43** (Player's Guide shipped).
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
   can dispatch a bounded handoff to local Ollama using the shell's
   `OLLAMA_HOST` or to OpenRouter. A handoff can advertise its target
@@ -319,17 +334,11 @@ manually:
   `v0.4.39.1`, and `v0.4.40` — confirmed against `frontend/src/version.js`
   and corrected two stale unchecked boxes in `docs/roadmap.md` this pass).
   Neither is "the current open handoff" anymore.
-- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.41-plan.md`
-  (docs-only, 2026-07-27) — Rewards & History panel + HUD live-data pills,
-  from Ken's menu-screenshot feedback. **Slice A (Rewards & History panel)**
-  is ready to code: add a capped `rewardsHistory` log to the profile, make
-  the `Rewards` pill open a new history modal (mirrors `Deaths` →
-  `DeathsModal.jsx`). **Slice B (HUD pills reflecting difficulty/history,
-  not just shop bonus)** is blocked on a decision from Ken — see the "Open
-  question" section in that plan before coding it. Planning entry point:
-  `docs/next-agent-planning-brief.md`. Coding entry point:
-  `docs/next-agent-coding-brief.md`. Frontend backlog: **17** open unchecked
-  items — see snapshot table in `docs/roadmap.md`.
+- **Current open handoff:** pull the next unchecked item from `docs/roadmap.md`
+  incremental backlog. LT roadmap items (Level 10 arc, Role Reversal, MOBA)
+  stay parked until Ken answers questions in `roadmap-handoff-v0.4.43-plan.md`.
+  Planning entry point: `docs/next-agent-planning-brief.md`. Coding entry point:
+  `docs/next-agent-coding-brief.md`.
 - Phase 6 (server-side/Mongo profile persistence) now has a starting point — `docs/profiles-and-identity.md` lays out the open identity/auth and sync-strategy decisions a future session needs answered before coding it. Still queued behind Phase 5 (multiplayer) in `docs/roadmap.md`, still planning-only.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it
