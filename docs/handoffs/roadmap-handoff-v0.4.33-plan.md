@@ -18,6 +18,33 @@ To increase the challenge, advancing past Level 4 should no longer be just about
 - This timer should scale up for levels beyond 4 (e.g., Level 5 might require 120 seconds).
 - Update the `advanceAt` logic in `GameEngine.js` for these higher levels to include this strict time floor constraint.
 
+### Clarifications from Ken (2026-07-26, resolved during refinement)
+
+Two questions came up refining this plan; both were answered directly,
+not guessed:
+
+1. **Skreems + new gate, or new gate replaces skreems?** Confirmed:
+   **keep both** — the existing `level.advanceAt` skreems threshold stays
+   required *alongside* the new time floor and chaser-count conditions,
+   consistent with how Pipeworks already layers multiple conditions
+   (hall coverage + 4-skib survival + skreem pressure). Don't drop the
+   skreems check for Level 4+.
+2. **Does "scales up for levels beyond 4" have anywhere to apply, given
+   World Star Parking Lot (Level 5, index 4) currently has
+   `advanceAt: null` (intentionally endless — no Level 6 exists yet)?**
+   Confirmed: **yes, a Level 6 is being added**, and beyond — see the new
+   `docs/level-progression-and-endgame-plan.md` for the full design
+   (Level 6 "Jayden's Nightmare House" introducing the Skib-Daddy-Toilet
+   Guy chaser, and a proposed Level 7 climax). Building Level 6 itself is
+   **out of scope for this handoff** (kept separate so this slice stays
+   single-session-sized) — this plan's Feature 2 only needs to make the
+   time-floor formula (`90 + (levelIndex - 3) * 30`) generic enough that
+   it's already correct once Level 6 exists, not hardcode a Level-4-only
+   special case. World Star's `advanceAt: null` should stay `null` for
+   now — flipping it to a real threshold is part of the future Level 6
+   handoff, not this one, since that's the point where a "next level"
+   actually exists to advance into.
+
 ## Detailed Specifications & Parallelization
 
 **Parallelization Note:** This slice primarily modifies `GameEngine.js` (specifically the `buildXxx` map generation functions and `_updateChase`'s level advance logic). The next slice (v0.4.34) modifies collision detection and item pickups. Because both touch `GameEngine.js` heavily, running them in exact parallel across two automated agents may cause Git merge conflicts in that file. It is recommended to run them sequentially, or explicitly handle merges if running simultaneously.
