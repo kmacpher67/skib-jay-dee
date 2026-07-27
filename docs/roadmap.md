@@ -71,7 +71,7 @@ or the menu-brag-stat item now specced in `roadmap-handoff-v0.4.42-plan.md`
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next** | 0 | |
+| **Unblocked — code next** | 1 | Player's Guide Modal → `roadmap-handoff-v0.4.44-plan.md` |
 | **Shipped** | Shart Knocker → `roadmap-handoff-v0.4.40-plan.md`; Enhanced Death Logs + Parody Warning → `roadmap-handoff-v0.4.39.md` |
 | **Queued — specced** | 0 | |
 | **Design-only / TBD** | 8 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip, HUD live-data pills, Rewards & History panel, Pickup tracking + Play Recap |
