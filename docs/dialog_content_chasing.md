@@ -101,6 +101,40 @@ If/when you decide to record them, please follow the `docs/sound-effects-howto.m
 - [ ] "YOUR DEBT IS DUE!"
   - **Suggested filename:** `chaser-hard-debt.mp3`
 
+### Broth Slip (Raman-Aunt-Toilet Lady) Lines
+*Design decision, 2026-07-27: her ability is "Broth Slip" — a hot-ramen
+trail hazard that zeroes a runner's friction for 2s on contact (see
+`docs/level-progression-and-endgame-plan.md`, "Flag for Ken" item 6, and
+`docs/characters.md`). Not yet implemented in `frontend/src/dialog.js` —
+this is the proposed line list for whenever her `chaserType` is coded,
+following the same three-trigger shape as her ability: a spawn/aggro
+bark, an on-trail-hit taunt, and a themed capture line.*
+
+**Spawn / aggro bark** *(shown when she joins the chase, like the
+existing chaser-bark speech bubble):*
+- [ ] "BROTH'S ON, BABY! GET IN THE POT!"
+  - **Suggested filename:** `broth-spawn-brothson.mp3`
+- [ ] "YOU CAN'T OUTRUN AUNTIE'S SOUP!"
+  - **Suggested filename:** `broth-spawn-outrun.mp3`
+- [ ] "SLURP SLURP, I'M COMING FOR SECONDS!"
+  - **Suggested filename:** `broth-spawn-slurp.mp3`
+
+**On-trail-hit taunt** *(fires the instant a runner steps in the broth
+trail and starts drifting):*
+- [ ] "SLIP N' SLURP, BABY!"
+  - **Suggested filename:** `broth-hit-slipnslurp.mp3`
+- [ ] "THAT BROTH IS PIPING HOT, AND SO IS THIS CHASE!"
+  - **Suggested filename:** `broth-hit-pipinghot.mp3`
+- [ ] "NOW WHO'S SLIPPERY?!"
+  - **Suggested filename:** `broth-hit-nowwhosslippery.mp3`
+
+**Broth Slip capture lines** *(shown full-screen, jump-scare style, when
+Raman-Aunt-Toilet Lady specifically makes the catch):*
+- [ ] "SIMMERED DOWN AND SERVED!"
+  - **Suggested filename:** `broth-capture-simmered.mp3`
+- [ ] "INTO THE POT YOU GO!"
+  - **Suggested filename:** `broth-capture-intothepot.mp3`
+
 ### 4chan-st (Shyt-Talker) Capture Lines
 *Shown full-screen, jump-scare style, when the runner gets caught on 4chan-st difficulty. These blend the stuttering, cynical meta-commentary of Rick and Morty with aggressive, internet-poisoned trash talk.*
 

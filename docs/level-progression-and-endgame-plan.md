@@ -170,10 +170,46 @@ session builds Level 6 or 7:
 5. **Does the game truly end, or loop?** Confirming the "one-time ending
    then endless New Game+" proposal above vs. some other shape (e.g., a
    harder Level 8+ instead of looping) before it's built.
-6. **Raman-Aunt-Toilet Lady's distinct ability** (Broth Slip, per the
-   PDF) is still unclaimed by any level in this plan — worth deciding
-   whether she's a Level 6/7 addition too, or stays parked for a later
-   phase.
+6. **RESOLVED (2026-07-27).** Raman-Aunt-Toilet Lady's ability is
+   **"Broth Slip"** — a **Frictionless Broth Trail** (area-denial map
+   hazard, not a projectile or a pull): as she chases, she constantly
+   leaks a trail of hot ramen broth behind her. A runner who steps in it
+   gets friction dropped to ~zero for 2 seconds — steering input drifts
+   uncontrollably into walls/other chasers instead of responding
+   cleanly. Two alternate takes (a Taco-Bell-Grande-style forced-speed
+   splash puddle; a sticky-noodle root/snare) were considered and
+   rejected: both duplicate an ability the roster already has (the
+   existing Taco Bell Grande pickup, and the CEO of Drains' proposed
+   slow pulse, respectively). Broth Slip is the one true **area-denial**
+   hazard, which is exactly the gap the current roster (direct pursuit +
+   Skib-Daddy's pull + CEO of Drains' proposed slow) is missing — it
+   forces a rerouting decision instead of just more raw chase pressure,
+   and turns tight corners into its own hazard rather than reskinning an
+   existing mechanic.
+   - **Face asset:** no new photo needed — reuse `ant-k-raman` (or
+     `anti-k-raman-2`) from `CHASER_FACE_POOL`, same "confirmed
+     thematic reuse" pattern as Skib-Daddy/`dad-case`.
+   - **Where she appears:** recommend wiring her as a `chaserType`
+     usable in the **Level 5+ multi-chaser rotation** (the same tier
+     that already turns on wall-hacks and heavier chaser pressure),
+     rather than gating her to one single new level — her hazard is
+     map-agnostic (the trail forms wherever she walks), so she reads
+     naturally as a rotating extra chaser rather than needing her own
+     dedicated map. This also makes her a strong candidate to appear
+     *again* as part of Level 7's climax roster alongside the CEO of
+     Drains for free later, without inventing new Level 7 scope now.
+   - **Dialog:** yes — she gets her own small themed bark pool (broth/
+     noodle puns, matching the existing `HARD_CHASER_LINES`-style
+     pattern), not just the generic `CHASER_LINES` rotation. See
+     `docs/dialog_content_chasing.md`'s new "Broth Slip" section for the
+     line list and trigger points (spawn/aggro bark, an on-trail-hit
+     taunt fired the moment a runner starts drifting, and a themed
+     capture line).
+   - **Still open before this is code-ready:** exact `chaserType` speed/
+     base-stat numbers, and whether she's Level 5+ rotation-only, Level
+     7-climax-only, or both — flag for a future planning pass to turn
+     into a bounded handoff, following the same shape as v0.4.38's
+     Skib-Daddy slice.
 7. **NEW (flagged 2026-07-27): how does the player trigger a Mosaic
    dimension shift?** A static "Glitch Puddle" the player has to run
    over, or an active held item like the Jayden Gun/Heavy Plunger that

@@ -58,14 +58,15 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 
 ## Frontend open backlog snapshot (2026-07-27, Mode A pass)
 
-**16** unchecked items remain in the incremental backlog below. All are
-front-end–scoped or front-end–first unless noted.
+**17** unchecked items remain in the incremental backlog below (updated
+2026-07-27 with the Broth Slip decision below). All are front-end–scoped
+or front-end–first unless noted.
 
 | Status | Count | Items |
 |---|---|---|
 | **Unblocked — code next** | 2 (1 handoff) | Enhanced Death Logs, Parody Warning & Feedback Link → `roadmap-handoff-v0.4.39-plan.md` |
 | **Queued — specced** | 1 | Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` (after v0.4.39) |
-| **Design-only / TBD** | 4 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial) |
+| **Design-only / TBD** | 5 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip |
 | **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
 | **Large / later** | 4 | Interactive content pack, Intro cinematic, Multiplayer (Phase 5), Gameplay Rebalancing remainder |
 | **Small polish** | 2 | Cosmetic shop sink, menu brag stat |
@@ -582,6 +583,21 @@ and chaser-bark voice clips, 1:1 with text.
   `https://github.com/kmacpher67/skib-jay-dee/issues` for complaints/feedback.
 - [ ] **Difficulty Function (separate design track):** Preferred direction is Method C (`The Debt Lock`) plus a lightweight starting selector (`Noob-Noob` / `CEO of Drains`). Keep it separate from the death-log telemetry slice; see `docs/difficulty-mechanics-plan.md`. **Reviewed 2026-07-27:** a rolling deaths/sheebs auto-tune idea was evaluated and folded into that doc as a refinement of Method C (economy-side lever, level-indexed floors, no new `DifficultyManager` class) — still design-only, several TBDs, not ready to code.
 - [ ] **Cool Play (Chaser Evasion):** Polish the mechanics for users running from chasers. Goal is to make evasion feel cooler (e.g. near-miss effects, sliding, dynamic FOV). Needs further definition.
+- [ ] **New chaser ability: Raman-Aunt-Toilet Lady's "Broth Slip."**
+  **Decided 2026-07-27 (design-only, not code-ready yet)** — a
+  frictionless broth-trail area-denial hazard, the first "environmental
+  hazard" chaser in the roster rather than another pursuit/pull/slow
+  variant. Reuses the existing `ant-k-raman`/`anti-k-raman-2` face (no
+  new asset needed) and the `chaserType` concept already built for
+  Skib-Daddy in v0.4.38. Recommended as a Level 5+ multi-chaser rotation
+  addition (map-agnostic, no new level required), and a likely repeat
+  in Level 7's climax roster alongside the CEO of Drains. Gets her own
+  themed bark pool ("Broth Slip" lines). Still needs exact `chaserType`
+  stat tuning (base speed, trail lifetime/width, drift strength) before
+  this is a bounded handoff. See
+  [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md)
+  ("Flag for Ken" item 6), [characters.md](characters.md), and
+  [dialog_content_chasing.md](dialog_content_chasing.md).
 - [ ] **Level 7+ and Beyond: The Mosaic Map of Madness (TBD).** (To be determined - needs refinement & extra data specs). Introduce a mutable puzzle map (Multiverse of Madness parody with Rick and Morty style comedic dialogue).
   - *Features:* Mosaic layouts driven by time functions (e.g. Fibonacci sequence) so it doesn't punish night-time players. Layer-Sync Mirroring, Dimensional Rift Anchors, Mutual Mutation puzzles, Temporal Echoes.
   - *Design Goal:* Keep it fun and interesting, not impossible. See `docs/level-progression-and-endgame-plan.md` for vibe process pre-planning notes.

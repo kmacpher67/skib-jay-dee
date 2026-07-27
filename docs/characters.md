@@ -109,6 +109,18 @@ them unprompted.
 From the PDF roster, not yet represented by any asset or pool entry:
 
 - **Skib-Daddy-Toilet Guy** — Now implemented as the signature chaser for Level 6. Uses the `dad-case` face as a placeholder, has a slower base speed, and a Plunger Launch ability that pulls the runner on hit.
-- **Raman-Aunt-Toilet Lady** — the `ant-k-raman` / `anti-k-raman-2` faces
-  above may already be standing in for this character visually, but she
-  has no distinct gameplay ability yet (Phase 3, not started).
+- **Raman-Aunt-Toilet Lady** — **Ability decided 2026-07-27 (design-only,
+  not yet coded): "Broth Slip."** She leaves a persistent hot-broth
+  trail as she chases; a runner who steps in it gets zero friction for
+  2 seconds and drifts uncontrollably into walls/other chasers instead
+  of responding to steering input — an area-denial hazard, distinct
+  from Skib-Daddy's pull and the CEO of Drains' proposed slow. Uses the
+  existing `ant-k-raman`/`anti-k-raman-2` faces (no new asset needed).
+  Recommended to appear as a `chaserType` in the Level 5+ multi-chaser
+  rotation (map-agnostic hazard, doesn't need her own level), and as a
+  likely repeat addition to Level 7's climax roster alongside the CEO of
+  Drains. She also gets her own themed bark pool ("Broth Slip" lines) —
+  see `docs/dialog_content_chasing.md`. Full writeup in
+  `docs/level-progression-and-endgame-plan.md`'s "Flag for Ken" item 6.
+  Still needs exact `chaserType` stat tuning before this is a ready-to-
+  code handoff.
