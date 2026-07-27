@@ -59,6 +59,7 @@ export default function App() {
   const [lastCaptureLine, setLastCaptureLine] = useState('')
   const [showLvl2Transition, setShowLvl2Transition] = useState(false)
   const [dadCaseSpawned, setDadCaseSpawned] = useState(false)
+  const [isChaserMode, setIsChaserMode] = useState(false)
   const [showLevel4Warning, setShowLevel4Warning] = useState(false)
   const [activeBadgeToast, setActiveBadgeToast] = useState(null)
   const hasSeenLevel4WarningRef = useRef(false)
@@ -179,7 +180,8 @@ export default function App() {
     syncProfile((current) => ({ ...current, muted: !current.muted }))
   }
 
-  const handlePlay = () => {
+  const handlePlay = (asChaser = false) => {
+    setIsChaserMode(asChaser)
     const nextFaces = randomFaces()
     if (!runnerIsCustom) setRunnerFaceSelection(nextFaces.runnerFace)
     if (!chaserIsCustom) setChaserFaceSelection(nextFaces.chaserFace)
@@ -525,7 +527,8 @@ export default function App() {
               loadout={loadout}
               onRunnerFace={handleRunnerFace}
               onChaserFace={handleChaserFace}
-              onPlay={handlePlay}
+              onPlay={() => handlePlay(false)}
+              onPlayAsChaser={() => handlePlay(true)}
               onOpenShop={() => {
                 setVersionOpen(false)
                 setShopOpen(true)
@@ -591,6 +594,7 @@ export default function App() {
               chaserFace={chaserFace}
               chaserFaceId={chaserFaceId}
               runnerIsCustom={runnerIsCustom}
+              isChaserMode={isChaserMode}
               loadoutSpeedBonus={loadout.speedBonus}
               loadoutStaminaBonus={loadout.staminaBonus}
               loadoutRewardBonus={loadout.rewardBonus}
@@ -702,6 +706,7 @@ function MainMenu({
   onRunnerFace,
   onChaserFace,
   onPlay,
+  onPlayAsChaser,
   onOpenShop,
   onOpenVersion,
   onOpenDeaths,
@@ -775,6 +780,9 @@ function MainMenu({
       <div className="menu-actions">
         <button className="play-btn" onClick={onPlay}>
           QUICK PLAY
+        </button>
+        <button className="play-btn chaser-btn" onClick={onPlayAsChaser} style={{ backgroundColor: '#8a5a34' }}>
+          PLAY AS CHASER
         </button>
         <button className="shop-btn" onClick={onOpenShop}>
           OPEN SHLEEB SHOP

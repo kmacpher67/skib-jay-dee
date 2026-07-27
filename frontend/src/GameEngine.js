@@ -430,6 +430,7 @@ export class GameEngine {
       earnedBadges = [],
       loadout = {},
       neonJumpscareFilter = false,
+      isChaserMode = false,
     } = {},
   ) {
     this.canvas = canvas
@@ -578,6 +579,8 @@ export class GameEngine {
     this.fireBtn = { active: false, id: null }
     this.keys = { up: false, down: false, left: false, right: false, sprint: false, fire: false }
     this._firePrevHeld = false
+
+    this.isChaserMode = isChaserMode
 
     this.setLoadout(loadout)
     this._syncLevelState({ resetPositions: true, notify: false })
@@ -853,6 +856,39 @@ export class GameEngine {
     return { x: x / mag, y: y / mag }
   }
 
+  _getRunnerEvadeVector(dt) {
+    if (!this.chasers || this.chasers.length === 0) return { x: 0, y: 0 }
+    // Simple AI: evade the closest chaser
+    let closestChaser = null
+    let minDist = Infinity
+    for (const c of this.chasers) {
+      const dist = Math.hypot(this.runner.x - c.x, this.runner.y - c.y)
+      if (dist < minDist) {
+        minDist = dist
+        closestChaser = c
+      }
+    }
+    if (minDist > 300 || !closestChaser) return { x: 0, y: 0 }
+    
+    let dx = this.runner.x - closestChaser.x
+    let dy = this.runner.y - closestChaser.y
+    const mag = Math.hypot(dx, dy) || 1
+    
+    // Add some random noise to wandering
+    this.runner.aiWanderTimer = (this.runner.aiWanderTimer || 0) - dt
+    if (this.runner.aiWanderTimer <= 0) {
+       this.runner.aiWanderX = (Math.random() - 0.5) * 2
+       this.runner.aiWanderY = (Math.random() - 0.5) * 2
+       this.runner.aiWanderTimer = 1.0 + Math.random() * 2
+    }
+    
+    dx = (dx / mag) + (this.runner.aiWanderX || 0) * 0.5
+    dy = (dy / mag) + (this.runner.aiWanderY || 0) * 0.5
+    
+    const finalMag = Math.hypot(dx, dy) || 1
+    return { x: dx / finalMag, y: dy / finalMag }
+  }
+
   getBrothSteeringMult() {
     return this.brothFrictionTimer > 0 ? RAMAN_AUNT.steeringMult : 1
   }
@@ -1105,7 +1141,17 @@ export class GameEngine {
     let speed = this.runner.baseSpeed * (this.tacoBellActive ? 1.5 : 1) * (sprinting ? 1.8 : 1)
     if (this.schleimyPotionActive) speed *= 0.8
     if (this.runner.plunger) speed *= 0.7
-    const move = this._getMoveVector()
+    let move = { x: 0, y: 0 }
+    
+    if (this.isChaserMode) {
+       // In chaser mode, runner evades
+       move = this._getRunnerEvadeVector(dt)
+       // We don't boost the AI runner for now to keep v1 simple
+       speed = this.runner.baseSpeed
+    } else {
+       move = this._getMoveVector()
+    }
+    
     if (move.x !== 0 || move.y !== 0) this.runner.facing = { x: move.x, y: move.y }
 
     let stepX
@@ -1210,10 +1256,20 @@ export class GameEngine {
             })
           }
         }
-        if (wallHackLevel) {
-          this._moveIgnoringWalls(chaser, stepX, stepY)
+        if (this.isChaserMode && chaser === this.chasers[0]) {
+           const cMove = this._getMoveVector()
+           const sprinting = (this.sprintBtn.active || this.keys.sprint) // basic chaser sprint for human
+           const cSpeed = chaserSpeed * (sprinting ? 1.5 : 1)
+           stepX = cMove.x * cSpeed * dt
+           stepY = cMove.y * cSpeed * dt
+           // Human chaser respects walls in v1 regardless of wallHackLevel
+           this._moveWithCollision(chaser, stepX, stepY)
         } else {
-          this._moveWithCollision(chaser, stepX, stepY)
+          if (wallHackLevel) {
+            this._moveIgnoringWalls(chaser, stepX, stepY)
+          } else {
+            this._moveWithCollision(chaser, stepX, stepY)
+          }
         }
         if (chaser.chaserType === 'raman-aunt') {
           const moved = Math.hypot(chaser.x - (chaser.prevX ?? chaser.x), chaser.y - (chaser.prevY ?? chaser.y))
@@ -1307,8 +1363,16 @@ export class GameEngine {
       if (caughtBy && caughtBy.stunGracePeriod > 0) {
         this.onBadgeEarned('friendly-fire')
       }
-      this._triggerCaught(caughtBy)
-    } else if (nearCapture) {
+      if (this.isChaserMode) {
+        // Chaser mode win condition: capture once -> round ends. No economy.
+        this.phase = 'caught'
+        this._caughtFaceStage = 0
+        this.zoom = 1
+        this.onCaught({ captureLine: 'Gotcha! Round over.' }) // generic for now
+      } else {
+        this._triggerCaught(caughtBy)
+      }
+    } else if (nearCapture && !this.isChaserMode) {
       this._triggerNearCapture()
     }
   }
@@ -2363,7 +2427,7 @@ export class GameEngine {
   }
 
   _applyCamera(ctx) {
-    const focus = this.runner
+    const focus = this.isChaserMode ? this.chasers[0] : this.runner
     const zoom = this.phase === 'caught' ? this.zoom : 1.35
     const cx = focus.x + focus.w / 2
     const cy = focus.y + focus.h / 2
