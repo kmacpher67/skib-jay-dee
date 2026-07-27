@@ -1,7 +1,7 @@
 # Roadmap Handoff Plan v0.4.58 — Desktop Screen Size & Aspect Ratio
 
 **Created by:** Antigravity — 2026-07-27
-**Last updated by:** Claude — 2026-07-27
+**Last updated by:** Claude — 2026-07-27 (added generic scaling reference)
 **Session mode:** Mode A (Planning / investigate — docs only, no code)
 **Status:** BLOCKED ON DESIGN DECISION (Field of view balance) — Ken has reviewed the discussion below and is still undecided between Option A and Option C.
 
@@ -53,6 +53,24 @@ Ken shared a desktop screenshot (`image_799dc6.png`) showing the unused side col
 - **Fog of War / darkness mask (≈ Option A):** Widen the aspect ratio to 16:9 for desktop, but shroud everything outside a radius around Jayden in darkness so effective sight distance matches mobile. There's already a precedent for this pattern — the Dad Case chaser's `.dad-case-darkness` overlay.
 
 **Outcome:** Ken finds this a good discussion but has not picked a direction yet. No option has been eliminated. Revisit this handoff once a choice is made (A, B, or C) before starting Mode B implementation.
+
+### Reference: generic mobile→desktop scaling checklist
+
+Ken also pulled a generic (engine-agnostic) answer on how a mobile 9:16 game is typically expanded to full desktop size. Not specific to this codebase (no engine specified — assumes something like Unity/Godot/Phaser/Construct), but useful as a checklist once an option is chosen:
+
+**Engine settings:**
+- Base resolution: change project settings from a portrait size to a horizontal desktop size.
+- Scale mode: use "Scale Fit" or "Expand" so the game fills the wide screen instead of showing black side bars.
+- Aspect ratio: unlock or change the target aspect ratio from fixed portrait to flexible/landscape.
+
+**Code and layout:**
+- CSS/canvas: set the HTML canvas width/height to fill the browser window.
+- Camera view: update the main camera zoom/orthographic size so more of the game world is visible on the sides.
+- UI positions: move buttons/scores from top/bottom corners to the new left/right edges.
+
+Since this project renders via `GameEngine.js` on an HTML canvas (not Unity/Godot/Phaser/Construct), the equivalent touchpoints here are: the canvas resize/scale logic in `GameEngine.js`, the `viewCoords`-based camera math in `_drawWorld`, and the portrait container styling in `frontend/src/App.jsx`. This lines up with the Fix plan below — whichever option (A/B/C) is chosen still touches these same three spots.
+
+Source: AI-generated overview citing gamemaker.io's mobile resolution-scaling tutorial and Android large-screen resizability docs; general background, not vetted against this codebase.
 
 ## Fix plan (Mode B — single session)
 
