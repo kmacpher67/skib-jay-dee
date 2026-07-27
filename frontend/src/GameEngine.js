@@ -956,6 +956,11 @@ export class GameEngine {
 
     if (this.phase === 'close-call-freeze') {
       this._updateCloseCallFreeze(dt)
+      this.fireCooldown = Math.max(0, this.fireCooldown - dt)
+      const fireHeld = this.keys.fire || this.fireBtn.active
+      if (fireHeld && !this._firePrevHeld) this._tryFire()
+      this._firePrevHeld = fireHeld
+      this._updateBullets(dt)
       return
     }
 

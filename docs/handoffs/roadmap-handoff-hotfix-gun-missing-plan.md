@@ -1,43 +1,47 @@
-# Roadmap Handoff Plan v0.4.44 — Hotfix: Gun Missing & Close-Call Freeze Inputs
+# Roadmap Handoff Plan v0.4.44 — Hotfix: Can't Fire During Close-Call Freeze
 
-**Created by:** Claude Sonnet 5
-**Session mode:** Mode A (Planning — docs only, no code changes)
+**Status:** Implemented and committed.
 
-## RCA: "Gun Missing & Unable to Shoot" Bug
-The player reported that after the "scare screen popup" (the `near-capture` phase), their gun was missing and they were unable to shoot the chaser before it came at them. 
+## Background
+An earlier pass by a Gemini AI agent drafted an RCA and a fairly heavy refactor
+plan (extracting `_updateRunnerMovement` / `_updateChaserMovement` out of
+`_update(dt)`) for a reported "gun goes missing during the scare screen" bug.
+Before executing that plan, Claude re-verified the RCA directly against
+`GameEngine.js` and found:
 
-The root cause is a combination of rendering and game loop structure bugs in `GameEngine.js`:
-1. **Visual Disappearance:** During the `near-capture` phase (2.5s popup), `_drawControls(ctx)` is intentionally skipped. This hides the on-screen joystick and fire buttons, leading the player to believe their gun went "missing."
-2. **Input Deadzone during Freeze:** When the game transitions to `close-call-freeze` (1.0s), the game loop in `_update(dt)` calls `this._updateCloseCallFreeze(dt)` and then executes an **early return**. 
-   - Because all the core game logic (input processing, `fireHeld` checking, `_tryFire()`, and `_updateBullets()`) is flattened inside `_update(dt)` below that return statement, the player's frantic taps on the Fire button are completely ignored.
-   - When the 1.0s freeze ends, the chaser (who was already <100px away) resumes full speed and instantly catches the player before they can react.
+1. **Confirmed, real bug:** during the `close-call-freeze` phase (the 1.0s
+   pause right after the `near-capture` jumpscare, while the chaser is within
+   100px of the player), `_update(dt)` called `_updateCloseCallFreeze(dt)` and
+   then hit an early `return`. Fire-button handling (`fireHeld` / `_tryFire`)
+   and `_updateBullets(dt)` live further down in the same function, so they
+   never ran during the freeze. The player's taps on the fire button were
+   silently dropped, and when the freeze ended the chaser resumed at full
+   speed already adjacent to the player — reads exactly like "my gun stopped
+   working right before I got caught."
+2. **Not a bug, by design:** `_drawNearCapture(ctx)` (the 2.5s jumpscare
+   before the freeze) intentionally fills the whole canvas with a black
+   background + jumpscare face and a caption. No input is processed during
+   that phase at all (movement and firing are both inert), so hiding the
+   on-screen joystick/fire button there is consistent with the rest of the
+   screen being blacked out — not a rendering oversight. Adding the controls
+   back on top of the jumpscare would be a cosmetic, non-functional change
+   with no matching behavior fix, so it was left alone.
 
-## Proposed Implementation Plan
+## Fix Implemented
+`GameEngine.js`, `close-call-freeze` branch of `_update(dt)`: instead of an
+early return after `_updateCloseCallFreeze(dt)`, also run the fire-cooldown
+tick, fire-button edge detection (`_tryFire()`), and `_updateBullets(dt)`
+before returning. `_tryFire()` and `_updateBullets()` are self-contained
+(no dependency on runner/chaser movement, which correctly stays frozen), so
+no extraction/refactor of `_update(dt)` was needed — a 5-line addition inside
+the existing branch was sufficient.
 
-**1. Keep Controls Visible During Jumpscares**
-- Modify `_drawControls(ctx)` calls in `GameEngine.js` to ensure the HUD controls are rendered during the `near-capture` phase, so the player never thinks their gun was taken away.
+Net effect: during the freeze, the player can now see (controls were already
+drawn during `close-call-freeze`) and actually use the fire button to stun
+the chaser before it resumes chasing at full speed.
 
-**2. Refactor `_update(dt)` to Support Partial Freezes**
-- Extract the monolithic logic inside `_update(dt)` into dedicated helper methods:
-  - `_updateRunnerMovement(dt)`
-  - `_updateChaserMovement(dt)`
-- Modify the `close-call-freeze` phase logic so it no longer triggers an early `return`.
-- Instead, use a phase check to conditionally skip `_updateRunnerMovement` and `_updateChaserMovement` during `close-call-freeze`.
-- Allow the input processing (`fireHeld`, `_tryFire`) and `_updateBullets(dt)` to continue running during `close-call-freeze`. This gives the player the intended XXX milliseconds to shoot and stun the frozen chaser *before* it comes at them "all crazy."
-
-## Flag for Ken
-- **SDLC Rule:** I've identified this as a structural refactor of the core `_update` loop rather than a simple 1-line hotfix. According to `skib-sdlc.md`, I am stopping here and presenting this handoff plan for your approval before writing any code.
-- Please review the RCA and proposed refactor. If you approve, we can transition to Mode B (Execution) and implement these fixes.
-
----
-
-## Copy-paste: next planning session (Mode B)
-
-```text
-Read docs/handoffs/roadmap-handoff-hotfix-gun-missing-plan.md.
-Transition to Mode B (Execution).
-Implement the proposed refactor to GameEngine.js:
-1. Make _drawControls visible during near-capture.
-2. Refactor _update(dt) to extract runner/chaser movement logic.
-3. Allow input processing and bullet updates to run during close-call-freeze.
-```
+## Scope Note
+The heavier refactor proposed in the original draft (extracting movement into
+`_updateRunnerMovement` / `_updateChaserMovement`) was not needed and was not
+done — it would have touched much more of the core loop for no behavioral
+benefit beyond what the targeted fix above already achieves.
