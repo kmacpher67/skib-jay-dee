@@ -67,14 +67,19 @@ All are front-end–scoped or front-end–first unless noted. LT roadmap items
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next** | 2 | Gameplay Rebalancing remainder → `roadmap-handoff-v0.4.48-plan.md`; Cosmetic shop sink → `roadmap-handoff-v0.4.50-plan.md` |
-| **Specced — Ken confirm** | 2 | Broth Slip → `roadmap-handoff-v0.4.49-plan.md`; Tombstone Perk → `roadmap-handoff-v0.4.52-plan.md` |
-| **Design-only / TBD** | 7 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib, HUD live-data pills (Slice B), Pickup tracking + Play Recap, Interactive content pack |
-| **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
+| **Unblocked — code next** | 8+ | See updated queue below |
+| **Specced — Ken confirm** | 1 | Tombstone Perk → `roadmap-handoff-v0.4.52-plan.md` |
+| **Design-only / TBD** | 4 | Difficulty Function, Level 7+ Mosaic, Interactive content pack, Role Reversal kit (partial) |
+| **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 
-`GAME_ITERATION` is **v0.4.47** (`frontend/src/version.js`). Next code slice:
-**Gameplay Rebalancing** per `roadmap-handoff-v0.4.48-plan.md`.
+**Coding queue after v0.4.48 (Gameplay Rebalancing):** v0.4.50 cosmetic sink →
+v0.4.49 Broth Slip → v0.4.41 Slice B (shop labels) → v0.4.41 Play Recap →
+v0.4.54 near-miss burst → v0.4.55 Micro-Skib → v0.4.56 runner pose collapse →
+v0.4.51 wall-pinch map fix (Ken widen-vs-seal still open).
+
+`GAME_ITERATION` is **v0.4.48** (`frontend/src/version.js`). Next code slice:
+**cosmetic shop sink** per `roadmap-handoff-v0.4.50-plan.md`.
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.
@@ -129,43 +134,18 @@ for the full session write-up and
 
 ## Long-Term (LT) Roadmap
 
-**New 2026-07-27, design-only.** Ken dictated three LT-horizon items this
-session, in his own stated priority order: finish the game's "grand arch"
-first, then Role Reversal, then a PvP/MOBA mode. None of these are
-code-ready — each has open refinement questions that need Ken's input
-before a coding session can pick them up. Full writeup, current-state
-recap, and per-item refinement questions are in
+**Updated 2026-07-27** with Ken's decisions. Full writeup:
 [roadmap-handoff-v0.4.43-plan.md](handoffs/roadmap-handoff-v0.4.43-plan.md).
-Summary:
 
-1. **Finish the grand arc — Level 10 as the final scene.** Ken is
-   actively working on level development now. This is new information
-   against the existing plan in
-   [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md),
-   which currently names **Level 7** ("CEO of Drains") as the climax —
-   see that doc's new note reconciling the two. Open question: does the
-   Level 7 boss content stay put as a mid-arc beat, move to Level 10, or
-   get replaced? Not resolved yet — flagged for Ken.
-2. **Role Reversal — players choose chaser or runner.** Today only the
-   runner is playable; all chasers are AI. This is a real new control
-   scheme and mode-boundary design, not a reskin. Recommended smallest
-   first slice (still needs Ken's sign-off): single-player, human plays
-   chaser vs. an AI-controlled runner — proves out whether chaser POV is
-   fun before any networking work. The full multiplayer version (human
-   runner vs. human chaser) depends on Phase 5 above.
-3. **MOBA/PvP mode (2v2 or 4v4 deathmatch-style).** Ken's own framing:
-   "we need bodies for this and maybe decent servers." Largest-scope item
-   of the three — depends on Phase 5 multiplayer landing for real first,
-   and on Role Reversal's multiplayer variant proving out the underlying
-   asymmetric-roles gameplay. Format (asymmetric team chase vs. symmetric
-   deathmatch), infra commitment, and player-base/matchmaking scope are
-   all open.
+1. **Finish the grand arc — Level 10 finale.** **Resolved:** CEO of Drains
+   stays **Level 7 mid-arc boss**; **Level 10 = new finale** (Ken developing);
+   **endless play after L10**. Levels 8–9 TBD.
+2. **Role Reversal v1 — partially resolved:** menu mode, human chaser vs. AI
+   runner, **no economy**. Kit + win condition still open —
+   [roadmap-handoff-v0.4.53-plan.md](handoffs/roadmap-handoff-v0.4.53-plan.md).
+3. **MOBA/PvP** — still parked (format + infra open).
 
-Sequencing per Ken's own words: **Level 10 arc → Role Reversal → MOBA**.
-Don't start coding any of these without a dedicated, smaller bounded
-handoff once the relevant "Flag for Ken" questions in
-[roadmap-handoff-v0.4.43-plan.md](handoffs/roadmap-handoff-v0.4.43-plan.md)
-are answered.
+Sequencing: **Level 10 arc → Role Reversal → MOBA**.
 
 ## Plan: handling levels and new maps (plan only — not implemented)
 
@@ -381,11 +361,9 @@ and chaser-bark voice clips, 1:1 with text.
   Shleeb Shop item — recommending map pickup) and the exact percentages
   before coding. See
   [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
-- [ ] **Micro-Skib chaser (challenge counterweight to the potion).** A
-  smaller chaser variant sized to also fit through the tight cracks the
-  Schleimy Potion opens up. MVP spawn rules scoped in
-  [roadmap-handoff-v0.4.48-plan.md](handoffs/roadmap-handoff-v0.4.48-plan.md)
-  — not code-ready until Ken confirms spawn rule and level gate.
+- [ ] **Micro-Skib chaser (challenge counterweight to the potion).** **Code-ready**
+  per Ken 2026-07-27 — replace extra spawn, L3+, 65% hitbox, 0.85× speed.
+  See [`roadmap-handoff-v0.4.55-plan.md`](handoffs/roadmap-handoff-v0.4.55-plan.md).
 - [x] **Level 4+ Difficulty Constraints.** Landed in v0.4.33 — Level 4 and higher now requires at least 90 seconds (scaling up with higher levels) of running and evasion of 5 chasers before the level can clear.
 - [x] **Skib-Chaser Evolution (Level 5+).** Landed in v0.4.34 — chasers turned out to have no wall collision at all pre-v0.4.34 (only the runner did), so this gave them real wall-aware movement on Levels 1-4 and kept the always-pass-through behavior plus a `1.15x` speed multiplier for Level 5+ (`levelIndex >= 4`). See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
 - [x] **The "Gawd Particle" (Level 5+).** Landed in v0.4.34 — an 8%-per-level Level 5+ pickup grants the runner a 10s wall-hack buff; touching a chaser while it's active despawns the chaser (15s respawn timer) instead of capturing the runner. See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
@@ -443,15 +421,12 @@ and chaser-bark voice clips, 1:1 with text.
   [sound-effects-howto.md](sound-effects-howto.md) and
   [future-versions.md](future-versions.md) for what's still rough
   (volume ducking, a real menu theme).
-- [ ] **Audio 2: capture-line and chaser-bark voice clips, 1:1 with text.**
-  **Note: This is an optional enhancement.** The dialog is fully playable 
-  as non-audio visual popups (speech bubbles/text), so audio is not 100% 
-  required for those playing muted (e.g. at work/church).
-  v0.4.0 wired a themed *pool* of chaser-bark/scream/taunt clips that
-  plays alongside the random `CHASER_LINES` text, but it's not a matched
-  pair per line yet. If desired, record one clip per `CAPTURE_LINES` and
-  `CHASER_LINES` entry for a real 1:1 match. See
-  [future-versions.md](future-versions.md) and [dialog_content_chasing.md](dialog_content_chasing.md).
+- [ ] **Audio 2: capture-line voice clips (phase 1).** **Scope decided
+  2026-07-27:** Ken will record **`CAPTURE_LINES` only first** (1:1 with
+  on-screen text); chaser-bark pool stays themed/random until a later phase.
+  **Blocked on Ken recording** — see [`dialog_content_chasing.md`](dialog_content_chasing.md)
+  and [`sound-effects-howto.md`](sound-effects-howto.md). Optional enhancement;
+  game is fully playable muted.
 - [x] **Audio 3: ambient chase loop.** Landed v0.4.10 —
   `chase-ambient-bopbop.mp3` now stays quiet on chase start and only
   arms after roughly 15 seconds or the first extra chaser spawn,
@@ -502,51 +477,20 @@ and chaser-bark voice clips, 1:1 with text.
   Poopdom as of v0.4.47 doc update). See
   [roadmap-handoff-v0.4.45.md](handoffs/roadmap-handoff-v0.4.45.md).
 - [ ] **Menu HUD: make the Speed/Stamina/Rewards pills reflect real live
-  data, not just static shop bonuses.** **New 2026-07-27 (Ken screenshot
-  feedback), design-only, not code-ready.** The `perk-strip` in
-  `MainMenu` (`frontend/src/App.jsx:663-668`) currently reads
-  `speedBonus`/`staminaBonus`/`rewardBonus` straight out of
-  `buildLoadout(profile.ownedItems)` in `frontend/src/gameContent.js` —
-  i.e. it only ever reflects Shleeb Shop purchases. Ken's annotation
-  asked for these numbers to reflect "current speed and stamina based on
-  difficulty and history actions [and] store buys," which this doesn't
-  do today: there's no difficulty-tier or run-history signal feeding the
-  menu display at all. Needs a design decision before coding — see the
-  new [docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md)
-  for the options considered (show effective totals vs. deltas, whether
-  the debt/high-level risk state above level 3/4 should visibly
-  discount these numbers, whether "history actions" means badge-derived
-  bonuses or just a richer breakdown of the existing shop bonus). Pairs
-  naturally with the history feature below but is a separate, smaller
-  slice.
+  data.** **Slice B code-ready (Ken chose (a), 2026-07-27):** shop label
+  only — add "from Shleeb Shop" caption/tooltip; no difficulty modifiers.
+  See [`roadmap-handoff-v0.4.41-plan.md`](handoffs/roadmap-handoff-v0.4.41-plan.md).
 - [ ] **Feature: Rewards & History panel (player-facing "how did I get
   this" log).** **Slice A shipped v0.4.41** — clickable Rewards pill +
   `RewardsHistoryModal.jsx` + `rewardsHistory` log for badges and purchases.
-  **Slice B still open:** HUD live-data pills (see item below). Pickup
-  tracking + Play Recap addendum still design-only, blocked on Ken — see
-  [docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md).
-- [ ] **Feature: Pickup-consumption tracking + "Play Recap" screen.** **New
-  2026-07-27 (Ken follow-up), design-only, not code-ready.** Ken wants every
-  map pickup (the mushroom/bomb rolling pickups from v0.4.35, plus the gun,
-  Schleimy Potion, Taco Bell, Decoy, Soggy TP, Heavy Plunger, and Gawd
-  Particle) logged when consumed, and a proper post-run recap/review of
-  play statistics — explicitly better than CoD's ("I hate that about CoD,
-  no good recap and review of play statistics"). Verified gap: today
-  pickup consumption doesn't fire *any* callback out of `GameEngine.js` —
-  not just missing timestamps, nothing reaches the profile at all. Extends
-  the same `rewardsHistory` log from the item above with a new
-  `type: 'pickup'` entry (one array, one modal, not a parallel system), plus
-  a new engine-level `onPickupConsumed` callback and a per-run "Play Recap"
-  surface (recommend: shown once on level-clear/menu-return, not competing
-  with the existing post-kill profile card on death). Full writeup, the
-  pickup-id/effect audit, and three open questions for Ken (recap placement,
-  one-modal-with-tabs vs. new pill, tone for bad-pickup stats) are in the
-  "Addendum" section of
-  [docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md).
-  Cross-referenced in [docs/interactive-content-pack.md](interactive-content-pack.md)
-  (pickup-id/effect reference table) and
-  [docs/profiles-and-identity.md](profiles-and-identity.md). Do not start
-  coding until Ken answers the open questions.
+  **Slice B still open:** HUD live-data pills → now **code-ready** (shop label
+  only, Ken 2026-07-27). Pickup tracking + Play Recap → **code-ready** (same
+  date). See [`roadmap-handoff-v0.4.41-plan.md`](handoffs/roadmap-handoff-v0.4.41-plan.md).
+- [ ] **Feature: Pickup-consumption tracking + "Play Recap" screen.** **Code-ready**
+  (Ken 2026-07-27): level-clear/menu return only; Stats tab in Rewards modal;
+  comedic bad-pickup tone. See
+  [`roadmap-handoff-v0.4.41-plan.md`](handoffs/roadmap-handoff-v0.4.41-plan.md)
+  addendum.
 - [x] **Level expansion.** Added The Ramen Aisle and World Star Parking Lot
   (5 levels total) — landed this session.
 - [x] **Level data extraction** — roadmap item 1 above. **Correction
@@ -577,13 +521,9 @@ and chaser-bark voice clips, 1:1 with text.
   `frontend/src/assets/sky-diver-motor-killer.png` copied in, imported in
   `frontend/src/gameContent.js`, and added to `CHASER_FACE_POOL` as
   `sky-diver-motor-killer`.
-- [ ] **New chaser: Yoodeling Unc, second pose.** A second costume photo
-  for the existing "Yoodelling Unc Alex" bit was shared but **not yet
-  saved to the repo** — ask the user to drop it in `images/` (e.g.
-  `images/yoodelling-unc-alex-2.png`) before starting this item. Once on
-  disk, wire it as an *additional* `CHASER_FACE_POOL` entry alongside the
-  existing `yoodelling-unc-alex` one, not a replacement. See
-  `docs/characters.md`.
+- [ ] **New chaser: Yoodeling Unc, second pose.** **Blocked on asset** —
+  Ken will drop `images/yoodelling-unc-alex-2.png` when ready. See
+  [`characters.md`](characters.md).
 - [x] **Chaser face randomization fix.** Landed this session —
   `_maybeSpawnExtraChaser()` (`frontend/src/GameEngine.js`) now rolls an
   independent `randomFrom(CHASER_FACE_POOL)` pick for every extra chaser
@@ -598,16 +538,9 @@ and chaser-bark voice clips, 1:1 with text.
   default, or the player's custom upload untouched) once the chase
   resumes. See `setFaces()` / `_triggerCaught()` / `_updateCaught()` in
   `frontend/src/GameEngine.js`, and `docs/characters.md`.
-- [ ] **Follow-up (needs Ken): supply distinct getting-captured/captured
-  and uncaring/default photos.** The pose-swap logic above is wired
-  correctly but two of the five `RUNNER_FACE_POOL` entries turned out to
-  be byte-identical duplicates of two others (confirmed via `md5sum`):
-  `jayden-getting-captured.jpg` == `jayden-captured.jpg`, and
-  `jayden-uncaring-4029.jpg` == `jayden-default.jpg`. Until real distinct
-  photos exist for those ids, the capture beat's zoom-in and zoomed-hold
-  will show the same photo twice. Ask Ken for the actual distinct shots
-  (or confirm the duplication is intentional and collapse the pool to 3
-  unique poses instead of 5). See `docs/characters.md`.
+- [ ] **Follow-up (runner poses): collapse to 3 unique.** **Code-ready**
+  (Ken 2026-07-27) — remove duplicate pool entries; distinct photos optional
+  later. See [`roadmap-handoff-v0.4.56-plan.md`](handoffs/roadmap-handoff-v0.4.56-plan.md).
 - [ ] **Multiplayer spike (Phase 5).** Only after everything above feels
   solid. Make the frontend actually connect to `/ws/match`, sync two
   browser tabs, server decides who's Chaser. This is the biggest single
@@ -673,17 +606,12 @@ and chaser-bark voice clips, 1:1 with text.
   `App.jsx` now shows a "Fair Use / Parody Warning" line linking to
   `https://github.com/kmacpher67/skib-jay-dee/issues`.
 - [ ] **Difficulty Function (separate design track):** Preferred direction is Method C (`The Debt Lock`) plus a lightweight starting selector (`Noob-Noob` / `CEO of Drains`). Keep it separate from the death-log telemetry slice; see `docs/difficulty-mechanics-plan.md`. **Reviewed 2026-07-27:** a rolling deaths/sheebs auto-tune idea was evaluated and folded into that doc as a refinement of Method C (economy-side lever, level-indexed floors, no new `DifficultyManager` class) — still design-only, several TBDs, not ready to code.
-- [ ] **Cool Play (Chaser Evasion):** Polish evasion feel. MVP options scoped
-  in [roadmap-handoff-v0.4.48-plan.md](handoffs/roadmap-handoff-v0.4.48-plan.md)
-  (near-miss particles, corner-slide visuals). Not code-ready — Ken must pick
-  which slice first.
+- [ ] **Cool Play (Chaser Evasion):** **Near-miss burst — code-ready**
+  (Ken 2026-07-27). See [`roadmap-handoff-v0.4.54-plan.md`](handoffs/roadmap-handoff-v0.4.54-plan.md).
+  Corner-slide visuals deferred.
 - [ ] **New chaser ability: Raman-Aunt-Toilet Lady's "Broth Slip."**
-  **Decided 2026-07-27 (design-only)** — frictionless broth-trail area-denial
-  hazard. Recommended stat defaults and bounded handoff in
-  [roadmap-handoff-v0.4.49-plan.md](handoffs/roadmap-handoff-v0.4.49-plan.md).
-  Still needs Ken sign-off on tuning before Mode B. See also
-  [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md),
-  [characters.md](characters.md), [dialog_content_chasing.md](dialog_content_chasing.md).
+  **Code-ready** (Ken approved defaults 2026-07-27). Level 5+ extra-chaser
+  rotation only. See [`roadmap-handoff-v0.4.49-plan.md`](handoffs/roadmap-handoff-v0.4.49-plan.md).
 - [ ] **Level 7+ and Beyond: The Mosaic Map of Madness (TBD).** (To be determined - needs refinement & extra data specs). Introduce a mutable puzzle map (Multiverse of Madness parody with Rick and Morty style comedic dialogue).
   - *Features:* Mosaic layouts driven by time functions (e.g. Fibonacci sequence) so it doesn't punish night-time players. Layer-Sync Mirroring, Dimensional Rift Anchors, Mutual Mutation puzzles, Temporal Echoes.
   - *Design Goal:* Keep it fun and interesting, not impossible. See `docs/level-progression-and-endgame-plan.md` for vibe process pre-planning notes.

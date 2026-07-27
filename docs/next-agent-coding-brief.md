@@ -3,45 +3,33 @@
 **Created by:** Codex (GPT-5) — 2026-07-27
 **Last updated by:** Composer — 2026-07-27
 
-This brief is the quick-start for the current open handoff.
-`frontend/src/version.js` confirms **v0.4.47** is current.
+`frontend/src/version.js` confirms **v0.4.48** is current (Gameplay
+Rebalancing shipped).
 
 ## Session focus
 
-**Gameplay Rebalancing remainder** — front-end only, no new features.
+**Cosmetic shop sink** — read `docs/handoffs/roadmap-handoff-v0.4.50-plan.md`.
 
-Read first:
+Add Neon Jump-Scare Filter (200 sheebs, cosmetic capture tint). Optional:
+`.portrait-frame` wide-viewport CSS fix from `future-versions.md`.
 
-1. `docs/skib-sdlc.md`
-2. `docs/update-directions.md`
-3. `docs/handoffs/roadmap-handoff-v0.4.48-plan.md`
+## After that (all code-ready per Ken 2026-07-27)
 
-## Tasks
-
-1. **Gun hit:** +25 sheebs when a gun shot stuns a chaser.
-2. **Badge earn:** +50 sheebs when a new badge is earned.
-3. **Scaled death penalty:** L1=0, L2=10, L3=20, L4+=30 sheebs (replace flat 20).
-4. **Chaser speed:** start `chaserSpeedMod` at 0.8; per-level speed cap
-   (`0.9 + levelIndex * 0.09`, clamped to existing min/max).
-5. **Level rewards:** bump to 50/75/100/150/200/250 for six levels.
-
-## Constraints
-
-- Front-end only. Keep 9:16 portrait layout.
-- Do not bump `GAME_ITERATION` or deploy unless Ken asks.
+| Handoff | Slice |
+|---|---|
+| `v0.4.49-plan.md` | Broth Slip |
+| `v0.4.41-plan.md` | Slice B shop labels |
+| `v0.4.41-plan.md` addendum | Play Recap + pickup tracking |
+| `v0.4.54-plan.md` | Near-miss burst |
+| `v0.4.55-plan.md` | Micro-Skib |
+| `v0.4.56-plan.md` | Runner pose collapse (3 unique) |
 
 ## Verification
 
 - `cd frontend && npm run build`
 - `cd frontend && npx playwright test`
 
-## After landing
+## Still blocked
 
-- `docs/roadmap.md`, `docs/version-log.md`, `docs/handoffs/ledger.md`,
-  `docs/update-directions.md`, `VersionModal.jsx` (if bumping).
-- Create `docs/handoffs/roadmap-handoff-v0.4.48.md`.
-
-## Next in queue
-
-`docs/handoffs/roadmap-handoff-v0.4.50-plan.md` (cosmetic shop sink).
-Broth Slip (`v0.4.49-plan`) waits on Ken.
+Audio 2 capture clips (Ken records), Yoodeling Unc-2 photo, Tombstone
+(`v0.4.52`), Role Reversal kit (`v0.4.53`).

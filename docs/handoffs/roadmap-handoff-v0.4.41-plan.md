@@ -1,7 +1,7 @@
 # Roadmap Handoff Plan v0.4.41
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
-**Last updated by:** Claude Sonnet 5 — 2026-07-27 (addendum: pickup-consumption tracking + Play Recap)
+**Last updated by:** Composer — 2026-07-27 (Ken decisions recorded)
 **Session mode:** Mode A (Planning — docs only, no code changes)
 
 Source: Ken sent a menu screenshot (2026-07-27) with two red annotations pointing
@@ -95,7 +95,28 @@ slice — next in line whenever a coding session picks it up.
    as a fast follow-up once the log/modal scaffold exists — don't block the
    whole feature on wiring every payout source in one sitting.
 
-## Open question flagged for Ken (Slice B, blocking a coding session)
+## Ken's decision (2026-07-27) — Slice B resolved
+
+**Ken chose (a): shop label only.** The perk-strip pills stay
+shop-purchase-derived; add a clarifying caption (e.g. "from Shleeb Shop")
+or tooltip — do **not** build difficulty/history-linked stat modifiers here.
+Option (b) stays parked in `docs/difficulty-mechanics-plan.md` for the
+Method C / Debt Lock track.
+
+**Slice B is now code-ready.**
+
+### Slice B — files likely touched
+
+- `frontend/src/App.jsx` — add a small caption under or beside the
+  `perk-strip` spans (~738-741), e.g. `Shop bonuses` or per-pill
+  `title="From Shleeb Shop purchases"`.
+- `frontend/e2e/rewards-history.spec.js` or a tiny new spec — assert the
+  caption/tooltip is present (optional, only if easy).
+
+## Open question flagged for Ken (Slice B) — RESOLVED 2026-07-27
+
+<details>
+<summary>Original (a)/(b) fork — superseded by Ken's answer above</summary>
 
 The screenshot annotation says the pills should reflect "difficulty and
 history actions," but today there is no such mechanic anywhere in the game —
@@ -104,24 +125,10 @@ system (debt economy, level number, badges) currently modifies the runner's
 actual speed or stamina. Two different things could be meant, and they're
 very different scopes:
 
-- **(a) Cosmetic/labeling fix only.** The numbers are already "real" (they
-  reflect actual owned items applied in-game), just presented as a bare
-  delta. Small fix: show them as an effective total or add a tooltip/caption
-  clarifying "from Shleeb Shop purchases," no new game mechanic.
-- **(b) Actually build a difficulty/history-linked stat modifier.** E.g., a
-  small stamina bonus for surviving longer runs, or a speed penalty tied to
-  the existing debt tier (`highestLevel > 3`) to make the risk visible in the
-  HUD, not just the sheebs pill. This is new game-balance design, not a
-  plumbing fix — needs its own numbers and its own decision, likely folded
-  into the already-parked `docs/difficulty-mechanics-plan.md` track rather
-  than invented fresh here.
+- **(a) Cosmetic/labeling fix only.** …
+- **(b) Actually build a difficulty/history-linked stat modifier.** …
 
-**Recommendation:** ship (a) as part of Slice B (cheap, matches what's
-actually true today) and treat (b) as a new candidate for
-`docs/difficulty-mechanics-plan.md`'s backlog rather than assuming it's
-wanted — don't guess new game-balance numbers on Ken's behalf. Do not start
-Slice B in a coding session until Ken confirms which of (a)/(b) — or both —
-is wanted.
+</details>
 
 ## Files likely touched (Mode B, Slice A — Rewards & History panel)
 
@@ -142,7 +149,7 @@ is wanted.
 
 ## Explicitly not in scope this slice
 
-- Slice B (HUD pill number logic) — blocked on Ken's (a)/(b) answer above.
+- Slice B (HUD pill labels) — **code-ready** (Ken chose (a), 2026-07-27).
 - Retroactive backfill of history for existing profiles.
 - Wiring every payout-event source into the log on day one (start with
   badges + purchases, add payout events as a fast follow-up).
@@ -240,25 +247,28 @@ data with) the `RewardsHistoryModal` from Slice A:
   accumulating for a few sessions — an aggregate view over an empty/
   near-empty log isn't very useful to look at yet.
 
-### Open questions flagged for Ken (blocking a coding session on this addendum)
+### Ken's decisions (2026-07-27) — Play Recap resolved
 
-1. **Where does the per-run recap live relative to the existing post-kill
-   profile card?** Shown back-to-back (capture → profile card → recap →
-   menu), merged into one screen, or does recap only show on a *level
-   clear* / voluntary menu return (i.e., not on death, since the post-kill
-   card already owns that beat)? Recommend: only on level-clear/menu
-   return, so it doesn't compete with the existing capture beat for
-   attention — but this is Ken's call, not an assumption to code against.
-2. **Does the lifetime aggregate view get its own pill, or live inside the
-   Slice A `RewardsHistoryModal` as a second tab?** Recommend a second tab
-   in the same modal (badges/purchases/pickups + an "aggregates" tab)
-   rather than a fifth pill crowding the `perk-strip` — but flag for Ken
-   since it changes Slice A's UI shape slightly.
-3. **Bad-pickup entries ("bombs," `soggy-tp`, etc.) — brag-worthy or just
-   informational?** Should the recap frame "you got bombed 3 times" as a
-   badge-adjacent stat (comedic, matches the game's tone) or keep it
-   neutral/informational? No wrong answer, just a tone call before writing
-   any copy.
+1. **Per-run recap placement:** **Level-clear / menu return only** — not on
+   death (post-kill profile card keeps the capture beat).
+2. **Lifetime aggregates UI:** **Second tab inside `RewardsHistoryModal`**
+   (History + Stats), not a new menu pill.
+3. **Bad-pickup tone:** **Comedic** — e.g. "Bombed 3× — skill issue" framing,
+   not neutral/informational copy.
+
+**Play Recap addendum is now code-ready** (build per-run recap first; lifetime
+Stats tab as fast-follow once `type: 'pickup'` data exists).
+
+### Open questions flagged for Ken — RESOLVED 2026-07-27
+
+<details>
+<summary>Original three questions — superseded by Ken's answers above</summary>
+
+1. Where does the per-run recap live relative to the post-kill profile card? …
+2. Does the lifetime aggregate view get its own pill, or live inside the …
+3. Bad-pickup entries — brag-worthy or just informational? …
+
+</details>
 
 ### Files likely touched (Mode B, this addendum — separate slice from A/B above)
 
@@ -270,9 +280,9 @@ data with) the `RewardsHistoryModal` from Slice A:
   per-run-only accumulator (reset on level start / new run) to feed the
   recap screen without re-deriving it from the full lifetime log every
   time.
-- New `frontend/src/components/PlayRecapModal.jsx` (or extend
-  `RewardsHistoryModal.jsx` with a recap mode — depends on question 1's
-  answer).
+- New `frontend/src/components/PlayRecapModal.jsx` — extend
+  `RewardsHistoryModal.jsx` with a recap mode **and** a second "Stats" tab
+  for lifetime aggregates (Ken confirmed tab layout, 2026-07-27).
 - `docs/interactive-content-pack.md` — the pickup-id/effect table there is
   the reference list for what `label`/`outcome` strings the recap should
   use; keep names consistent with that doc instead of inventing new ones.
@@ -293,53 +303,38 @@ data with) the `RewardsHistoryModal` from Slice A:
 
 ---
 
-## Copy-paste: next coding agent (Slice A first)
+## Copy-paste: Slice B — HUD shop labels (Mode B, code-ready)
 
 ```text
-Read docs/skib-sdlc.md, docs/update-directions.md, docs/roadmap.md,
-docs/profiles-and-identity.md, docs/badges.md, then this file
-(docs/handoffs/roadmap-handoff-v0.4.41-plan.md).
+Read docs/handoffs/roadmap-handoff-v0.4.41-plan.md (Ken chose option (a), 2026-07-27).
 
-Your slice: Rewards & History panel (Slice A only — do not start Slice B,
-it's blocked on a decision from Ken, see "Open question" section above).
+Slice B only — do not change pill math or add difficulty modifiers.
 
-1. Add a capped `rewardsHistory` array (last 50, same pattern as
-   `deathsHistory`) to `normalizeProfile()` in frontend/src/lib/cookies.js.
-   Entry shape: { timestamp, type: 'badge'|'purchase', label, amount, level,
-   levelName }. Use `amount: null` for badge entries (no sheeb delta), the
-   item price (negative) for purchases.
-2. In frontend/src/App.jsx: `handleBadgeEarned` and `handlePurchase` each push
-   one new `rewardsHistory` entry alongside their existing writes to
-   `earnedBadges`/`ownedItems`. Don't change what those two arrays already
-   store or how gating logic reads them.
-3. Make the `Rewards +{n}%` pill in the perk-strip (App.jsx ~line 666) an
-   actual `<button>` (mirror the existing `deaths-pill` button pattern at
-   ~line 628), wired to open a new modal.
-4. Build `frontend/src/components/RewardsHistoryModal.jsx`, structurally
-   mirroring `DeathsModal.jsx` (header, close-pill, reverse-chronological
-   list, empty state). Show the most recent 15-20 entries.
-5. Add `frontend/e2e/rewards-history.spec.js` covering: a purchase produces a
-   history entry, a badge earn produces a history entry, the modal opens/
-   closes, and an empty-profile state renders the empty message.
+1. In frontend/src/App.jsx perk-strip (~738-741): add a clarifying caption
+   that Speed/Stamina/Rewards numbers are from Shleeb Shop purchases only
+   (e.g. small "Shop bonuses" line under the strip, or title/tooltip on each span).
+2. Verify: cd frontend && npm run build
+```
 
-Verification:
-- cd frontend && npm run build
-- cd frontend && npx playwright test
+## Copy-paste: Play Recap + pickup tracking (Mode B, code-ready)
 
-After landing: update docs/version-log.md, docs/update-directions.md,
-docs/roadmap.md (check off the "Rewards & History panel" item),
-docs/profiles-and-identity.md (add rewardsHistory to the profile shape +
-field table), docs/handoffs/ledger.md, VersionModal.jsx if bumping
-GAME_ITERATION. Generate roadmap-handoff-v0.4.41.md per SDLC. Do not bump
-or deploy unless the user asks.
+```text
+Read docs/handoffs/roadmap-handoff-v0.4.41-plan.md addendum (Ken decisions 2026-07-27).
 
-Slice B (HUD pills) stays parked until Ken answers the (a)/(b) question in
-this file's "Open question flagged for Ken" section — do not code it in the
-same slice as Slice A, and do not pick an answer on Ken's behalf.
+Ken confirmed: recap on level-clear/menu return only (not death); lifetime
+stats = second tab in RewardsHistoryModal; comedic tone for bad pickups.
 
-There is also a pickup-consumption-tracking + "Play Recap" addendum in this
-same file (below the "Explicitly not in scope this slice" section) — do not
-start it in the same session as Slice A, and do not start it at all until
-Ken answers its three open questions (recap placement vs. the post-kill
-card, one modal vs. a new pill, tone for bad-pickup stats).
+1. Add onPickupConsumed callback in GameEngine.js; wire from App.jsx to
+   rewardsHistory with type: 'pickup' and outcome: 'good'|'bad'.
+2. Per-run recap modal on level-clear (handleLevelClear) — grouped pickup
+   counts, sheeb/skreem delta, badges this run. Comedic copy for bad pickups.
+3. Extend RewardsHistoryModal.jsx with a "Stats" tab for lifetime aggregates
+   (fast-follow OK if recap ships first).
+4. Verify: cd frontend && npm run build && npx playwright test
+```
+
+## Copy-paste: Slice A — SHIPPED v0.4.41 (reference only)
+
+```text
+Slice A landed as v0.4.41. Do not re-implement.
 ```

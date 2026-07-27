@@ -1,8 +1,8 @@
 # Roadmap Handoff Plan v0.4.49 — Broth Slip (Raman-Aunt-Toilet Lady)
 
 **Created by:** Composer — 2026-07-27
-**Last updated by:** Composer — 2026-07-27
-**Session mode:** Mode A (Planning — docs only, no code changes)
+**Last updated by:** Composer — 2026-07-27 (Ken approved defaults)
+**Session mode:** Mode A → **code-ready** (Ken confirmed 2026-07-27)
 
 ## Goal
 
@@ -21,27 +21,29 @@ gap (distinct from Skib-Daddy's pull and the CEO of Drains' proposed slow).
 - Dialog: spawn bark, on-trail-hit taunt, themed capture line — line list
   already drafted in `dialog_content_chasing.md`.
 
-## Recommended implementation defaults (needs Ken sign-off)
+## Recommended implementation defaults — **CONFIRMED by Ken 2026-07-27**
 
-These are **recommendations**, not decisions — do not code until Ken confirms
-or corrects (per `docs/skib-sdlc.md`).
+Ken approved the stat table below as-is and confirmed **Level 5+ extra-chaser
+rotation only** (not Level 7 climax roster yet).
 
-| Parameter | Recommended default | Rationale |
-|---|---|---|
-| `chaserType` id | `raman-aunt` | Matches existing face ids |
-| Base speed | `0.88×` normal chaser | Slightly slower; hazard is the trail |
-| Trail spawn interval | Every `0.35s` while moving | Visible line without filling the map |
-| Trail segment lifetime | `4s` | Long enough to matter, short enough to clear |
-| Trail width | `28px` | Roughly runner hitbox width |
-| Friction debuff | `0.05×` steering response for `2s` | "Ice physics" drift |
-| Where she spawns | Level 5+ extra-chaser rotation only | Same tier as wall-hacks; map-agnostic |
-| Spawn chance | `12%` when an extra chaser slot opens | Rare enough to be a surprise |
+| Parameter | Value |
+|---|---|
+| `chaserType` id | `raman-aunt` |
+| Base speed | `0.88×` normal chaser |
+| Trail spawn interval | Every `0.35s` while moving |
+| Trail segment lifetime | `4s` |
+| Trail width | `28px` |
+| Friction debuff | `0.05×` steering response for `2s` |
+| Where she spawns | Level 5+ extra-chaser rotation only (`levelIndex >= 4`) |
+| Spawn chance | `12%` when an extra chaser slot opens |
 
-**Spawn rule recommendation:** when `_maybeSpawnExtraChaser()` fires on
-`levelIndex >= 4`, roll `raman-aunt` before a generic face — do not replace
-the lead chaser.
+When `_maybeSpawnExtraChaser()` fires on `levelIndex >= 4`, roll `raman-aunt`
+before a generic face — do not replace the lead chaser.
 
-## Files likely touched (Mode B, once unblocked)
+## Flag for Ken — RESOLVED 2026-07-27
+
+1. ~~Confirm or adjust the stat table~~ — **approved as written.**
+2. ~~Confirm spawn rule~~ — **Level 5+ rotation only** (Level 7 roster deferred).
 
 - `frontend/src/gameContent.js` — `CHASER_TYPES.raman-aunt` entry (trail
   config, face id).
@@ -52,14 +54,7 @@ the lead chaser.
 - `frontend/e2e/broth-slip.spec.js` — force spawn, step in trail, assert
   drift multiplier active.
 
-## Flag for Ken
-
-1. Confirm or adjust the stat table above (especially spawn chance and trail
-   lifetime).
-2. Confirm spawn rule: Level 5+ extra-chaser rotation only (recommended) vs.
-   also guaranteed on Level 7 climax roster later.
-
-## Explicitly not in scope
+## Files likely touched (Mode B)
 
 - New level / map (she is rotation-only).
 - New face photo.
@@ -67,17 +62,13 @@ the lead chaser.
 
 ---
 
-## Copy-paste: next coding session (after Ken confirms)
+## Copy-paste: next coding session
 
 ```text
-Read docs/handoffs/roadmap-handoff-v0.4.49-plan.md, docs/dialog_content_chasing.md
-(Broth Slip section), docs/characters.md.
+Read docs/handoffs/roadmap-handoff-v0.4.49-plan.md (Ken confirmed 2026-07-27).
 
-Only start if Ken confirmed the recommended defaults (or supplied alternatives)
-in this chat.
-
-Implement raman-aunt chaserType with Broth Slip trail hazard per the stat table.
-Wire Level 5+ extra-chaser spawn roll. Add dialog pools to dialog.js.
+Implement raman-aunt chaserType with Broth Slip per the confirmed stat table.
+Level 5+ extra-chaser rotation only. Dialog from dialog_content_chasing.md.
 
 Verify: cd frontend && npm run build && npx playwright test e2e/broth-slip.spec.js
 ```

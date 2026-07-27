@@ -17,6 +17,25 @@ Chasers start at 0.8 speed mod with a per-level ceiling
 
 **Next:** cosmetic shop sink (`roadmap-handoff-v0.4.50-plan.md`).
 
+## v0.4.48-plan Ken decisions — recorded (Composer, 2026-07-27)
+
+Mode A, docs-only. Ken answered the planning brief's open questions in chat:
+
+- **Slice B:** option (a) — shop label only (`v0.4.41-plan`).
+- **Play Recap:** level-clear only; Stats tab in Rewards modal; comedic bad-pickup tone.
+- **Broth Slip:** approve v0.4.49 defaults; L5+ rotation only.
+- **LT arc:** CEO stays L7 mid-boss; L10 new finale; endless after L10.
+- **Role Reversal v1:** menu mode, human chaser vs AI, no economy (`v0.4.53-plan`).
+- **Cool Play:** near-miss burst first (`v0.4.54-plan`).
+- **Micro-Skib:** replace extra spawn, L3+ (`v0.4.55-plan`).
+- **Runner poses:** collapse to 3 unique (`v0.4.56-plan`).
+- **Audio 2:** phase 1 = capture lines only when Ken records.
+- **Yoodeling Unc-2:** Ken will drop asset when ready (still blocked).
+
+Updated `roadmap-handoff-v0.4.41-plan.md`, `v0.4.43-plan.md`, `v0.4.49-plan.md`,
+`level-progression-and-endgame-plan.md`, `characters.md`, `roadmap.md`,
+`future-versions.md`, agent briefs. No code.
+
 ## v0.4.48-plan — Backlog triage & coding queue (Composer, 2026-07-27)
 
 Mode A pass, docs-only. Full cross-reference of `docs/` against shipped

@@ -1,5 +1,7 @@
 # Characters
 
+**Last updated by:** Composer — 2026-07-27
+
 The in-game roster, as it exists today plus what's planned next. This doc
 is the human-readable companion to `frontend/src/gameContent.js`
 (`RUNNER_FACE_POOL` / `CHASER_FACE_POOL`) — that file is the source of
@@ -39,19 +41,15 @@ finishes and holds until the chase resumes, when the run's original face
 See `setFaces()` / `_triggerCaught()` / `_updateCaught()` in
 `frontend/src/GameEngine.js`.
 
-**Known asset gap — needs Ken to supply real photos.** Checked via
-`md5sum`: `jayden-getting-captured.jpg` is byte-identical to
-`jayden-captured.jpg`, and `jayden-uncaring-4029.jpg` is byte-identical
-to `jayden-default.jpg`. So of the five "poses," there are really only
-three distinct photos today (default/uncaring share one, captured/
-getting-captured share another, skibby is unique). The new pose-swap
-logic above is wired correctly and will work the moment distinct photos
-exist for each id, but until then the capture beat's zoom-in and
-zoomed-hold will visibly show the same photo twice instead of two
-different expressions. Don't regenerate or crop these — real family
-photos need Ken to supply the actual distinct shots (or confirm the
-duplication is intentional and rename the pool down to 3 unique poses
-instead of 5).
+**Ken's decision (2026-07-27): collapse pool to 3 unique poses** until distinct
+photos are supplied. Target ids: `jayden-default`, `jayden-skibby`,
+`jayden-captured` (capture zoom-in and hold both use `jayden-captured` until
+new getting-captured art exists). Mode B handoff:
+[`roadmap-handoff-v0.4.56-plan.md`](handoffs/roadmap-handoff-v0.4.56-plan.md).
+
+**Known asset gap (optional later):** Ken may still drop distinct
+getting-captured / uncaring photos — if so, re-expand the pool without a code
+session guessing roles.
 
 ## Chasers
 
@@ -84,13 +82,11 @@ import → add pool entry" pattern once a coding session picks it up. See
 - **Yoodeling Unc — second pose.** A second photo for the existing
   "Yoodelling Unc Alex" bit was shared this session (costume shot: red
   pointed cap, blue-and-white Dutch outfit, "Dutch Boy" paint can,
-  windmill/tulip backdrop — a yodeling/Alpine-adjacent gag). **This image
-  has not been saved to the repo yet** — before a coding session can wire
-  it, the user needs to drop the file into `images/` (matching the
-  `images/yoodelling-unc-alex.png` naming pattern, e.g.
-  `images/yoodelling-unc-alex-2.png`). Once it's on disk, treat it as a
-  second `CHASER_FACE_POOL` entry alongside the existing one rather than
-  a replacement — both poses of the same bit.
+  windmill/tulip backdrop — a yodeling/Alpine-adjacent gag). **Ken will
+  drop the file when ready** at `images/yoodelling-unc-alex-2.png` — still
+  **blocked on asset** until then. Once on disk, treat it as a second
+  `CHASER_FACE_POOL` entry alongside the existing one rather than a
+  replacement — both poses of the same bit.
 
 ## Unprocessed source photos (scratch, not yet picked for any role)
 

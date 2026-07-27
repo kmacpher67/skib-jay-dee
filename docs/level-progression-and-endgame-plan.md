@@ -1,28 +1,17 @@
 # Level Progression & Endgame Arc — Plan
 
 **Created by:** Claude (Sonnet 5) — 2026-07-26
-**Last updated by:** Claude Sonnet 5 — 2026-07-27
+**Last updated by:** Composer — 2026-07-27
 
-**Status:** Parked planning note, not a handoff. Written 2026-07-26 in
-response to Ken's ask: "add level 6 and plans for beyond... detailed
-design docs for each level to improve play, add content and complete
-the arch of the games end plot... which isn't quite yet at level 5, so
-we have to add harder stuff in more chasers faster etc."
+**Status:** Planning note + Ken arc decision (2026-07-27). Level 6 shipped;
+Level 7 CEO content remains the **mid-arc boss**; **Level 10 = new finale**;
+**endless play after L10** (same pattern as L5+ today).
 
-> **⚠️ OPEN RECONCILIATION (2026-07-27):** In the same session that
-> introduced the Long-Term (LT) roadmap
-> ([roadmap-handoff-v0.4.43-plan.md](handoffs/roadmap-handoff-v0.4.43-plan.md)),
-> Ken said "I think LVL10 will be the final scene and complete the
-> arch." That doesn't match this doc's existing plan below, which names
-> **Level 7** ("CEO of Drains") as the climax. This is recorded as an
-> **open question, not resolved** — per `docs/skib-sdlc.md`'s
-> "no code-cowboy" rule, nothing below has been renumbered or rewritten
-> to guess an answer. Open: does the Level 7 "CEO of Drains" content stay
-> as a mid-arc boss, move to Level 10 as the final boss, or get replaced?
-> What fills Levels 8-9? Ken is actively working on level development
-> right now (outside this planning pass) — the next Mode A session should
-> check in on that work before touching this doc's Level 7+ sections for
-> real.
+> **✅ RECONCILED (2026-07-27):** Ken confirmed: **CEO of Drains stays at
+> Level 7** as a mid-arc boss; **Level 10 is a new finale scene** (Ken is
+> actively developing level content); **play continues endlessly after Level
+> 10** (last story beat, not a hard stop). Levels 8–9 throughline still TBD.
+> Full LT context: [roadmap-handoff-v0.4.43-plan.md](handoffs/roadmap-handoff-v0.4.43-plan.md).
 
 This doc is the level-by-level design reference the source PDF
 (`Skib-jay-dee-toilet game-init-v1.pdf`) never got past its first five
@@ -96,7 +85,11 @@ Level 7 is added. Treat the advance-condition paragraph above as the
 intended future arc for that next level, not as something still waiting
 to be implemented on the current shipped slice.
 
-## Level 7: "The CEO of Drains" — climax / endgame
+## Level 7: "The CEO of Drains" — mid-arc boss (not the finale)
+
+> **Arc note (2026-07-27):** Ken confirmed Level 7 CEO stays as a **mid-arc
+> boss beat**, not the game's final scene. The true finale is **Level 10**
+> (content in development). This section's CEO design remains valid for L7.
 
 The PDF's alternate pitch draft (the "underpaid corporate custodian"
 riff later in the same document) introduces a boss framing that never

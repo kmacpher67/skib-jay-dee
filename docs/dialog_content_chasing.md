@@ -14,7 +14,11 @@ All active text is implemented in `frontend/src/dialog.js`. If you add a line he
 
 **Note:** All of the dialog below is *already fully functional* in the game as visual, non-audio popups (speech bubbles and full-screen text). This means the audio is **not 100% required** — players can still fully enjoy the dialog while playing at work or church with the sound muted!
 
-The voice clips are purely an optional enhancement for the "Audio 2" roadmap item to make the voice clips match the on-screen text bubbles 1:1. 
+The voice clips are purely an optional enhancement for the "Audio 2" roadmap item to make the voice clips match the on-screen text bubbles 1:1.
+
+**Ken's scope decision (2026-07-27):** **Phase 1 = `CAPTURE_LINES` only** (1:1
+with jump-scare text). Chaser-bark 1:1 pairing is **phase 2**, later. Do not
+block other coding on chaser-line recordings.
 
 If/when you decide to record them, please follow the `docs/sound-effects-howto.md` guidelines and save them with the suggested filenames in `frontend/src/assets/audio/`.
 

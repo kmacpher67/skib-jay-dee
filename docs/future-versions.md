@@ -14,11 +14,9 @@ is a parking lot, not an archive).
   loop when a bark/sting plays, and let the user split music vs. SFX
   volume instead of one mute-all toggle.
 - **Capture-line and chaser-bark clips that match the on-screen text
-  exactly.** Right now the audio pool (`CHASER_BARK_URLS` in `App.jsx`)
-  plays a random voice clip alongside a random `CHASER_LINES` text line —
-  they're thematically related but not paired 1:1. Recording a dedicated
-  clip per line (per the original Audio 2 backlog item) would let the
-  bubble text and the voice line always match.
+  exactly.** **Phase 1 (Ken 2026-07-27):** record `CAPTURE_LINES` only
+  for 1:1 pairing; chaser-bark pool stays themed/random until phase 2.
+  Blocked until Ken records clips — see [`dialog_content_chasing.md`](dialog_content_chasing.md).
 - **Menu loop vs. capture sting should be different clips.** They already
   are as of v0.4.0 (`jayden-skreem-loop.m4a` for menu,
   `capture-sting-final.mp3` for the catch) — what's still missing is a

@@ -1,7 +1,7 @@
 # Roadmap Handoff Plan v0.4.48 — Backlog Triage & Gameplay Rebalancing
 
 **Created by:** Composer — 2026-07-27
-**Last updated by:** Composer — 2026-07-27
+**Last updated by:** Composer — 2026-07-27 (Ken decisions recorded)
 **Session mode:** Mode A (Planning — docs only, no code changes)
 
 ## Source

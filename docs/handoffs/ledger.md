@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-27 | docs (Composer) | Recorded Ken product decisions; unblocked Broth Slip, Slice B, Play Recap, Cool Play, Micro-Skib, pose collapse; LT arc + Role Reversal v1 scope; handoffs v0.4.53–v0.4.56
 2026-07-27 | v0.4.48 | Gameplay rebalancing: gun +25, badge +50, scaled death penalty, chaser speed start/cap, level reward bumps
 2026-07-27 | docs (Composer) | v0.4.48-plan backlog triage: created rebalancing/cosmetic/broth-slip handoffs, synced roadmap to v0.4.47, updated players-guide + agent briefs; no code
 2026-07-27 | v0.4.47 | Added Rod of Poopdom teleport pickup (300px warp, Stinky cooldown)

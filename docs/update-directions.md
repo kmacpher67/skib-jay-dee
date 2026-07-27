@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Composer — 2026-07-27 (v0.4.48 gameplay rebalancing shipped)
+**Last updated by:** Composer — 2026-07-27 (Ken product decisions recorded)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,12 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+
+- **v0.4.48-plan Ken decisions (docs-only, 2026-07-27):** recorded Ken's
+  answers in handoffs — Slice B shop labels, Play Recap, Broth Slip defaults,
+  LT arc (CEO L7 / L10 finale / endless), Role Reversal v1 scope, Cool Play,
+  Micro-Skib, runner pose collapse, Audio 2 phase 1. Created `v0.4.53`–
+  `v0.4.56-plan.md`. No code.
 
 - **v0.4.48 (real code, shipped — 2026-07-27):**
   Gameplay Rebalancing remainder — gun hit +25, badge earn +50, scaled
@@ -362,15 +368,14 @@ manually:
   and corrected two stale unchecked boxes in `docs/roadmap.md` this pass).
   Neither is "the current open handoff" anymore.
 - **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.50-plan.md`
-  (cosmetic shop sink + optional portrait-frame CSS fix). Broth Slip
-  (`roadmap-handoff-v0.4.49-plan.md`) waits on Ken. LT items stay in
-  `roadmap-handoff-v0.4.43-plan.md`. Planning:
-  `docs/next-agent-planning-brief.md`. Coding: `docs/next-agent-coding-brief.md`.
-- Phase 6 (server-side/Mongo profile persistence) now has a starting point — `docs/profiles-and-identity.md` lays out the open identity/auth and sync-strategy decisions a future session needs answered before coding it. Still queued behind Phase 5 (multiplayer) in `docs/roadmap.md`, still planning-only.
-- The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
-- Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it
-  needs Ken to record real voice clips first, it's not a pure coding
-  task. Ask him before treating it as unblocked.
+  (cosmetic shop sink). **Also code-ready after Ken 2026-07-27:** Broth Slip
+  (`v0.4.49`), Slice B + Play Recap (`v0.4.41-plan`), near-miss burst
+  (`v0.4.54`), Micro-Skib (`v0.4.55`), pose collapse (`v0.4.56`). Still
+  blocked: Audio 2 recordings, Yoodeling Unc-2, Tombstone (`v0.4.52`),
+  Role Reversal kit (`v0.4.53`). Planning: `next-agent-planning-brief.md`.
+  Coding: `next-agent-coding-brief.md`.
+- Do **not** start Audio 2 until Ken records **capture-line** clips (phase 1
+  scope only — see `dialog_content_chasing.md`).
 - The version page is now shipped in v0.4.18 — don't spend another
   session on it unless you want to redesign the panel or expand the
   changelog.

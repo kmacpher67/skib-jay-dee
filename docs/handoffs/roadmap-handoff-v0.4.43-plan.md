@@ -1,7 +1,7 @@
 # Roadmap Handoff Plan v0.4.43 — Long-Term Roadmap: Role Reversal, MOBA/PvP, Level 10 Arc
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
-**Last updated by:** Claude Sonnet 5 — 2026-07-27
+**Last updated by:** Composer — 2026-07-27 (Ken LT decisions recorded)
 **Session mode:** Mode A (Planning — docs only, no code changes)
 
 ## Source
@@ -44,8 +44,19 @@ Level 6/7 endgame plan.
 
 Ken's message this session ("I think LVL10 will be the final scene") is
 new information that doesn't match the existing Level 7 climax plan.
-**This is flagged as an open reconciliation question below, not silently
-resolved** — see "Flag for Ken" item 1.
+
+### Ken's decision (2026-07-27) — arc shape resolved
+
+**Shape A confirmed:** **CEO of Drains stays at Level 7 as a mid-arc boss.**
+**Level 10 is a new finale scene** (content TBD — Ken is actively developing
+levels). **After Level 10, play continues endlessly** (same pattern as Level 5+
+today — last story beat, not a hard stop).
+
+Levels 8–9 remain connective tissue (escalation maps/mechanics) — Ken has not
+specified detail yet; do not invent Level 8–10 layouts in a coding session.
+
+Update `docs/level-progression-and-endgame-plan.md` to reflect this; do not
+delete the existing Level 7 CEO writeup — it stays as the L7 mid-arc beat.
 
 ## 1. Grand Arc completion — Level 10 as the final scene
 
@@ -62,22 +73,17 @@ the true finale. But that's a guess, not a decision, and per
 `docs/skib-sdlc.md`'s "no code-cowboy" rule this doc is not allowed to
 just pick one.
 
-**Refinement questions (flag for Ken):**
-1. Does "CEO of Drains" (currently written up as the Level 7 climax) stay
-   at Level 7 as a mid-arc boss, move to Level 10 as the final boss, or
-   get replaced by a different Level 10 concept entirely?
-2. What's the throughline for Levels 8-9? New maps/mechanics, or an
-   escalation of existing ones (more chasers, tighter time floors) used
-   as connective tissue before the Level 10 finale?
-3. Is Level 10 strictly the *last playable level* (game ends/loops after,
-   per the existing "New Game+ vs. hard stop" question already open in
-   the endgame doc), or is it the last *story* beat with endless play
-   continuing past it the way Level 5 already works today?
-4. Should Role Reversal and MOBA (sections 2-3 below) be gated behind
-   finishing Level 10, or could either ship earlier as a parallel game
-   mode? Ken's own phrasing ("first we have to finish the grand arch")
-   reads as sequential, recording that as the working assumption here —
-   confirm or correct.
+**Refinement questions (flag for Ken) — item 1 RESOLVED 2026-07-27:**
+
+1. ~~Does "CEO of Drains" stay at L7, move to L10, or get replaced?~~
+   **Resolved:** CEO stays **L7 mid-arc boss**; **L10 = new finale**;
+   **endless after L10**.
+2. What's the throughline for Levels 8-9? **Still open** — Ken developing.
+3. Is Level 10 the last playable level or last story beat? **Resolved:**
+   last **story** beat; endless play continues after (like L5 today).
+4. Gate Role Reversal / MOBA behind Level 10? **Still open** — Ken said
+   "finish the grand arch first" (sequential assumption holds); Role Reversal
+   v1 scope decided separately below.
 
 **No roadmap renumbering happens in this pass** — `docs/level-
 progression-and-endgame-plan.md` keeps its Level 7 content as-is, with a
@@ -126,25 +132,34 @@ correctly flagged by Ken as "big change needs refinement details."
   they pick from the existing `CHASER_FACE_POOL`? Ties into
   `docs/characters.md`.
 
-**Refinement questions (flag for Ken) — what makes this "cool fun for
-players," not just a feature flag:**
-1. Which scope first: single-player-vs-AI-runner (smallest, ships without
-   Phase 5), or wait for real multiplayer? Recommend the former as a
-   testable proof-of-concept for "does chaser POV feel fun at all" before
-   investing in networking.
-2. Does a human chaser get the same abilities as the AI chasers
-   (Plunger Launch, wall-hacks at higher levels, multi-chaser spawns
-   assisting them), or a distinct, more limited/more powerful kit tuned
-   for being player-controlled?
-3. Should chaser-mode have its own progression (a chaser-side sheebs/shop
-   economy, chaser-specific badges), or is it a side mode that doesn't
-   touch the existing runner economy at all?
-4. Win condition for the chaser: capture the runner once? Capture within
-   a time limit? Survive a similar "pressure ramps up" structure but
-   inverted (the runner gets reinforcements instead of the chaser)?
-5. Does this replace/extend any existing level, or is it a wholly
-   separate mode selectable from the menu, orthogonal to level
-   progression?
+**No roadmap renumbering of Level 7 content** — `docs/level-progression-and-
+endgame-plan.md` keeps its Level 7 CEO writeup; a reconciliation note was
+updated 2026-07-27 per Ken's decision above. Level 8–9 and Level 10 specifics
+wait for Ken's level-development work before any Mode B session authors maps.
+
+### Ken's decision (2026-07-27) — Role Reversal v1 scope
+
+Ken confirmed the **smallest first slice:**
+
+- **Menu mode** — separate selectable mode from campaign ("Play as Chaser"),
+  orthogonal to level progression.
+- **Human chaser vs. AI runner** — no multiplayer / Phase 5 dependency for v1.
+- **No economy** — no sheebs, badges, or shop integration in chaser mode v1.
+
+**Still open for a future planning pass** (not answered by Ken this session):
+human chaser ability kit, win condition (capture once vs. time limit), face
+selection (upload vs. `CHASER_FACE_POOL`). See
+`docs/handoffs/roadmap-handoff-v0.4.53-plan.md` for the bounded v1 handoff
+skeleton — do not code Role Reversal until that file's remaining questions
+are answered or Ken explicitly says "ship with recommended defaults."
+
+**Refinement questions (flag for Ken) — partial resolution 2026-07-27:**
+1. ~~Which scope first~~ — **Resolved:** single-player human chaser vs. AI
+   runner (menu mode).
+2. Human chaser abilities — **still open.**
+3. ~~Chaser-mode economy~~ — **Resolved:** no economy in v1.
+4. Win condition — **still open.**
+5. ~~Separate mode vs. in-run swap~~ — **Resolved:** separate menu mode.
 
 ## 3. MOBA / PvP mode (2v2, 4v4 deathmatch-style)
 
@@ -184,18 +199,18 @@ Level 10 arc, then Role Reversal single-player, *then* revisit this once
 Phase 5 multiplayer is real). Revisit after Role Reversal's single-player
 slice ships and Ken has more clarity on "bodies and servers."
 
-## Flag for Ken — decisions this doc does not make up
+## Flag for Ken — status as of 2026-07-27
 
-1. **Level 10 vs. Level 7 climax reconciliation** (section 1, question 1
-   above) — blocks updating `docs/level-progression-and-endgame-plan.md`
-   for real.
-2. **Role Reversal scope** (section 2, question 1) — single-player-vs-AI
-   first, or wait for multiplayer.
-3. **Role Reversal ability/economy design** (section 2, questions 2-4).
-4. **MOBA format** (section 3, question 1) — asymmetric team chase vs.
-   symmetric deathmatch.
-5. **MOBA infra commitment** (section 3, question 2) — whether "decent
-   servers" is something Ken wants to invest in now or later.
+1. ~~Level 10 vs. Level 7 climax~~ — **RESOLVED** (CEO L7 mid-arc, L10 finale,
+   endless after).
+2. ~~Role Reversal scope v1~~ — **PARTIALLY RESOLVED** (menu mode, human
+   chaser vs AI, no economy). Abilities + win condition still open — see
+   `roadmap-handoff-v0.4.53-plan.md`.
+3. ~~Role Reversal economy~~ — **RESOLVED** (none in v1).
+4. **MOBA format** — still open (asymmetric vs. deathmatch).
+5. **MOBA infra commitment** — still open.
+6. **Levels 8–9 throughline** — still open (Ken developing).
+7. **Gate Role Reversal behind Level 10 clear** — still open.
 
 ## Explicitly not in scope this pass
 
