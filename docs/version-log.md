@@ -6,6 +6,68 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.38-plan — Level 6 scoped, uncommitted working-tree flagged (2026-07-27)
+
+### What changed
+
+- Reviewed the full open backlog (`docs/roadmap.md`, `docs/future-versions.md`,
+  `docs/interactive-content-pack.md`, `docs/badges.md`,
+  `docs/level-progression-and-endgame-plan.md`) for gameplay-expansion and
+  map-enhancement opportunities per Ken's ask to keep refining the
+  chase-experience arc from Level 1 through the latest level.
+- Discovered the working tree already had uncommitted, unbuilt local
+  modifications to `frontend/src/GameEngine.js`, `frontend/src/gameContent.js`,
+  and `frontend/src/mapGrids.js`, plus untracked `scratch_apply_all*.js`
+  files — an apparent interrupted Code Monkey attempt at `v0.4.36`'s own
+  follow-up list (Soggy Toilet Paper, Heavy Plunger, a `Friendly Fire`
+  badge stub, partial grid migration for the remaining 3 levels). Flagged
+  it prominently rather than silently building on top of it or discarding
+  it, per the "no code-cowboy" rule — a Mode B session needs to make that
+  call deliberately.
+- Scoped **Level 6: "Jayden's Nightmare House"** and its new chaser
+  **Skib-Daddy-Toilet Guy** (Plunger Launch ability) into a real
+  ready-to-code handoff, `docs/handoffs/roadmap-handoff-v0.4.38-plan.md`.
+  This had been sitting parked in `docs/level-progression-and-endgame-plan.md`
+  blocked on a single creative decision.
+- Corrected two `docs/roadmap.md` checkboxes that had drifted from actual
+  committed code: "Level data extraction" (only Porcelain Palace and
+  Pipeworks are grid-based; the other 3 levels are still hardcoded) and
+  "Secret Interaction Badges" (`Friendly Fire` isn't wired, only exists
+  as an unwired stub in the uncommitted diff above).
+
+### Design decisions
+
+- **Asked Ken directly** (rather than guessing, per the SDLC's "no
+  code-cowboy" rule) how to handle two open creative questions on Level 6
+  and Level 7:
+  - Skib-Daddy-Toilet Guy's face asset: Ken confirmed reusing the
+    existing `dad-case` chaser face as a placeholder (thematically fits
+    — "dad" energy) rather than waiting on a new photo. This unblocks
+    Level 6 for coding.
+  - Level 7 ("CEO of Drains," the proposed story climax): Ken confirmed
+    it should stay parked, not scoped into a handoff this pass — it
+    still depends on Level 6 shipping first and bigger unresolved
+    creative questions (ending tone, one-time-vs-loop).
+- Sequenced Level 6's build to come *after* finishing the level-data
+  extraction migration for the 3 still-hardcoded levels, since Level 6's
+  looping-hallway design is much easier to hand-author as a grid than as
+  pixel rects — avoids building Level 6 in the old style and needing a
+  second migration pass later.
+- Treated the discovered uncommitted diff as a documentation problem to
+  surface, not a code problem to fix in this docs-only session — Mode A
+  doesn't touch `frontend/src/`, and the diff is unverified/untested, so
+  silently finishing or discarding it would be exactly the kind of
+  code-cowboy move the SDLC warns against.
+
+### Non-goals
+
+- No gameplay code changed, no build or test run, no `GAME_ITERATION`
+  bump, no deploy.
+- Did not attempt to resolve, finish, or revert the uncommitted working
+  tree — flagged it for the next Mode B session to handle deliberately.
+- Level 7 ("CEO of Drains") was not scoped into a handoff this session,
+  per Ken's explicit choice to keep it parked.
+
 ## v0.4.37-plan addendum — Close-call freeze and reward refocus (2026-07-27)
 
 ### What changed

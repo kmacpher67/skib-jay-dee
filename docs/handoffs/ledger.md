@@ -10,6 +10,27 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.38-plan — 2026-07-27 (docs-only)
+
+- Found and flagged an uncommitted, unverified diff already sitting in
+  the working tree (`GameEngine.js`, `gameContent.js`, `mapGrids.js` +
+  stray `scratch_apply_all*.js` files) — an apparent interrupted attempt
+  at `v0.4.36`'s named follow-ups. Documented it prominently in
+  `docs/roadmap.md` and `docs/update-directions.md` so it isn't built on
+  top of blindly.
+- Scoped Level 6 ("Jayden's Nightmare House") + new chaser
+  Skib-Daddy-Toilet Guy (Plunger Launch ability) into a ready-to-code
+  handoff, `docs/handoffs/roadmap-handoff-v0.4.38-plan.md` — resolved the
+  one blocking creative decision (placeholder face: reuse `dad-case`)
+  with Ken. Kept Level 7 ("CEO of Drains") parked, not scoped.
+- Corrected two roadmap checkboxes that overstated shipped work:
+  level-data extraction (only 2 of 5 levels are grid-based) and the
+  Secret Interaction Badges item (`Friendly Fire` isn't actually wired,
+  only an unwired badge-id stub in the uncommitted diff).
+- Updated `docs/characters.md`, `docs/badges.md`,
+  `docs/interactive-content-pack.md`, `docs/level-progression-and-endgame-plan.md`,
+  `docs/roadmap.md`, and `docs/update-directions.md` to match.
+
 ## v0.4.37-plan — 2026-07-27
 
 - Refocused the next open plan toward a fun-first front-end content

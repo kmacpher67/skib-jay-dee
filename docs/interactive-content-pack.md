@@ -36,6 +36,13 @@ pass stays crisp.
 
 ## Item Seeds
 
+**Status note (2026-07-27):** Taco Bell Grande and Fake Jayden Decoy
+shipped in `v0.4.36`. Soggy Toilet Paper and Heavy Plunger are **not**
+shipped — a partial, unverified attempt at both exists only in the
+repo's currently uncommitted working-tree diff (see the callout at the
+top of `docs/roadmap.md`); treat them as still open until that diff is
+finished, tested, and committed for real.
+
 | Name | Side | Effect | Tone |
 |---|---|---|---|
 | Decoy Flush | Runner good | Drops a loud noise that pulls nearby chasers toward the wrong lane for a few seconds. | Panic button, but funny. |

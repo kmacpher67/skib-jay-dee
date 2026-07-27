@@ -109,8 +109,15 @@ them unprompted.
 From the PDF roster, not yet represented by any asset or pool entry:
 
 - **Skib-Daddy-Toilet Guy** — PDF describes a distinct ability (Plunger
-  Launch), not just a reskin. Tracked in `docs/roadmap.md` as "New
-  character" backlog item.
+  Launch), not just a reskin. Now scoped as part of Level 6 ("Jayden's
+  Nightmare House") — see
+  [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md)
+  and `docs/handoffs/roadmap-handoff-v0.4.38-plan.md`. Ken confirmed
+  (2026-07-27) reusing the existing `dad-case` `CHASER_FACE_POOL` entry as
+  a placeholder face (thematic fit — "dad" energy) until a dedicated photo
+  is supplied, so this no longer needs to stay parked on an asset
+  decision; it needs its own `chaserType`/ability wiring, not a new face
+  asset.
 - **Raman-Aunt-Toilet Lady** — the `ant-k-raman` / `anti-k-raman-2` faces
   above may already be standing in for this character visually, but she
   has no distinct gameplay ability yet (Phase 3, not started).

@@ -117,27 +117,33 @@ toward, rather than staying endless forever.
 Per `docs/skib-sdlc.md`'s constraint ("default character faces are real
 family photos, not placeholder art — if you'd replace or regenerate
 them, ask first") and the "no code-cowboy" rule against guessing
-creative specifics, the following need your call before any Mode B
+creative specifics, the following needed your call before any Mode B
 session builds Level 6 or 7:
 
-1. **Skib-Daddy-Toilet Guy's face asset.** Is there a specific photo in
-   mind (family photo, per the game's existing pattern), or should this
-   reuse/restyle an existing chaser face (e.g., a heavier/older-vibe
-   entry from the current `CHASER_FACE_POOL`) until a dedicated photo
-   exists?
-2. **CEO of Drains' face asset and name flavor.** Same question — a
+1. **RESOLVED (2026-07-27).** Skib-Daddy-Toilet Guy's face asset: Ken
+   confirmed reusing an existing chaser face — `dad-case` — as a
+   placeholder (good thematic fit: "dad" energy) until a dedicated photo
+   exists. Level 6 is now unblocked on this question; see
+   `docs/handoffs/roadmap-handoff-v0.4.38-plan.md` for the ready-to-code
+   handoff. Swapping in a real photo later is a one-line
+   `CHASER_FACE_POOL`/`chaserType` face-id change, not a re-plan.
+2. **PARKED (2026-07-27), not part of this planning pass.** Level 7
+   ("CEO of Drains") stays exactly where it was — depends on Level 6
+   shipping first, plus questions 3 and 4 below. Do not scope it into a
+   handoff yet.
+3. **CEO of Drains' face asset and name flavor.** Same question — a
    specific photo, or a placeholder/existing face standing in until one
    is supplied? Also: is "CEO of Drains" the actual name you want in
    dialogue/badges, or just this doc's working title?
-3. **The ending's exact tone/copy.** This doc proposes a "victory zoom"
+4. **The ending's exact tone/copy.** This doc proposes a "victory zoom"
    parallel to the jump-scare, but the actual joke/line writing (like
    the PDF's scripted jump-scare lines: "You just got PLUNGED!" etc.)
    should come from you or be explicitly delegated, not invented wholesale
    by a coding session.
-4. **Does the game truly end, or loop?** Confirming the "one-time ending
+5. **Does the game truly end, or loop?** Confirming the "one-time ending
    then endless New Game+" proposal above vs. some other shape (e.g., a
    harder Level 8+ instead of looping) before it's built.
-5. **Raman-Aunt-Toilet Lady's distinct ability** (Broth Slip, per the
+6. **Raman-Aunt-Toilet Lady's distinct ability** (Broth Slip, per the
    PDF) is still unclaimed by any level in this plan — worth deciding
    whether she's a Level 6/7 addition too, or stays parked for a later
    phase.
@@ -147,11 +153,15 @@ session builds Level 6 or 7:
 - `docs/roadmap.md`'s phase table (Phase 3, "More characters/abilities
   per PDF roster") now points here instead of staying a bare "Not
   started" row.
-- The next handoff that actually builds Level 6 should be its own
-  single-session-sized Mode B slice once questions 1 and 2 above are
-  answered — deliberately kept separate from v0.4.33 (Quest Rooms +
-  Level 4-5 difficulty floor) and v0.4.34 (wall-hacks + Gawd Particle)
-  so none of the three grow past one session.
+- The Level 6 build is now a real ready-to-code handoff —
+  `docs/handoffs/roadmap-handoff-v0.4.38-plan.md` — since question 1 is
+  resolved. Deliberately kept separate from v0.4.33 (Quest Rooms + Level
+  4-5 difficulty floor) and v0.4.34 (wall-hacks + Gawd Particle) so none
+  of the three grow past one session. It's also sequenced *after* the
+  still-open level-data-extraction backlog item (migrating Flooded Annex/
+  Ramen Aisle/World Star to the grid format) so Level 6's looping halls
+  can be authored as a grid from the start instead of hand-rolled pixel
+  rects.
 - Level 7 ("CEO of Drains") is **not** yet a ready-to-code handoff — it
   depends on questions 3 and 4 above and on v0.4.34's Gawd Particle
   actually shipping first (its despawn/respawn-queue mechanic is the

@@ -1,4 +1,16 @@
 # Roadmap Handoff - v0.4.36-plan
+
+**STATUS: SHIPPED as v0.4.36.** All three features below landed — see
+[roadmap-handoff-v0.4.36.md](roadmap-handoff-v0.4.36.md) for what actually
+got built and its own "Follow-up / Next Steps" list (Soggy Toilet Paper,
+Heavy Plunger, Friendly Fire badge, migrating Levels 3-5 to the grid
+format). This file is kept for historical reference only — don't dispatch
+work from it again. **Important:** the working tree as of the v0.4.38-plan
+planning pass (2026-07-27) has uncommitted, unverified code that looks like
+an interrupted attempt at those exact follow-ups — see the "Uncommitted
+working tree" callout in `docs/update-directions.md` before starting any
+new Mode B session.
+
 **Session mode:** Mode A (Planning - docs only, no code changes)
 
 This handoff captures the next map architecture refactor and the new
