@@ -74,3 +74,26 @@ If/when you decide to record them, please follow the `docs/sound-effects-howto.m
   - **Suggested filename:** `near-capture-tooclose.mp3`
 - [ ] "Skib is right behind you!"
   - **Suggested filename:** `near-capture-behindyou.mp3`
+
+### Coolness Dialog & Taunts (Difficulty Ramp)
+*Shown during higher difficulty levels (Level 4+) or when the runner is executing slick moves (like narrow escapes or using the Gawd Particle).*
+
+**Runner "Coolness" Lines (narrow escapes / item use):**
+- [ ] "Too fast for the bowl!"
+  - **Suggested filename:** `runner-cool-toofast.mp3`
+- [ ] "Slippery like soap!"
+  - **Suggested filename:** `runner-cool-slippery.mp3`
+- [ ] "Not today, plumbing!"
+  - **Suggested filename:** `runner-cool-nottoday.mp3`
+- [ ] "I am the Gawd Particle!"
+  - **Suggested filename:** `runner-cool-gawd.mp3`
+
+**Chaser "Challenge" Lines (Level 4+ / Wall Hacks):**
+- [ ] "WALLS CAN'T SAVE YOU NOW!"
+  - **Suggested filename:** `chaser-hard-walls.mp3`
+- [ ] "NO WHERE TO HIDE!"
+  - **Suggested filename:** `chaser-hard-nohide.mp3`
+- [ ] "I AM INEVITABLE. I AM SKIBIDI."
+  - **Suggested filename:** `chaser-hard-inevitable.mp3`
+- [ ] "YOUR DEBT IS DUE!"
+  - **Suggested filename:** `chaser-hard-debt.mp3`
