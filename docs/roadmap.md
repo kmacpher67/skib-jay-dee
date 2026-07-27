@@ -243,7 +243,12 @@ and chaser-bark voice clips, 1:1 with text.
   fails) so the "Lucky" badge fires exactly on the luck bonus's first
   actual proc, per Ken's confirmed trigger. See
   [roadmap-handoff-v0.4.31.md](handoffs/roadmap-handoff-v0.4.31.md).
-- [ ] **Feature: Gameplay Rebalancing (v0.4.37-plan).**
+- [ ] **Feature: Content-first fun pass (refined v0.4.37-plan).** Expand the front-end content layer so the existing chase loop feels funnier, more readable, and more story-rich without adding backend systems.
+  - **Dialog seasoning:** add more level-intro, near-miss, pickup, and badge lines in `frontend/src/dialog.js`.
+  - **Badge flavor:** give new badges/toasts more personality and add a few new funny award seeds from `docs/interactive-content-pack.md` and `docs/badges.md`.
+  - **Map personality:** surface one anchor room, one risky shortcut, one gag room, and one reward room per level via small data-driven callouts or banners.
+  - **Menu bragging:** add a compact best-level / fewest-deaths summary so progress shows up outside the run loop.
+- [ ] **Feature: Gameplay Rebalancing (later follow-up).**
   - **Sheeb Rewards:** +25 Sheebs for hitting a chaser with the Jayden Gun. +50 Sheebs for earning any badge.
   - **Scaled Death Penalty:** Level 1 (0 loss), Level 2 (10 loss), Level 3 (20 loss), Level 4+ (30 loss, allows negative).
   - **Chaser Speed:** Starts slower (0.8 mod instead of 1.0). Max speed cap now scales by level (0.9 to 1.35) so they never exceed the max for the current level.

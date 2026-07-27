@@ -10,6 +10,17 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
 
+## v0.4.37-plan — 2026-07-27
+
+- Refocused the next open plan toward a fun-first front-end content
+  pass: richer dialog, badge flavor, map callouts, and a compact menu
+  brag surface.
+- Kept the balance-number tuning as a later follow-up instead of mixing
+  it into the same single-session handoff.
+- Updated the roadmap, update directions, version log, next-agent brief,
+  and the open v0.4.37 handoff so the next coding agent has a clean
+  starting point.
+
 ## v0.4.35 — 2026-07-27
 
 - Implemented **Rolling Pickups**: Mario-style items bouncing around the map granting random helpful/harmful effects on touch (speed, stamina, sheebs vs slow, damage).

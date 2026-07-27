@@ -97,3 +97,13 @@ tradeoff items, not just bigger numbers.
   [docs/interactive-content-pack.md](interactive-content-pack.md).
 - Future badge seeds: `Bathroom Tourist`, `Dead-End Daredevil`,
   `Gremlin in the Pipes`, and `Chaser Tax Audit`.
+
+## Content-pass follow-up to v0.4.37-plan
+
+- If the next content slice gets too large, defer any extra level-callout
+  variants or menu-brag subfields here so the first pass stays small.
+- Keep the balance-number tuning as a separate future item instead of
+  letting it crowd out the dialog / badge / map-personality work.
+- Add at least one focused Playwright check for the new dialog, badge,
+  or menu surface when the code lands; the current suite does not cover
+  these content surfaces yet.

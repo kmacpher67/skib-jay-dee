@@ -22,6 +22,18 @@ The next pass should stay data-driven:
 - Keep new content funny, but always readable at a glance.
 - Give runners and chasers both helpful and harmful surprises.
 
+## Suggested First Pass
+
+If the next coding session wants the highest fun-to-scope ratio, start
+here:
+
+1. Dialog and badge seasoning.
+2. Map personality / room callouts.
+3. Small menu brag surface.
+
+Keep the balance-number tuning as a separate follow-up so the content
+pass stays crisp.
+
 ## Item Seeds
 
 | Name | Side | Effect | Tone |

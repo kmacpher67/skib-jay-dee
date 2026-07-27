@@ -2,69 +2,109 @@
 
 **Session mode:** Mode A (Planning - docs only, no code changes)
 
-This handoff captures the gameplay balancing and reward enhancements requested by the user, specifically addressing early-level difficulty, sheeb reward mechanisms, and dynamic scaling of chaser speeds.
+This handoff was refined after reviewing the current backlog and the
+recent content docs. The game is already mechanically solid; the next
+front-end pass should make it feel funnier, more readable, and more
+story-rich before any further balance tuning.
 
-## Feature 1: Sheeb Rewards for Actions
-Currently, shooting a chaser and earning badges provide gameplay benefits or status but no direct Sheeb rewards. We will add Sheebs for these actions to ensure players have plenty of mechanisms to get points on early levels.
-- **Gun Stun:** Hitting a chaser with the Jayden Gun grants **+25 sheebs**.
-- **Badge Earned:** Earning any badge grants **+50 sheebs**. The in-game toast notification will be updated to display `( +50 Sheebs )` alongside the badge name.
+The earlier balancing draft still matters, but it is no longer the
+first thing the next coding agent should pick up. The next slice should
+lean into dialog, badge flavor, and map identity so the existing chase
+loop has more personality.
 
-## Feature 2: Scaled Death Penalty
-Currently, dying docks a flat 20 sheebs across all levels (going negative past level 3). We will scale this so early levels are more forgiving and later levels ramp up.
-- **Level 1:** 0 sheebs lost.
-- **Level 2:** 10 sheebs lost.
-- **Level 3:** 20 sheebs lost.
-- **Level 4+:** 30 sheebs lost (can go negative).
+## Feature 1: Content-first dialog and badge pass
 
-## Feature 3: Chaser Speed Tuning & Dynamic Caps
-Chasers will start slower, and their maximum speed will be capped based on the current level.
-- **Initial Speed:** `this.chaserSpeedMod` will start at `0.8` (down from `1.0`), making Level 1 noticeably more forgiving.
-- **Dynamic Max Cap:** Instead of a flat `1.35` max across the whole game, the max speed will scale by level to ensure chasers never exceed the "max amount for a new level":
-  - Level 1 Max: 0.9
-  - Level 2 Max: 1.0
-  - Level 3 Max: 1.15
-  - Level 4 Max: 1.25
-  - Level 5 Max: 1.35
-- **Death Slowdown:** Dying will continue to reduce the speed mod by `-0.1` (existing behavior), but with the new starting speed and caps, the relief will be more palpable.
+Expand the content layer that already exists in
+`frontend/src/dialog.js`, `frontend/src/gameContent.js`, and the badge
+docs.
 
-## Feature 4: Rebalance Level Sheeb Delivery
-We will bump the base Sheeb rewards for completing levels to ensure difficulty strictly increases delivery, providing enough stash for a Deep Breath Tank (90 pts) via good play on Level 1.
-- Level 1: 40 -> 50 base sheebs
-- Level 2: 60 -> 75 base sheebs
-- Level 3: 90 -> 100 base sheebs
-- Level 4: 120 -> 150 base sheebs
-- Level 5: 160 -> 200 base sheebs
+- Add more `COOLNESS_LINES` and `HARD_CHASER_LINES` style moments for
+  slick escapes, level pressure, and item use.
+- Add a small set of new content-first lines for level intros, map
+  callouts, badge moments, and funny pickup reactions.
+- Pull the text from `docs/dialog_content_chasing.md`,
+  `docs/interactive-content-pack.md`, and `docs/badges.md` so the new
+  lines stay documented and readable when the game is muted.
+- Give new badge toasts more personality than raw status text. Badge
+  earned, badge celebrated.
 
----
+Suggested first badge seeds for this pass:
 
-## 🚀 Copy & Paste Snippet for Code Monkey
+- Bathroom Tourist
+- Dead-End Daredevil
+- Gremlin in the Pipes
+- Chaser Tax Audit
 
-When you are ready to unleash the Code Monkey on this balancing pass, feed it this prompt:
+## Feature 2: Map personality and landmark detail pass
+
+Make the existing levels easier to describe at a glance.
+
+- Add level-specific flavor callouts, room labels, or short HUD banners
+  so each map has one anchor room, one risky shortcut, one gag room, and
+  one reward room.
+- Keep the implementation data-driven instead of hardcoding new one-off
+  branches for each map.
+- Favor small environmental details and readability over new mechanics.
+  The goal is to make the maps memorable, not just harder.
+
+## Feature 3: Small menu brag surface
+
+Add a compact front-end-only brag surface so the menu celebrates
+progress outside the run loop.
+
+- Show a concise best-level / fewest-deaths summary, and optionally the
+  most recent badge earned.
+- Reuse the existing cookie-backed profile data. No backend work.
+- Keep it portrait-friendly and low-clutter so it does not fight the
+  main menu.
+
+## Explicitly not this pass
+
+- Do not bundle the pure balance-number pass into this slice. The
+  numbers-only tuning work stays on the roadmap as a later follow-up.
+- Do not add backend systems, multiplayer, or any feature that depends
+  on new recorded audio first.
+- Do not bump `GAME_ITERATION`.
+
+## Copy & Paste Snippet for Code Monkey
+
+When you are ready to hand this to a coding agent, feed it this prompt:
 
 ```text
 code_monkey_model: default
 code_monkey_backend: default
 
 You are a Code Monkey agent working on Skib-Jay-Dee-Toilet in Mode B.
-Read `docs/skib-sdlc.md` and `docs/roadmap.md` before starting.
+Read `docs/skib-sdlc.md`, `docs/update-directions.md`,
+`docs/roadmap.md`, `docs/interactive-content-pack.md`,
+`docs/dialog_content_chasing.md`, and `docs/badges.md` before starting.
 
-Your objective is to implement the balancing changes from v0.4.37-plan:
+Your objective is to implement the content-first front-end polish pass
+from v0.4.37-plan:
 
-1. **Sheeb Rewards for Actions (`frontend/src/GameEngine.js`):**
-   - Add a `grantSheebs(amount)` method to `GameEngine` or directly update `this.sheebs` and call `this.onSheebsChange(this.sheebs)`.
-   - In `_updateJaydenGun()`, when a bullet hits a chaser, grant `25` sheebs.
-   - In `_hasRequiredLevelBadge()` and `_rollRandomBadges()`, when a badge is newly earned, grant `50` sheebs. Update the `onBadgeEarned` callback payload or the toast UI to indicate `+50 Sheebs`.
+1. **Dialog and badge flavor**
+   - Expand the existing dialog pools in `frontend/src/dialog.js` with a
+     few more funny lines for level pressure, near-misses, item use, and
+     badge moments.
+   - Add or refresh the badge-story copy so new badge toasts feel like
+     earned moments instead of plain status text.
+   - Keep the lines readable when the game is muted.
 
-2. **Scaled Death Penalty (`frontend/src/GameEngine.js`):**
-   - In `_triggerCaught()`, replace `const baseSheebsLost = 20` with a scaled value based on `this.levelIndex`: Level 1 (index 0) = 0, Level 2 = 10, Level 3 = 20, Level 4+ = 30.
+2. **Map personality / landmark detail**
+   - Add small level-callout data to the front-end so each map can show
+     one anchor room, one risky shortcut, one gag room, and one reward
+     room without hardcoding a bunch of new engine branches.
+   - Keep it data-driven and portrait-friendly.
 
-3. **Chaser Speed Tuning & Caps (`frontend/src/GameEngine.js`):**
-   - Change the initial `this.chaserSpeedMod` in the constructor from `1.0` to `0.8`.
-   - Create a helper to get the max speed cap based on level index (e.g. `[0.9, 1.0, 1.15, 1.25, 1.35]`).
-   - In `_triggerLevelClear()` and `_triggerCaught()`, use this dynamic max cap instead of the flat `CHASER_SPEED_MOD_MAX` when clamping the speed mod.
+3. **Menu brag surface**
+   - Add a compact menu card or pill that highlights the active profile's
+     best level, fewest deaths, and most recent badge.
+   - Reuse the existing cookie-backed profile state only.
 
-4. **Rebalance Level Delivery (`frontend/src/GameEngine.js`):**
-   - Update the `reward` field in the `LEVELS` array: 50, 75, 100, 150, 200.
-
-Verify with `npm run build` and the full Playwright suite. Update `docs/roadmap.md`, `docs/handoffs/ledger.md`, `docs/version-log.md`, `docs/update-directions.md`, and generate a new `docs/handoffs/roadmap-handoff-vX.Y.Z.md` per the SDLC checklist. Commit your work before ending the session.
+Verify with `npm run build` and the full Playwright suite. Add or update
+any focused Playwright coverage needed for the new dialog, badge, or menu
+surfaces. Update `docs/roadmap.md`, `docs/handoffs/ledger.md`,
+`docs/version-log.md`, `docs/update-directions.md`, and this handoff if
+the implementation details change. Commit your work before ending the
+session.
 ```

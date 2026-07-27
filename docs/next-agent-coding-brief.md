@@ -1,88 +1,53 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
-This brief is now code-monkey ready: you can hand it to
-`./scripts/run_code_monkey.sh` after the active handoff has the right
-`code_monkey_backend` / `code_monkey_model` hint.
+This brief is the quick-start version of the refined content-first
+handoff. If you are about to code, start with
+`docs/handoffs/roadmap-handoff-v0.4.37-plan.md` and use this as the
+condensed checklist.
 
-Copy and paste the block below into the next coding agent session. This
-brief follows the three-session order documented in
-`docs/handoffs/roadmap-handoff-v0.4.3-plan.md`.
-
-If you're starting fresh, the active open handoff for the host-profile
-routing work is `docs/handoffs/roadmap-handoff-v0.4.7-plan.md`; keep
-this brief as the older backlog reference and use the newer handoff as
-the actual starting prompt.
-
-A later docs-only planning pass added a separate near-capture pause-card
-item in `docs/handoffs/roadmap-handoff-v0.4.5-plan.md`; keep that one as
-its own single increment if you choose to pick it up instead of the code
-backlog below.
-
----
-
-You're continuing work on **Skib-Jay-Dee-Toilet** in
-`/mnt/data/projects/skib-jay-dee`. The latest planning pass tightened
-the backlog into a three-session sequence:
-1. extra-chaser speed ramp — **done, landed in v0.4.8**, see
-   `docs/handoffs/roadmap-handoff-v0.4.8.md`
-2. Pipeworks 4-chaser/max-speed clear condition — **start here**
-3. lvl2 video timing fix, then death-visual verification
-
-Follow `docs/skib-sdlc.md`'s process: read the docs it lists, work in
-single-session increments, build + verify, update the docs, and commit
-before stopping.
-
-If you are launching this through the code-monkey wrapper, run a
-`--dry-run` first so you can inspect the extracted prompt before the
-actual model call.
+The next best slice is front-end only: make the game feel funnier, more
+readable, and more story-rich through dialog, badges, map callouts, and
+a small menu brag surface. Keep the balance-number pass separate.
 
 Read first:
 
 1. `docs/skib-sdlc.md`
 2. `docs/update-directions.md`
-3. `docs/handoffs/roadmap-handoff-v0.4.7-plan.md`
-4. `frontend/src/App.jsx`
-5. `frontend/src/GameEngine.js`
+3. `docs/roadmap.md`
+4. `docs/interactive-content-pack.md`
+5. `docs/dialog_content_chasing.md`
+6. `docs/badges.md`
+7. `docs/handoffs/roadmap-handoff-v0.4.37-plan.md`
 
-## Session 1: extra-chaser speed ramp — DONE (v0.4.8)
+## Session focus
 
-`_maybeSpawnExtraChaser()` now gives each new chaser a `joinRamp: 0`
-field that climbs to `1` over `CHASER_JOIN_RAMP_SECONDS` (5s), layered on
-top of the existing `chaserSpeedMod` rubber-band via a new `lerp()`
-helper. Verified with `frontend/e2e/chaser-join-ramp.spec.js` plus the
-existing Playwright suite (5/5 pass) and `npm run build`. See
-`docs/handoffs/roadmap-handoff-v0.4.8.md` for the full write-up.
+1. Add more dialog / badge personality to the existing front-end content
+   layer.
+2. Add level or room callouts so the maps feel more distinct.
+3. Add a compact menu brag surface for best level, fewest deaths, and
+   recent badge progress.
 
-## Session 2: Pipeworks clear condition
+## Constraints
 
-Bump `MAX_CHASERS` from `3` to `4` (`GameEngine.js:301`) and make
-Pipeworks only advance once all four chasers are active and fully
-ramped, with a separate skreem gate/goal for that "4-up, all maxed"
-state. This is Level 2/Pipeworks-specific; do not change other levels'
-`advanceAt` behavior unless asked.
-
-## Session 3: lvl2 timing fix + death-visual verification
-
-Move the lvl2 transition trigger off `handleLevelChange`'s arrival index
-(`App.jsx:156-166`) and onto the Pipeworks clear event. After that,
-confirm the original jump-scare still shows unobstructed and no new
-death clip was introduced. Same `lvl2-transition.mp4` asset, no new
-files.
-
-## Constraints (see also `docs/skib-sdlc.md`)
-
-- Front-end only. Don't touch the `backend/` scaffold.
+- Front-end only.
 - Keep the 9:16 portrait layout.
-- Don't break cookie persistence or the random default face rotation.
-- No prod deploy - don't bump `GAME_ITERATION` or run
-  `./scripts/deploy-static.sh` unless the user explicitly asks to
-  publish.
-- `cd frontend && npm run build` must succeed before calling anything
-  done; for gameplay-feel changes, actually drive the canvas rather
-  than just eyeballing the diff - see `docs/dev-notes.md` for the
-  headless-Chrome approach used previously in this sandbox.
-- If you are using the code-monkey lane, keep the fenced copy-paste
-  block bounded and make the handoff's verification command explicit.
-- Update `docs/version-log.md`, `docs/update-directions.md`,
-  `docs/roadmap.md`, a new `docs/handoffs/roadmap-handoff-vX.Y.Z.md`,
-  and `docs/handoffs/ledger.md` before stopping, per `docs/skib-sdlc.md`.
+- Do not break cookie-backed profile persistence.
+- Do not bump `GAME_ITERATION` or deploy unless the user explicitly asks.
+- Keep new content readable when the game is muted.
+
+## Verification
+
+- `cd frontend && npm run build`
+- `cd frontend && npx playwright test`
+
+If the implementation needs new test coverage, add the smallest focused
+Playwright check that proves the new dialog, badge, or menu surface is
+visible and stable.
+
+## Deliverables
+
+- Update `docs/roadmap.md` with any scoped content items or parked
+  follow-ups.
+- Update `docs/version-log.md`, `docs/handoffs/ledger.md`, and
+  `docs/update-directions.md` to match the actual implementation.
+- Keep the handoff copy-paste block in sync if the plan shifts.

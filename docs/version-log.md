@@ -6,6 +6,34 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.37-plan — Content-first refocus for story, map personality, and menu bragging (2026-07-27)
+
+### What changed
+
+- Reviewed the open v0.4.37 plan against the current roadmap and
+  refocused it toward a fun-first front-end pass instead of a numbers-only
+  balance pass.
+- Chose richer dialog, badge flavor, map callouts, and a compact menu
+  brag surface as the next natural slice so the game feels more alive
+  between chases.
+- Kept the balance-number tuning work on the roadmap as a later follow-up
+  rather than crowding it into the next single-session handoff.
+- Updated `docs/roadmap.md`, `docs/update-directions.md`,
+  `docs/interactive-content-pack.md`, and `docs/next-agent-coding-brief.md`
+  so the next agent has a clean, current starting point.
+
+### Design decisions
+
+- Prioritized personality and readability over more tuning because the
+  core chase loop already works.
+- Kept the next code slice front-end only and data-driven, using the
+  existing content docs as the source of truth.
+
+### Non-goals
+
+- No gameplay code changed.
+- No build, test, deploy, or version bump was run.
+
 ## v0.4.35 — Rolling Pickups & Schleimy Potion shipped (2026-07-27)
 
 ### What changed
