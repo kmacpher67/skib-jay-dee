@@ -4,6 +4,7 @@ import GameCanvas from './components/GameCanvas.jsx'
 import ProfileModal from './components/ProfileModal.jsx'
 import ProfileSwitcherModal from './components/ProfileSwitcherModal.jsx'
 import DeathsModal from './components/DeathsModal.jsx'
+import RewardsHistoryModal from './components/RewardsHistoryModal.jsx'
 import ShopModal from './components/ShopModal.jsx'
 import VersionModal from './components/VersionModal.jsx'
 import skreemLoopUrl from './assets/audio/jayden-skreem-loop.m4a'
@@ -50,6 +51,7 @@ export default function App() {
   const [shopOpen, setShopOpen] = useState(false)
   const [versionOpen, setVersionOpen] = useState(false)
   const [deathsOpen, setDeathsOpen] = useState(false)
+  const [rewardsHistoryOpen, setRewardsHistoryOpen] = useState(false)
   const [runnerFaceSelection, setRunnerFaceSelection] = useState(() => randomFaces().runnerFace)
   const [chaserFaceSelection, setChaserFaceSelection] = useState(() => randomFaces().chaserFace)
   const [runnerIsCustom, setRunnerIsCustom] = useState(false)
@@ -169,6 +171,7 @@ export default function App() {
     setShopOpen(false)
     setVersionOpen(false)
     setDeathsOpen(false)
+    setRewardsHistoryOpen(false)
     setLastCaptureLine('')
     setShowLvl2Transition(false)
     setShowLevel4Warning(false)
@@ -187,10 +190,20 @@ export default function App() {
 
       if (!shopItem || current.sheebs < shopItem.cost) return current
 
+      const historyEntry = {
+        timestamp: Date.now(),
+        type: 'purchase',
+        label: shopItem.name,
+        amount: -shopItem.cost,
+        level: null,
+        levelName: null,
+      }
+
       return {
         ...current,
         sheebs: current.sheebs - shopItem.cost,
         ownedItems: [...current.ownedItems, itemId],
+        rewardsHistory: [...(current.rewardsHistory || []), historyEntry].slice(-50),
       }
     })
   }
@@ -293,7 +306,22 @@ export default function App() {
     
     syncProfile((current) => {
       if (current.earnedBadges.includes(badgeId)) return current
-      return { ...current, earnedBadges: [...current.earnedBadges, badgeId] }
+
+      const badge = BADGES[badgeId]
+      const historyEntry = {
+        timestamp: Date.now(),
+        type: 'badge',
+        label: badge ? badge.name : badgeId,
+        amount: null,
+        level: engineRef.current ? engineRef.current.levelIndex + 1 : null,
+        levelName: engineRef.current && engineRef.current.levels && engineRef.current.levels[engineRef.current.levelIndex] ? engineRef.current.levels[engineRef.current.levelIndex].name : null,
+      }
+
+      return { 
+        ...current, 
+        earnedBadges: [...current.earnedBadges, badgeId],
+        rewardsHistory: [...(current.rewardsHistory || []), historyEntry].slice(-50),
+      }
     })
 
     const badge = BADGES[badgeId]
@@ -334,13 +362,23 @@ export default function App() {
   const handleOpenDeaths = () => {
     setShopOpen(false)
     setVersionOpen(false)
+    setRewardsHistoryOpen(false)
     setDeathsOpen(true)
+  }
+
+  const handleOpenRewardsHistory = () => {
+    setShopOpen(false)
+    setVersionOpen(false)
+    setDeathsOpen(false)
+    setProfileSwitcherOpen(false)
+    setRewardsHistoryOpen(true)
   }
 
   const handleOpenProfileSwitcher = () => {
     setShopOpen(false)
     setVersionOpen(false)
     setDeathsOpen(false)
+    setRewardsHistoryOpen(false)
     setProfileSwitcherOpen(true)
   }
 
@@ -446,9 +484,12 @@ export default function App() {
               }}
               onOpenVersion={() => {
                 setShopOpen(false)
+                setDeathsOpen(false)
+                setRewardsHistoryOpen(false)
                 setVersionOpen(true)
               }}
               onOpenDeaths={handleOpenDeaths}
+              onOpenRewardsHistory={handleOpenRewardsHistory}
               onOpenProfileSwitcher={handleOpenProfileSwitcher}
               onPrimeAudio={startMenuAudio}
               muted={muted}
@@ -473,6 +514,13 @@ export default function App() {
                 deathsHistory={profile.deathsHistory}
                 onViewProfile={handleViewDeathProfile}
                 onClose={() => setDeathsOpen(false)}
+              />
+            )}
+
+            {rewardsHistoryOpen && (
+              <RewardsHistoryModal
+                rewardsHistory={profile.rewardsHistory}
+                onClose={() => setRewardsHistoryOpen(false)}
               />
             )}
 
@@ -586,6 +634,7 @@ function MainMenu({
   onOpenShop,
   onOpenVersion,
   onOpenDeaths,
+  onOpenRewardsHistory,
   onOpenProfileSwitcher,
   onPrimeAudio,
   muted,
@@ -663,7 +712,9 @@ function MainMenu({
       <div className="perk-strip">
         <span>Speed +{loadout.speedBonus}</span>
         <span>Stamina +{loadout.staminaBonus}</span>
-        <span>Rewards +{Math.round(loadout.rewardBonus * 100)}%</span>
+        <button type="button" className="perk-btn rewards-btn" onClick={onOpenRewardsHistory} style={{ background: 'none', border: 'none', color: 'inherit', font: 'inherit', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}>
+          Rewards +{Math.round(loadout.rewardBonus * 100)}%
+        </button>
         {loadout.luckBonus > 0 && <span>Luck +{Math.round(loadout.luckBonus * 100)}%</span>}
       </div>
 

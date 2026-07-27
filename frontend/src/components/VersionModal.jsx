@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.41',
+    title: 'Rewards & History Panel',
+    description: 'Added a new Rewards & History modal. You can now tap the Rewards pill on the bottom HUD to see a chronological log of all the badges you\'ve earned and shop items you\'ve purchased.',
+  },
+  {
     version: 'v0.4.40',
     title: 'The Shart Knocker',
     description: 'Added the Shart Knocker ability! Eat a Taco Bell Grande on Level 4+ to charge it, then hit F/FIRE to unleash a blast that stuns the nearest Skib. Comes with a brand new Flaming Ass badge for your first hit.',

@@ -121,6 +121,22 @@ copy-paste coding brief (Slice A only) are in
 `docs/profiles-and-identity.md` and `docs/badges.md`. No code touched this
 pass, per Mode A.
 
+## v0.4.41 — Rewards & History panel (2026-07-27)
+
+### What changed
+
+- Implemented Slice A of the v0.4.41 plan: **Rewards & History panel**.
+- Added `rewardsHistory` to `frontend/src/lib/cookies.js` (`normalizeProfile`).
+- `handleBadgeEarned` and `handlePurchase` in `App.jsx` now push timestamped entries to the `rewardsHistory` array.
+- Made the `Rewards` pill in the HUD clickable to open a new `RewardsHistoryModal.jsx`.
+- Verified changes with a new E2E test `frontend/e2e/rewards-history.spec.js`.
+- Bumped `GAME_ITERATION` to `v0.4.41` and deployed.
+
+### Design decisions
+
+- Added telemetry natively to the history log to preserve raw data rather than summarizing it too early.
+- Kept the HUD pill changes (Slice B) parked pending design resolution on difficulty mechanics.
+
 ## v0.4.40 — Shart Knocker (2026-07-27)
 
 ### What changed

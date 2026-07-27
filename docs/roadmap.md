@@ -72,15 +72,15 @@ or the menu-brag-stat item now specced in `roadmap-handoff-v0.4.42-plan.md`
 | Status | Count | Items |
 |---|---|---|
 | **Unblocked — code next** | 1 | Player's Guide Modal → `roadmap-handoff-v0.4.44-plan.md` |
-| **Shipped** | Shart Knocker → `roadmap-handoff-v0.4.40-plan.md`; Enhanced Death Logs + Parody Warning → `roadmap-handoff-v0.4.39.md` |
+| **Shipped** | Rewards & History panel (Slice A) → `roadmap-handoff-v0.4.41-plan.md`; Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` |
 | **Queued — specced** | 0 | |
-| **Design-only / TBD** | 8 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip, HUD live-data pills, Rewards & History panel, Pickup tracking + Play Recap |
+| **Design-only / TBD** | 8 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip, HUD live-data pills, Rewards & History panel (Slice B), Pickup tracking + Play Recap |
 | **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
 | **Large / later** | 4 | Interactive content pack, Intro cinematic, Multiplayer (Phase 5), Gameplay Rebalancing remainder |
 | **Small polish** | 2 | Cosmetic shop sink, menu brag stat |
 
-`GAME_ITERATION` is **v0.4.40** (`frontend/src/version.js`). v0.4.40
-(Shart Knocker) has **landed** — not in progress. Next code
+`GAME_ITERATION` is **v0.4.41** (`frontend/src/version.js`). v0.4.41
+(Rewards & History panel Slice A) has **landed** — not in progress. Next code
 slice is pending planning.
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.

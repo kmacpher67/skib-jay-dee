@@ -13,6 +13,8 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.41 (real code, shipped — 2026-07-27):**
+  implemented Slice A of the **Rewards & History panel** from `docs/handoffs/roadmap-handoff-v0.4.41-plan.md`. Added a capped `rewardsHistory` log to the profile which records badges earned and shop purchases. Made the `Rewards` HUD pill a clickable button that opens the new `RewardsHistoryModal.jsx`. Slice B (HUD pill values) remains parked pending design answers. Verified with a new E2E test. `GAME_ITERATION` bumped to `v0.4.41` and deployed.
 - **v0.4.40 (real code, shipped — 2026-07-27):**
   implemented the **Shart Knocker** slice from `docs/handoffs/roadmap-handoff-v0.4.40-plan.md`. Picking up a Taco Bell Grande on Level 4+ now grants one `shartCharge`. The runner can trigger it via the F key or the on-canvas FIRE button (which turns orange and reads "FART" while charged). Triggers a fart that stuns the nearest chaser for 3-12 seconds (randomized). A successful hit pays +50 sheebs; a miss pays +5 sheebs. Added the `Flaming Ass` badge, awarded on the first successful hit. Added `shart-knocker-stub.mp3` as a placeholder sound effect. Verified with full Playwright suite including new `frontend/e2e/shart-knocker.spec.js`. `GAME_ITERATION` bumped to `v0.4.40` and deployed.
 - **v0.4.39.1 (real code, shipped — 2026-07-27):**
