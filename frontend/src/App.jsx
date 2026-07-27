@@ -753,7 +753,7 @@ function MainMenu({
         <p className="parody-warning">
           <strong>Fair Use / Parody Warning:</strong> This is a non-commercial fan parody game. Not affiliated with any official brand or IP.
           <br />
-          <a href="https://github.com/kmacpher67/skib-jay-dee/blob/main/docs/players-guide.md" target="_blank" rel="noopener noreferrer">Player's Guide</a>
+          <a href="https://github.com/kmacpher67/skib-jay-dee/blob/master/docs/players-guide.md" target="_blank" rel="noopener noreferrer">Player's Guide</a>
           {' · '}
           <a href="https://github.com/kmacpher67/skib-jay-dee/issues" target="_blank" rel="noopener noreferrer">Report issues or leave feedback here.</a>
         </p>
