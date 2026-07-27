@@ -87,6 +87,27 @@ export function normalizeProfile(profile = {}) {
         .slice(-50)
     : []
 
+  const rewardsHistory = Array.isArray(profile.rewardsHistory)
+    ? profile.rewardsHistory
+        .filter(
+          (entry) =>
+            entry &&
+            typeof entry === 'object' &&
+            Number.isFinite(entry.timestamp) &&
+            typeof entry.type === 'string' &&
+            typeof entry.label === 'string'
+        )
+        .map((entry) => ({
+          timestamp: Math.max(0, Math.floor(entry.timestamp)),
+          type: entry.type,
+          label: entry.label,
+          amount: Number.isFinite(entry.amount) ? entry.amount : null,
+          level: Number.isFinite(entry.level) ? Math.max(1, Math.floor(entry.level)) : null,
+          levelName: typeof entry.levelName === 'string' && entry.levelName ? entry.levelName : null,
+        }))
+        .slice(-50)
+    : []
+
   const userId = typeof profile.userId === 'string' && profile.userId ? profile.userId : createUserId()
 
   return {
@@ -98,6 +119,7 @@ export function normalizeProfile(profile = {}) {
     highestLevel: Number.isFinite(profile.highestLevel) ? Math.max(1, Math.floor(profile.highestLevel)) : 1,
     deaths: Number.isFinite(profile.deaths) ? Math.max(0, Math.floor(profile.deaths)) : 0,
     deathsHistory,
+    rewardsHistory,
     muted: profile.muted === true,
     updatedAt: Number.isFinite(profile.updatedAt) ? Math.floor(profile.updatedAt) : Date.now(),
   }
