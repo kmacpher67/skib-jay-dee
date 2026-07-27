@@ -123,6 +123,19 @@ whole roadmap to find everything that touches identity/profile:
   [docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md).
   When this lands, add `rewardsHistory` to the profile-shape block above
   and a new row to the field-ownership table below.
+- **Pickup-consumption tracking + "Play Recap"** (design-only, addendum
+  added 2026-07-27) — a follow-up ask on the same session: log every map
+  pickup consumed (mushrooms/bombs from v0.4.35, gun, Schleimy Potion,
+  Taco Bell, Decoy, Soggy TP, Heavy Plunger, Gawd Particle) as a
+  `type: 'pickup'` entry in the same planned `rewardsHistory` array, plus
+  a per-run "Play Recap" surface. Verified gap: `GameEngine.js` currently
+  fires **no callback at all** when any pickup is consumed — this needs a
+  new `onPickupConsumed` engine callback alongside the existing
+  `onBadgeEarned`/`onSheebsChange`/`onSkreem` ones before any profile
+  field can be written. See the "Addendum" section of
+  [docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md)
+  for the schema, the three open questions for Ken, and why this reuses
+  Slice A's log instead of a parallel one.
 - **Menu brag stat: best level + fewest deaths** (open) — purely a
   display feature over existing `highestLevel`/`deathsHistory`, would
   read especially well now that a player can have more than one save

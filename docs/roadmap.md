@@ -58,19 +58,23 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 
 ## Frontend open backlog snapshot (2026-07-27, Mode A pass)
 
-**17** unchecked items remain in the incremental backlog below (updated
+**18** unchecked items remain in the incremental backlog below (updated
 2026-07-27: checked off Enhanced Death Logs + Parody Warning, both of
-which had already shipped in v0.4.39 but were left unchecked here, and
-added the two new HUD-live-data / Rewards-History items from Ken's
-screenshot feedback). All are front-end–scoped or front-end–first unless
-noted.
+which had already shipped in v0.4.39 but were left unchecked here, added
+the HUD-live-data / Rewards-History items from Ken's screenshot feedback,
+and added the pickup-consumption-tracking + Play Recap follow-up). All are
+front-end–scoped or front-end–first unless noted. This count doesn't
+include the separate Long-Term roadmap items tracked in
+`roadmap-handoff-v0.4.43-plan.md` (Level 10 arc, Role Reversal, MOBA/PvP)
+or the menu-brag-stat item now specced in `roadmap-handoff-v0.4.42-plan.md`
+— see those handoffs directly.
 
 | Status | Count | Items |
 |---|---|---|
 | **Unblocked — code next** | 0 | |
 | **Shipped** | Shart Knocker → `roadmap-handoff-v0.4.40-plan.md`; Enhanced Death Logs + Parody Warning → `roadmap-handoff-v0.4.39.md` |
 | **Queued — specced** | 0 | |
-| **Design-only / TBD** | 7 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip, HUD live-data pills, Rewards & History panel |
+| **Design-only / TBD** | 8 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip, HUD live-data pills, Rewards & History panel, Pickup tracking + Play Recap |
 | **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
 | **Large / later** | 4 | Interactive content pack, Intro cinematic, Multiplayer (Phase 5), Gameplay Rebalancing remainder |
 | **Small polish** | 2 | Cosmetic shop sink, menu brag stat |
@@ -539,6 +543,28 @@ and chaser-bark voice clips, 1:1 with text.
   [docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md).
   Cross-referenced in [docs/profiles-and-identity.md](profiles-and-identity.md)
   and [docs/badges.md](badges.md).
+- [ ] **Feature: Pickup-consumption tracking + "Play Recap" screen.** **New
+  2026-07-27 (Ken follow-up), design-only, not code-ready.** Ken wants every
+  map pickup (the mushroom/bomb rolling pickups from v0.4.35, plus the gun,
+  Schleimy Potion, Taco Bell, Decoy, Soggy TP, Heavy Plunger, and Gawd
+  Particle) logged when consumed, and a proper post-run recap/review of
+  play statistics — explicitly better than CoD's ("I hate that about CoD,
+  no good recap and review of play statistics"). Verified gap: today
+  pickup consumption doesn't fire *any* callback out of `GameEngine.js` —
+  not just missing timestamps, nothing reaches the profile at all. Extends
+  the same `rewardsHistory` log from the item above with a new
+  `type: 'pickup'` entry (one array, one modal, not a parallel system), plus
+  a new engine-level `onPickupConsumed` callback and a per-run "Play Recap"
+  surface (recommend: shown once on level-clear/menu-return, not competing
+  with the existing post-kill profile card on death). Full writeup, the
+  pickup-id/effect audit, and three open questions for Ken (recap placement,
+  one-modal-with-tabs vs. new pill, tone for bad-pickup stats) are in the
+  "Addendum" section of
+  [docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md).
+  Cross-referenced in [docs/interactive-content-pack.md](interactive-content-pack.md)
+  (pickup-id/effect reference table) and
+  [docs/profiles-and-identity.md](profiles-and-identity.md). Do not start
+  coding until Ken answers the open questions.
 - [x] **Level expansion.** Added The Ramen Aisle and World Star Parking Lot
   (5 levels total) — landed this session.
 - [x] **Level data extraction** — roadmap item 1 above. **Correction

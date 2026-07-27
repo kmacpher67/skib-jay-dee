@@ -6,6 +6,44 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.41-plan addendum — Pickup-consumption tracking + "Play Recap" (Claude Sonnet 5, 2026-07-27)
+
+Mode A pass, docs-only. Follow-up from Ken in the same session as the
+Rewards & History panel plan: track when players consume map pickups
+(mushrooms/bombs from v0.4.35, plus the gun, Schleimy Potion, Taco Bell,
+Decoy, Soggy TP, Heavy Plunger, Gawd Particle) and give the player a real
+history-of-play view — explicitly framed against CoD's post-match recap as
+the anti-pattern to avoid ("I hate that about CoD, no good recap and
+review of play statistics").
+
+Verified by reading `GameEngine.js` before planning: pickup consumption
+today fires **no callback out of the engine at all** — not just missing
+timestamps like the badges/purchases gap from the main v0.4.41 plan, but a
+complete blind spot. `_updateRollingPickups()` mutates sheebs/stamina/
+skreems directly with no hook for anything downstream to observe.
+
+Extended the open `roadmap-handoff-v0.4.41-plan.md` (per `skib-sdlc.md`'s
+"extend an open plan rather than duplicate" rule, since this reuses the
+same `rewardsHistory` log Slice A already introduces) rather than opening
+a new plan file, with:
+
+- A fourth `rewardsHistory` entry `type: 'pickup'` (label, outcome
+  good/bad, sheeb/skreem delta if any, level).
+- A new required engine callback, `onPickupConsumed`, alongside the
+  existing `onBadgeEarned`/`onSheebsChange`/`onSkreem` pattern.
+- A recommended **per-run "Play Recap"** shown once on level-clear/menu
+  return (not competing with the existing post-kill profile card), plus a
+  lifetime aggregate view as a fast-follow once data accumulates — in
+  that order, smaller/higher-impact piece first.
+- Three open questions for Ken before this is coding-ready: recap
+  placement relative to the post-kill card, one modal-with-tabs vs. a new
+  pill, and tone for bad-pickup stats (comedic vs. neutral).
+
+Cross-referenced in `docs/roadmap.md` (new backlog item),
+`docs/profiles-and-identity.md`, and `docs/interactive-content-pack.md`
+(pickup-id/effect reference table, now also pointing back at this
+addendum). No code touched, per Mode A.
+
 ## v0.4.43-plan — Long-Term Roadmap: Role Reversal, MOBA/PvP, Level 10 Arc (Claude Sonnet 5, 2026-07-27)
 
 Mode A pass, docs-only. Ken dictated three Long-Term (LT) roadmap items

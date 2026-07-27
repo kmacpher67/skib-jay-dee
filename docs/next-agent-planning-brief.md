@@ -27,7 +27,10 @@ Use this when Ken opens a **Mode A** session (planning / vibes / research —
      History panel + HUD live-data pills, from Ken's screenshot feedback).
      Slice A (history panel) is code-ready; Slice B (HUD pill numbers) is
      blocked on a decision from Ken — see that file's "Open question"
-     section.
+     section. Same file also has an **Addendum** (added 2026-07-27):
+     pickup-consumption tracking + a per-run "Play Recap" screen — also
+     design-only, blocked on three open questions for Ken, do not code
+     alongside Slice A.
    - Also open: `roadmap-handoff-v0.4.42-plan.md` (menu brag stat, code-
      ready) and `roadmap-handoff-v0.4.43-plan.md` (Long-Term roadmap:
      Level 10 grand-arc finale, Role Reversal, MOBA/PvP — design-only,
@@ -64,7 +67,7 @@ See the snapshot table in that file for status tags. Summary:
 | Bucket | Count | Examples |
 |---|---|---|
 | Unblocked next | 0 | Slice A of v0.4.41-plan is code-ready but not yet claimed |
-| Needs more design | 7 | Micro-Skib, Cool Play, Difficulty Function, Mosaic L7+, Broth Slip, HUD live-data pills (Slice B), Rewards & History panel design nuances |
+| Needs more design | 8 | Micro-Skib, Cool Play, Difficulty Function, Mosaic L7+, Broth Slip, HUD live-data pills (Slice B), Rewards & History panel design nuances, Pickup tracking + Play Recap |
 | Blocked on Ken | 3 | Audio 2 clips, Yoodeling Unc photo, distinct runner poses |
 | Large / later | 4 | Content pack, Intro cinematic, Multiplayer, Rebalancing remainder |
 | Small polish | 2 | Cosmetic shop sink, menu brag stat |

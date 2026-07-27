@@ -69,6 +69,19 @@ These are badge-style rewards, not moment-to-moment pickups. They are meant to r
 | Gremlin in the Pipes | Clear a level after touching a bad item. | Turns bad luck into a joke instead of just a penalty. |
 | Chaser Tax Audit | Beat a chaser-specific hazard or trap. | Gives chasers their own funny failure state. |
 
+## Pickup-consumption tracking (planned, not yet built)
+
+Ken asked (2026-07-27) for every pickup on this page — plus the v0.4.35
+"mushroom"/"bomb" rolling pickups (`isGood`/`effect` in
+`frontend/src/GameEngine.js`, not itemized in the table above since they
+predate this doc's item seeds) — to be logged when consumed, feeding a
+per-run "Play Recap" and a lifetime history view. The `label`/`outcome`
+strings that recap should use should stay consistent with the names in
+this doc's tables rather than inventing new ones. Full design writeup is
+the "Addendum" section of
+[docs/handoffs/roadmap-handoff-v0.4.41-plan.md](handoffs/roadmap-handoff-v0.4.41-plan.md) —
+design-only, blocked on three open questions for Ken.
+
 ## Notes For Later Coding
 
 - If a content seed changes gameplay, it should also get a line of dialog so the joke lands.
