@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-27 | v0.4.52.1 (Antigravity) | Raman Rows hotfix: sealed sub-40px corridor pinch on RAMEN_AISLE_GRID that audit-map-widths whitelist missed
 2026-07-27 | docs (Cursor Grok 4.5) | v0.4.57-plan: Rod of Poopdom second-teleport bug — stinkyTimer never ticks; hotfix queued ahead of Slice B; no code
 2026-07-27 | v0.4.52 (Claude Sonnet 4.6) | Turdstone Token: new Epic/Rare map pickup; level-indexed 1-5% spawn; saves the player from one death (no levelIndex++, no currency loss, no chaserSpeedMod ramp); HUD icon while held; "SAVED BY THE TURDSTONE!" overlay on save; 3 new e2e tests pass
 2026-07-27 | v0.4.51 | Sealed sub-40px corridor pinches in Ramen Aisle (L4) and Nightmare House (L6); added map-width audit script + e2e

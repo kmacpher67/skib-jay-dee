@@ -653,3 +653,4 @@ and chaser-bark voice clips, 1:1 with text.
   [roadmap-handoff-v0.4.57-plan.md](handoffs/roadmap-handoff-v0.4.57-plan.md).
   **Next code slice** (ahead of Slice B).
 - [ ] **Feature: Desktop Screen Support.** Users are asking for computer screen size for desktop devices. Currently locked to 9:16 portrait. Need a design decision on whether to expand field of view, add a vignette to limit it, or use side art panels. Mode A plan created: [roadmap-handoff-v0.4.58-plan.md](handoffs/roadmap-handoff-v0.4.58-plan.md). **Blocked on Ken** for design decision on viewport balance.
+- [ ] **Feature: Debug State Dump.** Add a debug function (e.g., triggered by `Triple Q` or `ctrl+alt+del`) that performs a debug dump and allows copying game position data, relative position level, and all debug info for problem-solving.

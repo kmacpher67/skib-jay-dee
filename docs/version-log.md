@@ -6,6 +6,12 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.52.1 — Raman Rows Hotfix (Antigravity, 2026-07-27)
+
+Mode B — hotfix directly to mapGrids.
+
+User reported getting stuck again in Ramen Aisle ("crashed on raman rows"). Found that the previous wall-pinch fix in v0.4.51 missed a 1-tile gap on `RAMEN_AISLE_GRID` because `audit-map-widths.py` had explicitly whitelisted it as a "benign seam". Replaced the gap dot with a hash.
+
 ## v0.4.52 — Turdstone Token: Resurrection Ward (Claude Sonnet 4.6, 2026-07-27)
 
 Mode B — full code and delivery.
