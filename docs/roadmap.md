@@ -322,6 +322,7 @@ and chaser-bark voice clips, 1:1 with text.
 - [x] **The "Gawd Particle" (Level 5+).** Landed in v0.4.34 — an 8%-per-level Level 5+ pickup grants the runner a 10s wall-hack buff; touching a chaser while it's active despawns the chaser (15s respawn timer) instead of capturing the runner. See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
 - [x] **Quest Rooms & Landmark Badges.** Landed in v0.4.33 — Level 4 and Level 5 now each have a dedicated landmark room with a quest badge, with Level 4 keeping two exits and Level 5 tightening into a one-door chokepoint.
 - [ ] **Interactive content pack: secret items, gag awards, and map personality.** Add a small data-driven catalog of runner/chaser good and bad items plus exploration awards so levels feel more alive, funny, and readable instead of just harder. See [docs/interactive-content-pack.md](interactive-content-pack.md).
+- [ ] **Feature: Shart Knocker (Taco Bell Grande follow-up).** Keep the shipped Taco Bell Grande pickup as-is, but add a separate Level 4+ active ability on top of it: one Taco Bell = one `Kill Fart` charge. While being chased, the runner can trigger it to blast a giant fart that stops the nearest chaser for 3-12 seconds. A hit pays +50 sheebs; a miss still pays +5 sheebs. The move is one-shot per Taco Bell and should land with a flaming-ass badge/award icon plus a stubbed fart SFX file in `frontend/src/assets/audio/` so the code path can play something before the final recording exists.
 - [x] **Retrofit Early Level Badges.** Landed v0.4.32 — Levels 1-3
   (Porcelain Palace, Pipeworks, Flooded Annex) each get a `progressionBadgeId`
   (`porcelain-prowler`, `pipe-dreamer`, `annex-relic-hunter`) auto-spawned as
@@ -549,7 +550,7 @@ and chaser-bark voice clips, 1:1 with text.
   verification for the lvl2 timing fix confirmed the video only appears
   after Pipeworks clears, so it no longer overlaps the catch state on
   arrival.
-- [ ] **Enhanced Death Logs:** Record time played during the run, and store the score achieved (sheebs/skreems plus and minus of a session) in the profile history log.
+- [ ] **Enhanced Death Logs:** Record time played during the run, store the score achieved (sheebs/skreems plus and minus of a session), and explicitly record the level the player died on in the profile history log.
 - [ ] **Parody Warning & Feedback Link:** Add a clear warning in the UI (e.g. settings or intro screen) stating that the game is a parody and sarcasm about life games, plumbing, and society (Fair Use applies). Add a link to the GitHub issues page to "place complaints".
-- [ ] **Difficulty Function:** Add selectable difficulty scaling. Needs discussion based on `docs/difficulty-mechanics-plan.md` to finalize how this impacts gameplay.
+- [ ] **Difficulty Function:** Add selectable difficulty tiers (Noob, Casual, 4chan-st). Include a UI toggle to let players change difficulty mid-run (Noob/Casual can be swapped freely; locking into 4chan-st grants score/badge benefits that are lost if toggled down).
 - [ ] **Cool Play (Chaser Evasion):** Polish the mechanics for users running from chasers. Goal is to make evasion feel cooler (e.g. near-miss effects, sliding, dynamic FOV). Needs further definition.

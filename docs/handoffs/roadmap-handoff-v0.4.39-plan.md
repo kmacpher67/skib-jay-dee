@@ -40,35 +40,34 @@ The following are the remaining open items on the `roadmap.md` backlog:
 12. **New chaser: Yoodeling Unc, second pose:** Needs the user to provide the image file `yoodelling-unc-alex-2.png`.
 13. **Follow-up: Supply distinct runner photos:** User needs to provide distinct runner face photos for captured/getting-captured and default states.
 14. **Multiplayer spike (Phase 5):** The big one. Needs FastAPI WebSocket integration.
-15. **Enhanced Death Logs:** Record time played and sheebs/skreems achieved (plus/minus) in the kill history log.
+15. **Enhanced Death Logs:** Record time played, store the score achieved (sheebs/skreems plus/minus), and explicitly record the level the player died on in the profile history log.
 16. **Parody Warning & Feedback Link:** Add a UI warning about parody/fair use, and a link to GitHub issues for complaints.
-17. **Difficulty Function:** Selectable difficulty scaling based on `docs/difficulty-mechanics-plan.md`. Needs Ken to pick Method A/B/C before coding — do not guess.
+17. **Difficulty Function:** Selectable difficulty tiers (Noob, Casual, 4chan-st) with mid-run toggle mechanics. Locking into 4chan-st at the start grants exclusive scoring/badge eligibility. See `docs/difficulty-mechanics-plan.md`.
 18. **Cool Play (Chaser Evasion):** Enhance evasion mechanics for a cooler gameplay experience.
 
 ## What's Needed to Complete Outstanding Items
 
-- **Assets Required from Ken:**
+- **Assets & Dialog Required from Ken:**
   - `yoodelling-unc-alex-2.png` for the second pose.
   - Real, distinct photos for the runner `captured`, `getting-captured`, and `default` states.
   - Audio clips if the 1:1 dialog audio feature (Audio 2) is desired.
+  - **ACTION ITEM FOR KEN:** Open [docs/dialog_content_chasing.md](file:///mnt/data/projects/skib-jay-dee/docs/dialog_content_chasing.md) and fill in the three `[KEN: WRITE INSULT HERE]` placeholders under the new `4chan-st (Shyt-Talker)` section with your best roasting material. You can also record these as audio clips (`shyt-talker-insult1.mp3`, etc.) if you want them voiced!
 - **Decisions Required from Ken:**
-  - Difficulty: Review `docs/difficulty-mechanics-plan.md` and choose an implementation method (Method A, B, or C).
   - Cool Play: Define what specific mechanics would make evasion feel cooler (e.g., dynamic FOV sliding, near-miss effects).
-- **Working tree:** clean as of this correction (verified via `git status`) — no cleanup step needed before the next Mode B session.
+- **Code Cleanup (URGENT):**
+  - There is currently an uncommitted dirty working tree involving `GameEngine.js`, `gameContent.js`, `mapGrids.js`, and scratch files. The next Mode B session MUST review this `git diff`, decide whether to keep, fix, or discard it, and commit it before proceeding with any other items.
 
 ## Copy-paste: next natural steps
 
 ```markdown
 **Mode B — Implementation Pass**
 
-Read `docs/handoffs/roadmap-handoff-v0.4.39-plan.md` first (note its
-correction block — items 1 and 5 already shipped, don't redo them).
-Also skim `docs/handoffs/roadmap-handoff-v0.4.37.md` so you know what
-v0.4.37 already added (the close-call freeze phase and the
-`POSITIVE_PICKUPS` reward hook) before touching related code.
+Read `docs/handoffs/roadmap-handoff-v0.4.39-plan.md` first. 
 
-1. **Enhanced Death Logs:** Update the `deathsHistory` cookie schema in `cookies.js` to include `timePlayed` and `sessionScore` (sheeb delta), and display these in the Deaths modal (`App.jsx`).
-2. **Parody Warning & Link:** Add the Parody/Fair Use warning and the GitHub issues link to the main menu or a new settings modal in `App.jsx`.
+1. **CLEAN UP WORKTREE:** Review the uncommitted dirty working tree. Run `git status` and `git diff`. Decide whether to finish the Level grid extraction (`mapGrids.js`), the "Friendly Fire" badge, and the Heavy Plunger/Soggy TP implementations. Either commit them as a clean version, or stash/discard them.
+2. **Enhanced Death Logs:** Update the `deathsHistory` cookie schema in `cookies.js` to include `timePlayed` and `sessionScore` (sheeb delta), and ensure `level` is explicitly rendered in the Deaths modal (`App.jsx`).
+3. **Parody Warning & Link:** Add the Parody/Fair Use warning and the GitHub issues link to the main menu or a new settings modal in `App.jsx`.
+4. **Difficulty UI & Hooks:** Add the `difficulty` state to the profile and create a mid-run toggle UI (Noob/Casual freely, 4chan-st locks). Hook the multipliers into `GameEngine.js` and the `SHYT_TALKER_LINES` override into `_triggerCaught()`.
 
 **Verification:**
 - Run `npm run build` in `frontend/`.

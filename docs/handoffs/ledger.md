@@ -15,6 +15,11 @@ update `docs/version-log.md`.
 2026-07-27 | v0.4.37 | Added e2e test for close-call rewards and freeze
 2026-07-27 | docs (Claude, Sonnet 5) | Backfilled missing `roadmap-handoff-v0.4.37.md`; corrected stale `v0.4.39-plan` (already-shipped items, resolved worktree); fixed a misplaced v0.4.36 fragment in `version-log.md`; rewrote `next-agent-coding-brief.md`; no code changed
 
+## docs-only planning pass — 2026-07-27
+
+- Queued a new Level 4+ `Shart Knocker` follow-up for the shipped Taco Bell Grande pickup.
+- Added the flaming-ass badge seed, item-seed row, roadmap backlog note, and audio-stub guidance to the docs set.
+
 
 ## v0.4.36.1 — 2026-07-27 (real code)
 

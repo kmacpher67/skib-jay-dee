@@ -21,6 +21,24 @@ focused on *why*, those two are the *what* and *when*.
 - Hooked positive items dynamically based on a `POSITIVE_PICKUPS` configuration array in `gameContent.js`.
 
 
+## v0.4.39-plan addendum — Shart Knocker queued (2026-07-27)
+
+### What changed
+
+- Parked a new Level 4+ follow-up to the shipped Taco Bell Grande pickup: `Shart Knocker`.
+- Updated the roadmap backlog, interactive content pack, badge seeds, and update directions so the next agent sees the same spec.
+
+### Design decisions
+
+- Kept the existing Taco Bell Grande pickup unchanged and treated the new mechanic as a separate active ability layered on top of it.
+- Scoped the active fart escape to Level 4+ so it lands in the part of the game where stakes and rewards are already escalating.
+- Defined the payoff as a one-shot charge per Taco Bell: +50 sheebs on a hit, +5 sheebs on a miss, plus a flaming-ass badge/award icon and a stubbed fart SFX file.
+
+### Non-goals
+
+- Did not touch frontend code or ship any gameplay changes.
+
+
 ## v0.4.36.1 — Finished the interrupted v0.4.36 follow-ups (2026-07-27)
 
 ### What changed

@@ -40,10 +40,15 @@ pass stays crisp.
 shipped in `v0.4.36`. Soggy Toilet Paper and Heavy Plunger shipped in
 `v0.4.36.1` (finished a half-wired attempt found uncommitted earlier the
 same day — see `docs/handoffs/roadmap-handoff-v0.4.36.1.md`).
+The next Taco Bell follow-up being parked for the roadmap is
+`Shart Knocker`: keep the base Taco Bell pickup as-is, then let the
+Level 4+ version burn one Taco Bell charge for a giant fart stun and a
+flaming-ass badge icon.
 
 | Name | Side | Effect | Tone |
 |---|---|---|---|
 | Decoy Flush | Runner good | Drops a loud noise that pulls nearby chasers toward the wrong lane for a few seconds. | Panic button, but funny. |
+| Shart Knocker | Runner good | Level 4+ active ability. Consumes one Taco Bell Grande charge to blast a giant fart that stuns the nearest chaser for 3-12 seconds. A hit pays +50 sheebs; a miss pays +5 sheebs. | Maximum disrespect, still tactical. |
 | Emergency Plunger | Runner good | A short shove/knockback that can save a bad corner. | Close-range rescue tool. |
 | Turbo TP | Runner good | Short speed burst with a stamina tradeoff. | Risk/reward sprint item. |
 | Wet Floor | Runner bad | The runner slips for a beat and loses clean control. | Slapstick punishment. |

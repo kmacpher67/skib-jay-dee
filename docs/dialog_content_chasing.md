@@ -1,5 +1,8 @@
 # Dialog Content: Chasing and Captures
 
+**Author:** kenmac
+**Created:** 2026-07-26
+
 This document memorializes the in-game dialog text used during the chase and capture events. 
 It exists as a human-AI documentation trail to track what lines exist, where they are used, and to organize the to-do list for human voice recording.
 
@@ -97,3 +100,13 @@ If/when you decide to record them, please follow the `docs/sound-effects-howto.m
   - **Suggested filename:** `chaser-hard-inevitable.mp3`
 - [ ] "YOUR DEBT IS DUE!"
   - **Suggested filename:** `chaser-hard-debt.mp3`
+
+### 4chan-st (Shyt-Talker) Capture Lines
+*Shown full-screen, jump-scare style, when the runner gets caught on 4chan-st difficulty. These should actively insult the player's lack of skill.*
+
+- [ ] "[KEN: WRITE INSULT 1 HERE]"
+  - **Suggested filename:** `shyt-talker-insult1.mp3`
+- [ ] "[KEN: WRITE INSULT 2 HERE]"
+  - **Suggested filename:** `shyt-talker-insult2.mp3`
+- [ ] "[KEN: WRITE INSULT 3 HERE]"
+  - **Suggested filename:** `shyt-talker-insult3.mp3`

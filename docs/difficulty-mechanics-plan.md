@@ -1,56 +1,53 @@
 # Difficulty Mechanics Plan
 
 ## Overview
-The goal is to introduce a selectable difficulty function that scales the challenge for different types of players, while retaining the core gameplay loop. We need to define what difficulty means in Skib-Jay-Dee-Toilet, the options available, and the gameplay impact of each setting.
+The difficulty system in Skib-Jay-Dee-Toilet is designed to be chaotic, funny, and fundamentally alter the "feel" of the game at each tier. It does not just scale enemy health—it scales the game's attitude towards the player.
+
+We are implementing a three-tier system: **Noob**, **Casual**, and **4chan-st** (Shyt-Talker).
 
 ## Difficulty Tiers
 
-### 1. Casual / "Noob-Noob" (Easy)
-- **Target Audience:** Players who want to explore, read the dialog, and laugh at the jokes without getting stressed.
+### 1. Noob (Easy)
+- **Focus:** Easy fun, exploring the map, and learning the game without stress.
+- **Feel:** Forgiving and slow.
 - **Gameplay Impact:**
-  - Chaser base speed reduced by 15%.
-  - Extra chaser spawn interval doubled (slower pressure ramp).
-  - Skreem penalty on capture is halved; Sheeb penalty removed or capped at 10.
-  - Generous stamina pool (+25%) and faster regen.
-- **Inference:** A more forgiving environment where mistakes don't instantly end the run or bankrupt the player.
+  - Chaser base speed reduced by 20%.
+  - Extra chaser spawn interval doubled.
+  - Huge stamina pool and fast regen (can sprint almost endlessly).
+  - High Sheeb drops, zero capture penalty.
+  - *Vibe:* The game gently nudges the player along.
 
-### 2. Standard / "Just Running" (Normal)
-- **Target Audience:** The baseline experience.
+### 2. Casual (Normal)
+- **Focus:** Relaxed play with a fair, light challenge.
+- **Feel:** The standard, intended baseline experience (current v0.4.x tuning).
 - **Gameplay Impact:**
-  - This is the current tuning of the game (v0.4.x).
-  - Standard speed, standard sheebs debt (past level 3), standard capture penalties.
+  - Standard Chaser speed and pressure ramps.
+  - Standard Sheebs economy and debt mechanics.
+  - Fair warning on captures (the Skreem grace period functions normally).
+  - *Vibe:* Standard chase panic.
 
-### 3. Sweaty / "CEO of Drains" (Hard)
-- **Target Audience:** Players who have bought all shop upgrades and find the base game too easy.
+### 3. 4chan-st (Shyt-Talker / Hardcore)
+- **Focus:** Extreme pain, mockery, and punishing mechanics for elite players.
+- **Feel:** Fast, unfair, and actively insulting.
 - **Gameplay Impact:**
-  - Chaser base speed increased by 15%.
-  - Multi-chaser pressure ramps up faster (shorter intervals).
-  - Negative pickups (e.g., Heavy Plunger, Soggy TP) spawn more frequently.
-  - Shop items have a higher chance of being lost on capture (past level 4).
-  - *Bonus:* Higher Sheeb payout (+25%) for surviving/clearing levels.
+  - Chasers are significantly faster (+20% base speed) and cut off escape routes tighter.
+  - "Instant Death": The proximity Skreem grace period is drastically shortened or removed. If they touch you, you're caught immediately.
+  - Punishing Economy: Massive Sheeb penalties. Getting caught drops you deep into debt instantly.
+  - *Vibe (The Mockery):* This is the core of this mode. When you die, the game actively insults you. We will add a dedicated `SHYT_TALKER_LINES` pool to `dialog.js`. The post-kill screens will roast the player for their lack of skill, and chaser barks during the game will be relentless taunts.
 
 ## Implementation Methods
 
-### Method A: Global Multiplier (Simple)
-- Introduce a `difficulty` state in the player's profile (0 = Easy, 1 = Normal, 2 = Hard).
-- In `GameEngine.js`, apply a global modifier to `CHASER_SPEED_MOD_MAX`, stamina drain rates, and penalty values based on the selected difficulty.
-- **Pros:** Fast to implement. Low risk of breaking specific levels.
-- **Cons:** Can feel numerical rather than systemic (just "faster enemies").
+To achieve this, we will combine **Stat Scaling** (Method A) and **Mechanical Complexity** (Method B).
 
-### Method B: AI & Map Variations (Complex)
-- Difficulty changes not just stats, but behavior.
-- Easy: Skibs have larger turn radii (can't corner as tightly).
-- Hard: Skibs try to cut off the player's path instead of just following directly. Levels spawn additional hazard tiles (more puddles).
-- **Pros:** Deeply rewarding and genuinely changes how the game is played.
-- **Cons:** High development cost (needs new AI pathing logic).
+1. **The Toggle:** Add a Difficulty Selector to the main menu (defaulting to Casual).
+2. **GameEngine Hooks:** `GameEngine.js` will read `profile.difficulty` and apply multipliers to `CHASER_SPEED_MOD`, `staminaRegen`, and `capturePenalty`.
+3. **Mid-Run vs Locked Difficulty:** 
+   - **Noob/Casual:** Players can toggle between these modes at any time during a profile play. Switching changes the current score multipliers dynamically. This prioritizes player enjoyment.
+   - **4chan-st (Hardcore):** Locking into this mode at the start of a run grants an exclusive scoring algorithm benefit (and unique badge eligibility). If a player toggles down to Casual mid-run to survive, they forfeit the Hardcore scoring bonuses and badge for that run. 
+4. **Dialog Hooks:** `_triggerCaught()` and the chase update loop will check if `difficulty === '4chan-st'`. If true, it overrides standard dialog pools with the punishing `SHYT_TALKER_LINES` pool.
 
-### Method C: The "Debt" Lock (Progression-Based)
-- Difficulty is tied to the current Level and Sheeb debt. 
-- You don't choose the difficulty in a menu; it is dynamically inferred. If you are deep in negative sheebs, the game activates "Repo Mode" where Skibs are faster until you clear your debt. If you are positive, it remains standard.
-- **Pros:** Blends perfectly with the existing risk/reward economy.
-- **Cons:** Might frustrate players who get stuck in a death loop and can't lower the difficulty manually.
-
-## Next Steps / Discussion
-- Do we want a classic menu toggle (Method A) or a dynamic system (Method C)?
-- Should difficulty affect badge unlock eligibility? (e.g., "Must be on Normal or Hard to earn X badge").
-- **Action:** Discuss with Ken before writing code.
+## Next Steps for Code Monkey
+- [ ] Add `difficulty` field to the cookie profile (default: 'Casual').
+- [ ] Build the UI toggle in the main menu.
+- [ ] Write the `SHYT_TALKER_LINES` in `dialog.js` (needs Ken to provide the funniest/most savage insults).
+- [ ] Wire the speed/stamina multipliers in `GameEngine.js` based on the selected tier.

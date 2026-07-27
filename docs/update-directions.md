@@ -49,6 +49,12 @@ entry heading so the change trail stays obvious at a glance.
   `git log`/`frontend/src/version.js` for the actual current
   `GAME_ITERATION`, not just the newest doc file** — a doc can be stale
   relative to code shipped by a parallel session.
+- **Planning addendum (docs-only, 2026-07-27):** the Taco Bell Grande
+  follow-up is now explicitly queued as a Level 4+ `Shart Knocker`
+  slice: one Taco Bell grants one kill-fart charge, a hit stalls the
+  nearest chaser for 3-12 seconds, a miss still pays +5 sheebs, and the
+  badge/award note calls for a flaming-ass icon plus a stubbed fart SFX
+  file. The shipped Taco Bell pickup itself stays unchanged.
 - **v0.4.36.1 (real code, most recent shipped version before v0.4.37):** finished the
   uncommitted, half-wired diff flagged earlier this same session (see the
   v0.4.38-plan entry below) — it was a real but incomplete attempt at

@@ -43,5 +43,6 @@ without needing new backend systems:
 - **Dead-End Daredevil:** Survive a one-door quest room and keep going.
 - **Gremlin in the Pipes:** Clear a level after touching a bad item.
 - **Chaser Tax Audit:** Beat a chaser-specific hazard or trap.
+- **Flaming Ass:** Trigger the Shart Knocker fart hit on a chaser in a Level 4+ chase. The icon should be the running stick figure with a tiny fire glyph coming out the back, just for maximum rude comedy.
 
 See [docs/interactive-content-pack.md](interactive-content-pack.md) for the broader item catalog that could feed these badge ideas.
