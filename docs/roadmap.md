@@ -508,12 +508,20 @@ and chaser-bark voice clips, 1:1 with text.
   `highestLevel` and lifetime deaths/`deathsHistory`, so this is mostly a
   menu display item, not new persistence. Small, do after the risk/reward
   items land so there's something worth bragging about. Shipped v0.4.42.
-- [x] **Player's Guide modal.** In-game help explaining guns/ammo replacement,
+- [x] **Player's Guide.** In-game help explaining guns/ammo replacement,
   level-transition pickup loss, Level 5+ chaser wall-hacks, Gawd Particle,
   and Shart Knocker (orange FART button is not a protective shield). Source
-  doc: [docs/players-guide.md](players-guide.md). Shipped v0.4.43 — see
+  doc: [docs/players-guide.md](players-guide.md). Shipped v0.4.43 as an
+  in-game modal — see
   [roadmap-handoff-v0.4.44-plan.md](handoffs/roadmap-handoff-v0.4.44-plan.md)
   and [roadmap-handoff-v0.4.43.md](handoffs/roadmap-handoff-v0.4.43.md).
+  **Reversed 2026-07-27**: the modal duplicated the doc's content in JSX
+  (two sources of truth, every edit needed a deploy). Ken asked for a
+  plain link to the GitHub-rendered `.md` instead, editable without a
+  code change, plus a note pointing readers at GitHub issues for
+  suggestions. Planned in
+  [roadmap-handoff-v0.4.45-plan.md](handoffs/roadmap-handoff-v0.4.45-plan.md),
+  not yet implemented (Mode A only this pass).
 - [ ] **Menu HUD: make the Speed/Stamina/Rewards pills reflect real live
   data, not just static shop bonuses.** **New 2026-07-27 (Ken screenshot
   feedback), design-only, not code-ready.** The `perk-strip` in

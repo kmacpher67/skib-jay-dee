@@ -3,8 +3,14 @@
 **Created by:** Composer — 2026-07-27
 **Last updated by:** Composer — 2026-07-27
 
-In-game help modal source of truth. The live UI mirrors this content in
-`frontend/src/components/PlayersGuideModal.jsx`.
+Single source of truth for game mechanics. The in-game footer links here
+directly (see `roadmap-handoff-v0.4.45-plan.md` — the earlier in-game
+modal duplicated this content and is being retired in favor of this
+link).
+
+**See something wrong or missing?** Open an issue at
+[github.com/kmacpher67/skib-jay-dee/issues](https://github.com/kmacpher67/skib-jay-dee/issues)
+and we'll fold it into this guide.
 
 ## Controls
 
