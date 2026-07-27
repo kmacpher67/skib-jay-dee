@@ -13,7 +13,7 @@ import {
   COOLNESS_LINES,
   HARD_CHASER_LINES,
 } from './dialog.js'
-import { CHASER_FACE_POOL, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS } from './gameContent.js'
+import { CHASER_FACE_POOL, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS } from './gameContent.js'
 import { PORCELAIN_GRID, PIPEWORKS_GRID, FLOODED_ANNEX_GRID, RAMEN_AISLE_GRID, WORLD_STAR_GRID } from './mapGrids.js'
 
 export const WORLD = {
@@ -956,6 +956,11 @@ export class GameEngine {
       return
     }
 
+    if (this.phase === 'close-call-freeze') {
+      this._updateCloseCallFreeze(dt)
+      return
+    }
+
     if (this.phase === 'chase' || this.phase === 'near-capture') {
       this.levelSeconds += dt
       const wasExhausted = this.stamina <= 0
@@ -1211,6 +1216,11 @@ export class GameEngine {
     this.pickups = this.pickups.filter((pickup) => {
       if (!rectsIntersect(this.runner, pickup)) return true
 
+      if (POSITIVE_PICKUPS.includes(pickup.type)) {
+        this.sheebs += 5
+        this.onSheebsChange(this.sheebs)
+      }
+
       if (pickup.type === 'gun') {
         const ammo = Math.random() < GUN_AMMO_ONE_CHANCE ? 1 : 2
         this.runner.gun = { ammo }
@@ -1276,6 +1286,9 @@ export class GameEngine {
       
       if (rectsIntersect(this.runner, pickup)) {
         if (pickup.isGood) {
+          this.sheebs += 5
+          this.onSheebsChange(this.sheebs)
+          
           if (pickup.effect === 'speed') {
             this.runnerLine = 'Speed boost!'
             this.runnerLineTimer = 1.5
@@ -1851,8 +1864,24 @@ export class GameEngine {
   _updateNearCapture(dt) {
     this.phaseTimer -= dt
     if (this.phaseTimer <= 0) {
+      this.phase = 'close-call-freeze'
+      this.phaseTimer = 1.0
+    }
+  }
+
+  _updateCloseCallFreeze(dt) {
+    this.phaseTimer -= dt
+    if (this.phaseTimer <= 0) {
       this.phase = 'chase'
       this.phaseTimer = 0
+      
+      this.sheebs += 50
+      this.onSheebsChange(this.sheebs)
+      
+      if (!this.slipperyBadgeEarned) {
+        this.slipperyBadgeEarned = true
+        this.newBadges.push('slippery-when-wet')
+      }
     }
   }
 
@@ -1895,11 +1924,11 @@ export class GameEngine {
     if (this.phase === 'caught') this._drawJumpscare(ctx)
     if (this.phase === 'resume-countdown') this._drawResumeCountdown(ctx)
     if (this.phase === 'near-capture') this._drawNearCapture(ctx)
-    if (this.phase === 'chase') this._drawControls(ctx)
-    if (this.chaserLineTimer > 0 && this.phase === 'chase') {
+    if (this.phase === 'chase' || this.phase === 'close-call-freeze') this._drawControls(ctx)
+    if (this.chaserLineTimer > 0 && (this.phase === 'chase' || this.phase === 'close-call-freeze')) {
       this._drawSpeechBubble(ctx, this.chaserLine)
     }
-    if (this.runnerLineTimer > 0 && this.phase === 'chase') {
+    if (this.runnerLineTimer > 0 && (this.phase === 'chase' || this.phase === 'close-call-freeze')) {
       this._drawSpeechBubble(ctx, this.runnerLine, 74)
     }
   }

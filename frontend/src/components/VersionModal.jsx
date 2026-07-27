@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.37',
+    title: 'Close-Call Freeze & Rewards',
+    description: 'Added a 1-second breather after a close call so you can re-center your fingers. Clean escapes pay +50 sheebs and the Slippery When Wet badge, and picking up positive items pays +5 sheebs.',
+  },
+  {
     version: 'v0.4.36.1',
     title: 'Soggy TP, Heavy Plunger & Friendly Fire',
     description: 'Step in a Soggy Toilet Paper trail to leave a slick that slows any toilet who steps in it. Grab a Heavy Plunger and press FIRE to swing a knockback arc. And watch your timing with the Jayden Gun — get caught by the exact toilet you just stunned the instant it wakes up, and you’ll earn the "Friendly Fire" badge.',

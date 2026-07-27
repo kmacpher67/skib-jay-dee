@@ -279,3 +279,13 @@ export function buildLoadout(ownedItems = []) {
 
   return { speedBonus, staminaBonus, rewardBonus, luckBonus }
 }
+
+export const POSITIVE_PICKUPS = [
+  'gun',
+  'schleimy-potion',
+  'taco-bell',
+  'gawd-particle',
+  'decoy',
+  'heavy-plunger',
+  'soggy-tp'
+]

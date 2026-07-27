@@ -6,6 +6,21 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.37 — Close-Call Freeze & Rewards (2026-07-27)
+
+### What changed
+
+- Added a 1-second freeze immediately after the near-capture interlude to give players a breather before the chase resumes.
+- Added a sheeb reward of +50 for cleanly escaping a close call, and tied the Slippery When Wet badge to the same event.
+- Picking up positive items now grants +5 sheebs.
+- Added an e2e test to verify the freeze and sheeb rewards.
+
+### Design decisions
+
+- Added a specific `close-call-freeze` phase rather than reusing other mechanics to keep it clean and robust.
+- Hooked positive items dynamically based on a `POSITIVE_PICKUPS` configuration array in `gameContent.js`.
+
+
 ## v0.4.36.1 — Finished the interrupted v0.4.36 follow-ups (2026-07-27)
 
 ### What changed

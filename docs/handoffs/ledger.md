@@ -9,6 +9,11 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-27 | v0.4.37 | Close-call freeze phase added after near-capture beat
+2026-07-27 | v0.4.37 | Clean close-call escape awards +50 sheebs and Slippery badge
+2026-07-27 | v0.4.37 | Positive pickups award +5 sheebs on collection
+2026-07-27 | v0.4.37 | Added e2e test for close-call rewards and freeze
+
 
 ## v0.4.36.1 — 2026-07-27 (real code)
 
