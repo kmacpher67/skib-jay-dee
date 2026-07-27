@@ -73,13 +73,14 @@ All are front-end–scoped or front-end–first unless noted. LT roadmap items
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 
-**Coding queue after v0.4.51 (Wall-Pinch Seals):** v0.4.41 Slice B (shop labels) →
-v0.4.41 Play Recap → v0.4.54 near-miss burst → v0.4.55 Micro-Skib →
-v0.4.56 runner pose collapse. Wall-pinch map fix shipped as `v0.4.51`
-(seal-off default; widen-vs-seal was unanswered).
+**Coding queue after v0.4.51 (Wall-Pinch Seals):** **v0.4.57 Rod Stinky
+cooldown hotfix first** → v0.4.41 Slice B (shop labels) → v0.4.41 Play
+Recap → v0.4.54 near-miss burst → v0.4.55 Micro-Skib → v0.4.56 runner pose
+collapse. Wall-pinch map fix shipped as `v0.4.51`.
 
 `GAME_ITERATION` is **v0.4.51** (`frontend/src/version.js`). Next code slice:
-**Slice B shop labels** per `roadmap-handoff-v0.4.41-plan.md`.
+**Rod of Poopdom second-teleport hotfix** per
+`roadmap-handoff-v0.4.57-plan.md` (jumps ahead of Slice B).
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.
@@ -645,3 +646,9 @@ and chaser-bark voice clips, 1:1 with text.
   3s Stinky cooldown, `T` + FIRE/WARP button. See
   [roadmap-handoff-v0.4.47.md](handoffs/roadmap-handoff-v0.4.47.md) and
   [docs/players-guide.md](players-guide.md).
+- [ ] **Bugfix: Rod of Poopdom second teleport dead.** Ken: first warp
+  works, second does not. Root cause (Mode A 2026-07-27): `stinkyTimer`
+  set on warp but never decremented in the chase update loop — cooldown
+  gate blocks forever. Hotfix plan:
+  [roadmap-handoff-v0.4.57-plan.md](handoffs/roadmap-handoff-v0.4.57-plan.md).
+  **Next code slice** (ahead of Slice B).

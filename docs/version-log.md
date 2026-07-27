@@ -6,6 +6,18 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.57-plan — Rod of Poopdom second teleport (Cursor Grok 4.5, 2026-07-27)
+
+Mode A only (no code). Ken: teleport works the first time, not the second.
+Investigated `GameEngine.js`: `_tryTeleport` sets `stinkyTimer = 3` but the
+chase update loop never decrements it (unlike every other buff timer), so
+the `stinkyTimer > 0` gate blocks all later warps. Secondary notes: smoke
+particles never age; pointer targeting mixes view/world coords (parked).
+Handoff: `docs/handoffs/roadmap-handoff-v0.4.57-plan.md`. Queued as next
+Mode B hotfix ahead of Slice B.
+
+**Next:** Mode B implement the `stinkyTimer` tick + e2e; ship as v0.4.57.
+
 ## v0.4.51 — Wall-Pinch Collision Traps (Cursor Grok 4.5, 2026-07-27)
 
 Ken reported getting stuck mid-map on Level 4 between two close wall faces.
@@ -18,9 +30,8 @@ seal-off. Left the Ramen quest-room wall seam alone. Added a dev-only
 width-audit script and a Playwright seal check. Collision / spawn code
 untouched (still correct from v0.4.39.1).
 
-**Next:** Slice B shop labels or Play Recap (`roadmap-handoff-v0.4.41-plan.md`).
-
-## v0.4.50 — Cosmetic Shop Sink (Composer, 2026-07-27)
+**Next:** Rod second-teleport hotfix (`roadmap-handoff-v0.4.57-plan.md`),
+then Slice B / Play Recap (`roadmap-handoff-v0.4.41-plan.md`).
 
 Added **Neon Jump-Scare Filter** cosmetic shop item (200 sheebs, no stat
 effect). When owned, the capture jump-scare overlay flashes magenta/cyan

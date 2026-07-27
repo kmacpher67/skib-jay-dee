@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Cursor Grok 4.5 — 2026-07-27 (v0.4.51 wall-pinch seals shipped)
+**Last updated by:** Cursor Grok 4.5 — 2026-07-27 (v0.4.57-plan Rod teleport cooldown bug)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,13 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+
+- **v0.4.57-plan (docs-only, 2026-07-27):** Mode A bug investigation —
+  Ken: Rod of Poopdom "works the first time… not the second." Root cause:
+  `stinkyTimer` set on warp but never decremented in the chase update loop,
+  so the second `_tryTeleport` is gated forever. Hotfix handoff:
+  `roadmap-handoff-v0.4.57-plan.md`. **Next code slice — jump queue ahead
+  of Slice B.** No code this pass.
 
 - **v0.4.51 (real code, shipped — 2026-07-27):**
   Wall-pinch collision traps — sealed two sub-40px corridor pinches in
@@ -384,12 +391,14 @@ manually:
   `v0.4.39.1`, and `v0.4.40` — confirmed against `frontend/src/version.js`
   and corrected two stale unchecked boxes in `docs/roadmap.md` this pass).
   Neither is "the current open handoff" anymore.
-- **Current open handoff:** Slice B shop labels / Play Recap in
-  `docs/handoffs/roadmap-handoff-v0.4.41-plan.md`. **Also code-ready:**
-  near-miss burst (`v0.4.54`), Micro-Skib (`v0.4.55`), pose collapse
-  (`v0.4.56`). Wall-pinch seals shipped as `v0.4.51`. Still blocked:
-  Audio 2 recordings, Yoodeling Unc-2, Turdstone Token (`v0.4.52`),
-  Role Reversal kit (`v0.4.53`). Planning: `next-agent-planning-brief.md`.
+- **Current open handoff (hotfix first):** Rod second-teleport dead —
+  `docs/handoffs/roadmap-handoff-v0.4.57-plan.md` (`stinkyTimer` never
+  ticks). Then Slice B shop labels / Play Recap
+  (`roadmap-handoff-v0.4.41-plan.md`). **Also code-ready:** near-miss
+  burst (`v0.4.54`), Micro-Skib (`v0.4.55`), pose collapse (`v0.4.56`).
+  Wall-pinch seals shipped as `v0.4.51`. Still blocked: Audio 2
+  recordings, Yoodeling Unc-2, Turdstone Token (`v0.4.52`), Role
+  Reversal kit (`v0.4.53`). Planning: `next-agent-planning-brief.md`.
   Coding: `next-agent-coding-brief.md`.
 - Do **not** start Audio 2 until Ken records **capture-line** clips (phase 1
   scope only — see `dialog_content_chasing.md`).
