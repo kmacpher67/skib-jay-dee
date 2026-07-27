@@ -7,7 +7,6 @@ import DeathsModal from './components/DeathsModal.jsx'
 import RewardsHistoryModal from './components/RewardsHistoryModal.jsx'
 import ShopModal from './components/ShopModal.jsx'
 import VersionModal from './components/VersionModal.jsx'
-import PlayersGuideModal from './components/PlayersGuideModal.jsx'
 import skreemLoopUrl from './assets/audio/jayden-skreem-loop.m4a'
 import captureStingUrl from './assets/audio/capture-sting-final.mp3'
 import levelStartUrl from './assets/audio/level-start-igottago.mp3'
@@ -53,7 +52,6 @@ export default function App() {
   const [versionOpen, setVersionOpen] = useState(false)
   const [deathsOpen, setDeathsOpen] = useState(false)
   const [rewardsHistoryOpen, setRewardsHistoryOpen] = useState(false)
-  const [playersGuideOpen, setPlayersGuideOpen] = useState(false)
   const [runnerFaceSelection, setRunnerFaceSelection] = useState(() => randomFaces().runnerFace)
   const [chaserFaceSelection, setChaserFaceSelection] = useState(() => randomFaces().chaserFace)
   const [runnerIsCustom, setRunnerIsCustom] = useState(false)
@@ -542,10 +540,6 @@ export default function App() {
               />
             )}
 
-            {playersGuideOpen && (
-              <PlayersGuideModal onClose={() => setPlayersGuideOpen(false)} />
-            )}
-
             {profileSwitcherOpen && (
               <ProfileSwitcherModal
                 profiles={listProfiles()}
@@ -759,9 +753,7 @@ function MainMenu({
         <p className="parody-warning">
           <strong>Fair Use / Parody Warning:</strong> This is a non-commercial fan parody game. Not affiliated with any official brand or IP.
           <br />
-          <button type="button" className="footer-link-btn" onClick={() => setPlayersGuideOpen(true)}>
-            Player&apos;s Guide
-          </button>
+          <a href="https://github.com/kmacpher67/skib-jay-dee/blob/main/docs/players-guide.md" target="_blank" rel="noopener noreferrer">Player's Guide</a>
           {' · '}
           <a href="https://github.com/kmacpher67/skib-jay-dee/issues" target="_blank" rel="noopener noreferrer">Report issues or leave feedback here.</a>
         </p>

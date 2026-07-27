@@ -6,6 +6,19 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.45 — Player's Guide Link (2026-07-27)
+
+### What changed
+
+- Implemented the Player's Guide UI simplification from `roadmap-handoff-v0.4.45-plan.md`.
+- Replaced the in-game Player's Guide modal with a plain external link to `docs/players-guide.md` on GitHub, preserving single-source-of-truth.
+- Removed `PlayersGuideModal.jsx` and its CSS styles.
+- Bumped `GAME_ITERATION` to `v0.4.45` and deployed.
+
+### Design decisions
+
+- Decided to drop the modal to prevent duplicated content between the markdown document and the JSX array, avoiding a deploy requirement for every wording fix.
+
 ## v0.4.43 — Player's Guide (2026-07-27)
 
 ### What changed

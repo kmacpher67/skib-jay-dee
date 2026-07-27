@@ -72,7 +72,7 @@ or the menu-brag-stat item now specced in `roadmap-handoff-v0.4.42-plan.md`
 | Status | Count | Items |
 |---|---|---|
 | **Unblocked — code next** | 0 | Pull next item from incremental backlog below |
-| **Shipped** | Player's Guide modal → `roadmap-handoff-v0.4.44-plan.md` (v0.4.43); Rewards & History panel (Slice A) → `roadmap-handoff-v0.4.41-plan.md`; Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` |
+| **Shipped** | Player's Guide link → `roadmap-handoff-v0.4.45.md` (v0.4.45); Rewards & History panel (Slice A) → `roadmap-handoff-v0.4.41-plan.md`; Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` |
 | **Queued — specced** | 0 | |
 | **Design-only / TBD** | 8 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip, HUD live-data pills, Rewards & History panel (Slice B), Pickup tracking + Play Recap |
 | **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
