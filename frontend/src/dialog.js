@@ -89,3 +89,21 @@ export const HARD_CHASER_LINES = [
   "I AM INEVITABLE. I AM SKIBIDI.",
   "YOUR DEBT IS DUE!",
 ]
+
+// Raman-Aunt-Toilet Lady — Broth Slip (spawn bark, trail-hit taunt, capture).
+export const BROTH_SPAWN_LINES = [
+  "BROTH'S ON, BABY! GET IN THE POT!",
+  "YOU CAN'T OUTRUN AUNTIE'S SOUP!",
+  "SLURP SLURP, I'M COMING FOR SECONDS!",
+]
+
+export const BROTH_HIT_LINES = [
+  "SLIP N' SLURP, BABY!",
+  'THAT BROTH IS PIPING HOT, AND SO IS THIS CHASE!',
+  "NOW WHO'S SLIPPERY?!",
+]
+
+export const BROTH_CAPTURE_LINES = [
+  'SIMMERED DOWN AND SERVED!',
+  'INTO THE POT YOU GO!',
+]

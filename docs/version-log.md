@@ -6,6 +6,16 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.49 — Broth Slip (Raman-Aunt-Toilet Lady) (Composer, 2026-07-27)
+
+Implemented `raman-aunt` as a Level 5+ extra-chaser rotation pick (12% spawn
+chance, 0.88× speed). She drops hot-ramen broth trails that cut runner steering
+to 0.05× for 2 seconds with momentum drift. Dialog pools cover spawn bark,
+trail-hit taunt, and themed capture lines. Face reuses `ant-k-raman` /
+`anti-k-raman-2`.
+
+**Next:** cosmetic shop sink (`roadmap-handoff-v0.4.50-plan.md`).
+
 ## v0.4.48 — Gameplay Rebalancing Remainder (Composer, 2026-07-27)
 
 Completed the economy tuning slice from `roadmap-handoff-v0.4.48-plan.md`.

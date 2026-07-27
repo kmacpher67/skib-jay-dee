@@ -102,6 +102,20 @@ export function getChaserProfile(faceId) {
   return CHASER_PROFILES[faceId] ?? CHASER_PROFILES['skib-default']
 }
 
+export const CHASER_TYPES = {
+  'raman-aunt': {
+    id: 'raman-aunt',
+    speedMult: 0.88,
+    faceIds: ['ant-k-raman', 'anti-k-raman-2'],
+    spawnChance: 0.12,
+    trailSpawnInterval: 0.35,
+    trailLifetime: 4,
+    trailWidth: 28,
+    steeringMult: 0.05,
+    debuffSeconds: 2,
+  },
+}
+
 export const BADGES = {
   'flaming-ass': {
     id: 'flaming-ass',

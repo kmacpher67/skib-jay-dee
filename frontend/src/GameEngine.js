@@ -12,8 +12,11 @@ import {
   GUN_HIT_LINES,
   COOLNESS_LINES,
   HARD_CHASER_LINES,
+  BROTH_SPAWN_LINES,
+  BROTH_HIT_LINES,
+  BROTH_CAPTURE_LINES,
 } from './dialog.js'
-import { CHASER_FACE_POOL, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS } from './gameContent.js'
+import { CHASER_FACE_POOL, CHASER_TYPES, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS } from './gameContent.js'
 import { PORCELAIN_GRID, PIPEWORKS_GRID, FLOODED_ANNEX_GRID, RAMEN_AISLE_GRID, WORLD_STAR_GRID, JAYDENS_NIGHTMARE_HOUSE_GRID } from './mapGrids.js'
 
 export const WORLD = {
@@ -374,6 +377,8 @@ const SOGGY_TP_TRAIL_SIZE = 26
 const SOGGY_TP_CHASER_SLOW_MULT = 0.6
 const SOGGY_TP_CHASER_SLOW_SECONDS = 5
 
+const RAMAN_AUNT = CHASER_TYPES['raman-aunt']
+
 const HEAVY_PLUNGER_SPAWN_CHANCE = 0.08
 const HEAVY_PLUNGER_PICKUP_SIZE = 24
 const HEAVY_PLUNGER_SWINGS = 3
@@ -452,6 +457,7 @@ export class GameEngine {
       gettingCapturedFace: null,
       capturedFace: null,
       facing: { x: 0, y: 1 },
+      driftVel: { x: 0, y: 0 },
       gun: null,
       rod: false,
     }
@@ -526,6 +532,8 @@ export class GameEngine {
     this.soggyTpTimer = 0
     this.soggyTpTrailTimer = 0
     this.soggyTrails = []
+    this.brothTrails = []
+    this.brothFrictionTimer = 0
     this.plungerSwingActive = false
     this.plungerSwingTimer = 0
     this.shartCharge = 0
@@ -824,6 +832,10 @@ export class GameEngine {
     return { x: x / mag, y: y / mag }
   }
 
+  getBrothSteeringMult() {
+    return this.brothFrictionTimer > 0 ? RAMAN_AUNT.steeringMult : 1
+  }
+
   _syncLevelState({ resetPositions = false, notify = true } = {}) {
     this.level = LEVELS[this.levelIndex]
     this.map = this.level.buildMap()
@@ -852,6 +864,9 @@ export class GameEngine {
     this.tacoBellTimer = 0
     this.stinkyTimer = 0
     this.smokeEffects = []
+    this.brothTrails = []
+    this.brothFrictionTimer = 0
+    this.runner.driftVel = { x: 0, y: 0 }
     this.pointerPos = { x: 0, y: 0 }
     this.decoyActive = false
     this.decoyTimer = 0
@@ -1035,6 +1050,14 @@ export class GameEngine {
           .map((trail) => ({ ...trail, lifetime: trail.lifetime - dt }))
           .filter((trail) => trail.lifetime > 0)
       }
+      if (this.brothTrails.length > 0) {
+        this.brothTrails = this.brothTrails
+          .map((trail) => ({ ...trail, lifetime: trail.lifetime - dt }))
+          .filter((trail) => trail.lifetime > 0)
+      }
+      if (this.brothFrictionTimer > 0) {
+        this.brothFrictionTimer = Math.max(0, this.brothFrictionTimer - dt)
+      }
     }
     
     const sprinting = (this.sprintBtn.active || this.keys.sprint) && this.stamina > 0
@@ -1062,10 +1085,37 @@ export class GameEngine {
     if (this.runner.plunger) speed *= 0.7
     const move = this._getMoveVector()
     if (move.x !== 0 || move.y !== 0) this.runner.facing = { x: move.x, y: move.y }
-    if (this.gawdParticleActive) {
-      this._moveIgnoringWalls(this.runner, move.x * speed * dt, move.y * speed * dt)
+
+    let stepX
+    let stepY
+    if (this.brothFrictionTimer > 0) {
+      const steer = RAMAN_AUNT.steeringMult
+      this.runner.driftVel.x += move.x * speed * steer * dt
+      this.runner.driftVel.y += move.y * speed * steer * dt
+      stepX = this.runner.driftVel.x * dt
+      stepY = this.runner.driftVel.y * dt
     } else {
-      this._moveWithCollision(this.runner, move.x * speed * dt, move.y * speed * dt)
+      this.runner.driftVel = { x: move.x * speed, y: move.y * speed }
+      stepX = move.x * speed * dt
+      stepY = move.y * speed * dt
+    }
+
+    for (const trail of this.brothTrails) {
+      if (rectsIntersect(this.runner, trail)) {
+        const wasActive = this.brothFrictionTimer > 0
+        this.brothFrictionTimer = RAMAN_AUNT.debuffSeconds
+        if (!wasActive) {
+          this.chaserLine = BROTH_HIT_LINES[Math.floor(Math.random() * BROTH_HIT_LINES.length)]
+          this.chaserLineTimer = 2
+          this.onChaserBark(this.chaserLine)
+        }
+      }
+    }
+
+    if (this.gawdParticleActive) {
+      this._moveIgnoringWalls(this.runner, stepX, stepY)
+    } else {
+      this._moveWithCollision(this.runner, stepX, stepY)
     }
 
     const fireHeld = this.keys.fire || this.fireBtn.active
@@ -1114,7 +1164,12 @@ export class GameEngine {
           chaser.soggySlowTimer -= dt
           speedMult *= SOGGY_TP_CHASER_SLOW_MULT
         }
-        const chaserTypeSpeedMod = chaser.chaserType === 'skib-daddy' ? 0.8 : 1
+        const chaserTypeSpeedMod =
+          chaser.chaserType === 'skib-daddy'
+            ? 0.8
+            : chaser.chaserType === 'raman-aunt'
+              ? RAMAN_AUNT.speedMult
+              : 1
         const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod * speedMult * chaserTypeSpeedMod
         const stepX = (dir.x / dist) * chaserSpeed * dt
         const stepY = (dir.y / dist) * chaserSpeed * dt
@@ -1137,6 +1192,25 @@ export class GameEngine {
           this._moveIgnoringWalls(chaser, stepX, stepY)
         } else {
           this._moveWithCollision(chaser, stepX, stepY)
+        }
+        if (chaser.chaserType === 'raman-aunt') {
+          const moved = Math.hypot(chaser.x - (chaser.prevX ?? chaser.x), chaser.y - (chaser.prevY ?? chaser.y))
+          if (moved > 2) {
+            chaser.brothTrailTimer = (chaser.brothTrailTimer ?? 0) - dt
+            if (chaser.brothTrailTimer <= 0) {
+              chaser.brothTrailTimer = RAMAN_AUNT.trailSpawnInterval
+              const size = RAMAN_AUNT.trailWidth
+              this.brothTrails.push({
+                x: chaser.x + chaser.w / 2 - size / 2,
+                y: chaser.y + chaser.h / 2 - size / 2,
+                w: size,
+                h: size,
+                lifetime: RAMAN_AUNT.trailLifetime,
+              })
+            }
+            chaser.prevX = chaser.x
+            chaser.prevY = chaser.y
+          }
         }
       }
 
@@ -1233,12 +1307,28 @@ export class GameEngine {
     const spawn = corners[Math.floor(Math.random() * corners.length)]
     let extraFace = this.chaser.face
     let extraFaceId = null
-    const randomItem = randomFrom(CHASER_FACE_POOL)
-    if (randomItem) {
-      const img = new Image()
-      img.src = randomItem.src
-      extraFace = img
-      extraFaceId = randomItem.id
+    let extraChaserType = null
+    let extraBaseSpeed = this.chaser.baseSpeed
+
+    if (this.levelIndex >= 4 && Math.random() < RAMAN_AUNT.spawnChance) {
+      extraChaserType = RAMAN_AUNT.id
+      extraBaseSpeed *= RAMAN_AUNT.speedMult
+      const ramanFaces = CHASER_FACE_POOL.filter((face) => RAMAN_AUNT.faceIds.includes(face.id))
+      const randomItem = randomFrom(ramanFaces.length ? ramanFaces : CHASER_FACE_POOL)
+      if (randomItem) {
+        const img = new Image()
+        img.src = randomItem.src
+        extraFace = img
+        extraFaceId = randomItem.id
+      }
+    } else {
+      const randomItem = randomFrom(CHASER_FACE_POOL)
+      if (randomItem) {
+        const img = new Image()
+        img.src = randomItem.src
+        extraFace = img
+        extraFaceId = randomItem.id
+      }
     }
 
     this.chasers.push({
@@ -1246,18 +1336,30 @@ export class GameEngine {
       y: spawn.y,
       w: 44,
       h: 44,
-      baseSpeed: this.chaser.baseSpeed,
+      baseSpeed: extraBaseSpeed,
       joinRamp: 0,
       stunnedUntil: 0,
       color: this.chaser.color,
       face: extraFace,
       faceId: extraFaceId,
+      chaserType: extraChaserType,
       spawn,
+      brothTrailTimer: 0,
+      prevX: spawn.x,
+      prevY: spawn.y,
     })
+
+    if (extraChaserType === 'raman-aunt') {
+      this.chaserLine = BROTH_SPAWN_LINES[Math.floor(Math.random() * BROTH_SPAWN_LINES.length)]
+      this.chaserLineTimer = 2
+      this.onChaserBark(this.chaserLine)
+    }
+
     this.onExtraChaserSpawn({
       count: this.chasers.length,
       index: this.chasers.length - 1,
       faceId: extraFaceId,
+      chaserType: extraChaserType,
     })
   }
 
@@ -1920,7 +2022,11 @@ export class GameEngine {
     this.phaseTimer = 2.6
     this.zoom = 1
     this._caughtChaser = caughtBy
-    this.captureLine = CAPTURE_LINES[Math.floor(Math.random() * CAPTURE_LINES.length)]
+    if (caughtBy?.chaserType === 'raman-aunt') {
+      this.captureLine = BROTH_CAPTURE_LINES[Math.floor(Math.random() * BROTH_CAPTURE_LINES.length)]
+    } else {
+      this.captureLine = CAPTURE_LINES[Math.floor(Math.random() * CAPTURE_LINES.length)]
+    }
 
     this._preCaughtRunnerFace = this.runner.face
     this._caughtFaceStage = 'impact'
@@ -2100,6 +2206,12 @@ export class GameEngine {
        ctx.beginPath()
        ctx.arc(t.x + t.w/2, t.y + t.h/2, t.w/2, 0, Math.PI * 2)
        ctx.fill()
+    })
+    ctx.fillStyle = 'rgba(255, 140, 50, 0.55)'
+    this.brothTrails.forEach((t) => {
+      ctx.beginPath()
+      ctx.arc(t.x + t.w / 2, t.y + t.h / 2, t.w / 2, 0, Math.PI * 2)
+      ctx.fill()
     })
     this._drawPickups(ctx)
     if (this.plungerSwingTimer > 0) {
