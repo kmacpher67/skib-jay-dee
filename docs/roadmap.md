@@ -617,21 +617,27 @@ and chaser-bark voice clips, 1:1 with text.
   - *Design Goal:* Keep it fun and interesting, not impossible. See `docs/level-progression-and-endgame-plan.md` for vibe process pre-planning notes.
   - **Reviewed 2026-07-27:** re-evaluated against the "no code-cowboy" rule; one open question was never actually answered (floor trap vs. held item to trigger a dimension shift — see "Flag for Ken" item 7 in `docs/level-progression-and-endgame-plan.md`). Still TBD, still not a ready-to-code handoff.
 - [ ] **New pickup: The Turdstone Token (Resurrection Ward).** **Specced
-  2026-07-27, named 2026-07-27** — rare passive map pickup, CoD
-  Tombstone-perk homage (in-chat shorthand: "TurdPOOP Perk"; sprite
-  concept "The Holy Crap" — a gray CoD-style gravestone redrawn as a
-  toilet; naming brainstorm in
-  [docs/perk-naming-notebook.md](perk-naming-notebook.md)). Held until
-  death, then intercepts that one death: skips the sheebs/skreems
-  penalty and, notably, skips the engine's existing "death always
-  advances `levelIndex`" behavior (`GameEngine.js:1948`) so the player
-  respawns on the *same* level instead of the next one — the one real
-  behavior change here, since loadout retention (gun/plunger/Rod of
-  Poopdom) is already the status quo on death. Single-use. Full engine
-  analysis, proposed `'turdstone-token'` pickup type, and five open
+  2026-07-27, named 2026-07-27, art landed 2026-07-27** — rare passive
+  map pickup, CoD Tombstone-perk homage (in-chat shorthand: "TurdPOOP
+  Perk"; sprite concept "The Holy Crap" — a gray CoD-style gravestone
+  redrawn as a toilet; naming brainstorm in
+  [docs/perk-naming-notebook.md](perk-naming-notebook.md)). Sprite art
+  is in the repo at `frontend/src/assets/turdstone-toilet-token-perk.png`
+  — first pickup in the engine to use a raster image rather than an
+  emoji-in-box, so it needs a center-crop + scale at draw time (via the
+  9-arg `ctx.drawImage` form) to fit the small map pickup footprint
+  without stretching; full approach in the plan doc's "Sprite
+  rendering" section. Held until death, then intercepts that one death:
+  skips the sheebs/skreems penalty and, notably, skips the engine's
+  existing "death always advances `levelIndex`" behavior
+  (`GameEngine.js:1948`) so the player respawns on the *same* level
+  instead of the next one — the one real behavior change here, since
+  loadout retention (gun/plunger/Rod of Poopdom) is already the status
+  quo on death. Single-use. Full engine analysis, proposed
+  `'turdstone-token'` pickup type, sprite crop/scale plan, and five open
   tuning/UX questions for Ken (spawn rarity, whether
-  `deaths`/`chaserSpeedMod` still advance on a save, save-moment UX,
-  HUD visibility, plus a "Holy Crap" sprite asset still needed) in
+  `deaths`/`chaserSpeedMod` still advance on a save, save-moment UX, HUD
+  visibility) in
   [roadmap-handoff-v0.4.52-plan.md](handoffs/roadmap-handoff-v0.4.52-plan.md).
   Not code-ready until Ken answers.
 - [x] **Feature: Rod of Poopdom (Teleport Mechanic).** Shipped v0.4.47 —

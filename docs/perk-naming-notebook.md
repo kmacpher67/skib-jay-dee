@@ -45,5 +45,10 @@ Perk." Internal pickup-type id: `'turdstone-token'`.
 redrawn as a toilet (the cross/rounded-top gravestone shape reimagined
 as a toilet tank-and-bowl silhouette, keeping the somber gray stone
 coloring so it still reads as "gravestone" at a glance before the joke
-lands). Not yet drawn/sourced — needs actual art before this ships; see
-the open item in the plan handoff.
+lands). **Art landed 2026-07-27:**
+`frontend/src/assets/turdstone-toilet-token-perk.png`. It's a full-size
+graphic rather than a pre-cropped icon, so it needs a center-crop +
+scale-to-fit at render time rather than a straight `drawImage` — see the
+"Sprite rendering" section in
+[roadmap-handoff-v0.4.52-plan.md](handoffs/roadmap-handoff-v0.4.52-plan.md)
+for the exact approach.

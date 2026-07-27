@@ -1,11 +1,23 @@
 # Roadmap Handoff v0.4.52-plan — Turdstone Token (Resurrection Ward)
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
-**Last updated by:** Claude Sonnet 5 — 2026-07-27 (naming pass: Turdstone
-Token confirmed, "The Holy Crap" sprite concept added)
+**Last updated by:** Claude Sonnet 5 — 2026-07-27 (sprite asset landed:
+`frontend/src/assets/turdstone-toilet-token-perk.png`, crop/scale plan
+added)
 **Session mode:** Mode A (Planning — docs only, no code changes)
-**Status:** SPECCED — naming decided, remaining open decisions for Ken,
-not code-ready yet
+**Status:** SPECCED — naming and art resolved, remaining tuning
+decisions for Ken, not code-ready yet
+
+**Art note:** Ken dropped the sprite art at
+`frontend/src/assets/turdstone-toilet-token-perk.png` (the "The Holy
+Crap" concept from the naming notebook). This is the first pickup in
+the engine to use a raster image instead of an emoji-in-box (see
+`_pickupStyle`/`_drawPickups`, `GameEngine.js:2331-2353` — every other
+pickup today draws a colored box + emoji glyph, nothing calls
+`ctx.drawImage` for a pickup icon). The source PNG is a full-size
+graphic, not pre-cropped to a small square icon, so it needs a
+center-crop + downscale at render time to sit cleanly in the ~28-32px
+pickup footprint on the map — see "Sprite rendering" below.
 
 **Naming note:** originally drafted under the working title "Tombstone
 Perk." Ken picked a name during a follow-up naming pass: **The Turdstone
@@ -137,6 +149,42 @@ not assumed CoD behavior:
     the same level the player died on, so "current level respawn"
     falls out for free once the increment is skipped.
 
+### Sprite rendering: `turdstone-toilet-token-perk.png`
+
+- **Import + load, same pattern as chaser faces**, not a new dependency:
+  `import turdstoneTokenSprite from './assets/turdstone-toilet-token-perk.png'`
+  in `frontend/src/gameContent.js` (alongside the existing face imports,
+  `gameContent.js:1-15`), then load it once into a module-level
+  `Image()` the same way extra-chaser faces are loaded
+  (`GameEngine.js:1319-1320`, `const img = new Image(); img.src = ...`)
+  — load once at engine construction, not per-spawn, so it's already
+  decoded by the time a Turdstone Token pickup spawns.
+- **Crop + scale at draw time, not pre-processed.** The source PNG is a
+  full graphic (not a pre-cropped square icon), so add a
+  `pickup.type === 'turdstone-token'` branch in `_drawPickups()`
+  (`GameEngine.js:2331-2353`, next to the existing `pickup.sprite` /
+  `_pickupStyle` branches) that uses the 9-argument
+  `ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh)` form: compute a
+  centered square source crop (`sw = sh = Math.min(img.width,
+  img.height)`, `sx/sy` centering that square in the source image —
+  same center-crop math as `FaceUpload.jsx`'s offscreen-canvas crop,
+  just done live against the destination pickup box instead of
+  pre-baked into a new file) and destination `dx, dy = pickup.x,
+  pickup.y`, `dw, dh = pickup.w, pickup.h` (the pickup's existing
+  `ROD_OF_POOPDOM_PICKUP_SIZE`-style constant, e.g. 28-32px). This
+  avoids stretching/distorting a non-square source image and needs no
+  new image-processing step — plain canvas API, matching how every
+  other image in this engine (faces) is already handled.
+- **Fallback:** if the image hasn't finished loading yet
+  (`img.complete` false / `naturalWidth === 0`) when a pickup is first
+  drawn, fall back to the existing emoji-in-box style for that frame
+  rather than drawing a broken image — same defensive pattern already
+  worth copying from how `entity.face` is drawn elsewhere
+  (`GameEngine.js:2415`, `ctx.drawImage(entity.face, ...)` assumes the
+  image is ready because faces are preloaded well before first draw;
+  do the same here by loading the sprite at construction, not on first
+  spawn).
+
 ## Open questions for Ken (blocking Mode B)
 
 1. **Spawn rarity.** Is 2% a reasonable target, or does Ken want it
@@ -180,8 +228,8 @@ answers those.
 ## What's explicitly not done
 
 - No code changes — Mode A planning/spec pass only.
-- No `_maybeSpawnTurdstoneToken()`, pickup-type branch, or death-flow
-  special-casing written.
+- No `_maybeSpawnTurdstoneToken()`, pickup-type branch, sprite
+  crop/scale rendering, or death-flow special-casing written.
 - No tuning numbers finalized (spawn rate, whether deaths/chaserSpeedMod
   still advance on a save).
 - No Player's Guide or `interactive-content-pack.md` entry yet — per
@@ -197,22 +245,32 @@ docs/handoffs/roadmap-handoff-v0.4.52-plan.md (this file) in full,
 including Ken's answers to open questions 1-5 (question 6, naming, is
 already resolved: "Turdstone Token" / `'turdstone-token'`).
 
-Check whether a "The Holy Crap" sprite asset (gray CoD-style gravestone
-redrawn as a toilet) has been dropped in frontend/src/assets/ yet — if
-not, ask Ken for it or use a placeholder shape and flag it as a
-follow-up, same pattern as other art-blocked backlog items.
+The sprite asset is already in the repo:
+frontend/src/assets/turdstone-toilet-token-perk.png. It's a full-size
+graphic, not pre-cropped to a small icon — see "Sprite rendering" above
+for the exact center-crop + `ctx.drawImage` 9-arg approach to use so it
+scales cleanly onto the map at pickup size instead of stretching.
 
-Your slice (frontend/src/GameEngine.js unless noted):
+Your slice (frontend/src/GameEngine.js and frontend/src/gameContent.js
+unless noted):
 1. Add ROD_OF_POOPDOM-style constants for the new pickup: spawn chance
    (default 0.02 unless Ken tuned it), pickup size.
-2. Add `_maybeSpawnTurdstoneToken()` mirroring `_maybeSpawnRodOfPoopdom()`
+2. Import `turdstone-toilet-token-perk.png` in gameContent.js (next to
+   the existing face imports) and load it into a module-level `Image()`
+   at engine construction, same pattern as `GameEngine.js:1319-1320`.
+3. Add `_maybeSpawnTurdstoneToken()` mirroring `_maybeSpawnRodOfPoopdom()`
    (~line 1512), pickup type `'turdstone-token'`, called from
    `_syncLevelState()` alongside the other `_maybeSpawn*` calls
    (~line 872).
-3. Add a `pickup.type === 'turdstone-token'` branch in the pickup-collection
-   switch (~line 1312) that sets `this.runner.hasTurdstoneToken = true` plus
-   a runner line.
-4. In `_triggerCaught()` (~line 1904), right after `this.deaths += 1`,
+4. Add a `pickup.type === 'turdstone-token'` branch in `_drawPickups()`
+   (~line 2331) that center-crops and scales the loaded sprite into the
+   pickup's box via the 9-arg `ctx.drawImage` form (see "Sprite
+   rendering" above), with an emoji-in-box fallback if the image isn't
+   loaded yet.
+5. Add a `pickup.type === 'turdstone-token'` branch in the
+   pickup-collection switch (~line 1312) that sets
+   `this.runner.hasTurdstoneToken = true` plus a runner line.
+6. In `_triggerCaught()` (~line 1904), right after `this.deaths += 1`,
    branch on `this.runner.hasTurdstoneToken`:
    - true: skip the sheebs/skreems loss block, skip `this.levelIndex++`,
      set `this.runner.hasTurdstoneToken = false`, and flag
@@ -220,10 +278,10 @@ Your slice (frontend/src/GameEngine.js unless noted):
    - false: existing behavior, unchanged.
    Apply Ken's answers on whether `deaths`/`chaserSpeedMod` still
    advance on a save.
-5. Wire whatever UX Ken specified for the save moment (App.jsx message,
+7. Wire whatever UX Ken specified for the save moment (App.jsx message,
    HUD icon, or neither) — check Ken's answers to questions 4-5 before
    guessing.
-6. Confirm `this.runner.hasTurdstoneToken` survives `_syncLevelState()`'s
+8. Confirm `this.runner.hasTurdstoneToken` survives `_syncLevelState()`'s
    per-level reset (it should — that function resets pickups/timers,
    not `runner.*` slot fields — but verify nothing in that block or in
    `_updateCaught()`'s reset zeroes it out unintentionally).
@@ -231,9 +289,11 @@ Your slice (frontend/src/GameEngine.js unless noted):
 Verification:
 - cd frontend && npm run build
 - Manually (or via Playwright/CDP per docs/dev-notes.md) pick up a
-  Turdstone Token, get caught, and confirm: same level, loadout intact,
-  currency per Ken's answer to Q1-3, single-use (dying again without a
-  new Turdstone Token behaves normally).
+  Turdstone Token, confirm the sprite renders cropped/scaled cleanly at
+  pickup size on the map (not stretched or overflowing its box), then
+  get caught and confirm: same level, loadout intact, currency per
+  Ken's answer to Q1-3, single-use (dying again without a new Turdstone
+  Token behaves normally).
 - Add an e2e spec analogous to existing pickup specs (see
   frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js for the pattern).
 
