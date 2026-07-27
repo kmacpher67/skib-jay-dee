@@ -13,7 +13,9 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
-- **v0.4.39-plan roadmap snapshot (docs-only, this session, 2026-07-27):**
+- **v0.4.39 (real code, shipped — 2026-07-27):**
+  implemented the **Enhanced Death Logs** + **Parody Warning & Feedback Link** slice from `docs/handoffs/roadmap-handoff-v0.4.39-plan.md`. `GameEngine.js` tracks `sessionSeconds` and `initialSheebs`, reporting `timePlayed`, `sessionSheebDelta`, and `sessionSkreemDelta` on death. `DeathsModal.jsx` renders this telemetry for new records and degrades gracefully for legacy ones. A "Fair Use / Parody Warning" with a link to the GitHub issues tracker (`https://github.com/kmacpher67/skib-jay-dee/issues`) is now displayed at the bottom of the Main Menu. Verified with `npm run build` and `npx playwright test`. `GAME_ITERATION` bumped to `v0.4.39` and deployed.
+- **v0.4.39-plan roadmap snapshot (docs-only, 2026-07-27):**
   Mode A pass — **16** open unchecked items in `docs/roadmap.md` incremental
   backlog (frontend snapshot table added). Confirmed v0.4.38 **has landed**
   (`GAME_ITERATION` = v0.4.38; not in progress). Locked queue: v0.4.39

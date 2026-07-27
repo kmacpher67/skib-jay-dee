@@ -6,6 +6,21 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.39 — Enhanced Death Logs & Parody Warning (2026-07-27)
+
+### What changed
+
+- Implemented **Enhanced Death Logs**: Modified `GameEngine.js` to track `sessionSeconds` and `initialSheebs`. On death, it now passes `timePlayed`, `sessionSheebDelta`, and `sessionSkreemDelta` to the capture handler. Updated `cookies.js` (`normalizeProfile`) to persist these fields in `deathsHistory`.
+- Updated `DeathsModal.jsx` to render this telemetry, falling back gracefully for legacy records.
+- Added a "Fair Use / Parody Warning" and a link to the GitHub issues tracker (`https://github.com/kmacpher67/skib-jay-dee/issues`) in `App.jsx` (within `MainMenu`).
+- Verified with `npm run build` and `npx playwright test`.
+- Bumped `GAME_ITERATION` to `v0.4.39` and deployed.
+
+### Design decisions
+
+- Added telemetry natively to the history log to preserve raw data rather than summarizing it too early, keeping the debt-lock difficulty track completely separate.
+- Placed the parody warning neatly in the footer of the Main Menu to keep the UI clean.
+
 ## v0.4.39-plan roadmap snapshot — backlog count, v0.4.40 queued (Claude Sonnet 5, 2026-07-27)
 
 ### What changed

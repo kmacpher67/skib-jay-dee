@@ -209,10 +209,20 @@ export default function App() {
       ? payload.chaserId
       : null
 
+    const timePlayed = typeof payload === 'object' && payload && Number.isFinite(payload.timePlayed)
+      ? payload.timePlayed
+      : null
+    const sessionSheebDelta = typeof payload === 'object' && payload && Number.isFinite(payload.sessionSheebDelta)
+      ? payload.sessionSheebDelta
+      : null
+    const sessionSkreemDelta = typeof payload === 'object' && payload && Number.isFinite(payload.sessionSkreemDelta)
+      ? payload.sessionSkreemDelta
+      : null
+
     syncProfile((current) => {
       const nextHistory = [
         ...(Array.isArray(current.deathsHistory) ? current.deathsHistory : []),
-        { timestamp: Date.now(), level, levelName, chaserId },
+        { timestamp: Date.now(), level, levelName, chaserId, timePlayed, sessionSheebDelta, sessionSkreemDelta },
       ]
 
       return {
@@ -664,6 +674,14 @@ function MainMenu({
         The Porcelain Palace now has three levels, the Shleeb shop works, and your user id stays in
         cookies so the save survives reloads.
       </p>
+
+      <div className="menu-footer">
+        <p className="parody-warning">
+          <strong>Fair Use / Parody Warning:</strong> This is a non-commercial fan parody game. Not affiliated with any official brand or IP. 
+          <br/>
+          <a href="https://github.com/kmacpher67/skib-jay-dee/issues" target="_blank" rel="noopener noreferrer">Report issues or leave feedback here.</a>
+        </p>
+      </div>
 
       <p className="build-tag" aria-label={`Game iteration ${iteration}`}>
         {iteration}

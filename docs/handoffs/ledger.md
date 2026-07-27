@@ -9,6 +9,8 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-27 | v0.4.39 | Added Enhanced Death Logs telemetry (timePlayed, sessionSheebDelta, sessionSkreemDelta) to deathsHistory
+2026-07-27 | v0.4.39 | Added Fair Use / Parody Warning and GitHub feedback link to Main Menu footer
 2026-07-27 | docs (Claude, Sonnet 5) | Roadmap snapshot: 16 open frontend backlog items tagged; v0.4.40 Shart Knocker plan + next-agent-planning-brief created; queue order locked (v0.4.39 then v0.4.40); v0.4.38-plan marked shipped
 2026-07-27 | v0.4.37 | Close-call freeze phase added after near-capture beat
 2026-07-27 | v0.4.37 | Clean close-call escape awards +50 sheebs and Slippery badge

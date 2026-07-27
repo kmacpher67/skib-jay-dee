@@ -461,6 +461,7 @@ export class GameEngine {
     this.maxStamina = 100
     this.stamina = this.maxStamina
     this.sheebs = Number.isFinite(initialSheebs) ? Math.floor(initialSheebs) : 0
+    this.initialSheebs = this.sheebs
     this.skreems = 0
     this.levelSkreems = 0
     this.deaths = Math.max(0, Math.floor(initialDeaths))
@@ -469,6 +470,7 @@ export class GameEngine {
     this.phase = 'intro'
     this.phaseTimer = 1.6
     this.levelSeconds = 0
+    this.sessionSeconds = 0
     this.gunFiredThisLevel = false
     this.zoom = 1
     this.captureLine = CAPTURE_LINES[0]
@@ -956,6 +958,7 @@ export class GameEngine {
 
     if (this.phase === 'chase' || this.phase === 'near-capture') {
       this.levelSeconds += dt
+      this.sessionSeconds += dt
       const wasExhausted = this.stamina <= 0
 
       if (this.gawdParticleActive) {
@@ -1811,6 +1814,9 @@ export class GameEngine {
       level: this.levelIndex + 1,
       levelName: this.level.name,
       chaserId: caughtBy?.faceId ?? null,
+      timePlayed: this.sessionSeconds,
+      sessionSheebDelta: this.sheebs - this.initialSheebs,
+      sessionSkreemDelta: this.skreems,
     })
     this.onSkreem(Math.floor(this.skreems))
     this.onCaught({
@@ -1820,6 +1826,9 @@ export class GameEngine {
       chaserFaceSrc: caughtBy?.face?.src ?? null,
       level: this.levelIndex + 1,
       levelName: this.level.name,
+      timePlayed: this.sessionSeconds,
+      sessionSheebDelta: this.sheebs - this.initialSheebs,
+      sessionSkreemDelta: this.skreems,
     })
   }
 

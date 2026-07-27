@@ -44,6 +44,13 @@ export default function DeathsModal({ deathsHistory, onViewProfile, onClose }) {
                     </button>
                   )}
                 </div>
+                {(entry.timePlayed != null || entry.sessionSheebDelta != null || entry.sessionSkreemDelta != null) && (
+                  <div className="death-telemetry" style={{ fontSize: '0.8rem', color: '#888', marginTop: '6px' }}>
+                    {entry.timePlayed != null && <span>Run Time: {Math.floor(entry.timePlayed)}s </span>}
+                    {entry.sessionSheebDelta != null && <span>• Sheebs: {entry.sessionSheebDelta > 0 ? '+' : ''}{entry.sessionSheebDelta} </span>}
+                    {entry.sessionSkreemDelta != null && <span>• Skreems: {entry.sessionSkreemDelta > 0 ? '+' : ''}{entry.sessionSkreemDelta}</span>}
+                  </div>
+                )}
               </article>
             ))}
           </div>

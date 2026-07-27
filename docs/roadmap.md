@@ -64,16 +64,17 @@ or front-end–first unless noted.
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next** | 2 (1 handoff) | Enhanced Death Logs, Parody Warning & Feedback Link → `roadmap-handoff-v0.4.39-plan.md` |
+| **Unblocked — code next** | 0 | |
+| **Shipped** | Enhanced Death Logs, Parody Warning & Feedback Link → `roadmap-handoff-v0.4.39.md` |
 | **Queued — specced** | 1 | Shart Knocker → `roadmap-handoff-v0.4.40-plan.md` (after v0.4.39) |
 | **Design-only / TBD** | 5 | Difficulty Function, Cool Play, Level 7+ Mosaic, Micro-Skib (partial), Raman-Aunt-Toilet Lady's Broth Slip |
 | **Blocked on Ken** | 3 | Audio 2 (record clips), Yoodeling Unc photo, distinct runner pose photos |
 | **Large / later** | 4 | Interactive content pack, Intro cinematic, Multiplayer (Phase 5), Gameplay Rebalancing remainder |
 | **Small polish** | 2 | Cosmetic shop sink, menu brag stat |
 
-`GAME_ITERATION` is **v0.4.38** (`frontend/src/version.js`). v0.4.38
-(Level 6 + grid migration) has **landed** — not in progress. Next code
-slice is v0.4.39-plan, not another v0.4.38 pass.
+`GAME_ITERATION` is **v0.4.39** (`frontend/src/version.js`). v0.4.39
+(Enhanced Death Logs + Parody Warning) has **landed** — not in progress. Next code
+slice is v0.4.40-plan.
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.

@@ -65,7 +65,7 @@ export function normalizeProfile(profile = {}) {
   const earnedBadges = Array.isArray(profile.earnedBadges)
     ? [...new Set(profile.earnedBadges.filter(Boolean))]
     : []
-  const deathsHistory = Array.isArray(profile.deathsHistory)
+    const deathsHistory = Array.isArray(profile.deathsHistory)
     ? profile.deathsHistory
         .filter(
           (entry) =>
@@ -80,6 +80,9 @@ export function normalizeProfile(profile = {}) {
           level: Number.isFinite(entry.level) ? Math.max(1, Math.floor(entry.level)) : null,
           levelName: typeof entry.levelName === 'string' && entry.levelName ? entry.levelName : null,
           chaserId: typeof entry.chaserId === 'string' && entry.chaserId ? entry.chaserId : null,
+          timePlayed: Number.isFinite(entry.timePlayed) ? entry.timePlayed : null,
+          sessionSheebDelta: Number.isFinite(entry.sessionSheebDelta) ? entry.sessionSheebDelta : null,
+          sessionSkreemDelta: Number.isFinite(entry.sessionSkreemDelta) ? entry.sessionSkreemDelta : null,
         }))
         .slice(-50)
     : []
