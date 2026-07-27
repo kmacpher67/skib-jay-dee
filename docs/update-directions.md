@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by: Antigravity - 2026-07-27
+**Last updated by:** Claude (Sonnet 5) — 2026-07-27
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -13,7 +13,43 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
-- **v0.4.36.1 (real code, most recent shipped version):** finished the
+- **v0.4.37 (real code, most recent shipped version — 2026-07-27):**
+  implemented the **Close-Call Freeze & Rewards** slice from
+  `docs/close-call-freeze.md` / `docs/handoffs/roadmap-handoff-v0.4.37-plan.md`.
+  `GameEngine.js` now has a dedicated `close-call-freeze` phase: once the
+  existing near-capture beat resolves, the world (runner movement,
+  chaser AI, stamina, skreem gain, timers) freezes for 1 second before
+  the chase resumes, giving mobile players a beat to re-center their
+  fingers. A clean escape from that freeze now pays +50 sheebs and stays
+  tied to the same event that fires the `Slippery When Wet` badge;
+  collecting a positive pickup (Jayden Gun, Schleimy Potion, Taco Bell
+  Grande, and future entries in a new `POSITIVE_PICKUPS` list in
+  `gameContent.js`) now pays +5 sheebs. Covered by
+  `frontend/e2e/close-call-rewards.spec.js`. `GAME_ITERATION` bumped to
+  `v0.4.37` and deployed. This shipped from a concurrent session and its
+  own `docs/handoffs/roadmap-handoff-v0.4.37.md` write-up, the
+  `docs/version-log.md`/`docs/handoffs/ledger.md` entries, and this
+  bullet were backfilled in a later Mode A pass (2026-07-27) after the
+  gap was found during a documentation-continuity review — see the
+  "Process note" below on why this drifted.
+- **Process note (docs-only, this session, 2026-07-27):** two sessions ran
+  close together — one shipped `v0.4.37` as real code, another
+  (Codex) wrote `docs/handoffs/roadmap-handoff-v0.4.39-plan.md` as a
+  fresh planning pass. The plan doc ended up listing `close-call freeze`
+  as still open and re-flagging the (already-resolved-in-`v0.4.36.1`)
+  uncommitted-worktree cleanup as urgent, because it was written without
+  the benefit of the other session's shipped commit. Corrected in this
+  pass: `docs/handoffs/roadmap-handoff-v0.4.39-plan.md` now reflects
+  what's actually shipped, the missing `roadmap-handoff-v0.4.37.md` was
+  backfilled, a stray, unheaded `v0.4.36` changelog fragment inside
+  `docs/version-log.md`'s `v0.4.37-plan` (content-first) entry was given
+  its own proper heading, and `docs/next-agent-coding-brief.md` was
+  rewritten since it pointed at a slice that has since shipped. Lesson
+  for future sessions: **before writing a new `-plan.md`, always check
+  `git log`/`frontend/src/version.js` for the actual current
+  `GAME_ITERATION`, not just the newest doc file** — a doc can be stale
+  relative to code shipped by a parallel session.
+- **v0.4.36.1 (real code, most recent shipped version before v0.4.37):** finished the
   uncommitted, half-wired diff flagged earlier this same session (see the
   v0.4.38-plan entry below) — it was a real but incomplete attempt at
   `v0.4.36`'s own named follow-ups. Fixed the duplicate
@@ -152,7 +188,10 @@ entry heading so the change trail stays obvious at a glance.
 - `docs/profiles-and-identity.md`
 - `frontend/src/components/ProfileSwitcherModal.jsx`
 - `docs/close-call-freeze.md`
+- `docs/handoffs/roadmap-handoff-v0.4.37.md`
 - `docs/handoffs/roadmap-handoff-v0.4.38-plan.md`
+- `docs/handoffs/roadmap-handoff-v0.4.39-plan.md`
+- `docs/difficulty-mechanics-plan.md`
 - `docs/level-progression-and-endgame-plan.md`
 - `frontend/src/mapGrids.js`
 - `docs/handoffs/roadmap-handoff-v0.4.32.md`
@@ -222,13 +261,13 @@ manually:
   as a grid from day one.
 - **Jayden Gun + Lucky Charm/Lucky badge landed in v0.4.31** — no longer on this list. Rolling Pickups (Mario-style) is still a separate, undesigned backlog item.
 - **v0.4.26-plan shipped as v0.4.26** (negative sheebs debt + item loss above level 3/4) — that line is stale, corrected here.
-- **Early-level progression badges + humor/random badges landed in v0.4.32** — no longer on this list. Quest Rooms and the Level 4+ 90-second survival floor shipped in v0.4.33. **Chaser Wall Hacks + the Gawd Particle landed in v0.4.34** — no longer on this list either. The old content-polish slice is still in `v0.4.35-plan`, but the next gameplay-feel handoff is now `v0.4.37-plan` (close-call freeze, reward payout, and a small sheebs bump for clean escapes / positive pickups).
+- **Early-level progression badges + humor/random badges landed in v0.4.32** — no longer on this list. Quest Rooms and the Level 4+ 90-second survival floor shipped in v0.4.33. **Chaser Wall Hacks + the Gawd Particle landed in v0.4.34** — no longer on this list either. The old content-polish slice is still in `v0.4.35-plan`.
+- **Close-call freeze + reward payout landed in v0.4.37** — no longer on this list. See `docs/handoffs/roadmap-handoff-v0.4.37.md`.
 - The next map-architecture follow-up is parked in `docs/handoffs/roadmap-handoff-v0.4.36-plan.md` so the v0.4.35 content-polish slice can stay small.
 - `v0.4.25` is now shipped: the post-kill profile card, killer-ID logging, and clickable deaths log are in production.
 - **Game identity / multiple cookie-backed save slots landed in v0.4.29** — the profile switcher, `localStorage` registry, and `docs/profiles-and-identity.md` are all in place. No longer on this list.
-- Next unclaimed, unblocked items from the backlog: the **close-call freeze + reward payout** slice is now the obvious next pull, and the separate **content-first fun pass** stays on deck behind it. The badges/rewards system and the Schleimy Potion/Micro-Skib items are still blocked on product decisions from Ken — see their entries in `docs/roadmap.md`. After the freeze/reward pass, `docs/interactive-content-pack.md` stays the source of truth for any extra secret-item / award ideas.
+- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.39-plan.md` (corrected in this session to match what's actually shipped — see the "Process note" above). Its recommended next slice is **Enhanced Death Logs** (record time-played + session sheeb/skreem delta in `deathsHistory`) plus the **Parody Warning & Feedback Link** UI addition, both small and unblocked. Level 6 (`v0.4.38-plan`) and the level-data-extraction migration remain queued behind it. The badges/rewards system follow-ons and the Schleimy Potion/Micro-Skib items are still blocked on product decisions from Ken — see their entries in `docs/roadmap.md`. `docs/interactive-content-pack.md` stays the source of truth for any extra secret-item / award ideas. The **Difficulty Function** item now has a real design doc, `docs/difficulty-mechanics-plan.md` (three implementation methods sketched) — needs Ken's method choice before coding, don't guess it.
 - Phase 6 (server-side/Mongo profile persistence) now has a starting point — `docs/profiles-and-identity.md` lays out the open identity/auth and sync-strategy decisions a future session needs answered before coding it. Still queued behind Phase 5 (multiplayer) in `docs/roadmap.md`, still planning-only.
-- The current planning thread is **v0.4.37-plan**: a close-call freeze / reward pass that gives the player a 1-second breather after the near-capture beat and pays sheebs for clean escapes and positive pickups. The follow-on content catalog lives in `docs/interactive-content-pack.md`, and the broader fun-first polish pass is intentionally parked behind this slice.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it
   needs Ken to record real voice clips first, it's not a pure coding

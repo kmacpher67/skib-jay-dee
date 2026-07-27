@@ -177,14 +177,24 @@ focused on *why*, those two are the *what* and *when*.
 - No gameplay code changed.
 - No build, test, deploy, or version bump was run.
 
-## v0.4.37-plan — Content-first refocus for story, map personality, and menu bragging (2026-07-27)
+## v0.4.36 — Level Data Extraction, Taco Bell & Decoy Pickups, Secret Badges (2026-07-27)
+
+**Doc note (Claude (Sonnet 5), 2026-07-27):** this entry was previously
+an unheaded fragment stuck inside the "v0.4.37-plan — Content-first
+refocus" entry below (a copy-paste artifact from an earlier session).
+Given its own heading here during a documentation-continuity pass;
+content is unchanged. See `docs/handoffs/roadmap-handoff-v0.4.36.md` for
+the full session write-up.
 
 ### What changed
 
-## v0.4.36 (Taco Bell, Decoys & Map Refactor)
 - **Map Refactor**: Converted Porcelain Palace and Pipeworks to 2D grid arrays, using `parseMapGrid` to dynamically generate wall rectangles, cleaning up hardcoded pixel spaghetti.
 - **Taco Bell & Decoy Pickups**: Added two new items to the Mario-style roller expansion. Taco Bell provides a speed boost but removes steering. The Decoy drops a cardboard cutout that distracts Skibs.
 - **Secret Badges**: Added two new hidden badges: `pacifist-warzone` (Survive Level 4 with the Jayden Gun without firing) and `premature-evacuation` (Get caught in the first 5 seconds of Level 1).
+
+## v0.4.37-plan — Content-first refocus for story, map personality, and menu bragging (2026-07-27)
+
+### What changed
 
 - Reviewed the open v0.4.37 plan against the current roadmap and
   refocused it toward a fun-first front-end pass instead of a numbers-only

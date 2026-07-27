@@ -13,6 +13,7 @@ update `docs/version-log.md`.
 2026-07-27 | v0.4.37 | Clean close-call escape awards +50 sheebs and Slippery badge
 2026-07-27 | v0.4.37 | Positive pickups award +5 sheebs on collection
 2026-07-27 | v0.4.37 | Added e2e test for close-call rewards and freeze
+2026-07-27 | docs (Claude, Sonnet 5) | Backfilled missing `roadmap-handoff-v0.4.37.md`; corrected stale `v0.4.39-plan` (already-shipped items, resolved worktree); fixed a misplaced v0.4.36 fragment in `version-log.md`; rewrote `next-agent-coding-brief.md`; no code changed
 
 
 ## v0.4.36.1 — 2026-07-27 (real code)

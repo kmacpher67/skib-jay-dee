@@ -276,7 +276,7 @@ and chaser-bark voice clips, 1:1 with text.
   fails) so the "Lucky" badge fires exactly on the luck bonus's first
   actual proc, per Ken's confirmed trigger. See
   [roadmap-handoff-v0.4.31.md](handoffs/roadmap-handoff-v0.4.31.md).
-- [x] **Feature: Close-call freeze + reward payout.** (Shipped in v0.4.37) When the existing near-capture / pre-kill skreem beat fires, hold the game frozen for 1 second before letting chase resume so mobile players can re-center their fingers and the chase doesn't restart mid-adjustment. A clean near-miss should pay +50 sheebs, and positive pickups should pay +5 sheebs on collection. See [docs/close-call-freeze.md](close-call-freeze.md).
+- [x] **Feature: Close-call freeze + reward payout.** (Shipped in v0.4.37) When the existing near-capture / pre-kill skreem beat fires, hold the game frozen for 1 second before letting chase resume so mobile players can re-center their fingers and the chase doesn't restart mid-adjustment. A clean near-miss should pay +50 sheebs, and positive pickups should pay +5 sheebs on collection. See [docs/close-call-freeze.md](close-call-freeze.md) and [roadmap-handoff-v0.4.37.md](handoffs/roadmap-handoff-v0.4.37.md).
   - **Positive pickup list:** Jayden Gun, Schleimy Potion, Taco Bell Grande, and future positive pickup items from `docs/interactive-content-pack.md`.
   - **Badge hook:** keep the `Slippery When Wet` badge aligned with the same close-call escape event so the reward and the brag moment stay in sync.
   - **Scope guard:** do not touch the separate post-capture `resume-countdown` beat; this is only for the pre-kill close-call pause.
