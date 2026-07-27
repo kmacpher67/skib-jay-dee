@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-27 | v0.4.42 | Added Menu Brag Stat (Best Run) showing highest level and fewest deaths to the main menu
 2026-07-27 | docs (Claude Sonnet 5) | Added pickup-consumption tracking + "Play Recap" addendum to `roadmap-handoff-v0.4.41-plan.md` (reuses the planned `rewardsHistory` log, new `onPickupConsumed` engine callback, three open questions for Ken); cross-referenced in `roadmap.md`, `profiles-and-identity.md`, `interactive-content-pack.md`; no code changed
 2026-07-27 | docs (Claude Sonnet 5) | Recorded Ken's Long-Term (LT) roadmap dictation — Level 10 grand-arc finale, Role Reversal, MOBA/PvP — as a new "Long-Term (LT) Roadmap" section in `roadmap.md`, a full writeup with refinement questions in `roadmap-handoff-v0.4.43-plan.md`, an open reconciliation note in `level-progression-and-endgame-plan.md` (Level 10 vs. existing Level 7 "CEO of Drains" climax), and pointers in `future-versions.md`; no code changed
 2026-07-27 | v0.4.41 | Added Rewards & History panel (Slice A) with `rewardsHistory` logging for badges and purchases

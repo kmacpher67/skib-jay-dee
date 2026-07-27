@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.42',
+    title: 'Menu Brag Stat',
+    description: 'Added a Best Run stat to the main menu that tracks the highest level you reached in a single run and the fewest deaths it took to get there.',
+  },
+  {
     version: 'v0.4.41',
     title: 'Rewards & History Panel',
     description: 'Added a new Rewards & History modal. You can now tap the Rewards pill on the bottom HUD to see a chronological log of all the badges you\'ve earned and shop items you\'ve purchased.',

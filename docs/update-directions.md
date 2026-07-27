@@ -13,6 +13,9 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.42 (real code, shipped — 2026-07-27):**
+  implemented the **Menu Brag Stat** slice from `docs/handoffs/roadmap-handoff-v0.4.42-plan.md`. Added a `bestRun` field to the profile that tracks the highest level reached in a single run and the fewest deaths taken. `App.jsx` now tracks session deaths and updates `bestRun` on level clear, displaying it on the main menu. `GAME_ITERATION` bumped to `v0.4.42` and deployed.
+
 - **v0.4.41 (real code, shipped — 2026-07-27):**
   implemented Slice A of the **Rewards & History panel** from `docs/handoffs/roadmap-handoff-v0.4.41-plan.md`. Added a capped `rewardsHistory` log to the profile which records badges earned and shop purchases. Made the `Rewards` HUD pill a clickable button that opens the new `RewardsHistoryModal.jsx`. Slice B (HUD pill values) remains parked pending design answers. Verified with a new E2E test. `GAME_ITERATION` bumped to `v0.4.41` and deployed.
 - **v0.4.40 (real code, shipped — 2026-07-27):**

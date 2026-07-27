@@ -62,6 +62,7 @@ export default function App() {
   const [showLevel4Warning, setShowLevel4Warning] = useState(false)
   const [activeBadgeToast, setActiveBadgeToast] = useState(null)
   const hasSeenLevel4WarningRef = useRef(false)
+  const sessionDeathsRef = useRef(0)
   const [profileModal, setProfileModal] = useState(null)
   const [profileModalMode, setProfileModalMode] = useState(null)
   const [profileSwitcherOpen, setProfileSwitcherOpen] = useState(false)
@@ -146,6 +147,18 @@ export default function App() {
   const handleLevelClear = ({ index, showLvl2Transition = false } = {}) => {
     playOneShot(levelClearUrl, 0.4)
     if (index === 2) setShowLvl2Transition(!!showLvl2Transition)
+
+    syncProfile((current) => {
+      const bestRun = current.bestRun || { level: 1, deaths: 0 }
+      const sessionDeaths = sessionDeathsRef.current
+      if (index > bestRun.level || (index === bestRun.level && sessionDeaths < bestRun.deaths)) {
+        return {
+          ...current,
+          bestRun: { level: index, deaths: sessionDeaths }
+        }
+      }
+      return current
+    })
   }
 
   const handleLevelChangeAudio = () => playOneShot(levelStartUrl, 0.35)
@@ -176,6 +189,7 @@ export default function App() {
     setShowLvl2Transition(false)
     setShowLevel4Warning(false)
     hasSeenLevel4WarningRef.current = false
+    sessionDeathsRef.current = 0
     setDadCaseSpawned(false)
     setProfileModal(null)
     setProfileModalMode(null)
@@ -233,6 +247,8 @@ export default function App() {
     const sessionSkreemDelta = typeof payload === 'object' && payload && Number.isFinite(payload.sessionSkreemDelta)
       ? payload.sessionSkreemDelta
       : null
+
+    sessionDeathsRef.current += 1
 
     syncProfile((current) => {
       const nextHistory = [
@@ -677,6 +693,10 @@ function MainMenu({
         <button className="status-pill deaths-pill" onClick={onOpenDeaths} type="button">
           Deaths {profile.deaths}
         </button>
+      </div>
+
+      <div className="best-run-row" style={{ display: 'flex', justifyContent: 'center', margin: '4px 0', fontSize: '0.9rem', color: '#ffea00', textShadow: '1px 1px 2px #000' }}>
+        Best Run: Lvl {profile.bestRun?.level || 1} ({profile.bestRun?.deaths || 0} deaths)
       </div>
 
       {profile.earnedBadges && profile.earnedBadges.length > 0 && (

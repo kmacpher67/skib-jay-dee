@@ -501,13 +501,13 @@ and chaser-bark voice clips, 1:1 with text.
   (level rewards, death penalty), consider a cosmetic-only shop item
   (e.g. a jump-scare filter skin) so sheebs have somewhere to go once
   stat upgrades are maxed. Small, self-contained.
-- [ ] **Menu brag stat: best level + fewest deaths.** Companion goal to the
+- [x] **Menu brag stat: best level + fewest deaths.** Companion goal to the
   Phase 7 risk/reward items above — once losing sheebs/items past
   level 3/4 is real, players will want to see their best run at a glance
   (e.g. "Best level 4 in 3 deaths"). Cookie profile already tracks
   `highestLevel` and lifetime deaths/`deathsHistory`, so this is mostly a
   menu display item, not new persistence. Small, do after the risk/reward
-  items land so there's something worth bragging about.
+  items land so there's something worth bragging about. Shipped v0.4.42.
 - [ ] **Menu HUD: make the Speed/Stamina/Rewards pills reflect real live
   data, not just static shop bonuses.** **New 2026-07-27 (Ken screenshot
   feedback), design-only, not code-ready.** The `perk-strip` in

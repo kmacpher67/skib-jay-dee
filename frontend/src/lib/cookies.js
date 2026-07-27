@@ -118,6 +118,7 @@ export function normalizeProfile(profile = {}) {
     earnedBadges,
     highestLevel: Number.isFinite(profile.highestLevel) ? Math.max(1, Math.floor(profile.highestLevel)) : 1,
     deaths: Number.isFinite(profile.deaths) ? Math.max(0, Math.floor(profile.deaths)) : 0,
+    bestRun: profile.bestRun || { level: 1, deaths: 0 },
     deathsHistory,
     rewardsHistory,
     muted: profile.muted === true,

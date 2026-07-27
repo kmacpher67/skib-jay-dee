@@ -6,6 +6,23 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.42 — Menu brag stat (2026-07-27)
+
+### What changed
+
+- Implemented the Menu Brag Stat (best level + fewest deaths) slice from `docs/handoffs/roadmap-handoff-v0.4.42-plan.md`.
+- Added a new `bestRun` field `{ level: 1, deaths: 0 }` to `frontend/src/lib/cookies.js` (`normalizeProfile`).
+- `App.jsx` now tracks `sessionDeathsRef` which resets on play and increments on death. During `handleLevelClear`, it updates `profile.bestRun` if the new level is higher or deaths are fewer.
+- Rendered the "Best Run: Lvl {X} ({Y} deaths)" stat on the main menu.
+- Documented `bestRun` in `docs/profiles-and-identity.md`.
+- Verified changes with `npm run build`.
+- Bumped `GAME_ITERATION` to `v0.4.42` and deployed.
+
+### Design decisions
+
+- Used a React ref (`sessionDeathsRef`) in `App.jsx` to track session deaths separately from the overall lifetime `deaths` count tracked by `GameEngine.js`, keeping the run-level logic scoped to the React app state.
+- Placed the Best Run stat prominently below the status pills row for easy visibility.
+
 ## v0.4.41-plan addendum — Pickup-consumption tracking + "Play Recap" (Claude Sonnet 5, 2026-07-27)
 
 Mode A pass, docs-only. Follow-up from Ken in the same session as the

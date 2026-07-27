@@ -21,6 +21,7 @@ the first time the game loads.
   ownedItems: [],            // Shleeb Shop purchases (ids from gameContent.js SHOP_ITEMS)
   highestLevel: 1,           // gates the debt/item-loss/level-4-warning mechanics
   deaths: 0,                 // lifetime capture count
+  bestRun: { level: 1, deaths: 0 }, // tracks fewest deaths to reach a level in a single run
   deathsHistory: [],         // last 50 captures: { timestamp, level, levelName, chaserId }
   rewardsHistory: [],        // last 50 rewards: { timestamp, type, label, amount, level, levelName }
   muted: false,              // audio preference
@@ -93,6 +94,7 @@ profile shape changed":
 | `ownedItems` | shop purchases (`App.jsx handlePurchase`) | `buildLoadout()` (speed/stamina/reward bonuses), item-loss roll above level 4 |
 | `highestLevel` | level-clear (`App.jsx handleLevelChange`) | debt-floor gate (>3), item-loss gate (>4), Level 4 warning trigger, (planned) brag-stat display |
 | `deaths` | every capture (`App.jsx handleDeath`) | HUD, Deaths pill count |
+| `bestRun` | level-clear (`App.jsx handleLevelClear`) | HUD best run text |
 | `deathsHistory` | every capture, now tagged with `chaserId` | `DeathsModal.jsx` log, `ProfileModal.jsx` killer-profile lookup |
 | `rewardsHistory` | every badge earn, every purchase (`App.jsx`) | `RewardsHistoryModal.jsx` log |
 | `muted` | mute toggle | all `Audio()` playback gating |
