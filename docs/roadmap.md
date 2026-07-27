@@ -284,6 +284,12 @@ and chaser-bark voice clips, 1:1 with text.
   enemy-AI/pathing work, not a single mechanic. No design pass done yet
   (spawn conditions, which levels, additive vs. replacement chaser). See
   [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
+- [ ] **Level 4+ Difficulty Constraints.** Level 4 and higher now requires at least 90 seconds (scaling up with higher levels) of running and evasion of 5 chasers before the level can clear.
+- [ ] **Skib-Chaser Evolution (Level 5+).** After level 4, skib-chasers get more powerful attacks, increased speed, and the terrifying ability to go through walls.
+- [ ] **The "Gawd Particle" (Level 5+).** An ultra-rare pickup item appearing after level 5. It allows runners to run through walls and essentially kill skib-chasers (despawning them entirely, forcing a respawn timer).
+- [ ] **Quest Rooms & Landmark Badges.** Map generation (especially for Level 4+) should feature dedicated landmarks with quest items. Entering these rooms grants specific badges. Rooms must have at least 2 closed walls with small openings. Initial rooms in Level 4 can have openings on each side; harder, higher levels will feature rooms with only one door.
+- [ ] **Retrofit Early Level Badges.** Retrofit lower levels with simple badge items. Finding cool stuff in a level or room becomes a prerequisite to moving beyond the level.
+- [ ] **Humor & Intrigue Random Badges.** Add random badge items in the initial levels that have humor and intrigue to collect. Some may have low spawn rates and won't always show up, but will appear later in some level.
 - [ ] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,
   left over from before the v0.4.16 cookie-default fix. `App.jsx` always
