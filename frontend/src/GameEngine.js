@@ -807,7 +807,7 @@ export class GameEngine {
     this.levelSkreems = 0
     this.levelElapsed = 0
     this.pipeworksSkreems = 0
-    this.chaser.chaserType = this.chaser.faceId === 'dad-case' ? 'skib-daddy' : null
+    this.chaser.chaserType = this.levelIndex === 5 ? 'skib-daddy' : null
     this.chaser.plungerCooldown = 2
     this.chasers = [this.chaser]
     this.chaser.spawn = this.level.chaserSpawn
@@ -1913,9 +1913,9 @@ export class GameEngine {
       this.sheebs += 50
       this.onSheebsChange(this.sheebs)
       
-      if (!this.slipperyBadgeEarned) {
-        this.slipperyBadgeEarned = true
-        this.newBadges.push('slippery-when-wet')
+      if (!this.earnedBadges.includes('slippery-when-wet')) {
+        this.earnedBadges.push('slippery-when-wet')
+        this.onBadgeEarned('slippery-when-wet')
       }
     }
   }

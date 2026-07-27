@@ -15,6 +15,14 @@ fallback to `OLLAMA_HOST` or switch to `desktop-gaming` /
 OpenRouter when needed. The handoff's own bounded copy-paste block is
 the prompt body.
 
+## ✅ Level 6 landed as v0.4.38 (2026-07-27)
+
+Jayden's Nightmare House shipped cleanly as `v0.4.38`. The live
+`LEVELS` array now includes the grid-authored Level 6 map, Skib-Daddy-
+Toilet Guy with Plunger Launch, and the Garage Survivor badge/quest
+room. The shipped handoff is recorded in
+[docs/handoffs/roadmap-handoff-v0.4.38.md](handoffs/roadmap-handoff-v0.4.38.md).
+
 ## ✅ Uncommitted working tree — RESOLVED as v0.4.36.1 (2026-07-27)
 
 The dirty working tree flagged earlier this session (uncommitted,
@@ -90,7 +98,7 @@ for the full session write-up and
 | 1.5 | Content pass: more levels, shop, persistence, death/skreem economy | Done (this session) |
 | 2 | Audio pass | First pass done (v0.4.0) — see [sound-effects-howto.md](sound-effects-howto.md) and [future-versions.md](future-versions.md) for polish left |
 | 2.5 | World Star intro cinematic | Not started (an experimental lvl2 video-transition clip landed as a rough proof of concept, see below) |
-| 3 | More characters/abilities per PDF roster, role-swapping | Level 6 (new chaser Skib-Daddy-Toilet Guy w/ Plunger Launch) scoped and ready to code — see [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md) and [roadmap-handoff-v0.4.38-plan.md](handoffs/roadmap-handoff-v0.4.38-plan.md). Level 7 climax ("CEO of Drains") stays parked, not scoped this pass. |
+| 3 | More characters/abilities per PDF roster, role-swapping | Level 6 (Jayden's Nightmare House + Skib-Daddy-Toilet Guy w/ Plunger Launch) landed in v0.4.38 — see [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md) and [roadmap-handoff-v0.4.38.md](handoffs/roadmap-handoff-v0.4.38.md). Level 7 climax ("CEO of Drains") stays parked, not scoped this pass. |
 | 4 | Oval/masked face-crop on upload instead of stretch | Done (v0.4.14) |
 | 5 | FastAPI WebSocket multiplayer, server-authoritative roles | Backend scaffolded only |
 | 6 | Mongo-backed profile (replaces cookies) | Not started — local multi-profile groundwork (registry, `label`/`updatedAt`) landed v0.4.29; open decisions on identity/auth, sync strategy, and migration written up in [docs/profiles-and-identity.md](profiles-and-identity.md) |
@@ -428,38 +436,23 @@ and chaser-bark voice clips, 1:1 with text.
   items land so there's something worth bragging about.
 - [x] **Level expansion.** Added The Ramen Aisle and World Star Parking Lot
   (5 levels total) — landed this session.
-- [~] **Level data extraction** — roadmap item 1 above. **Correction
+- [x] **Level data extraction** — roadmap item 1 above. **Correction
   (2026-07-27 planning pass):** only `buildPorcelainPalace` and
   `buildPipeworks` actually run through `parseMapGrid`/`frontend/src/mapGrids.js`
-  (shipped v0.4.36) — `buildFloodedAnnex`, `buildRamenAisle`, and
-  `buildWorldStarParkingLot` in `frontend/src/GameEngine.js` are still
-  hardcoded pixel-rect functions, checked `[x]` here previously but that
-  overstated it. The uncommitted working-tree diff has started adding
-  `FLOODED_ANNEX_GRID`/`RAMEN_AISLE_GRID`/`WORLD_STAR_GRID` exports to
-  `mapGrids.js`, but they're empty/placeholder grids, not wired into the
-  three `buildXxx()` functions yet, and unverified — see the uncommitted
-  working-tree callout above. Finish migrating the remaining three levels
-  before hand-authoring Level 6, since Level 6's looping-hallway design
-  wants the grid format from day one (see
-  [roadmap-handoff-v0.4.38-plan.md](handoffs/roadmap-handoff-v0.4.38-plan.md)).
+  (shipped v0.4.36). Migrated the remaining levels (`buildFloodedAnnex`, 
+  `buildRamenAisle`, and `buildWorldStarParkingLot`) in `v0.4.38` to the grid
+  format, fully extracting the core layout from hardcoded pixel-rect functions.
 - [x] **Death/skreem economy.** Lifetime death counter (persisted via
   cookies) and a skreem penalty on capture — landed this session.
 - [x] **Multi-chaser pressure.** Extra toilets join in if a level runs
   long without a catch (capped, resets on capture/level change) — landed
   this session.
-- [ ] **New character + Level 6: Skib-Daddy-Toilet Guy + "Jayden's
-  Nightmare House."** Superseded/scoped for real this session — see
-  [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md)
-  and the new [roadmap-handoff-v0.4.38-plan.md](handoffs/roadmap-handoff-v0.4.38-plan.md).
-  Ken confirmed (2026-07-27) reusing an existing chaser face (`dad-case`)
-  as Skib-Daddy-Toilet Guy's placeholder until a dedicated photo exists,
-  so this is now unblocked for Mode B — a new heavy `chaserType` with a
-  Plunger Launch (pull) ability, a looping-hallway map, and a single-door
-  "Garage" quest room (`Garage Survivor` badge). Level 7 ("CEO of Drains"
-  climax) stays parked, not part of this scope. Recommended to build
-  *after* the level-data-extraction item above finishes migrating Levels
-  3-5 to the grid format, since Level 6's looping halls are much easier
-  to hand-author as a grid.
+- [x] **New character + Level 6: Skib-Daddy-Toilet Guy + "Jayden's
+  Nightmare House."** Landed in v0.4.38 — Built `buildJaydensNightmareHouse` using
+  the grid format, introduced a new heavy `chaserType` with a Plunger Launch (pull)
+  ability for Skib-Daddy-Toilet Guy (using `dad-case` photo), and added a single-door
+  "Garage" quest room with the `Garage Survivor` badge. Level 7 ("CEO of Drains" climax)
+  stays parked, not part of this scope.
 - [x] **Funny near-capture interlude.** When a skib gets too close, pause
   the chase, pop `jayden-getting-captured.jpg` full-screen, and stamp the
   user's parody captions over it as a short meme card. Start with the

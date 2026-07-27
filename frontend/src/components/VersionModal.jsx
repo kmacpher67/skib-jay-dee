@@ -2,13 +2,8 @@ const PAST_VERSION_NOTES = [
 
   {
     version: 'v0.4.38',
-    summary: 'Level 6 (Nightmare House) & Skib-Daddy',
-    notes: [
-      'Migrated early maps to the grid system.',
-      'Added Level 6: Jayden\'s Nightmare House.',
-      'New chaser: Skib-Daddy with Plunger Launch.',
-      'Added Garage Survivor badge.'
-    ],
+    title: 'Level 6: Nightmare House & Skib-Daddy',
+    description: 'Migrated the remaining maps to the grid system, added Jayden\'s Nightmare House, and introduced Skib-Daddy with Plunger Launch plus the Garage Survivor badge.',
   },
 
   {

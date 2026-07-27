@@ -84,6 +84,27 @@ focused on *why*, those two are the *what* and *when*.
 - No gameplay code changed.
 - No build, test, deploy, or `GAME_ITERATION` bump ran.
 
+## v0.4.38 — Level 6 shipped: Jayden's Nightmare House / Skib-Daddy (2026-07-27)
+
+### What changed
+
+- Shipped the Level 6 content slice from `docs/handoffs/roadmap-handoff-v0.4.38-plan.md`.
+- Added `JAYDENS_NIGHTMARE_HOUSE_GRID` and the new Level 6 map to the live `LEVELS` array.
+- Introduced Skib-Daddy-Toilet Guy with the `dad-case` placeholder face and `skib-daddy` chaser type.
+- Added the Garage Survivor badge hook and refreshed the Version modal copy so the new release note renders correctly.
+- Verified the ship state with `npm run build` and the full Playwright suite after fixing the close-call test seam.
+
+### Design decisions
+
+- Kept the placeholder face tied to the level instead of the menu face picker so the new chaser remains deterministic.
+- Left Level 7 parked; v0.4.38 is a content ship, not the endgame-climax release.
+
+### Non-goals
+
+- No `GAME_ITERATION` bump beyond `v0.4.38`.
+- No Level 7 / CEO of Drains work.
+- No death-log telemetry or parody-warning UI work yet; that stays in the open v0.4.39 planning slice.
+
 ## v0.4.37 — Close-Call Freeze & Rewards (2026-07-27)
 
 ### What changed
@@ -1321,3 +1342,20 @@ the full session write-up.
 - Didn't retune `LEVEL5_PLUS_CHASER_SPEED_MULT`/`GAWD_PARTICLE_*`
   constants beyond the handoff's suggested ranges — real playtesting
   feedback should drive any further tuning.
+
+## v0.4.38 - 2026-07-27
+Created by: Code Monkey
+Created on: 2026-07-27
+
+**What changed:**
+- **Level data extraction:** Finished migrating `buildFloodedAnnex`, `buildRamenAisle`, and `buildWorldStarParkingLot` in `frontend/src/GameEngine.js` to the grid parser.
+- **Level 6 - Jayden's Nightmare House:** Added a new looping-hallway map built natively on the grid system.
+- **Skib-Daddy Chaser:** Added `chaserType` support and introduced Skib-Daddy (using `dad-case` photo) with a Plunger Launch ability that pulls the runner on hit.
+- **Landmark Quest Room:** Added a single-door Garage room in Level 6 with a new `Garage Survivor` badge.
+
+**Why:**
+Executing the `v0.4.38-plan` handoff. Migrating the old maps to grids sets up the level generator properly for Level 6.
+
+**What's next:**
+- Audio improvements for capture-lines/chaser-barks (Audio 2).
+- Level 7 (CEO of Drains) and further roadmap progression.

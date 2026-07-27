@@ -32,7 +32,7 @@ These have a very low spawn rate and provide comedic relief.
 Found inside high-risk Quest Rooms (chokepoints with 1 or 2 exits).
 - **Ramen Vault Keeper (Level 4):** Retrieved from the dual-exit Ramen Aisle stockroom.
 - **World Star Witness (Level 5):** Retrieved from the single-door World Star booth. Requires immense skill or the Gawd Particle to escape alive.
-- **Garage Survivor (Level 6, planned):** Retrieved from the single-door garage quest room in "Jayden's Nightmare House." Not yet built — see [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md) and `docs/handoffs/roadmap-handoff-v0.4.38-plan.md`.
+- **Garage Survivor (Level 6):** Retrieved from the single-door garage quest room in "Jayden's Nightmare House." Shipped in `v0.4.38`.
 
 ## Future Badge Seeds (not yet queued)
 

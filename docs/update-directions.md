@@ -31,7 +31,9 @@ entry heading so the change trail stays obvious at a glance.
   item in `docs/level-progression-and-endgame-plan.md` rather than
   assuming an answer. No scope change to the death-log telemetry /
   parody-warning slice that's still the actual unblocked next code slice.
-- **v0.4.37 (real code, most recent shipped version — 2026-07-27):**
+- **v0.4.38 (real code, most recent shipped version — 2026-07-27):**
+  migrated `Flooded Annex`, `Ramen Aisle`, and `World Star Parking Lot` to the grid format, extracted from hardcoded pixel-rects. Added Level 6 (`Jayden's Nightmare House`) using a looping hallway grid map. Added Skib-Daddy-Toilet Guy using a new heavy `chaserType` pattern with a `Plunger Launch` ability (using the `dad-case` face for now). Added a `Garage Survivor` landmark badge and quest room for Level 6. Tests passed and deployment succeeded. `GAME_ITERATION` bumped to `v0.4.38`.
+- **v0.4.37 (real code):**
   implemented the **Close-Call Freeze & Rewards** slice from
   `docs/close-call-freeze.md` / `docs/handoffs/roadmap-handoff-v0.4.37-plan.md`.
   `GameEngine.js` now has a dedicated `close-call-freeze` phase: once the
@@ -283,12 +285,8 @@ manually:
 
 - **The uncommitted working tree from earlier this session is resolved** —
   finished and shipped as `v0.4.36.1`. No longer on this list.
-- **Level 6 ("Jayden's Nightmare House") is now a ready handoff** —
-  `docs/handoffs/roadmap-handoff-v0.4.38-plan.md`. Recommended to pull
-  *after* finishing the level-data-extraction migration for Flooded
-  Annex/Ramen Aisle/World Star Parking Lot (still hardcoded pixel-rect
-  functions, not grid-based), so Level 6's looping halls can be authored
-  as a grid from day one.
+- **Level 6 ("Jayden's Nightmare House") has already landed** —
+  shipped in `v0.4.38`. No longer on this list.
 - **Jayden Gun + Lucky Charm/Lucky badge landed in v0.4.31** — no longer on this list. Rolling Pickups (Mario-style) is still a separate, undesigned backlog item.
 - **v0.4.26-plan shipped as v0.4.26** (negative sheebs debt + item loss above level 3/4) — that line is stale, corrected here.
 - **Early-level progression badges + humor/random badges landed in v0.4.32** — no longer on this list. Quest Rooms and the Level 4+ 90-second survival floor shipped in v0.4.33. **Chaser Wall Hacks + the Gawd Particle landed in v0.4.34** — no longer on this list either. The old content-polish slice is still in `v0.4.35-plan`.
@@ -296,7 +294,7 @@ manually:
 - The next map-architecture follow-up is parked in `docs/handoffs/roadmap-handoff-v0.4.36-plan.md` so the v0.4.35 content-polish slice can stay small.
 - `v0.4.25` is now shipped: the post-kill profile card, killer-ID logging, and clickable deaths log are in production.
 - **Game identity / multiple cookie-backed save slots landed in v0.4.29** — the profile switcher, `localStorage` registry, and `docs/profiles-and-identity.md` are all in place. No longer on this list.
-- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.39-plan.md` (corrected in this session to match what's actually shipped — see the "Process note" above). Its recommended next slice is **Enhanced Death Logs** (record raw `timePlayed`, `sessionSheebDelta`, `sessionSkreemDelta`, and the death level in `deathsHistory`) plus the **Parody Warning & Feedback Link** UI addition, both small and unblocked. Level 6 (`v0.4.38-plan`) and the level-data-extraction migration remain queued behind it. The badges/rewards system follow-ons and the Schleimy Potion/Micro-Skib items are still blocked on product decisions from Ken — see their entries in `docs/roadmap.md`. `docs/interactive-content-pack.md` stays the source of truth for any extra secret-item / award ideas. The **Difficulty Function** item now has a dedicated design note, `docs/difficulty-mechanics-plan.md`, and the preferred direction is Method C / Debt Lock with a lightweight starting selector — keep it separate from this telemetry pass.
+- **Current open handoff:** `docs/handoffs/roadmap-handoff-v0.4.39-plan.md` (corrected in this session to match what's actually shipped — see the "Process note" above). Its recommended next slice is **Enhanced Death Logs** (record raw `timePlayed`, `sessionSheebDelta`, `sessionSkreemDelta`, and the death level in `deathsHistory`) plus the **Parody Warning & Feedback Link** UI addition, both small and unblocked. Level 6 (`v0.4.38`) is already shipped. The badges/rewards system follow-ons and the Schleimy Potion/Micro-Skib items are still blocked on product decisions from Ken — see their entries in `docs/roadmap.md`. `docs/interactive-content-pack.md` stays the source of truth for any extra secret-item / award ideas. The **Difficulty Function** item now has a dedicated design note, `docs/difficulty-mechanics-plan.md`, and the preferred direction is Method C / Debt Lock with a lightweight starting selector — keep it separate from this telemetry pass.
 - Phase 6 (server-side/Mongo profile persistence) now has a starting point — `docs/profiles-and-identity.md` lays out the open identity/auth and sync-strategy decisions a future session needs answered before coding it. Still queued behind Phase 5 (multiplayer) in `docs/roadmap.md`, still planning-only.
 - The lvl2 transition now waits for the Pipeworks coverage/survival gate before mounting, so the next gameplay slice can move on to the remaining backlog instead of re-litigating that RCA.
 - Do **not** start "Audio 2: 1:1 capture/bark voice clips" next — it

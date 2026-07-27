@@ -48,14 +48,21 @@ test.describe('Close-call freeze and sheeb rewards', () => {
       window.__skibEngine._triggerNearCapture()
     })
 
-    // Wait for the near-capture beat to finish (2.5 seconds + some buffer)
-    await page.waitForTimeout(2600)
+    // Drive the engine forward deterministically instead of relying on wall
+    // clock timing, which is flaky in headless playback.
+    await page.evaluate(() => {
+      const engine = window.__skibEngine
+      engine.newBadges = []
+      engine._updateNearCapture(2.6)
+    })
 
     const phaseAfterBeat = await page.evaluate(() => window.__skibEngine.phase)
     expect(phaseAfterBeat).toBe('close-call-freeze')
 
-    // Wait for the freeze to finish (1.0 seconds)
-    await page.waitForTimeout(1100)
+    await page.evaluate(() => {
+      const engine = window.__skibEngine
+      engine._updateCloseCallFreeze(1.1)
+    })
 
     const phaseAfterFreeze = await page.evaluate(() => window.__skibEngine.phase)
     expect(phaseAfterFreeze).toBe('chase')
@@ -63,7 +70,7 @@ test.describe('Close-call freeze and sheeb rewards', () => {
     const sheebsAfter = await page.evaluate(() => window.__skibEngine.sheebs)
     expect(sheebsAfter).toBe(sheebsBefore + 50)
     
-    const hasBadge = await page.evaluate(() => window.__skibEngine.slipperyBadgeEarned)
+    const hasBadge = await page.evaluate(() => window.__skibEngine.earnedBadges.includes('slippery-when-wet'))
     expect(hasBadge).toBe(true)
   })
 

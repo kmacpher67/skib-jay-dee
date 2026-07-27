@@ -13,11 +13,27 @@ update `docs/version-log.md`.
 2026-07-27 | v0.4.37 | Clean close-call escape awards +50 sheebs and Slippery badge
 2026-07-27 | v0.4.37 | Positive pickups award +5 sheebs on collection
 2026-07-27 | v0.4.37 | Added e2e test for close-call rewards and freeze
+2026-07-27 | v0.4.38 | Added Level 6 "Jayden's Nightmare House" to the live level list
+2026-07-27 | v0.4.38 | Introduced Skib-Daddy-Toilet Guy with Plunger Launch and the Garage Survivor badge
+2026-07-27 | v0.4.38 | Refreshed Version modal copy for the shipped Level 6 release note
+2026-07-27 | v0.4.38 | Verified the ship state with build + Playwright after fixing the close-call test seam
 2026-07-27 | docs (Claude, Sonnet 5) | Backfilled missing `roadmap-handoff-v0.4.37.md`; corrected stale `v0.4.39-plan` (already-shipped items, resolved worktree); fixed a misplaced v0.4.36 fragment in `version-log.md`; rewrote `next-agent-coding-brief.md`; no code changed
 2026-07-27 | docs (Codex, GPT-5) | Refined `v0.4.39-plan`, `next-agent-coding-brief.md`, and `difficulty-mechanics-plan.md` to keep Enhanced Death Logs on raw telemetry and park difficulty math in Method C / Debt Lock
 2026-07-27 | docs (Claude, Sonnet 5) | Reviewed rolling deaths/sheebs auto-tuning idea; added "Auto-tuning refinement" to `difficulty-mechanics-plan.md` (extend Method C, no `DifficultyManager` class, economy-side lever, level-indexed floors — TBD window/values)
 2026-07-27 | docs (Claude, Sonnet 5) | Annotated Level 7+ Mosaic Map of Madness concept as reviewed; flagged the unanswered dimension-shift-trigger question (floor trap vs. held item) for Ken instead of assuming an answer
 2026-07-27 | docs (Claude, Sonnet 5) | Added provenance headers to `difficulty-mechanics-plan.md` and `level-progression-and-endgame-plan.md`; addendum appended to open `v0.4.39-plan` handoff
+2026-07-27 | v0.4.38 | Extracted Levels 3-5 to grid format.
+2026-07-27 | v0.4.38 | Added Level 6 (Jayden's Nightmare House) via grid format.
+2026-07-27 | v0.4.38 | Added Skib-Daddy-Toilet Guy with Plunger Launch ability.
+2026-07-27 | v0.4.38 | Added Garage Survivor quest room & badge for Level 6.
+
+## v0.4.38 — 2026-07-27 (real code)
+
+- Finished migrating `buildFloodedAnnex`, `buildRamenAisle`, and `buildWorldStarParkingLot` to the grid parser in `GameEngine.js`.
+- Added Level 6 (`Jayden's Nightmare House`) using a looping hallway map powered by the new grid system.
+- Added Skib-Daddy-Toilet Guy with a Plunger Launch ability (using the `dad-case` face for now).
+- Added a `Garage Survivor` landmark badge and quest room for Level 6.
+- Tests passed. `GAME_ITERATION` bumped to `v0.4.38` and deployed.
 
 ## docs-only planning pass — 2026-07-27
 
