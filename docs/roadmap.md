@@ -69,18 +69,16 @@ All are front-end–scoped or front-end–first unless noted. LT roadmap items
 |---|---|---|
 | **Unblocked — code next** | 8+ | See updated queue below |
 | **Specced — shipped** | 1 | Turdstone Token (v0.4.52) |
-| **Design-only / TBD** | 5 | Difficulty Function, Level 7+ Mosaic, Interactive content pack, Role Reversal kit (partial), Desktop Screen Support |
-| **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
+| **Design-only / TBD** | 4 | Difficulty Function, Level 7+ Mosaic, Interactive content pack, Role Reversal kit (partial) |
+| **Blocked on Ken** | 3 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo, Desktop Screen Support (A vs C — `v0.4.58-plan`) |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 
-**Coding queue after v0.4.52 (Turdstone Token):** **v0.4.57 Rod Stinky
-cooldown hotfix first** → v0.4.41 Slice B (shop labels) → v0.4.41 Play
-Recap → v0.4.54 near-miss burst → v0.4.55 Micro-Skib → v0.4.56 runner pose
-collapse.
+**Coding queue after v0.4.54 (near-miss burst shipped):** v0.4.41 Slice B
+(shop labels) → v0.4.41 Play Recap → v0.4.55 Micro-Skib → v0.4.56 runner pose
+collapse → v0.4.59 Neon Jump-Scare Upgrade. **Blocked:** Desktop Screen
+Support (`v0.4.58-plan`) until Ken picks A or C.
 
-`GAME_ITERATION` is **v0.4.52** (`frontend/src/version.js`). Next code slice:
-**Rod of Poopdom second-teleport hotfix** per
-`roadmap-handoff-v0.4.57-plan.md` (jumps ahead of Slice B).
+`GAME_ITERATION` is **v0.4.54** (`frontend/src/version.js`).
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.
@@ -653,5 +651,5 @@ and chaser-bark voice clips, 1:1 with text.
   gate blocks forever. Hotfix plan:
   [roadmap-handoff-v0.4.57-plan.md](handoffs/roadmap-handoff-v0.4.57-plan.md).
   **Next code slice** (ahead of Slice B).
-- [ ] **Feature: Desktop Screen Support.** Users are asking for computer screen size for desktop devices. Currently locked to 9:16 portrait. Need a design decision on whether to expand field of view, add a vignette to limit it, or use side art panels. Mode A plan created: [roadmap-handoff-v0.4.58-plan.md](handoffs/roadmap-handoff-v0.4.58-plan.md). **Blocked on Ken** for design decision on viewport balance.
+- [ ] **Feature: Desktop Screen Support.** Users want a bigger desktop play surface; currently locked to 9:16 `.portrait-frame` + 360×640 canvas. Mode A refined: [roadmap-handoff-v0.4.58-plan.md](handoffs/roadmap-handoff-v0.4.58-plan.md). Live choice **A (fog-of-war wider shell) vs C (scale 9:16 + side art)**; Option B (full FOV expand) soft-parked. **Blocked on Ken** — do not Mode B until A or C is picked.
 - [ ] **Feature: Debug State Dump.** Add a debug function (e.g., triggered by `Triple Q` or `ctrl+alt+del`) that performs a debug dump and allows copying game position data, relative position level, and all debug info for problem-solving.

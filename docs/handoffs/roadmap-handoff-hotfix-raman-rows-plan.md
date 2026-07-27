@@ -20,6 +20,7 @@ The previous wall-pinch fix in `v0.4.51` addressed 1-tile gaps across several ma
 ## Copy-paste: next natural steps
 
 ```text
-The Raman Rows bug is patched via hotfix (v0.4.52.1). 
-Pick up the next open plan in `docs/handoffs/` for the next coding session (Mode B), such as `roadmap-handoff-v0.4.58-plan.md` if Ken makes a decision, or `roadmap-handoff-v0.4.53-plan.md`.
+The Raman Rows bug is patched via hotfix (v0.4.52.1).
+Do NOT start roadmap-handoff-v0.4.58-plan.md until Ken picks Option A or C.
+Pick the next unblocked Mode B slice from docs/next-agent-coding-brief.md.
 ```

@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Claude Sonnet 4.6 — 2026-07-27 (v0.4.52 Turdstone Token shipped)
+**Last updated by:** Cursor Grok 4.5 — 2026-07-27 (v0.4.58-plan desktop FOV refine)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,9 +12,20 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
-- **v0.4.57 (real code, shipped — 2026-07-27):**
-  Hotfix for Rod of Poopdom. Decremented `stinkyTimer` in chase loop to allow a second teleport. Fixed `smokeEffects` particle persistence. `GAME_ITERATION` = v0.4.57. See `roadmap-handoff-v0.4.57.md`.
+- **v0.4.58-plan (docs-only, 2026-07-27):** Mode A refine — Desktop Screen
+  Support decision brief cleaned up in
+  `roadmap-handoff-v0.4.58-plan.md`. Live gate is **Option A (fog-of-war
+  wider shell) vs Option C (scale 9:16 + side art)**; Option B (full FOV)
+  soft-parked. Dual Mode B branches written but **blocked on Ken**. No
+  code. See also `docs/roadmap.md` backlog line.
 
+- **v0.4.54 (real code, shipped — 2026-07-27):**
+  Near-miss particle burst + brief screen-edge vignette pulse. Also a
+  useful canvas `createRadialGradient` precedent for Option A desktop FOW.
+  `GAME_ITERATION` = v0.4.54. See commit `52cc320`.
+
+- **v0.4.57 (real code, shipped — 2026-07-27):**
+  Hotfix for Rod of Poopdom. Decremented `stinkyTimer` in chase loop to allow a second teleport. Fixed `smokeEffects` particle persistence. See `roadmap-handoff-v0.4.57.md`.
 
 - **v0.4.59-plan (docs-only, 2026-07-27):**
   Mode A pass — created handoff for Neon Jump-Scare Upgrade (`roadmap-handoff-v0.4.59-plan.md`). Changes the existing cosmetic filter into an active mechanic (500ms headstart after a jump-scare), costs 250 sheebs to buy, deducts 50 sheebs each use. Updated `docs/roadmap.md`. Ready to code.
@@ -256,7 +267,7 @@ entry heading so the change trail stays obvious at a glance.
 - `frontend/src/components/ProfileModal.jsx` now renders the shared killer profile card for both fresh kills and log reopens, while `frontend/src/components/DeathsModal.jsx` shows clickable killer-ID pills.
 - `frontend/src/App.jsx` also owns the new menu version log panel, which shows `GAME_ITERATION` plus a short shipped changelog.
 - Planning-only review: the current maps are mechanically fine but need stronger landmark identity, so `docs/interactive-content-pack.md` still seeds the next funny runner/chaser item pack and secret awards. The refined `v0.4.37-plan` now points at the near-capture freeze / reward pass instead of the older content-first polish slice.
-- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently **v0.4.52**.
+- `frontend/src/version.js` is the single place to bump the visible iteration number. Currently **v0.4.54**.
 - The repo now also has a code-monkey lane: `./scripts/run_code_monkey.sh`
   can dispatch a bounded handoff to local Ollama using the shell's
   `OLLAMA_HOST` or to OpenRouter. A handoff can advertise its target
@@ -407,15 +418,11 @@ manually:
   `v0.4.39.1`, and `v0.4.40` — confirmed against `frontend/src/version.js`
   and corrected two stale unchecked boxes in `docs/roadmap.md` this pass).
   Neither is "the current open handoff" anymore.
-- **Current open handoff (hotfix first):** Rod second-teleport dead —
-  `docs/handoffs/roadmap-handoff-v0.4.57-plan.md` (`stinkyTimer` never
-  ticks). Then Slice B shop labels / Play Recap
-  (`roadmap-handoff-v0.4.41-plan.md`). **Also code-ready:** near-miss
-  burst (`v0.4.54`), Micro-Skib (`v0.4.55`), pose collapse (`v0.4.56`).
-  Wall-pinch seals shipped as `v0.4.51`. Still blocked: Audio 2
-  recordings, Yoodeling Unc-2, Turdstone Token (`v0.4.52`), Role
-  Reversal kit (`v0.4.53`). Planning: `next-agent-planning-brief.md`.
-  Coding: `next-agent-coding-brief.md`.
+- **Coding queue:** see `docs/next-agent-coding-brief.md` (near-miss
+  `v0.4.54` already shipped). **Blocked — do not code:** Desktop Screen
+  Support until Ken picks A or C
+  (`roadmap-handoff-v0.4.58-plan.md`). Also blocked: Audio 2 recordings,
+  Yoodeling Unc-2. Planning: `next-agent-planning-brief.md`.
 - Do **not** start Audio 2 until Ken records **capture-line** clips (phase 1
   scope only — see `dialog_content_chasing.md`).
 - The version page is now shipped in v0.4.18 — don't spend another
@@ -451,6 +458,8 @@ manually:
 ## Constraints to keep respecting
 
 - Keep the app front-end only unless the user explicitly asks for backend work.
-- Keep the portrait 9:16 layout.
+- Keep the portrait 9:16 layout (desktop FOV exception is *not* approved —
+  see blocked `v0.4.58-plan`; Option C would keep 9:16, Option A would need
+  an explicit constraint update when Ken picks it).
 - Do not break the cookie profile flow when touching the shop or the level rewards.
 - Preserve the local image gallery behavior so random defaults still change between plays.

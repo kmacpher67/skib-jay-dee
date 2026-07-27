@@ -46,6 +46,14 @@ is a parking lot, not an archive).
   footer controls. Removed the media query; covered by
   `frontend/e2e/cosmetic-sink.spec.js` at 1280×720.
 
+## Desktop screen size / FOV (parked — blocked on Ken)
+
+- Tracked as incremental backlog + Mode A handoff
+  [`roadmap-handoff-v0.4.58-plan.md`](handoffs/roadmap-handoff-v0.4.58-plan.md).
+  Not code-ready: Ken must pick **A** (fog-of-war wider shell) or **C**
+  (scale 9:16 + side art). Option B (full FOV) soft-parked. Do not pull
+  into a coding session until that answer lands.
+
 ## Test coverage gap (follow-up to the chaser face randomization fix)
 
 - No automated test exercises `_maybeSpawnExtraChaser()`

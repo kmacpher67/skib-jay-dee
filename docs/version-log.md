@@ -6,6 +6,25 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.58-plan — Desktop Screen Support refine (Cursor Grok 4.5, 2026-07-27)
+
+Mode A — docs only, no code. `GAME_ITERATION` stays **v0.4.54**.
+
+Refined `roadmap-handoff-v0.4.58-plan.md` from a stacked discussion dump into
+a decision-ready brief:
+
+- **Settled (investigation, not a product pick):** unrestricted widescreen
+  FOV is a real advantage (tension, multi-chaser pressure, decoys, L5+
+  wall-hack surprise). Soft-parked Option B (full FOV expand) for v1.
+- **Still blocked on Ken:** Option **A** (fog-of-war wider desktop shell,
+  mobile-equivalent sight) vs Option **C** (scale the existing 9:16 frame +
+  side art). Secondary A1/A2 (portrait light column vs circular vignette on
+  Jayden) only matters if A wins.
+- **Technical precedents noted:** `.dad-case-darkness` overlay; v0.4.54
+  near-miss `createRadialGradient` vignette in `GameEngine.js`.
+- Dual Mode B branches written; copy-paste block is a hard stop until Ken
+  answers A or C. Synced roadmap, update-directions, agent briefs, ledger.
+
 ## v0.4.52.1 — Raman Rows Hotfix (Antigravity, 2026-07-27)
 
 Mode B — hotfix directly to mapGrids.

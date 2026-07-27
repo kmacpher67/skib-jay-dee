@@ -1,117 +1,135 @@
 # Roadmap Handoff Plan v0.4.58 — Desktop Screen Size & Aspect Ratio
 
 **Created by:** Antigravity — 2026-07-27
-**Last updated by:** Claude — 2026-07-27 (added Option A implementation sketch)
-**Session mode:** Mode A (Planning / investigate — docs only, no code)
-**Status:** BLOCKED ON DESIGN DECISION (Field of view balance) — Ken has reviewed the discussion below and is still undecided between Option A and Option C.
+**Created on:** 2026-07-27
+**Last updated by:** Cursor Grok 4.5 — 2026-07-27 (Mode A refine: decision brief, soft-park B, dual Mode B branches)
+**Last updated on:** 2026-07-27
+**Session mode:** Mode A (Planning only — docs only, no code)
+**Status:** BLOCKED ON KEN — live choice is **Option A vs Option C** (Option B soft-parked)
 
 ## Trigger
 
-User request: 
-> "users asking for computer screen size for desktop screen devices so bigger playing size. is it too much of an advantage for user to see the whole map? Should we limit field of view? IDK, make this question."
+User request:
 
-Currently, the game forces a portrait 9:16 layout centered on the screen, matching mobile. Desktop users want to use their full widescreen monitor for a larger playing surface.
+> "users asking for computer screen size for desktop screen devices so bigger
+> playing size. is it too much of an advantage for user to see the whole map?
+> Should we limit field of view? IDK, make this question."
 
-## Investigation (read-only)
+Today the app letterboxes a forced **9:16** `.portrait-frame` on desktop
+(`frontend/src/index.css`). The engine canvas is fixed at `VIEW_W = 360` /
+`VIEW_H = 640` (`GameEngine.js`). Desktop players want a larger play surface;
+widening the *camera* without a FOV policy would let them see chasers sooner
+than mobile players.
 
-The game's rendering relies on a 360x640 canvas (or similar portrait constraints). If we expand this to a responsive 16:9 or full browser window:
-1. **Map rendering**: `GameEngine.js` `_drawWorld` relies on `viewCoords`. If the view expands, more of the map is drawn. 
-2. **Gameplay advantage**: A widescreen desktop player would see chasers approaching from much farther away on the left and right sides than a mobile player. This breaks the tension of the jump-scare/chase loop, which relies on the limited viewport to hide distant threats.
+## Investigation (read-only, current code)
 
-## ⚠️ Flag for Ken (Product Decision Required)
-
-Before we write code for this, we need to decide how to handle the extra screen real estate on desktop to preserve game balance:
-
-**Question: Is it too much of an advantage for desktop users to see the whole map? Should we limit the field of view?**
-
-Options for Ken to choose from:
-- **Option A: The "Fog of War" / Vignette.** Let the canvas expand to full screen, but draw a heavy dark vignette or "fog" around the player that matches the mobile viewport's sight distance. You get a big screen, but you can't see threats any earlier than mobile players. (Recommended for balance and horror vibe).
-- **Option B: Let them see everything.** Just expand the camera viewport. Desktop players get a huge advantage and can plan their routes easily.
-- **Option C: Letterboxing with background art.** Keep the play area locked to 9:16 portrait (so the field of view stays identical), but scale it up slightly and fill the left/right empty desktop space with cool static artwork or UI panels (stats, inventory, etc.) instead of just black bars.
-
-**Reply with your choice (A, B, or C) so we can finalize this handoff.**
-
-## Discussion log — 2026-07-27
-
-Ken shared a desktop screenshot (`image_799dc6.png`) showing the unused side columns on a widescreen monitor and asked for a breakdown of the tradeoffs before deciding. Summary of that discussion:
-
-**Why seeing the whole map is a real advantage, not just a nitpick:**
-
-| Feature | Impact of seeing the whole map |
+| Touchpoint | What it does today |
 | --- | --- |
-| Tension & horror | Drastically reduced — jump-scares and aggressive zooms lose their punch if every chaser is visible from a mile away. |
-| Multi-chaser pressure | The game spawns extra toilets when a level runs long; full visibility lets players track and route around new spawns immediately, neutralizing the intended pressure. |
-| Item balance | Items like the Fake Jayden Decoy (300px radius, 4s distraction) are balanced around limited visibility — perfect visibility means perfect decoy placement every time. |
+| `frontend/src/index.css` `.stage` / `.portrait-frame` | Centers a 9:16 frame; side gutters are plain black |
+| `GameEngine.js` `VIEW_W`/`VIEW_H` (360×640) | Fixed logical canvas; `_drawWorld` cameras via `viewCoords` |
+| `App.jsx` desktop controls | Keyboard ARROWS/WASD + SPACE already exist; virtual joystick still drawn on canvas |
+| `.dad-case-darkness` (`index.css` + `App.jsx`) | Full-frame dark overlay precedent (Dad Case spawn) |
+| Near-miss vignette (`GameEngine.js`, shipped **v0.4.54**) | `createRadialGradient` pulse on near-miss escape — canvas FOW technique already in-tree |
 
-**Why limiting FOV still matters, even on a bigger screen:**
-- Preserves the original design intent (strict portrait, 9:16 aspect ratio).
-- Maintains the claustrophobia that makes close-call mechanics (e.g. "Slippery When Wet" escapes) rewarding.
-- Protects late-game mechanics like the Level 5+ Chaser Wall Hacks, which rely on the player not knowing exactly where the enemy will emerge.
+**Balance fact (settled in discussion, not a Ken decision):** unrestricted
+widescreen camera is a real advantage — jump-scare tension, multi-chaser
+pressure, decoy placement, and Level 5+ wall-hack surprise all assume limited
+sight distance. Do not ship Option B casually.
 
-**Two desktop-friendly approaches that came out of the discussion (map to the options above):**
-- **Scale the 9:16 container (≈ Option C):** Scale the whole 9:16 canvas up to match the desktop monitor's height. Jayden and the Skibs get physically larger and easier to see, but the *amount* of map visible is unchanged. Dead space on the sides gets filled with themed borders/arcade cabinet art instead of plain black bars.
-- **Fog of War / darkness mask (≈ Option A):** Widen the aspect ratio to 16:9 for desktop, but shroud everything outside a radius around Jayden in darkness so effective sight distance matches mobile. There's already a precedent for this pattern — the Dad Case chaser's `.dad-case-darkness` overlay.
+## ⚠️ Flag for Ken (required before Mode B)
 
-**Outcome:** Ken finds this a good discussion but has not picked a direction yet. No option has been eliminated. Revisit this handoff once a choice is made (A, B, or C) before starting Mode B implementation.
+**Pick one:**
 
-### Reference: generic mobile→desktop scaling checklist
+| Option | What the player gets | FOV vs mobile | Constraint note |
+| --- | --- | --- | --- |
+| **A — Fog of War / vignette** | Wider desktop shell (fills more of the monitor) | Effective sight distance matched to mobile via darkness mask | Explicit desktop exception to “forced 9:16 layout” in `AGENTS.md` / `skib-sdlc.md` — world FOV stays mobile-equivalent |
+| **C — Scale + side art** | Same 9:16 playfield, scaled up to monitor height; themed side panels/art instead of black bars | Identical FOV to mobile | Preserves the 9:16 constraint; lowest balance risk |
+| ~~B — Full FOV expand~~ | Full widescreen camera, see more map | **Bigger** than mobile | Soft-parked (see below) |
 
-Ken also pulled a generic (engine-agnostic) answer on how a mobile 9:16 game is typically expanded to full desktop size. Not specific to this codebase (no engine specified — assumes something like Unity/Godot/Phaser/Construct), but useful as a checklist once an option is chosen:
+**Reply with `A` or `C`.** Until then, do not start Mode B and do not dispatch
+Code Monkey on this handoff.
 
-**Engine settings:**
-- Base resolution: change project settings from a portrait size to a horizontal desktop size.
-- Scale mode: use "Scale Fit" or "Expand" so the game fills the wide screen instead of showing black side bars.
-- Aspect ratio: unlock or change the target aspect ratio from fixed portrait to flexible/landscape.
+### Soft-park: Option B
 
-**Code and layout:**
-- CSS/canvas: set the HTML canvas width/height to fill the browser window.
-- Camera view: update the main camera zoom/orthographic size so more of the game world is visible on the sides.
-- UI positions: move buttons/scores from top/bottom corners to the new left/right edges.
+Discussion consensus: full FOV expand breaks horror tension and item/chase
+balance. Keep B only if Ken explicitly overrides; otherwise treat as
+**rejected for v1 desktop support**.
 
-Since this project renders via `GameEngine.js` on an HTML canvas (not Unity/Godot/Phaser/Construct), the equivalent touchpoints here are: the canvas resize/scale logic in `GameEngine.js`, the `viewCoords`-based camera math in `_drawWorld`, and the portrait container styling in `frontend/src/App.jsx`. This lines up with the Fix plan below — whichever option (A/B/C) is chosen still touches these same three spots.
+### If Ken picks A — secondary choice (can answer with A)
 
-Source: AI-generated overview citing gamemaker.io's mobile resolution-scaling tutorial and Android large-screen resizability docs; general background, not vetted against this codebase.
+| A-sub | Look | Notes |
+| --- | --- | --- |
+| **A1 — Portrait light column** | Bright vertical strip = mobile width; dark side wings fixed to screen | Simpler; “phone strip on a monitor” |
+| **A2 — Circular light around Jayden** | Vignette follows runner; outer darkness | Stronger horror; reuses v0.4.54 radial-gradient pattern |
 
-### Discussion: Option A implementation sketch (Fog of War)
+**Planning recommendation (not a Ken decision):** prefer **C** if the goal is
+“bigger sprites, zero balance change”; prefer **A2** if the goal is “fill the
+monitor + keep horror.” Do not code until Ken picks.
 
-Follow-up discussion leaning specifically into Option A (Fog of War / vignette), confirming it as "the best way to keep the game fair while still updating the layout for desktop viewports." Restates the core problem — an unrestricted wider viewport lets desktop players see chasers approaching much earlier and plan escapes too easily — then sketches an implementation:
+## Resolved this Mode A pass (docs only)
 
-**Balancing the viewport:**
-- Keep the core visual gameplay arena (the area actually visible/legible to the player) identical in size across mobile and desktop.
-- Render the canvas in 16:9 so it fills the desktop screen, but shroud everything outside the original 9:16 vertical boundary using the existing darkness logic.
+- Condensed prior discussion log + generic engine checklist + Option A sketch
+  into this decision brief (no longer a transcript dump).
+- Soft-parked Option B; live gate is **A vs C**.
+- Named concrete code touchpoints and two shipped darkness/vignette precedents.
+- Wrote dual Mode B branches below (still gated).
+- Synced `docs/roadmap.md`, `docs/update-directions.md`, agent briefs,
+  `docs/version-log.md`, and `docs/handoffs/ledger.md`.
 
-**Darkness overlay — two variants to choose between:**
-- A brightly lit vertical column in the center of the screen matching the mobile width (keeps the "portrait strip in the middle" look), or
-- A circular light radius centered on Jayden that doesn't expand past the mobile field of view (a true vignette that follows the player instead of staying centered on screen).
+## Mode B branches (do not execute until Ken picks)
 
-**Implementation notes:**
-- CSS: a radial-gradient overlay centered on the player's screen coordinates to shroud the extended desktop edges in black.
-- Canvas: if drawing directly on the HTML canvas, `globalCompositeOperation = 'destination-in'` can clip/mask outer visibility instead of (or in addition to) a CSS overlay.
+### Branch A — Fog of War desktop shell
 
-**UI/control adjustments that come with widening to desktop (apply regardless of which FOV option is chosen):**
-- Keep the top stats bar (SHEEBS, DEATHS) stretched/centered across the wider top layout.
-- Hide the virtual joystick and red SPRINT button when a desktop screen width is detected.
-- Show the ARROWS / WASD + SPACE keyboard prompt exclusively for desktop users.
+1. Desktop detection: widen shell beyond 9:16 when viewport is wide (CSS and/or
+   canvas resize path). Keep mobile portrait unchanged.
+2. Keep *effective* visible world radius ≈ current 360×640 sight; shroud the
+   extra desktop pixels (CSS radial overlay and/or canvas
+   `createRadialGradient` / `destination-in` mask in `_drawWorld`). Prefer A1
+   or A2 per Ken’s secondary pick.
+3. HUD: top stats stay usable on the wider top edge; hide virtual joystick /
+   SPRINT on desktop width; keep keyboard prompt.
+4. Update constraint docs (`AGENTS.md` / `skib-sdlc.md` / update-directions)
+   to say: mobile stays forced 9:16; desktop may use a wider shell with FOV
+   matched via fog.
+5. Verify: build + Playwright; manual desktop vs narrow viewport FOV check
+   (chasers must not be readable earlier on desktop than on mobile).
 
-This sharpens the Option A entry in the Fix plan below (radial gradient overlay in `_drawWorld`) with concrete CSS/canvas techniques, but it's still gated on Ken picking Option A over B/C — no code has been written yet.
+### Branch C — Scale 9:16 + side art
 
-## Fix plan (Mode B — single session)
+1. Keep `.portrait-frame` aspect-ratio 9/16; scale height to `100vh` (already
+   close); replace black `.stage` gutters with themed side art / simple panels
+   (stats, flavor art — no new gameplay systems).
+2. Do **not** change `VIEW_W`/`VIEW_H` or camera FOV.
+3. Optional: hide on-canvas joystick on desktop (keyboard already works) —
+   layout-only, not required for balance.
+4. Verify: build + Playwright; desktop screenshot shows larger playfield,
+   identical world visibility to mobile.
 
-*(To be finalized after Ken's decision)*
+### Shared non-goals (both branches)
 
-- If A: Update `GameEngine.js` camera/resize logic to allow widescreen, but add a radial gradient overlay centered on the player in `_drawWorld`.
-- If B: Update `GameEngine.js` resize logic to fill screen, adjust UI overlay positioning.
-- If C: Update CSS/layout in `frontend/src/App.jsx` to scale the 9:16 container as large as possible vertically, and add filler side panels.
+- No multiplayer balance pass.
+- No dynamic in-run FOV zoom redesign.
+- No asset inventing for side art if Ken has none — use CSS/theme placeholders
+  and flag Ken for real art later.
 
 ## Explicitly not in this pass
 
-- No code changes until the design decision is made.
-- No multiplayer balancing yet.
+- No code, no `GAME_ITERATION` bump, no deploy.
+- No picking A or C on Ken’s behalf.
 
 ---
 
 ## Copy-paste: next coding session (Mode B)
 
 ```text
-Mode B pending design decision. Do not execute until Ken selects Option A, B, or C from the handoff plan.
+Mode B for Desktop Screen Support is BLOCKED.
+
+Do not implement docs/handoffs/roadmap-handoff-v0.4.58-plan.md until Ken
+replies A or C in that handoff (Option B is soft-parked).
+
+After Ken answers, a planning session must paste the chosen branch into this
+block, then Mode B may run that branch only.
+
+Until then, pick the next unblocked coding slice from
+docs/next-agent-coding-brief.md (not this handoff).
 ```
