@@ -54,10 +54,11 @@ onto `kenmacpherson.com/skib-jay-dee-toilet-game/` — you'll need the user
 to confirm they want you to touch their live nginx config/CI, since that's
 a shared-system change outside this repo's sandbox.
 
-**D. More characters per the PDF roster** (Skib-Daddy, Raman-Aunt-Toilet
-Lady, Screeeeming Kid abilities) — Phase 3 per the roadmap in `README.md`.
-Only makes sense after A or B; multiple chasers/abilities need the chase
-loop and content pass done first.
+**D. More characters per the PDF roster** (Raman-Aunt-Toilet Lady,
+Screeeeming Kid abilities) — Phase 3 per the roadmap in `README.md`.
+Skib-Daddy already shipped in v0.4.38, so only the remaining roster
+follow-ups belong here. Only makes sense after A or B; multiple
+chasers/abilities need the chase loop and content pass done first.
 
 ## Constraints to respect
 

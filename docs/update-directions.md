@@ -102,16 +102,16 @@ entry heading so the change trail stays obvious at a glance.
   `frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js`. `GAME_ITERATION`
   bumped to `v0.4.36.1` and deployed. See
   `docs/handoffs/roadmap-handoff-v0.4.36.1.md`.
-- **v0.4.38-plan (docs-only, this session, 2026-07-27):** scoped Level 6
+- **v0.4.38-plan (docs-only, later shipped as v0.4.38):** scoped Level 6
   ("Jayden's Nightmare House") and its new chaser, Skib-Daddy-Toilet Guy,
   into a ready-to-code handoff — previously blocked on a face-asset
-  decision, now resolved (Ken confirmed reusing the existing `dad-case`
-  chaser face as a placeholder). Level 7 ("CEO of Drains") stays parked,
-  explicitly out of scope this pass. Also corrected two overstated
-  roadmap checkboxes (level-data extraction only covers 2 of 5 levels;
-  the "Friendly Fire" secret badge isn't actually wired) that didn't
-  match what's actually committed. See
-  `docs/handoffs/roadmap-handoff-v0.4.38-plan.md` and
+  decision, then resolved when Ken confirmed reusing the existing
+  `dad-case` chaser face as a placeholder. Level 7 ("CEO of Drains")
+  stayed parked, explicitly out of scope this pass. Also corrected two
+  overstated roadmap checkboxes at the time (level-data extraction was
+  still open then; the "Friendly Fire" secret badge wasn't actually
+  wired). See `docs/handoffs/roadmap-handoff-v0.4.38-plan.md`,
+  `docs/handoffs/roadmap-handoff-v0.4.38.md`, and
   `docs/level-progression-and-endgame-plan.md`.
 - **Planning refocus (docs-only, earlier session):** reviewed `docs/handoffs/roadmap-handoff-v0.4.37-plan.md` against the backlog and retargeted the next handoff toward a close-call freeze / reward pass: hold the near-capture beat for 1 second before chase resumes, pay +50 sheebs for a clean escape, and pay +5 sheebs for positive pickup rewards. The broader content-first polish pass stays parked for later.
 - **v0.4.36 (real code, most recent session):** implemented the **Level Data Extraction**, **Taco Bell & Decoy Pickups**, and **Secret Badges** items from `docs/handoffs/roadmap-handoff-v0.4.36-plan.md`. Refactored `Porcelain Palace` and `Pipeworks` into 2D character arrays in `frontend/src/mapGrids.js` and parsed them dynamically in `GameEngine.js`, removing pixel spaghetti. Added Taco Bell (speed boost, no steering) and Decoy (aggro pull) pickups. Added 'pacifist-warzone' and 'premature-evacuation' secret badges. Verified with Playwright suite and `npm run build`. `GAME_ITERATION` bumped to `v0.4.36` and deployed. See `docs/handoffs/roadmap-handoff-v0.4.36.md`.
@@ -145,7 +145,7 @@ entry heading so the change trail stays obvious at a glance.
 - **Process note:** `docs/skib-sdlc.md` now has an explicit "no code-cowboy sessions" rule — don't fix a bug found mid-planning inline in a `-plan.md`, give it its own Mode B session; and don't mark a design question "unblocked" for coding unless the user actually answered it in conversation.
 - **Live production bug (broken face preview images) is now resolved:** the `v0.4.25` deploy included the fix where `App.jsx` was coercing the face pool object to `[object Object]`. The production menu now correctly shows the selected face assets.
 - Front end only. The backend scaffold exists, but the current gameplay and menu do not call it.
-- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, the separate resume-countdown phase, five levels, the shipped Level 4+ quest rooms / survival floor, the Level 5+ chaser wall-hacks + speed bump and the Gawd Particle wall-hack/despawn-respawn counter (v0.4.34), desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), a 20-sheebs capture penalty (which can go negative above level 3), and the discreet iteration badge in the HUD.
+- `frontend/src/GameEngine.js` now handles the chase loop, jump-scare, the separate resume-countdown phase, six levels, the shipped Level 4+ quest rooms / survival floor, the Level 5+ chaser wall-hacks + speed bump and the Gawd Particle wall-hack/despawn-respawn counter (v0.4.34), desktop keyboard controls, sprint fixes, a death/skreem-penalty economy, a multi-chaser mechanic (extra toilets join in if a level runs long, with Pipeworks tuned for five simultaneous chasers), a 20-sheebs capture penalty (which can go negative above level 3), and the discreet iteration badge in the HUD.
 - `frontend/src/App.jsx` owns the menu, face upload, Shleeb shop, cookie-backed profile state, the play/session handoff, the delayed chase-ambient start, the lvl2 transition overlay lifecycle, the post-kill profile modal / clickable deaths log, and the level 4 warning overlay. The lvl2 video now only mounts after Pipeworks is cleared *and* the engine reports the new hall-coverage / 4-skib survival gate as ready. It also processes 25% item-loss on capture for players above level 4.
 - `frontend/src/components/ProfileModal.jsx` now renders the shared killer profile card for both fresh kills and log reopens, while `frontend/src/components/DeathsModal.jsx` shows clickable killer-ID pills.
 - `frontend/src/App.jsx` also owns the new menu version log panel, which shows `GAME_ITERATION` plus a short shipped changelog.
@@ -259,12 +259,13 @@ manually:
 - Mobile joystick still works bottom-left.
 - Sprint button is now a hold-to-run state instead of getting stuck.
 - Desktop players can use Arrow keys or WASD to move and SPACE to boost.
-- The canvas currently has five levels:
+- The canvas currently has six levels:
   - Porcelain Palace
   - Pipeworks
   - Flooded Annex
   - The Ramen Aisle
   - World Star Parking Lot
+  - Jayden's Nightmare House
 - The Shleeb shop is front-end only and sells stat upgrades that persist in cookies.
 - The profile tracks lifetime deaths (shown in the menu and the in-game HUD); getting caught also deducts a chunk of the current skreem total.
 - If the runner survives a level too long without getting caught, extra toilets join the chase (capped, resets on capture or level change) — the HUD shows "TOILETS ON YOU" once more than one is active.

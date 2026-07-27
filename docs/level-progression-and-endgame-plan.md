@@ -39,9 +39,10 @@ pool.
 | 4 | The Ramen Aisle | Live; v0.4.33-plan adds Quest Rooms + a 90s/5-chaser survival floor | Standard multi-chaser ramp |
 | 5 | World Star Parking Lot | Live, `advanceAt: null` (currently endless by design); v0.4.33-plan adds a Quest Room; v0.4.34-plan adds wall-hack chasers + the Gawd Particle | Endless escalation |
 
-Levels 6+ don't exist in `LEVELS` (`frontend/src/GameEngine.js`) yet.
+Level 6 now exists in `LEVELS` (`frontend/src/GameEngine.js`) as
+`v0.4.38`; Level 7 still doesn't.
 
-## Level 6: "Jayden's Nightmare House"
+## Level 6: "Jayden's Nightmare House" (shipped v0.4.38)
 
 Straight from the PDF's unused fourth map idea: *"A distorted suburban
 house where doorways loop back on themselves and toilets randomly
@@ -74,6 +75,11 @@ it's already designed, just never built.
   `chasers.length >= 5`. This is the first level where the plan's
   "scales up for levels beyond 4" language actually has somewhere to
   apply, now that a Level 6 exists.
+
+In the shipped build, Level 6 is currently the terminal live level until
+Level 7 is added. Treat the advance-condition paragraph above as the
+intended future arc for that next level, not as something still waiting
+to be implemented on the current shipped slice.
 
 ## Level 7: "The CEO of Drains" — climax / endgame
 
@@ -145,8 +151,8 @@ session builds Level 6 or 7:
    confirmed reusing an existing chaser face — `dad-case` — as a
    placeholder (good thematic fit: "dad" energy) until a dedicated photo
    exists. Level 6 is now unblocked on this question; see
-   `docs/handoffs/roadmap-handoff-v0.4.38-plan.md` for the ready-to-code
-   handoff. Swapping in a real photo later is a one-line
+   `docs/handoffs/roadmap-handoff-v0.4.38.md` for the shipped handoff.
+   Swapping in a real photo later is a one-line
    `CHASER_FACE_POOL`/`chaserType` face-id change, not a re-plan.
 2. **PARKED (2026-07-27), not part of this planning pass.** Level 7
    ("CEO of Drains") stays exactly where it was — depends on Level 6
@@ -180,17 +186,14 @@ session builds Level 6 or 7:
 - `docs/roadmap.md`'s phase table (Phase 3, "More characters/abilities
   per PDF roster") now points here instead of staying a bare "Not
   started" row.
-- The Level 6 build is now a real ready-to-code handoff —
-  `docs/handoffs/roadmap-handoff-v0.4.38-plan.md` — since question 1 is
-  resolved. Deliberately kept separate from v0.4.33 (Quest Rooms + Level
-  4-5 difficulty floor) and v0.4.34 (wall-hacks + Gawd Particle) so none
-  of the three grow past one session. It's also sequenced *after* the
-  still-open level-data-extraction backlog item (migrating Flooded Annex/
-  Ramen Aisle/World Star to the grid format) so Level 6's looping halls
-  can be authored as a grid from the start instead of hand-rolled pixel
-  rects.
-- Level 7 ("CEO of Drains") is **not** yet a ready-to-code handoff — it
-  depends on questions 3 and 4 above and on v0.4.34's Gawd Particle
-  actually shipping first (its despawn/respawn-queue mechanic is the
-  building block the win-state payoff reuses). Tracked here as a parked
-  item, not promoted to `docs/roadmap.md`'s incremental backlog yet.
+- The Level 6 build shipped as `docs/handoffs/roadmap-handoff-v0.4.38.md`
+  once question 1 was resolved. Deliberately kept separate from v0.4.33
+  (Quest Rooms + Level 4-5 difficulty floor) and v0.4.34 (wall-hacks +
+  Gawd Particle) so none of the three grew past one session. The
+  level-data-extraction cleanup also landed in the same release train, so
+  the original "do this first" sequencing note is now historical only.
+- Level 7 ("CEO of Drains") is still parked — it depends on questions 3
+  and 4 above and on v0.4.34's Gawd Particle actually shipping first
+  (its despawn/respawn-queue mechanic is the building block the win-state
+  payoff reuses). Keep it out of `docs/roadmap.md`'s incremental backlog
+  until those answers are in hand.

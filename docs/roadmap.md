@@ -59,8 +59,8 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 ## Where things stand (as of this session)
 
 Done: core chase loop, jump-scare capture, face upload + random default
-faces, five levels (Porcelain Palace → Pipeworks → Flooded Annex → The
-Ramen Aisle → World Star Parking Lot), desktop keyboard controls, sprint,
+faces, six levels (Porcelain Palace → Pipeworks → Flooded Annex → The
+Ramen Aisle → World Star Parking Lot → Jayden's Nightmare House), desktop keyboard controls, sprint,
 Shleeb shop, cookie-backed profile (user id, sheebs, owned items, highest
 level, lifetime deaths, deaths history with killer IDs), post-kill
 profile pages with a clickable deaths log, skreem-on-proximity,

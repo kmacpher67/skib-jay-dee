@@ -80,8 +80,8 @@ get lost:
 - Oval/masked face-crop on upload instead of stretch.
 - Level data extraction out of hardcoded `buildXxx()` map functions.
 - Shop item: cosmetic sink (or another cosmetic-only sheeb sink).
-- New character/ability from the PDF roster (Skib-Daddy, Raman-Aunt-Toilet
-  Lady).
+- New character/ability from the PDF roster (Raman-Aunt-Toilet Lady).
+  Skib-Daddy landed in v0.4.38.
 - Multiplayer spike (Phase 5) — biggest single item, do last.
 
 ## Interactive content seasoning (follow-up to v0.4.35)
