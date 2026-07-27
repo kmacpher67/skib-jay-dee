@@ -1,7 +1,7 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Claude (Sonnet 5) — 2026-07-27
+**Last updated by:** Codex (GPT-5) — 2026-07-27
 
 This brief is the quick-start version of the current open handoff. It
 previously pointed at the close-call freeze / reward slice
@@ -15,10 +15,10 @@ block first — it was itself written slightly stale and has since been
 fixed) and use this as the condensed checklist.
 
 The next best slice is front-end only: **Enhanced Death Logs** (record
-time-played and a session sheeb/skreem delta on each capture) plus the
-**Parody Warning & Feedback Link** UI addition. Both are small,
-unblocked, and independent of each other — do them as two short steps
-in one session, not a single tangled change.
+time-played plus raw session deltas on each capture) plus the **Parody
+Warning & Feedback Link** UI addition. Both are small, unblocked, and
+independent of each other — do them as two short steps in one session,
+not a single tangled change.
 
 Read first:
 
@@ -34,12 +34,11 @@ Read first:
 
 ## Session focus
 
-1. **Enhanced Death Logs:** add `timePlayed` (seconds survived that run)
-   and `sessionScore` (net sheebs earned/lost that run) fields to each
-   `deathsHistory` entry in `frontend/src/lib/cookies.js`, populate them
-   from `GameEngine.js` at the capture event, and render both in
-   `DeathsModal.jsx` alongside the existing timestamp/level/killer-ID
-   fields.
+1. **Enhanced Death Logs:** add `timePlayed`, `sessionSheebDelta`, and
+   `sessionSkreemDelta` fields to each `deathsHistory` entry in
+   `frontend/src/lib/cookies.js`, populate them from `GameEngine.js` at
+   the capture event, and render them in `DeathsModal.jsx` alongside the
+   existing timestamp/level/killer-ID fields.
 2. **Parody Warning & Feedback Link:** add a short parody/fair-use
    disclaimer plus a link to the repo's GitHub issues page, in the main
    menu or a small settings modal in `App.jsx` — whichever fits the
@@ -52,6 +51,8 @@ Read first:
 - Do not break cookie-backed profile persistence — existing
   `deathsHistory` entries from before this change won't have the new
   fields; render them gracefully (e.g. blank/omit) rather than crashing.
+- Do not fold difficulty math into this slice; that work is parked in
+  `docs/difficulty-mechanics-plan.md`.
 - Do not bump `GAME_ITERATION` or deploy unless the user explicitly asks.
 
 ## Verification

@@ -6,25 +6,27 @@
 ## Overview
 The difficulty system should stay funny, readable, and economy-driven.
 Instead of turning the game into a generic three-slider settings menu, the
-preferred direction is a small starting-mode selector plus a debt-based
+preferred direction is a small starting-mode selector, plus a debt-based
 pressure ramp that changes the run as the player gets in trouble.
 
-## Preferred direction
+## Implementation Methods
 
-### Method C: The Debt Lock
-- If `profile.sheebs < 0`, increase `CHASER_SPEED_MOD_MAX` by 15%.
-- Negative pickups such as Heavy Plunger and Soggy TP should spawn 20%
-  more often once the player is in debt.
-- The difficulty curve should feel like a consequence of the player
-  economy, not a separate meta menu they can solve in advance.
+To achieve this, we will combine **Method C (The Debt Lock)** with a **Lightweight Starting Selector**.
 
-### Lightweight starting multiplier
-- Use a small initial selector rather than a big tier matrix.
-- The working sketch is `Noob-Noob` vs. `CEO of Drains`.
-- That selector should apply a flat modifier to starting stamina drain
-  and the extra-chaser spawn interval.
-- Keep the modifier small enough that the run still feels like the same
-  game, just with a different opening pressure.
+1. **The Toggle:** Add a Difficulty Selector to the main menu (Noob-Noob / Casual / CEO of Drains) to set the baseline profile difficulty. 
+2. **The Debt Lock (Dynamic Inference):** Instead of just flat math changes, the game will dynamically infer difficulty based on the Sheeb debt. If a player drops into heavy negative Sheebs, the game activates "Repo Mode" (faster Skibs, harsher penalties), regardless of their starting choice.
+3. **Mid-Run vs Locked Difficulty:** 
+   - **Noob/Casual:** Players can toggle between these modes at any time during a profile play. Switching changes the current score multipliers dynamically. This prioritizes player enjoyment.
+   - **4chan-st (Hardcore):** Locking into this mode at the start of a run grants an exclusive scoring algorithm benefit (and unique badge eligibility). If a player toggles down to Casual mid-run to survive, they forfeit the Hardcore scoring bonuses and badge for that run. 
+4. **Dialog Hooks:** 
+   - `_triggerCaught()` will check if `difficulty === '4chan-st'`. If true, it overrides standard dialog pools with the punishing `SHYT_TALKER_LINES` pool.
+   - **Near-Capture Interlude:** The "Almost Gotcha" lines for 4chan-st mode will *only* trigger **after Level 3**. Levels 1-3 will use standard near-capture lines to lull the player into a false sense of security before unleashing the aggressive audio/text panic cues.
+
+## Next Steps for Code Monkey
+- [ ] Add `difficulty` field to the cookie profile (default: 'Casual').
+- [ ] Build the UI toggle in the main menu.
+- [ ] Wire the speed/stamina multipliers and the "Repo Mode" dynamic debt lock in `GameEngine.js`.
+- [ ] Wire the `SHYT_TALKER_LINES` override in `_triggerCaught()` and the Level-3 gated "Almost Gotcha" lines.
 
 ## What this is not
 
@@ -34,7 +36,7 @@ pressure ramp that changes the run as the player gets in trouble.
   should store raw run telemetry first, then any derived brag score can be
   computed later from those saved values.
 - Not a code-ready implementation in this file. Treat this as the design
-  note the later handoff should reference.
+note the later handoff should reference.
 
 ## Content follow-up
 
