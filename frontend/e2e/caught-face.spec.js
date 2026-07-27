@@ -48,7 +48,7 @@ test('runner face swaps through getting-captured/captured poses on capture, then
   await expect(profileDialog.getByText('Killing tricks')).toBeVisible()
 
   await profileDialog.getByRole('button', { name: 'CONTINUE' }).click()
-  await expect(page.locator('.play-btn')).toBeVisible()
+  await expect(page.locator('.play-btn').first()).toBeVisible()
   await expect(page.locator('canvas')).toHaveCount(0)
   await expect(page.getByText('SKIB-JAY-DEE-TOILET')).toBeVisible()
 })

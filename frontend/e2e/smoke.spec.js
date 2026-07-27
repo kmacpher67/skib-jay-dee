@@ -5,7 +5,7 @@ test('menu loads and quick play boots the canvas', async ({ page }) => {
   await page.goto('./')
 
   await expect(page.getByText('SKIB-JAY-DEE-TOILET')).toBeVisible()
-  await expect(page.locator('.play-btn')).toBeVisible()
+  await expect(page.locator('.play-btn').first()).toBeVisible()
 
   await page.locator('.play-btn').first().click()
 

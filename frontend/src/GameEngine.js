@@ -536,6 +536,8 @@ export class GameEngine {
     this.tacoBellTimer = 0
     this.stinkyTimer = 0
     this.smokeEffects = []
+    this.nearMissParticles = []
+    this.nearMissVignetteTimer = 0
     this.pointerPos = { x: 0, y: 0 }
     this.decoyActive = false
     this.decoyTimer = 0
@@ -1096,6 +1098,17 @@ export class GameEngine {
         this.smokeEffects = this.smokeEffects.filter((s) => {
           s.age += dt
           return s.age < s.life
+        })
+      }
+      if (this.nearMissVignetteTimer > 0) {
+        this.nearMissVignetteTimer = Math.max(0, this.nearMissVignetteTimer - dt)
+      }
+      if (this.nearMissParticles && this.nearMissParticles.length > 0) {
+        this.nearMissParticles = this.nearMissParticles.filter((p) => {
+          p.x += p.vx * dt
+          p.y += p.vy * dt
+          p.life -= dt
+          return p.life > 0
         })
       }
 
@@ -2351,6 +2364,21 @@ export class GameEngine {
         this.earnedBadges.push('slippery-when-wet')
         this.onBadgeEarned('slippery-when-wet')
       }
+      
+      this.nearMissVignetteTimer = 0.2
+      this.nearMissParticles = this.nearMissParticles || []
+      for (let i = 0; i < 10; i++) {
+        const angle = Math.random() * Math.PI * 2
+        const speed = 150 + Math.random() * 150
+        this.nearMissParticles.push({
+          x: this.runner.x + this.runner.w / 2,
+          y: this.runner.y + this.runner.h / 2,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 0.3,
+          maxLife: 0.3
+        })
+      }
     }
   }
 
@@ -2391,6 +2419,14 @@ export class GameEngine {
         ctx.fill()
       }
     }
+    if (this.nearMissParticles && this.nearMissParticles.length > 0) {
+      for (const p of this.nearMissParticles) {
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.life / p.maxLife * 0.8})`
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2)
+        ctx.fill()
+      }
+    }
     this.chasers.forEach((chaser) => {
       this._drawEntity(ctx, chaser)
       if (chaser.stunnedUntil > 0) this._drawStunEffect(ctx, chaser)
@@ -2399,6 +2435,18 @@ export class GameEngine {
     this._drawEntity(ctx, this.runner)
     this._drawBullets(ctx)
     ctx.restore()
+
+    if (this.nearMissVignetteTimer > 0) {
+      const alpha = (this.nearMissVignetteTimer / 0.2) * 0.4
+      const gradient = ctx.createRadialGradient(VIEW_W/2, VIEW_H/2, VIEW_H/3, VIEW_W/2, VIEW_H/2, VIEW_W/1.5)
+      gradient.addColorStop(0, 'rgba(255, 255, 255, 0)')
+      gradient.addColorStop(1, `rgba(255, 255, 255, ${alpha})`)
+      ctx.save()
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
+      ctx.fillStyle = gradient
+      ctx.fillRect(0, 0, VIEW_W, VIEW_H)
+      ctx.restore()
+    }
 
     this._drawHud(ctx)
 

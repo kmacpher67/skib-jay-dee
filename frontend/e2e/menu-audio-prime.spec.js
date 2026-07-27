@@ -32,7 +32,7 @@ test('menu audio priming stays silent, non-looping, and pauses itself', async ({
   })
 
   await page.goto('./')
-  await page.getByText('SKIB-JAY-DEE-TOILET').click()
+  await page.locator('.play-btn').first().click()
   await page.waitForTimeout(300)
 
   const events = await page.evaluate(() =>

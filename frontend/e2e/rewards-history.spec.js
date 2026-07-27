@@ -59,7 +59,7 @@ test.describe('Rewards & History panel', () => {
       // Let's start the game and trigger it.
     })
 
-    await page.locator('button.play-btn').click()
+    await page.locator('button.play-btn').first().click()
     await expect(page.locator('canvas')).toBeVisible()
 
     // We can inject a badge earn by calling it if exposed, or just by manipulating sheebs for Financial Wizardry
