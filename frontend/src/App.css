@@ -6,9 +6,10 @@
   align-items: center;
   justify-content: center;
   gap: 14px;
-  padding: 24px 18px 28px;
+  padding: 24px 18px 60px;
   text-align: center;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at 50% 18%, rgba(255, 207, 63, 0.18) 0%, rgba(255, 207, 63, 0) 35%),
     radial-gradient(circle at 20% 90%, rgba(61, 220, 85, 0.14) 0%, rgba(61, 220, 85, 0) 32%),
@@ -709,4 +710,24 @@
   font: inherit;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.menu-footer {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.parody-warning {
+  font-size: 10px;
+  color: #8ec8ff;
+  line-height: 1.3;
+  opacity: 0.8;
+}
+
+.menu-footer a {
+  color: #60ff72;
+  text-decoration: none;
+  font-weight: bold;
 }
