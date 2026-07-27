@@ -1,5 +1,8 @@
 # Roadmap Handoff Plan v0.4.39
 
+**Created by:** Codex (GPT-5) — 2026-07-27
+**Last updated by:** Codex (GPT-5) — 2026-07-27
+
 This session is a Mode A planning pass to review all front-end roadmap open and partial items, refine them, and prepare a handoff for the next coding session.
 
 ## What's Left: Open Roadmap & Backlog Items

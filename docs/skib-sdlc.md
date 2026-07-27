@@ -187,6 +187,13 @@ Every session that lands a meaningful change updates:
   fast-scan flat index; `version-log.md` has the *why*, the handoff file
   has the full session narrative, the ledger is just "what landed, in
   order." Never edit past entries.
+- **Doc provenance** — every `docs/` artifact should carry a small
+  provenance note so readers can tell who generated or last modified it
+  and when. Prefer a top-of-file metadata block with `Created by`,
+  `Created on`, `Last updated by`, and `Last updated on`. For append-only
+  docs such as handoffs, ledgers, and version logs, include the author
+  and date in each new entry heading or entry label instead of burying
+  it in prose.
 - **`docs/future-versions.md`** — move anything you scoped out of this
   session here (not into `roadmap.md`, which is the *pull-from* backlog;
   this is the *park-it-here* list for things surfaced but not queued

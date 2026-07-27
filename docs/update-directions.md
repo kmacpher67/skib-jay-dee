@@ -2,6 +2,15 @@
 
 Use this as the handoff doc for the next agent working in the repo.
 
+**Created by:** Codex (GPT-5) — 2026-07-26
+**Last updated by:** Codex (GPT-5) — 2026-07-27
+
+**Doc provenance note:** when you create or materially edit a `docs/`
+artifact, keep or add a small metadata block near the top with `Created
+by`, `Created on`, `Last updated by`, and `Last updated on`. For
+append-only logs and handoffs, put the author/date on each new section or
+entry heading so the change trail stays obvious at a glance.
+
 ## Current state
 
 - **v0.4.36.1 (real code, most recent shipped version):** finished the

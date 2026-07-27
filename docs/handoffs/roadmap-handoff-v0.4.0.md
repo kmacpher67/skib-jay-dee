@@ -1,5 +1,7 @@
 # Roadmap Handoff — v0.4.0
 
+**Created by:** Codex (GPT-5) — 2026-07-26
+**Last updated by:** Codex (GPT-5) — 2026-07-27
 **Session date:** 2026-07-26
 **Previous version:** v0.3.4 (see `docs/handoffs/ledger.md` for what came before this file existed)
 
