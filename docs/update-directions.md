@@ -140,7 +140,7 @@ manually:
 ## Natural follow-up work
 
 - **Jayden Gun + Lucky Charm/Lucky badge landed in v0.4.31** — no longer on this list. Rolling Pickups (Mario-style) is still a separate, undesigned backlog item.
-- Oldest unfinished handoff is **v0.4.26-plan (sheebs debt above level 3, losable shop items above level 4)**, but it is explicitly **blocked on product decisions from Ken** — see the "Flag for Ken" section of `docs/handoffs/roadmap-handoff-v0.4.26-plan.md`. Don't start coding it until those are answered.
+- **v0.4.26-plan shipped as v0.4.26** (negative sheebs debt + item loss above level 3/4) — that line is stale, corrected here. The oldest unfinished handoff as of v0.4.31 is **`docs/handoffs/roadmap-handoff-v0.4.32-plan.md`** (retrofit early-level progression badges + humor/random badges), followed by `v0.4.33-plan` (quest rooms/landmark badges, Level 4+ difficulty) and `v0.4.34-plan` (chaser wall-hacks, "Gawd Particle"). All three are fully-specified Mode A plans with no open questions flagged for Ken — unblocked, ready for Mode B in that order.
 - `v0.4.25` is now shipped: the post-kill profile card, killer-ID logging, and clickable deaths log are in production.
 - **Game identity / multiple cookie-backed save slots landed in v0.4.29** — the profile switcher, `localStorage` registry, and `docs/profiles-and-identity.md` are all in place. No longer on this list.
 - Next unclaimed, unblocked items from the backlog: **cosmetic shop item (sink)** and **menu brag stat (best level + fewest deaths)** are both small and open. The badges/rewards system and the Schleimy Potion/Micro-Skib items are still blocked on product decisions from Ken — see their entries in `docs/roadmap.md`.

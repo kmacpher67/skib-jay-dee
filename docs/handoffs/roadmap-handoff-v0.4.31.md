@@ -120,17 +120,15 @@ Read `docs/skib-sdlc.md`, `docs/update-directions.md`, and
 `docs/roadmap.md` before starting.
 
 The Jayden Gun and Lucky Charm/Lucky badge shipped in v0.4.31 — don't
-redo them. The oldest unfinished handoff is still
-`docs/handoffs/roadmap-handoff-v0.4.26-plan.md` (sheebs debt above
-level 3, losable shop items above level 4), but it stays explicitly
-blocked on product decisions from Ken (see its "Flag for Ken" section)
-— do not start coding it until those are answered in conversation.
-
-If Ken hasn't answered that yet, the next unclaimed, unblocked items
-from `docs/roadmap.md` are the cosmetic shop item (sink) and the menu
-brag stat (best level + fewest deaths) — both small and open. Rolling
-Pickups (Mario-style) is still undesigned and would need a Mode A plan
-first.
+redo them. v0.4.26-plan (sheebs debt/item loss) already shipped as
+v0.4.26, despite older doc copies still calling it "oldest unfinished"
+— that was stale, now corrected. The actual oldest unfinished handoff
+is `docs/handoffs/roadmap-handoff-v0.4.32-plan.md` (retrofit early-level
+progression badges + humor/random badges), followed by `v0.4.33-plan`
+(quest rooms/landmark badges, Level 4+ difficulty) and `v0.4.34-plan`
+(chaser wall-hacks, "Gawd Particle"). All three are fully-specified,
+unblocked Mode A plans — pick up v0.4.32-plan first per the pull-oldest
+rule.
 
 Verify with `npm run build` and the full Playwright suite before
 calling it done. Update `docs/roadmap.md`, `docs/handoffs/ledger.md`,
