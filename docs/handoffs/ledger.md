@@ -21,6 +21,14 @@ update `docs/version-log.md`.
   and the open v0.4.37 handoff so the next coding agent has a clean
   starting point.
 
+## v0.4.37-plan addendum — 2026-07-27
+
+- Retargeted the open v0.4.37 handoff toward the close-call freeze and
+  reward pass instead of the older content-first polish slice.
+- Added `docs/close-call-freeze.md` plus matching roadmap, update
+  directions, badges, version-log, and next-agent brief edits so the
+  next code session has one clear gameplay-tuning goal.
+
 ## v0.4.35 — 2026-07-27
 
 - Implemented **Rolling Pickups**: Mario-style items bouncing around the map granting random helpful/harmful effects on touch (speed, stamina, sheebs vs slow, damage).

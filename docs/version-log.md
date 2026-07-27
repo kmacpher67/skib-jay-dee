@@ -6,6 +6,38 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.37-plan addendum — Close-call freeze and reward refocus (2026-07-27)
+
+### What changed
+
+- Reviewed the open v0.4.37 handoff against the latest gameplay ask and
+  retargeted it away from the content-first polish slice.
+- Chose a near-capture freeze / reward pass as the next single-session
+  increment: hold the game frozen for 1 second after the close-call
+  beat, pay +50 sheebs for a clean escape, and pay +5 sheebs for
+  positive pickup rewards.
+- Kept the broader content-first fun pass parked for later so the next
+  code session stays small and focused.
+- Added `docs/close-call-freeze.md` and updated the roadmap, update
+  directions, badges doc, and next-agent brief to match the new plan.
+
+### Design decisions
+
+- Kept the new freeze separate from the existing post-capture
+  `resume-countdown` beat so the two recovery moments do not blur
+  together.
+- Tied the +50 sheeb reward to the same close-call event that already
+  drives the `Slippery When Wet` badge so the player only gets one clear
+  "you escaped" signal.
+- Treated positive pickup rewards as a small, data-driven bonus path so
+  Gun, Schleimy Potion, Taco Bell Grande, and future positive items can
+  share the same hook.
+
+### Non-goals
+
+- No gameplay code changed.
+- No build, test, deploy, or version bump was run.
+
 ## v0.4.37-plan — Content-first refocus for story, map personality, and menu bragging (2026-07-27)
 
 ### What changed

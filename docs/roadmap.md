@@ -15,6 +15,28 @@ fallback to `OLLAMA_HOST` or switch to `desktop-gaming` /
 OpenRouter when needed. The handoff's own bounded copy-paste block is
 the prompt body.
 
+## ⚠️ Uncommitted working tree (found 2026-07-27, unresolved)
+
+A Mode A planning pass found the working tree already dirty with
+unverified, uncommitted code — `frontend/src/GameEngine.js`,
+`frontend/src/gameContent.js`, and `frontend/src/mapGrids.js` all have
+local modifications on top of the shipped `v0.4.36` commit, plus several
+untracked `scratch_apply_all*.js` files at the repo root. It reads like an
+interrupted Code Monkey attempt at exactly the follow-ups `v0.4.36`'s own
+handoff named next (Soggy Toilet Paper, Heavy Plunger, a `Friendly Fire`
+badge stub, and empty/placeholder grid exports for Flooded Annex, Ramen
+Aisle, and World Star in `mapGrids.js`). It has **not** been built or
+tested (`npm run build` / Playwright never ran against it) and was left
+uncommitted. Do not build new work on top of it blindly, and do not
+discard it without looking first — the next Mode B session should
+`git diff`/`git status` it, decide whether to finish, fix, or drop it
+(the `_spawnQuestRoomBadge()` call appearing twice in one function and a
+`this.phase === 'playing'` → `'chase' || 'near-capture'` change both look
+like they need a second look), verify with the full checklist, then either
+commit it as its own real version or `git checkout --` it back out and
+clean up the scratch files. See `docs/update-directions.md` for the same
+callout.
+
 ## Where things stand (as of this session)
 
 Done: core chase loop, jump-scare capture, face upload + random default
@@ -57,7 +79,7 @@ for the full session write-up and
 | 1.5 | Content pass: more levels, shop, persistence, death/skreem economy | Done (this session) |
 | 2 | Audio pass | First pass done (v0.4.0) — see [sound-effects-howto.md](sound-effects-howto.md) and [future-versions.md](future-versions.md) for polish left |
 | 2.5 | World Star intro cinematic | Not started (an experimental lvl2 video-transition clip landed as a rough proof of concept, see below) |
-| 3 | More characters/abilities per PDF roster, role-swapping | Not started |
+| 3 | More characters/abilities per PDF roster, role-swapping | Level 6 (new chaser Skib-Daddy-Toilet Guy w/ Plunger Launch) scoped and ready to code — see [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md) and [roadmap-handoff-v0.4.38-plan.md](handoffs/roadmap-handoff-v0.4.38-plan.md). Level 7 climax ("CEO of Drains") stays parked, not scoped this pass. |
 | 4 | Oval/masked face-crop on upload instead of stretch | Done (v0.4.14) |
 | 5 | FastAPI WebSocket multiplayer, server-authoritative roles | Backend scaffolded only |
 | 6 | Mongo-backed profile (replaces cookies) | Not started — local multi-profile groundwork (registry, `label`/`updatedAt`) landed v0.4.29; open decisions on identity/auth, sync strategy, and migration written up in [docs/profiles-and-identity.md](profiles-and-identity.md) |
@@ -243,13 +265,12 @@ and chaser-bark voice clips, 1:1 with text.
   fails) so the "Lucky" badge fires exactly on the luck bonus's first
   actual proc, per Ken's confirmed trigger. See
   [roadmap-handoff-v0.4.31.md](handoffs/roadmap-handoff-v0.4.31.md).
-- [ ] **Feature: Content-first fun pass (refined v0.4.37-plan).** Expand the front-end content layer so the existing chase loop feels funnier, more readable, and more story-rich without adding backend systems.
-  - **Dialog seasoning:** add more level-intro, near-miss, pickup, and badge lines in `frontend/src/dialog.js`.
-  - **Badge flavor:** give new badges/toasts more personality and add a few new funny award seeds from `docs/interactive-content-pack.md` and `docs/badges.md`.
-  - **Map personality:** surface one anchor room, one risky shortcut, one gag room, and one reward room per level via small data-driven callouts or banners.
-  - **Menu bragging:** add a compact best-level / fewest-deaths summary so progress shows up outside the run loop.
+- [ ] **Feature: Close-call freeze + reward payout.** When the existing near-capture / pre-kill skreem beat fires, hold the game frozen for 1 second before letting chase resume so mobile players can re-center their fingers and the chase doesn't restart mid-adjustment. A clean near-miss should pay +50 sheebs, and positive pickups should pay +5 sheebs on collection. See [docs/close-call-freeze.md](close-call-freeze.md).
+  - **Positive pickup list:** Jayden Gun, Schleimy Potion, Taco Bell Grande, and future positive pickup items from `docs/interactive-content-pack.md`.
+  - **Badge hook:** keep the `Slippery When Wet` badge aligned with the same close-call escape event so the reward and the brag moment stay in sync.
+  - **Scope guard:** do not touch the separate post-capture `resume-countdown` beat; this is only for the pre-kill close-call pause.
 - [ ] **Feature: Gameplay Rebalancing (later follow-up).**
-  - **Sheeb Rewards:** +25 Sheebs for hitting a chaser with the Jayden Gun. +50 Sheebs for earning any badge.
+  - **Sheeb Rewards:** +25 Sheebs for hitting a chaser with the Jayden Gun. +50 Sheebs for the close-call escape reward above. +5 Sheebs for positive pickup collections. +50 Sheebs for earning any badge.
   - **Scaled Death Penalty:** Level 1 (0 loss), Level 2 (10 loss), Level 3 (20 loss), Level 4+ (30 loss, allows negative).
   - **Chaser Speed:** Starts slower (0.8 mod instead of 1.0). Max speed cap now scales by level (0.9 to 1.35) so they never exceed the max for the current level.
   - **Level Rewards:** Base rewards bumped to ensure difficulty increases delivery (50, 75, 100, 150, 200).
@@ -306,10 +327,10 @@ and chaser-bark voice clips, 1:1 with text.
   earned yet. If the roll fails, the same pool gets another shot at the
   next level start (so it isn't locked to the "early" levels only). See
   [roadmap-handoff-v0.4.32.md](handoffs/roadmap-handoff-v0.4.32.md).
-- [x] **Secret Interaction Badges (Humor & Intrigue).** Badges that trigger not from progression, but from players doing stupid things:
-  - **Pacifist in a Warzone:** Survive Level 4 for 60 seconds while holding the Jayden Gun, but *never fire it*.
-  - **Premature Evacuation:** Get caught within the first 5 seconds of Level 1.
-  - **Friendly Fire:** Stun a Skib with the Jayden Gun, but immediately get caught by *that exact same Skib* the millisecond the stun wears off.
+- [~] **Secret Interaction Badges (Humor & Intrigue).** Badges that trigger not from progression, but from players doing stupid things. **Correction (2026-07-27 planning pass):** only the first two are actually shipped/committed (as `pacifist-warzone`/`premature-evacuation` in `v0.4.36`) — checked `[x]` here previously but that overstated it. `Friendly Fire` only exists as an unwired `BADGES` entry in the currently **uncommitted** working-tree diff (see the callout near the top of this file); it has no trigger logic yet and hasn't been built or tested.
+  - **Pacifist in a Warzone:** Survive Level 4 for 60 seconds while holding the Jayden Gun, but *never fire it*. Shipped v0.4.36.
+  - **Premature Evacuation:** Get caught within the first 5 seconds of Level 1. Shipped v0.4.36.
+  - **Friendly Fire:** Stun a Skib with the Jayden Gun, but immediately get caught by *that exact same Skib* the millisecond the stun wears off. Not shipped — badge id stub only, uncommitted, no trigger wired.
 - [x] **Remove dead `initialSheebs = 200` default.** `GameEngine.js`'s
   constructor still defaults to `200` if no `initialSheebs` is passed,
   left over from before the v0.4.16 cookie-default fix. `App.jsx` always
@@ -395,17 +416,38 @@ and chaser-bark voice clips, 1:1 with text.
   items land so there's something worth bragging about.
 - [x] **Level expansion.** Added The Ramen Aisle and World Star Parking Lot
   (5 levels total) — landed this session.
-- [x] **Level data extraction** — roadmap item 1 above. Do this before
-  hand-authoring a 6th/7th level.
+- [~] **Level data extraction** — roadmap item 1 above. **Correction
+  (2026-07-27 planning pass):** only `buildPorcelainPalace` and
+  `buildPipeworks` actually run through `parseMapGrid`/`frontend/src/mapGrids.js`
+  (shipped v0.4.36) — `buildFloodedAnnex`, `buildRamenAisle`, and
+  `buildWorldStarParkingLot` in `frontend/src/GameEngine.js` are still
+  hardcoded pixel-rect functions, checked `[x]` here previously but that
+  overstated it. The uncommitted working-tree diff has started adding
+  `FLOODED_ANNEX_GRID`/`RAMEN_AISLE_GRID`/`WORLD_STAR_GRID` exports to
+  `mapGrids.js`, but they're empty/placeholder grids, not wired into the
+  three `buildXxx()` functions yet, and unverified — see the uncommitted
+  working-tree callout above. Finish migrating the remaining three levels
+  before hand-authoring Level 6, since Level 6's looping-hallway design
+  wants the grid format from day one (see
+  [roadmap-handoff-v0.4.38-plan.md](handoffs/roadmap-handoff-v0.4.38-plan.md)).
 - [x] **Death/skreem economy.** Lifetime death counter (persisted via
   cookies) and a skreem penalty on capture — landed this session.
 - [x] **Multi-chaser pressure.** Extra toilets join in if a level runs
   long without a catch (capped, resets on capture/level change) — landed
   this session.
-- [ ] **New character: pick one PDF roster entry** (Skib-Daddy-Toilet Guy
-  or Raman-Aunt-Toilet Lady) and give it a distinct ability, not just a
-  reskin — e.g. Skib-Daddy's Plunger Launch as a periodic speed burst.
-  Depends on nothing above; can happen anytime.
+- [ ] **New character + Level 6: Skib-Daddy-Toilet Guy + "Jayden's
+  Nightmare House."** Superseded/scoped for real this session — see
+  [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md)
+  and the new [roadmap-handoff-v0.4.38-plan.md](handoffs/roadmap-handoff-v0.4.38-plan.md).
+  Ken confirmed (2026-07-27) reusing an existing chaser face (`dad-case`)
+  as Skib-Daddy-Toilet Guy's placeholder until a dedicated photo exists,
+  so this is now unblocked for Mode B — a new heavy `chaserType` with a
+  Plunger Launch (pull) ability, a looping-hallway map, and a single-door
+  "Garage" quest room (`Garage Survivor` badge). Level 7 ("CEO of Drains"
+  climax) stays parked, not part of this scope. Recommended to build
+  *after* the level-data-extraction item above finishes migrating Levels
+  3-5 to the grid format, since Level 6's looping halls are much easier
+  to hand-author as a grid.
 - [x] **Funny near-capture interlude.** When a skib gets too close, pause
   the chase, pop `jayden-getting-captured.jpg` full-screen, and stamp the
   user's parody captions over it as a short meme card. Start with the
@@ -496,3 +538,7 @@ and chaser-bark voice clips, 1:1 with text.
   verification for the lvl2 timing fix confirmed the video only appears
   after Pipeworks clears, so it no longer overlaps the catch state on
   arrival.
+- [ ] **Enhanced Death Logs:** Record time played during the run, and store the score achieved (sheebs/skreems plus and minus of a session) in the profile history log.
+- [ ] **Parody Warning & Feedback Link:** Add a clear warning in the UI (e.g. settings or intro screen) stating that the game is a parody and sarcasm about life games, plumbing, and society (Fair Use applies). Add a link to the GitHub issues page to "place complaints".
+- [ ] **Difficulty Function:** Add selectable difficulty scaling. Needs discussion based on `docs/difficulty-mechanics-plan.md` to finalize how this impacts gameplay.
+- [ ] **Cool Play (Chaser Evasion):** Polish the mechanics for users running from chasers. Goal is to make evasion feel cooler (e.g. near-miss effects, sliding, dynamic FOV). Needs further definition.

@@ -10,7 +10,8 @@ Badges are a core progression and bragging-rights mechanic in Skib-Jay-Dee-Toile
 ## Existing Badges (v0.4.31)
 - **Financial Wizardry:** Earned by accumulating a large amount of Sheebs.
 - **Glutton for Punishment:** Earned by accumulating a high number of lifetime deaths.
-- **Slippery When Wet:** Earned by escaping a close-call encounter.
+- **Slippery When Wet:** Earned by escaping a close-call encounter, and
+  the same trigger now pays out +50 sheebs on the runner's behalf.
 - **Devs Owe Me Five Bucks:** A rare gag badge for encountering specific game states or bugs.
 - **Lucky:** Earned when the "Lucky Charm" luck-only roll successfully spawns a Jayden Gun pickup.
 
@@ -31,6 +32,7 @@ These have a very low spawn rate and provide comedic relief.
 Found inside high-risk Quest Rooms (chokepoints with 1 or 2 exits).
 - **Ramen Vault Keeper (Level 4):** Retrieved from the dual-exit Ramen Aisle stockroom.
 - **World Star Witness (Level 5):** Retrieved from the single-door World Star booth. Requires immense skill or the Gawd Particle to escape alive.
+- **Garage Survivor (Level 6, planned):** Retrieved from the single-door garage quest room in "Jayden's Nightmare House." Not yet built — see [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md) and `docs/handoffs/roadmap-handoff-v0.4.38-plan.md`.
 
 ## Future Badge Seeds (not yet queued)
 

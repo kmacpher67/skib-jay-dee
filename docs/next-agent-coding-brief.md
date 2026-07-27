@@ -1,31 +1,33 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
-This brief is the quick-start version of the refined content-first
+This brief is the quick-start version of the close-call freeze / reward
 handoff. If you are about to code, start with
 `docs/handoffs/roadmap-handoff-v0.4.37-plan.md` and use this as the
 condensed checklist.
 
-The next best slice is front-end only: make the game feel funnier, more
-readable, and more story-rich through dialog, badges, map callouts, and
-a small menu brag surface. Keep the balance-number pass separate.
+The next best slice is front-end only: add the near-capture 1-second
+freeze, pay out +50 sheebs for a clean escape, and pay +5 sheebs for
+positive pickup rewards. Keep the broader content-first polish pass
+separate.
 
 Read first:
 
 1. `docs/skib-sdlc.md`
 2. `docs/update-directions.md`
 3. `docs/roadmap.md`
-4. `docs/interactive-content-pack.md`
-5. `docs/dialog_content_chasing.md`
+4. `docs/close-call-freeze.md`
+5. `docs/interactive-content-pack.md`
 6. `docs/badges.md`
 7. `docs/handoffs/roadmap-handoff-v0.4.37-plan.md`
 
 ## Session focus
 
-1. Add more dialog / badge personality to the existing front-end content
-   layer.
-2. Add level or room callouts so the maps feel more distinct.
-3. Add a compact menu brag surface for best level, fewest deaths, and
-   recent badge progress.
+1. Add the near-capture freeze so the chase stays paused for 1 second
+   after the close-call beat.
+2. Add the sheeb payouts for close-call escapes and positive pickup
+   rewards.
+3. Keep the reward triggers aligned with the existing close-call badge
+   and positive pickup definitions.
 
 ## Constraints
 
@@ -33,7 +35,7 @@ Read first:
 - Keep the 9:16 portrait layout.
 - Do not break cookie-backed profile persistence.
 - Do not bump `GAME_ITERATION` or deploy unless the user explicitly asks.
-- Keep new content readable when the game is muted.
+- Keep the reward and freeze behavior readable even when muted.
 
 ## Verification
 
@@ -41,12 +43,12 @@ Read first:
 - `cd frontend && npx playwright test`
 
 If the implementation needs new test coverage, add the smallest focused
-Playwright check that proves the new dialog, badge, or menu surface is
-visible and stable.
+Playwright check that proves the freeze and reward payout are visible
+and stable.
 
 ## Deliverables
 
-- Update `docs/roadmap.md` with any scoped content items or parked
+- Update `docs/roadmap.md` with any scoped gameplay items or parked
   follow-ups.
 - Update `docs/version-log.md`, `docs/handoffs/ledger.md`, and
   `docs/update-directions.md` to match the actual implementation.
