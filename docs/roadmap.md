@@ -725,3 +725,9 @@ and chaser-bark voice clips, 1:1 with text.
   - *Features:* Mosaic layouts driven by time functions (e.g. Fibonacci sequence) so it doesn't punish night-time players. Layer-Sync Mirroring, Dimensional Rift Anchors, Mutual Mutation puzzles, Temporal Echoes.
   - *Design Goal:* Keep it fun and interesting, not impossible. See `docs/level-progression-and-endgame-plan.md` for vibe process pre-planning notes.
   - **Reviewed 2026-07-27:** re-evaluated against the "no code-cowboy" rule; one open question was never actually answered (floor trap vs. held item to trigger a dimension shift — see "Flag for Ken" item 7 in `docs/level-progression-and-endgame-plan.md`). Still TBD, still not a ready-to-code handoff.
+- [ ] **Feature: Rod of Poopdom (Teleport Mechanic).** **New design-only.** Award of random teleport.
+  - *Visual Glyph:* Twisted brown wooden staff capped with a glowing emerald. Symbol is a spiral coil with teleport sparks. VFX leaves brown, comical smoke clouds at departure.
+  - *Availability:* Uncommon/Rare tier. 3-5% drop from "Swamp" or "Sewage" biome chests and enemies (or adapted to existing map pickups). Max 1-2 per active map instance.
+  - *Controls:* 'T' or 'F' key (keyboard) or Right Bumper (controller) to instantly teleport to the mouse cursor/reticle location.
+  - *Mechanic:* Activation inflicts a short 3-second "Stinky" debuff, preventing consecutive teleports.
+  - *Balance Note:* Since this is a 2D top-down canvas chase game, the teleport range should likely be capped (e.g., 300px) and needs wall-collision validation so players can't teleport out of bounds. See `docs/handoffs/roadmap-handoff-v0.4.47-plan.md`.
