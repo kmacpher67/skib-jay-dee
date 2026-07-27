@@ -550,7 +550,10 @@ and chaser-bark voice clips, 1:1 with text.
   verification for the lvl2 timing fix confirmed the video only appears
   after Pipeworks clears, so it no longer overlaps the catch state on
   arrival.
-- [ ] **Enhanced Death Logs:** Record time played during the run, store the score achieved (sheebs/skreems plus and minus of a session), and explicitly record the level the player died on in the profile history log.
+- [ ] **Enhanced Death Logs:** Record `timePlayed`, raw session deltas (`sessionSheebDelta`, `sessionSkreemDelta`), and the level the player died on in the profile history log. Keep this as telemetry first; do not fold difficulty math into this slice.
 - [ ] **Parody Warning & Feedback Link:** Add a clear warning in the UI (e.g. settings or intro screen) stating that the game is a parody and sarcasm about life games, plumbing, and society (Fair Use applies). Add a link to the GitHub issues page to "place complaints".
-- [ ] **Difficulty Function:** Add selectable difficulty tiers (Noob, Casual, 4chan-st). Include a UI toggle to let players change difficulty mid-run (Noob/Casual can be swapped freely; locking into 4chan-st grants score/badge benefits that are lost if toggled down).
+- [ ] **Difficulty Function (separate design track):** Preferred direction is Method C (`The Debt Lock`) plus a lightweight starting selector (`Noob-Noob` / `CEO of Drains`). Keep it separate from the death-log telemetry slice; see `docs/difficulty-mechanics-plan.md`.
 - [ ] **Cool Play (Chaser Evasion):** Polish the mechanics for users running from chasers. Goal is to make evasion feel cooler (e.g. near-miss effects, sliding, dynamic FOV). Needs further definition.
+- [ ] **Level 7+ and Beyond: The Mosaic Map of Madness (TBD).** (To be determined - needs refinement & extra data specs). Introduce a mutable puzzle map (Multiverse of Madness parody with Rick and Morty style comedic dialogue).
+  - *Features:* Mosaic layouts driven by time functions (e.g. Fibonacci sequence) so it doesn't punish night-time players. Layer-Sync Mirroring, Dimensional Rift Anchors, Mutual Mutation puzzles, Temporal Echoes.
+  - *Design Goal:* Keep it fun and interesting, not impossible. See `docs/level-progression-and-endgame-plan.md` for vibe process pre-planning notes.

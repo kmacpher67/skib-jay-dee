@@ -105,12 +105,15 @@ toward, rather than staying endless forever.
   badge. This is the piece that actually "completes the arc" per Ken's
   ask, instead of the game just getting harder forever with no
   resolution.
-- **After the ending:** the game doesn't have to lock further play —
-  precedent is `docs/roadmap.md`'s existing endless-Level-5 design.
-  Recommend the run keeps going in an "endless/New Game+" mode after
-  the ending plays once per profile (same one-time-then-repeatable
-  pattern the lvl2 video transition and Level 4 warning overlay already
-  use), so completionist replay isn't blocked.
+- **After the ending / Level 7+ (The Mosaic Map of Madness):** The game doesn't have to lock further play — precedent is `docs/roadmap.md`'s existing endless-Level-5 design. Recommend the run keeps going in an "endless/New Game+" mode. But for Level 7 and higher, we introduce a **mutable puzzle map** (parodying Marvel's Dr. Strange "Multiverse of Madness" with Rick and Morty style dialogue, leaning heavily into "fair use" doctrine for comedy).
+  - **Mosaic Layouts:** Certain defined level artifacts (rooms, pinch points, awards, side quests) are moved around. Not just on each respawn, but based on a time function (e.g. a Fibonacci sequence tied to the clock) so the layout mutations feel organic but don't unfairly lock out night-time vs day-time players.
+  - **Mutable Multi-verse Mechanics (TBD - needs refinement & data specs):**
+    - *Layer-Sync Mirroring / Parallel Overlays:* Render two versions of a room (Past/Future, Normal/Void) stacked or side-by-side.
+    - *Mutual Mutation & Causality Echoes:* Pushing a block in one dimension alters its counterpart in another.
+    - *Glitch Zones & Dimensional Rift Anchors:* Spots where players can briefly reach into an alternate reality to grab items or block hazards.
+    - *Temporal Echoes:* Record player movement for 5 seconds to repeat that path as a switch-holder in an alternate world.
+  - **Puzzle Flow & Pacing:** Use distinct color palettes (Visual Clarity) for each universe. Start with one-way state changes, layer into two-way loops, and always include a quick-reset button for fail-safe resets to avoid soft-locks.
+  - **Design Goal:** Keep it fun and interesting, not impossible.
 
 ## Flag for Ken — creative decisions this doc does not make up
 
