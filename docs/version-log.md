@@ -6,6 +6,108 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.52 — Turdstone Token: Resurrection Ward (Claude Sonnet 4.6, 2026-07-27)
+
+Mode B — full code and delivery.
+
+Ken asked for a CoD Tombstone-style perk: a rare passive pickup that intercepts
+one death and keeps the player on the same level with their loadout and currency
+intact. This session answered all 5 open design questions from the v0.4.52-plan
+handoff and shipped the feature.
+
+**Ken's decisions (Q1-Q5, answered in this session):**
+
+- **Q1 — Spawn rarity:** Level-indexed — 1% on L1, +1% per level, capped at 5%
+  on L6+. Rarer where stakes are lower, more likely where players actually need it.
+- **Q2 — Death counter:** Yes, `deaths` still increments. It's still a real death for
+  stats and the glutton-for-punishment badge. (Ken's note: creates the hilarious
+  scenario of unlocking the "50 deaths" badge mid-winning-run because the Turdstone
+  kept bailing you out.)
+- **Q3 — Speed ramp:** No `chaserSpeedMod` ramp on a Turdstone save. Treat it as a
+  full free do-over. If chaserSpeedMod ramped, the player would be instantly
+  steamrolled on respawn — that makes the perk feel punishing rather than Epic/Rare.
+- **Q4 — Save UX:** Distinct full-screen overlay ("SAVED BY THE TURDSTONE!") that
+  pauses until the player taps "GET BACK IN THERE 💩". The engine stays in
+  `caught-profile` phase until the player accepts, then `beginResumeCountdown()`
+  fires the 3-2-1 and the chase resumes.
+- **Q5 — HUD visibility:** Small HUD icon (purple-bordered, labeled "WARD") shows
+  in the top-right while the token is held. Players can see their safety net,
+  which changes playstyle (take bigger risks knowingly).
+
+**What shipped:**
+
+- `frontend/src/gameContent.js`: imports `turdstone-toilet-token-perk.png`,
+  re-exports it as `turdstoneTokenSprite` for the engine; adds `'turdstone-token'`
+  to `POSITIVE_PICKUPS` so pickup grants +5 sheebs.
+- `frontend/src/GameEngine.js`:
+  - Constants: `TURDSTONE_TOKEN_PICKUP_SIZE = 32`, `turdstoneTokenSpawnChance(levelIndex)`
+    returning 1-5% scaled by level.
+  - Static class field `GameEngine._turdstoneImg`: loaded once at construction,
+    shared across instantiations.
+  - `runner.hasTurdstoneToken = false` initialized on runner object.
+  - `_maybeSpawnTurdstoneToken()`: skips spawn if token already held; otherwise
+    rolls the level-indexed chance and pushes a `type: 'turdstone-token'` pickup.
+  - Called from `_syncLevelState()` alongside other `_maybeSpawn*` calls.
+  - `_checkPickups()`: new branch sets `runner.hasTurdstoneToken = true` and
+    shows "Turdstone Token secured. Toilet insurance engaged!" runner line.
+  - `_drawPickups()`: new branch before the `pickup.sprite` branch; uses 9-arg
+    `ctx.drawImage` with center-crop math (same as `FaceUpload.jsx`) to render
+    the sprite cleanly at pickup size; emoji fallback if image not yet decoded.
+  - `_triggerCaught()`: right after `deaths += 1`, branches on `hasTurdstoneToken`:
+    - Clears the flag (single-use).
+    - Skips currency penalty blocks entirely (no `skreemsLost`/`sheebsLost`).
+    - Skips `levelIndex++` (stay on current level).
+    - Skips `chaserSpeedMod` ramp.
+    - Fires `onDeath`/`onCaught` with `turdstoneSaved: true` in payload, then `return`s.
+    - Normal death path is unchanged.
+  - `_drawHud()`: new block after the plunger section shows a purple-bordered
+    icon with "WARD" label when `runner.hasTurdstoneToken` is true.
+- `frontend/src/App.jsx`:
+  - `turdstoneOverlayRef` (ref, not state) gates the overlay to avoid async
+    setState timing issues.
+  - `handleCaught`: detects `payload.turdstoneSaved` — if true, skips capture
+    line, skips item-loss syncProfile, stores flag in ref, plays caught audio
+    (jump-scare still plays), and returns early.
+  - `handleCaughtProfileReady`: if ref is set, clears it and sets
+    `showTurdstoneOverlay` state instead of showing the killer profile card.
+  - `handleAcceptTurdstone`: clears overlay state, calls
+    `engineRef.current?.beginResumeCountdown()`.
+  - Turdstone overlay JSX: fullscreen dark-purple radial gradient, pulsing
+    tombstone emoji, "SAVED BY THE TURDSTONE!" title, flavor text, and
+    "GET BACK IN THERE 💩" button with autoFocus.
+- `frontend/src/App.css`: `turdstone-overlay`, `turdstone-overlay-inner`,
+  `turdstone-icon` (with pulsing glow keyframe), `turdstone-title`,
+  `turdstone-body`, `turdstone-accept-btn`.
+- `frontend/src/components/VersionModal.jsx`: prepended v0.4.52 entry.
+- `frontend/src/version.js`: bumped `GAME_ITERATION` to `v0.4.52`.
+- `frontend/e2e/turdstone-token.spec.js`: 3 new tests — pickup sets flag, caught
+  with token saves player (no levelIndex bump, no sheebs loss, flag consumed),
+  normal death still advances levelIndex.
+
+**Verification:**
+
+- `npm run build` clean ✅
+- Playwright: 45 passed, 2 pre-existing failures (cosmetic-sink pixel assertion,
+  menu-audio-prime viewport/click timeout — both unrelated to this change), 1
+  pre-existing skip ✅
+- 3 new Turdstone Token tests: all 3 pass ✅
+- Deployed via `./scripts/deploy-static.sh turdstone-token` → website repo commit
+  `v0.4.52 turdstone-token` pushed to GitHub ✅
+
+**Explicitly not done this session:**
+
+- No sound effect for the Turdstone save (Ken mentioned "echoing toilet flush" —
+  parked for a future audio pass; no audio asset exists yet).
+- No Player's Guide or `interactive-content-pack.md` entry (convention: written at
+  ship time was this session; added to docs/players-guide.md below).
+- The `v0.4.57-plan` Rod of Poopdom hotfix (`stinkyTimer` never ticks) is still
+  the next queued Mode B slice ahead of Slice B — this session ran behind it in
+  the queue, but Ken explicitly directed "follow the SDLC CODE MODE
+  docs/handoffs/roadmap-handoff-v0.4.52-plan.md" so this shipped first.
+
+**Next:** `roadmap-handoff-v0.4.57-plan.md` — Rod of Poopdom second-teleport fix
+(stinkyTimer tick + e2e).
+
 ## v0.4.57-plan — Rod of Poopdom second teleport (Cursor Grok 4.5, 2026-07-27)
 
 Mode A only (no code). Ken: teleport works the first time, not the second.

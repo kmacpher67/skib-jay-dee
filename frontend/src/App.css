@@ -731,3 +731,85 @@
   text-decoration: none;
   font-weight: bold;
 }
+
+/* ── Turdstone Token save-moment overlay ─────────────────────────────────── */
+.turdstone-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, rgba(80, 0, 120, 0.97) 0%, rgba(10, 0, 20, 0.99) 100%);
+  backdrop-filter: blur(6px);
+  animation: turdstone-fadein 0.4s ease-out;
+}
+
+@keyframes turdstone-fadein {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.turdstone-overlay-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 32px 24px;
+  max-width: 300px;
+  text-align: center;
+}
+
+.turdstone-icon {
+  font-size: 4rem;
+  filter: drop-shadow(0 0 20px #9b59b6) drop-shadow(0 0 40px #6c2f9e);
+  animation: turdstone-pulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes turdstone-pulse {
+  from { transform: scale(1); filter: drop-shadow(0 0 16px #9b59b6); }
+  to   { transform: scale(1.08); filter: drop-shadow(0 0 32px #d4a3f7) drop-shadow(0 0 60px #9b59b6); }
+}
+
+.turdstone-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #d4a3f7;
+  text-shadow: 0 0 16px #9b59b6, 0 0 32px #6c2f9e;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.turdstone-body {
+  font-size: 0.82rem;
+  color: #c8b0e0;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.turdstone-accept-btn {
+  margin-top: 8px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #7d3cbf 0%, #4a0080 100%);
+  border: 2px solid #9b59b6;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 0 0 24px rgba(155, 89, 182, 0.6), 0 4px 12px rgba(0,0,0,0.5);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.turdstone-accept-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 36px rgba(155, 89, 182, 0.85), 0 6px 16px rgba(0,0,0,0.6);
+}
+
+.turdstone-accept-btn:active {
+  transform: scale(0.97);
+}
+

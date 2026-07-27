@@ -63,6 +63,8 @@ export default function App() {
   const [activeBadgeToast, setActiveBadgeToast] = useState(null)
   const hasSeenLevel4WarningRef = useRef(false)
   const sessionDeathsRef = useRef(0)
+  const turdstoneOverlayRef = useRef(false)
+  const [showTurdstoneOverlay, setShowTurdstoneOverlay] = useState(false)
   const [profileModal, setProfileModal] = useState(null)
   const [profileModalMode, setProfileModalMode] = useState(null)
   const [profileSwitcherOpen, setProfileSwitcherOpen] = useState(false)
@@ -300,10 +302,21 @@ export default function App() {
       typeof payload === 'object' && payload
         ? payload.captureLine
         : payload
+    const isTurdstoneOave = typeof payload === 'object' && payload && payload.turdstoneSaved
     setShowLvl2Transition(false)
     setDadCaseSpawned(false)
     setProfileModal(null)
     setProfileModalMode(null)
+
+    if (isTurdstoneOave) {
+      // Turdstone save: don't show the capture line or do item-loss.
+      // The Turdstone overlay fires via handleCaughtProfileReady once the
+      // jump-scare animation finishes, so store the flag for that handler.
+      turdstoneOverlayRef.current = true
+      playCaughtAudio()
+      return
+    }
+
     setLastCaptureLine(captureLine)
     playCaughtAudio()
 
@@ -354,8 +367,21 @@ export default function App() {
   }
 
   const handleCaughtProfileReady = (payload) => {
+    // If a Turdstone Token save is pending, show the save overlay instead of
+    // the normal killer profile card — the engine is paused in 'caught-profile'
+    // waiting for beginResumeCountdown().
+    if (turdstoneOverlayRef.current) {
+      turdstoneOverlayRef.current = false
+      setShowTurdstoneOverlay(true)
+      return
+    }
     setProfileModal(payload)
     setProfileModalMode('caught')
+  }
+
+  const handleAcceptTurdstone = () => {
+    setShowTurdstoneOverlay(false)
+    engineRef.current?.beginResumeCountdown()
   }
 
   const handleContinueAfterProfile = () => {
@@ -631,6 +657,28 @@ export default function App() {
       {lastCaptureLine && (
         <div className="toast-panel" aria-live="polite">
           {lastCaptureLine}
+        </div>
+      )}
+
+      {showTurdstoneOverlay && (
+        <div className="turdstone-overlay" role="dialog" aria-modal="true" aria-labelledby="turdstone-title">
+          <div className="turdstone-overlay-inner">
+            <div className="turdstone-icon" aria-hidden="true">🪦</div>
+            <h2 id="turdstone-title" className="turdstone-title">SAVED BY THE TURDSTONE!</h2>
+            <p className="turdstone-body">
+              The porcelain tombstone intervened.
+              Your loadout is intact. Your sheebs are intact.
+              The Turdstone Token has been consumed.
+            </p>
+            <button
+              id="turdstone-accept-btn"
+              className="turdstone-accept-btn"
+              onClick={handleAcceptTurdstone}
+              autoFocus
+            >
+              GET BACK IN THERE 💩
+            </button>
+          </div>
         </div>
       )}
 

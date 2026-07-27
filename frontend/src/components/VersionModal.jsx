@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.52',
+    title: 'The Turdstone Token',
+    description: 'New Epic/Rare map pickup — the porcelain tombstone. Pick it up and it holds in the background passively. Get caught while holding it and the Turdstone intercepts the death: your level stays the same, your loadout is safe, your sheebs are untouched. Single-use. A "SAVED BY THE TURDSTONE!" overlay + HUD badge let you know it\'s active. Spawn rate scales from 1% (L1) to 5% (L6).',
+  },
+  {
     version: 'v0.4.51',
     title: 'Wall-Pinch Collision Traps',
     description: 'Sealed two unreachable sub-40px corridor pinches in Ramen Aisle and Jayden\'s Nightmare House that trapped runners mid-map (looked like a collision bug, was map data).',

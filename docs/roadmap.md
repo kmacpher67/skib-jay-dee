@@ -68,17 +68,17 @@ All are front-end–scoped or front-end–first unless noted. LT roadmap items
 | Status | Count | Items |
 |---|---|---|
 | **Unblocked — code next** | 8+ | See updated queue below |
-| **Specced — Ken confirm** | 1 | Turdstone Token (named, needs tuning answers) → `roadmap-handoff-v0.4.52-plan.md` |
+| **Specced — shipped** | 1 | Turdstone Token (v0.4.52) |
 | **Design-only / TBD** | 4 | Difficulty Function, Level 7+ Mosaic, Interactive content pack, Role Reversal kit (partial) |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 
-**Coding queue after v0.4.51 (Wall-Pinch Seals):** **v0.4.57 Rod Stinky
+**Coding queue after v0.4.52 (Turdstone Token):** **v0.4.57 Rod Stinky
 cooldown hotfix first** → v0.4.41 Slice B (shop labels) → v0.4.41 Play
 Recap → v0.4.54 near-miss burst → v0.4.55 Micro-Skib → v0.4.56 runner pose
-collapse. Wall-pinch map fix shipped as `v0.4.51`.
+collapse.
 
-`GAME_ITERATION` is **v0.4.51** (`frontend/src/version.js`). Next code slice:
+`GAME_ITERATION` is **v0.4.52** (`frontend/src/version.js`). Next code slice:
 **Rod of Poopdom second-teleport hotfix** per
 `roadmap-handoff-v0.4.57-plan.md` (jumps ahead of Slice B).
 

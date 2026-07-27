@@ -13,6 +13,11 @@ import antiKRaman2 from './assets/anti-k-raman2.PNG'
 import dedDad from './assets/ded-dad.jpg'
 import crazyJackChaser from './assets/crazy-jack-chaser.jpeg'
 import skyDiverMotorKiller from './assets/sky-diver-motor-killer.png'
+import turdstoneTokenSprite from './assets/turdstone-toilet-token-perk.png'
+
+// The Turdstone Token sprite — loaded once here and re-exported so GameEngine
+// can pull it in without importing from assets directly inside the engine.
+export { turdstoneTokenSprite }
 
 export const RUNNER_FACE_POOL = [
   { id: 'jayden-default', label: 'Jayden Default', src: jaydenDefault },
@@ -322,5 +327,6 @@ export const POSITIVE_PICKUPS = [
   'gawd-particle',
   'decoy',
   'heavy-plunger',
-  'soggy-tp'
+  'soggy-tp',
+  'turdstone-token',
 ]

@@ -16,7 +16,7 @@ import {
   BROTH_HIT_LINES,
   BROTH_CAPTURE_LINES,
 } from './dialog.js'
-import { CHASER_FACE_POOL, CHASER_TYPES, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS } from './gameContent.js'
+import { CHASER_FACE_POOL, CHASER_TYPES, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS, turdstoneTokenSprite } from './gameContent.js'
 import { PORCELAIN_GRID, PIPEWORKS_GRID, FLOODED_ANNEX_GRID, RAMEN_AISLE_GRID, WORLD_STAR_GRID, JAYDENS_NIGHTMARE_HOUSE_GRID } from './mapGrids.js'
 
 export const WORLD = {
@@ -391,6 +391,15 @@ const ROD_OF_POOPDOM_PICKUP_SIZE = 24
 const ROD_OF_POOPDOM_COOLDOWN = 3
 const ROD_OF_POOPDOM_RANGE = 300
 
+// Turdstone Token — Resurrection Ward pickup (docs/handoffs/roadmap-handoff-v0.4.52-plan.md).
+// Spawn chance is level-indexed: rarer on early levels (1%), climbing to 5% by Level 6.
+// Single-use passive ward held in runner.hasTurdstoneToken until death.
+const TURDSTONE_TOKEN_PICKUP_SIZE = 32
+function turdstoneTokenSpawnChance(levelIndex) {
+  // Level 0–1 (L1–L2): 1%; Level 2 (L3): 2%; Level 3 (L4): 3%; Level 4 (L5): 4%; Level 5+ (L6+): 5%
+  return Math.min(0.01 + levelIndex * 0.01, 0.05)
+}
+
 // Humor/intrigue badges (docs/handoffs/roadmap-handoff-v0.4.32-plan.md):
 // low-odds optional pickups scattered across levels. Never gate progression
 // (unlike progressionBadgeId below) — they're a pure exploration reward, so
@@ -461,6 +470,7 @@ export class GameEngine {
       driftVel: { x: 0, y: 0 },
       gun: null,
       rod: false,
+      hasTurdstoneToken: false,
     }
     this.chaser = {
       chaserType: null,
@@ -539,6 +549,15 @@ export class GameEngine {
     this.plungerSwingTimer = 0
     this.shartCharge = 0
     this.chaserRespawnQueue = []
+
+    // Turdstone Token sprite (loaded once at construction, reused per draw).
+    // Using an HTMLImageElement keyed off the src URL so multiple engine
+    // instantiations share the browser cache cleanly.
+    if (!GameEngine._turdstoneImg) {
+      const img = new Image()
+      img.src = turdstoneTokenSprite
+      GameEngine._turdstoneImg = img
+    }
 
     this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0, luckBonus: 0 }
     this.neonJumpscareFilter = !!neonJumpscareFilter
@@ -899,6 +918,7 @@ export class GameEngine {
     this._maybeSpawnHumorBadge()
     this._maybeSpawnGawdParticle()
     this._maybeSpawnRodOfPoopdom()
+    this._maybeSpawnTurdstoneToken()
     this._maybeSpawnTacoBell()
     this._maybeSpawnDecoy()
     this._maybeSpawnSoggyToiletPaper()
@@ -1431,6 +1451,10 @@ export class GameEngine {
         this.runner.gun = null
         this.runnerLine = 'The Rod of Poopdom!'
         this.runnerLineTimer = 1.5
+      } else if (pickup.type === 'turdstone-token') {
+        this.runner.hasTurdstoneToken = true
+        this.runnerLine = 'Turdstone Token secured. Toilet insurance engaged!'
+        this.runnerLineTimer = 2
       }
       return false
     })
@@ -1636,6 +1660,22 @@ export class GameEngine {
       w: ROD_OF_POOPDOM_PICKUP_SIZE,
       h: ROD_OF_POOPDOM_PICKUP_SIZE,
       sprite: '🪄',
+    })
+  }
+
+  _maybeSpawnTurdstoneToken() {
+    // Only one Turdstone Token can be held at a time — no point spawning another.
+    if (this.runner.hasTurdstoneToken) return
+    const chance = turdstoneTokenSpawnChance(this.levelIndex)
+    if (Math.random() > chance) return
+    const spawn = this._findRandomWalkableSpawn()
+    if (!spawn) return
+    this.pickups.push({
+      type: 'turdstone-token',
+      x: spawn.x,
+      y: spawn.y,
+      w: TURDSTONE_TOKEN_PICKUP_SIZE,
+      h: TURDSTONE_TOKEN_PICKUP_SIZE,
     })
   }
 
@@ -2040,6 +2080,49 @@ export class GameEngine {
     if (this.deaths >= 50) {
       this.onBadgeEarned('glutton-for-punishment')
     }
+
+    // ── Turdstone Token: Resurrection Ward ──────────────────────────────────
+    // Ken's design decisions (2026-07-27, answering Q1-5 in the plan doc):
+    //   Q2: deaths still increments (it's still a real death for stats/badges)
+    //   Q3: no chaserSpeedMod ramp — free do-over. This is Epic/Rare; ramping
+    //       would just get the player instantly steamrolled on respawn.
+    //   Q4+Q5: distinct message pauses game until player accepts; HUD icon
+    //          shows while held (see _drawHud).
+    if (this.runner.hasTurdstoneToken) {
+      this.runner.hasTurdstoneToken = false
+      // No currency penalty this death.
+      this.onSheebsChange(this.sheebs)
+      // No levelIndex bump — stay on the current level ("current level respawn").
+      // No chaserSpeedMod ramp — treat it as a free do-over.
+      // Deaths counter already incremented above (Q2: yes, it's still a death).
+      // Flag turdstoneSaved so App.jsx can show the distinct save-moment UX.
+      this.onDeath({
+        deaths: this.deaths,
+        level: this.levelIndex + 1,
+        levelName: this.level.name,
+        chaserId: caughtBy?.faceId ?? null,
+        timePlayed: this.sessionSeconds,
+        sessionSheebDelta: this.sheebs - this.initialSheebs,
+        sessionSkreemDelta: this.skreems,
+        turdstoneSaved: true,
+      })
+      this.onSkreem(Math.floor(this.skreems))
+      this.onCaught({
+        captureLine: this.captureLine,
+        chaserId: caughtBy?.faceId ?? null,
+        chaserName: caughtBy?.faceId ? getChaserProfile(caughtBy.faceId).name : null,
+        chaserFaceSrc: caughtBy?.face?.src ?? null,
+        level: this.levelIndex + 1,
+        levelName: this.level.name,
+        timePlayed: this.sessionSeconds,
+        sessionSheebDelta: this.sheebs - this.initialSheebs,
+        sessionSkreemDelta: this.skreems,
+        turdstoneSaved: true,
+      })
+      return
+    }
+    // ── End Turdstone Token branch ───────────────────────────────────────────
+
     const skreemsLost = Math.round(this.skreems * DEATH_SKREEM_PENALTY)
     const baseSheebsLost = deathSheebsPenaltyForLevel(this.levelIndex)
     let sheebsLost = 0
@@ -2333,7 +2416,29 @@ export class GameEngine {
   _drawPickups(ctx) {
     this.pickups.forEach((pickup) => {
       ctx.save()
-      if (pickup.sprite) {
+      if (pickup.type === 'turdstone-token') {
+        const img = GameEngine._turdstoneImg
+        if (img && img.complete && img.naturalWidth > 0) {
+          // Center-crop the source PNG to a square, then scale into the pickup box.
+          const sw = Math.min(img.width, img.height)
+          const sh = sw
+          const sx = (img.width - sw) / 2
+          const sy = (img.height - sh) / 2
+          ctx.drawImage(img, sx, sy, sw, sh, pickup.x, pickup.y, pickup.w, pickup.h)
+        } else {
+          // Image not yet decoded — fallback emoji-in-box while it loads.
+          ctx.fillStyle = '#1a0a2e'
+          ctx.fillRect(pickup.x, pickup.y, pickup.w, pickup.h)
+          ctx.strokeStyle = '#9b59b6'
+          ctx.lineWidth = 2
+          ctx.strokeRect(pickup.x, pickup.y, pickup.w, pickup.h)
+          ctx.fillStyle = '#9b59b6'
+          ctx.font = 'bold 16px sans-serif'
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'middle'
+          ctx.fillText('🪦', pickup.x + pickup.w / 2, pickup.y + pickup.h / 2)
+        }
+      } else if (pickup.sprite) {
         ctx.font = '24px sans-serif'
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
@@ -2487,6 +2592,42 @@ export class GameEngine {
       ctx.textAlign = 'left'
       ctx.textBaseline = 'middle'
       ctx.fillText(`🪠 SWINGS: ${this.runner.plunger.swings}`, 10, 64)
+      ctx.restore()
+    }
+
+    // Turdstone Token HUD badge — small glowing icon showing the ward is active.
+    // Ken's answer to Q5: show it so players know to play more aggressively.
+    if (this.runner.hasTurdstoneToken) {
+      ctx.save()
+      const img = GameEngine._turdstoneImg
+      const iconX = VIEW_W - 48
+      const iconY = 54
+      const iconW = 36
+      const iconH = 36
+      ctx.fillStyle = 'rgba(0,0,0,0.55)'
+      ctx.fillRect(iconX - 4, iconY, iconW + 8, iconH + 4)
+      ctx.strokeStyle = '#9b59b6'
+      ctx.lineWidth = 2
+      ctx.strokeRect(iconX - 4, iconY, iconW + 8, iconH + 4)
+      if (img && img.complete && img.naturalWidth > 0) {
+        const sw = Math.min(img.width, img.height)
+        const sh = sw
+        const sx = (img.width - sw) / 2
+        const sy = (img.height - sh) / 2
+        ctx.drawImage(img, sx, sy, sw, sh, iconX, iconY + 2, iconW, iconH)
+      } else {
+        ctx.fillStyle = '#9b59b6'
+        ctx.font = 'bold 11px sans-serif'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText('🪦', iconX + iconW / 2, iconY + iconH / 2)
+      }
+      // Small label under icon
+      ctx.fillStyle = '#d4a3f7'
+      ctx.font = 'bold 8px sans-serif'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'top'
+      ctx.fillText('WARD', iconX + iconW / 2, iconY + iconH + 4)
       ctx.restore()
     }
 
