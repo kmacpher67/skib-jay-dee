@@ -69,7 +69,7 @@ All are front-end–scoped or front-end–first unless noted. LT roadmap items
 |---|---|---|
 | **Unblocked — code next** | 8+ | See updated queue below |
 | **Specced — shipped** | 1 | Turdstone Token (v0.4.52) |
-| **Design-only / TBD** | 4 | Difficulty Function, Level 7+ Mosaic, Interactive content pack, Role Reversal kit (partial) |
+| **Design-only / TBD** | 5 | Difficulty Function, Level 7+ Mosaic, Interactive content pack, Role Reversal kit (partial), Desktop Screen Support |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 
@@ -652,3 +652,4 @@ and chaser-bark voice clips, 1:1 with text.
   gate blocks forever. Hotfix plan:
   [roadmap-handoff-v0.4.57-plan.md](handoffs/roadmap-handoff-v0.4.57-plan.md).
   **Next code slice** (ahead of Slice B).
+- [ ] **Feature: Desktop Screen Support.** Users are asking for computer screen size for desktop devices. Currently locked to 9:16 portrait. Need a design decision on whether to expand field of view, add a vignette to limit it, or use side art panels. Mode A plan created: [roadmap-handoff-v0.4.58-plan.md](handoffs/roadmap-handoff-v0.4.58-plan.md). **Blocked on Ken** for design decision on viewport balance.
