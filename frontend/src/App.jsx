@@ -180,6 +180,15 @@ export default function App() {
     syncProfile((current) => ({ ...current, muted: !current.muted }))
   }
 
+  const toggleDifficulty = () => {
+    syncProfile((current) => {
+      const diffs = ['easy', 'normal', 'hardcore']
+      const idx = diffs.indexOf(current.difficulty)
+      const nextDiff = diffs[(idx + 1) % diffs.length]
+      return { ...current, difficulty: nextDiff }
+    })
+  }
+
   const handlePlay = (asChaser = false) => {
     setIsChaserMode(asChaser)
     const nextFaces = randomFaces()
@@ -545,6 +554,7 @@ export default function App() {
               onPrimeAudio={startMenuAudio}
               muted={muted}
               onToggleMuted={toggleMuted}
+              onToggleDifficulty={toggleDifficulty}
             />
 
             {shopOpen && (
@@ -604,6 +614,7 @@ export default function App() {
               initialDeaths={profile.deaths}
               highestLevel={profile.highestLevel}
               earnedBadges={profile.earnedBadges}
+              difficulty={profile.difficulty}
               onCaught={handleCaught}
               onLevelChange={handleLevelChange}
               onSheebsChange={handleSheebsChange}
@@ -715,6 +726,7 @@ function MainMenu({
   onPrimeAudio,
   muted,
   onToggleMuted,
+  onToggleDifficulty,
 }) {
   return (
     <div className="menu" onPointerDown={onPrimeAudio}>
@@ -743,6 +755,17 @@ function MainMenu({
           }}
         >
           User {profile.label || profile.userId}
+        </button>
+        <button
+          type="button"
+          className="status-pill diff-pill"
+          onClick={(e) => {
+            e.stopPropagation()
+            onToggleDifficulty()
+          }}
+          style={{ textTransform: 'capitalize', backgroundColor: profile.difficulty === 'hardcore' ? '#8a2be2' : profile.difficulty === 'easy' ? '#2e8b57' : '#4a90e2' }}
+        >
+          {profile.difficulty}
         </button>
         {profile.sheebs < 0 ? (
           <span className="debt-badge" style={{ backgroundColor: '#ff2e2e', color: 'white', padding: '0 6px', borderRadius: '4px' }}>DEBT: {profile.sheebs}</span>

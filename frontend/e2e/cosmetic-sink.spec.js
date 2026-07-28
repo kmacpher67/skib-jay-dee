@@ -18,6 +18,7 @@ function seedProfile(page, profile) {
 }
 
 test('neon jump-scare filter can be purchased and tints the capture overlay', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 640 })
   await seedProfile(page, BASE_PROFILE)
   await page.goto('./')
 
@@ -50,6 +51,7 @@ test('neon jump-scare filter can be purchased and tints the capture overlay', as
 })
 
 test('default jump-scare overlay stays red without the cosmetic filter', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 640 })
   await seedProfile(page, BASE_PROFILE)
   await page.goto('./')
   await page.locator('.play-btn').first().click()

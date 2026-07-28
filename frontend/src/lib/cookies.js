@@ -113,6 +113,7 @@ export function normalizeProfile(profile = {}) {
   return {
     userId,
     label: typeof profile.label === 'string' && profile.label.trim() ? profile.label.trim().slice(0, 24) : '',
+    difficulty: typeof profile.difficulty === 'string' ? profile.difficulty : 'normal',
     sheebs: Number.isFinite(profile.sheebs) ? Math.floor(profile.sheebs) : 0,
     ownedItems,
     earnedBadges,

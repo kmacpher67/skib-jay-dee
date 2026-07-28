@@ -12,6 +12,10 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.58 (real code, shipped — 2026-07-28):**
+  Implemented Option A (Fog of War) desktop screen expansion. Removed the strict 9:16 CSS aspect-ratio constraint from `.portrait-frame`. Updated `GameEngine.js` to calculate `VIEW_W` dynamically based on the actual canvas aspect ratio (clamped to at least 9/16). Implemented a difficulty-based fog of war (radial gradient mask) that obscures the extended peripheral vision for 'normal' and 'hardcore' difficulties. Updated `cookies.js` and `App.jsx` to parse and pass down the `difficulty` state to the `GameEngine`. Fixed E2E test `cosmetic-sink.spec.js` by forcing a 360x640 viewport. `GAME_ITERATION` = v0.4.58. See `roadmap-handoff-v0.4.58.md`.
+
+
 - **v0.4.60-plan (docs-only, 2026-07-28):** SDLC review, no code — Ken
   asked where the Easy/Normal/4chan-st difficulty setting is. Confirmed
   it was never shipped: only a design doc

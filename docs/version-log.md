@@ -6,6 +6,23 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.58 — Desktop Screen Support (Antigravity, 2026-07-28)
+
+Mode B — full code and delivery.
+
+Implemented Option A (Fog of War) desktop screen expansion.
+- Removed the strict 9:16 CSS aspect-ratio constraint from `.portrait-frame`.
+- Updated `GameEngine.js` to calculate `VIEW_W` dynamically based on the actual canvas aspect ratio (clamped to at least 9/16).
+- Implemented a difficulty-based fog of war (radial gradient mask) that obscures the extended peripheral vision for 'normal' and 'hardcore' difficulties.
+  - 'easy': No fog of war. Players get full, unrestricted widescreen vision.
+  - 'normal': Fog of war with `innerRadius=350` and `outerRadius=600`.
+  - 'hardcore': Fog of war with `innerRadius=160` and `outerRadius=320`.
+- Ensured UI positioning adjusts dynamically with the new `VIEW_W`.
+- Updated `cookies.js` and `App.jsx` to parse and pass down the `difficulty` state to the `GameEngine`.
+- Modified `e2e/cosmetic-sink.spec.js` to run in a fixed `360x640` viewport to preserve the exact center-pixel color checks for the jump-scare filter.
+
+Verified with Playwright (all 49 tests pass). Bumped to v0.4.58 and deployed.
+
 ## v0.4.60-plan — Difficulty Selector SDLC review (Claude Sonnet 5, 2026-07-28)
 
 Mode A — docs only, no code. `GAME_ITERATION` stays **v0.4.57**.

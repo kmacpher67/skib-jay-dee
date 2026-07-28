@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-28 | v0.4.58 | Implemented Option A (Fog of War) desktop screen expansion with difficulty-based masks (easy, normal, hardcore); fixed cosmetic-sink e2e test viewports
 2026-07-28 | docs (Claude Sonnet 5) | v0.4.60-plan: SDLC review — confirmed the Easy/Normal/4chan-st difficulty setting was never shipped (design-only in difficulty-mechanics-plan.md); scoped code-ready minimal slice (cookie field + menu selector, no Debt Lock math); unblocks v0.4.58-plan's difficulty-picker question; no code
 2026-07-27 | docs (Cursor Grok 4.5) | v0.4.58-plan refine: Desktop Screen Support decision brief — A vs C live, B soft-parked; dual Mode B branches; synced roadmap/briefs/update-directions; no code
 2026-07-27 | v0.4.52.1 (Antigravity) | Raman Rows hotfix: sealed sub-40px corridor pinch on RAMEN_AISLE_GRID that audit-map-widths whitelist missed

@@ -27,6 +27,7 @@ export default function GameCanvas({
   initialDeaths,
   highestLevel,
   earnedBadges,
+  difficulty,
   onCaught,
   onSkreem,
   onLevelChange,
@@ -67,6 +68,7 @@ export default function GameCanvas({
       initialDeaths,
       highestLevel,
       earnedBadges,
+      difficulty,
       loadout: {
         speedBonus: loadoutSpeedBonus,
         staminaBonus: loadoutStaminaBonus,

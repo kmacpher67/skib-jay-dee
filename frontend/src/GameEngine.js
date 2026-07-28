@@ -24,7 +24,7 @@ export const WORLD = {
   height: 1500,
 }
 
-const VIEW_W = 360
+let VIEW_W = 360
 const VIEW_H = 640
 
 function rectsIntersect(a, b) {
@@ -431,12 +431,17 @@ export class GameEngine {
       loadout = {},
       neonJumpscareFilter = false,
       isChaserMode = false,
+      difficulty = 'normal',
     } = {},
   ) {
     this.canvas = canvas
     this.ctx = canvas.getContext('2d')
+    const aspect = this.canvas.clientWidth / this.canvas.clientHeight
+    VIEW_W = 640 * (aspect > 0 ? aspect : (9/16))
     this.canvas.width = VIEW_W
     this.canvas.height = VIEW_H
+
+    this.difficulty = difficulty
 
     this.onCaught = onCaught || (() => {})
     this.onSkreem = onSkreem || (() => {})
@@ -2444,6 +2449,34 @@ export class GameEngine {
       ctx.save()
       ctx.setTransform(1, 0, 0, 1, 0, 0)
       ctx.fillStyle = gradient
+      ctx.fillRect(0, 0, VIEW_W, VIEW_H)
+      ctx.restore()
+    }
+
+    if (this.difficulty !== 'easy') {
+      const isHardcore = this.difficulty === 'hardcore'
+      const focus = this.isChaserMode ? this.chasers[0] : this.runner
+      const cx = focus.x + focus.w / 2
+      const cy = focus.y + focus.h / 2
+      
+      const innerRadius = isHardcore ? 160 : 350
+      const outerRadius = isHardcore ? 320 : 600
+
+      ctx.save()
+      const gradient = ctx.createRadialGradient(cx, cy, innerRadius, cx, cy, outerRadius)
+      gradient.addColorStop(0, 'rgba(0, 0, 0, 0)')
+      gradient.addColorStop(1, 'rgba(0, 0, 0, 0.95)')
+      
+      ctx.fillStyle = gradient
+      // Transform back to world space since we want the mask over the world, but actually we are already in world space here? No, we restored after _drawBullets.
+      // We need to apply the mask over the screen, but centered on the runner's screen coordinates.
+      // Wait, _applyCamera translates the canvas so the runner is at VIEW_W/2, VIEW_H/2.
+      // So in screen space, the runner is always at VIEW_W/2, VIEW_H/2.
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
+      const gradScreen = ctx.createRadialGradient(VIEW_W/2, VIEW_H/2, innerRadius, VIEW_W/2, VIEW_H/2, outerRadius)
+      gradScreen.addColorStop(0, 'rgba(0, 0, 0, 0)')
+      gradScreen.addColorStop(1, 'rgba(0, 0, 0, 1)')
+      ctx.fillStyle = gradScreen
       ctx.fillRect(0, 0, VIEW_W, VIEW_H)
       ctx.restore()
     }
