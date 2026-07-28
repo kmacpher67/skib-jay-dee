@@ -3,7 +3,9 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Claude Sonnet 5 — 2026-07-28 (v0.4.71 completeness audit)
+**Created on:** 2026-07-26
+**Last updated by:** Codex GPT-5 — 2026-07-28 (level-warp pass refinement)
+**Last updated on:** 2026-07-28
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -32,6 +34,15 @@ entry heading so the change trail stays obvious at a glance.
   written (`GAME_ITERATION` → v0.4.70) — `roadmap.md` and both
   next-agent briefs were updated again to reflect that. Next unblocked
   Mode B pick is now **Micro-Skib** (`v0.4.55-plan.md`).
+- **v0.4.73-plan (docs only — 2026-07-28):** refined Ken's
+  "buy higher/lower levels" idea into a separate warp-pass progression
+  unlock. Recommended shape: per-level clear counts, a permanent
+  `highestUnlockedStartLevel` cap, a 1500-sheebs offer that appears only
+  after three clears of the target level, and a start-level picker that
+  defaults to Level 1. Warp unlocks stay out of `ownedItems` so item-loss
+  and stat perks remain isolated. See
+  `roadmap-handoff-v0.4.73-plan.md`. Next code queue is unchanged:
+  `roadmap-handoff-v0.4.55-plan.md` (Micro-Skib).
 - **v0.4.69 (real code, shipped — 2026-07-28):** Implemented Chaser Beta Mode changes. AI runner now seeks guns and fires back. Profile is isolated from Chaser Beta stats. Includes dedicated Chaser Beta dialogues. Verified with Playwright tests. `GAME_ITERATION` = v0.4.69. See `roadmap-handoff-v0.4.69.md`.
 
 - **v0.4.69-plan final review (docs only — 2026-07-28):** **IMPLEMENTED** as two intentionally small slices. The initial AI interaction is now

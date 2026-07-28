@@ -1,10 +1,13 @@
-# Version Log — Skib-Jay-Dee-Toilet
-
 This file memorializes the design and plan decisions made during the
 front-end upgrade pass. Starting v0.4.0, each version also gets a fuller
 session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
+
+## [v0.4.71] - Chaser Beta Refinements
+- **Win State Fix**: Fixed the jumpscare zoom when the human chaser wins, skipping straight to the victory card.
+- **Cosmetic Fixes**: Gated badge toasts and sheeb increments so they don't visually trigger during Chaser Beta.
+- **E2E Tests**: Added stronger assertions for far-branch gun seek, bullet stuns, and real win lines.
 
 ## [v0.4.70] - Level 5 Tuning & Ramen Aisle Rebalance
 - **Difficulty Re-Wired**: Removed obsolete string checks; difficulty selector logic now correctly reads `noob`, `casual`, and `4chan-st` cookies.
@@ -14,6 +17,12 @@ focused on *why*, those two are the *what* and *when*.
 - **Raman Aunt Gating**: Bumped Raman Aunt's first potential spawn from Level 4 to Level 5.
 - **Ramen Aisle Rebalance**: Increased positive pickup spawn odds specifically for Level 4.
 - **Turdstone Re-home**: Relocated the Turdstone Token specifically on Level 4 to sit behind a tight-squeeze gap that strictly requires the Schleimy Potion.
+
+## [docs, 2026-07-28] - Level Warp Pass refinement (Codex GPT-5)
+- Refined Ken's "buy higher/lower levels" request into a separate warp-pass progression unlock instead of a normal stat item.
+- Recommended model: per-level clear counts, a permanent `highestUnlockedStartLevel` cap, a 1500-sheebs unlock that appears after three clears of the target level, and a start-level picker that defaults to Level 1.
+- Kept warp unlocks out of `ownedItems` so stat bonuses and item-loss behavior stay isolated.
+- Updated the roadmap, profile-model notes, update-directions, and handoff docs to point at `roadmap-handoff-v0.4.73-plan.md`.
 
 ## v0.4.71-plan — Completeness audit of v0.4.60–v0.4.69 (Claude Sonnet 5, 2026-07-28)
 

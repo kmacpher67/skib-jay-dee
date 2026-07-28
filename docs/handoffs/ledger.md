@@ -7,7 +7,10 @@ full session write-up see the matching
 `docs/handoffs/roadmap-handoff-vX.Y.Z.md` file (introduced starting
 v0.4.0 — earlier versions only have a version-log entry).
 
-Never edit past lines. Append a new line (or block) per version when you
+Never edit past lines. Append a new line (or block) per version when you add
+a new shipped version or docs-only planning note.
+
+2026-07-28 | docs (Codex GPT-5) | v0.4.73-plan: refines the level-jump request into a shop-gated warp-pass system (clear-count gate + permanent start-level cap); roadmap/profile/update docs updated; no code
 2026-07-28 | v0.4.70 | Level 5 Tuning, difficulty wiring fix, and Ramen Aisle positive pickup rebalance (Turdstone relocated behind Schleimy gap).
 2026-07-28 | docs (Cursor Composer) | v0.4.69 post-ship Mode A code review: ship stands, medium chaser-win/_updateCaught theater gap + low e2e gaps; refinement copy-paste in roadmap-handoff-v0.4.69.md; no code
 2026-07-28 | v0.4.69 | Chaser Beta Mode changes: profile save isolation, AI runner gun logic, and dedicated dialog (opener, runner gun taunt, win line). Verified via Playwright.

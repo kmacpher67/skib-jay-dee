@@ -1,7 +1,9 @@
 # Next Agent Planning Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
-**Last updated by:** Claude Sonnet 5 — 2026-07-28 (v0.4.71 completeness audit)
+**Created on:** 2026-07-27
+**Last updated by:** Codex GPT-5 — 2026-07-28 (level-warp pass refinement)
+**Last updated on:** 2026-07-28
 
 Use this when Ken opens a **Mode A** session. For coding, use
 `docs/next-agent-coding-brief.md`.
@@ -55,6 +57,9 @@ until the v0.4.71 audit corrected it. No further action needed here.
 - Debt Lock Method C spec — the *wiring bug* (selector had zero gameplay
   effect) was fixed by v0.4.70; the actual debt-lock math is still
   design-only in `difficulty-mechanics-plan.md`.
+- Level-start warp passes — `roadmap-handoff-v0.4.73-plan.md` now scopes
+  the requested level-jump idea as a shop-gated progression unlock
+  instead of a free selector or stat item.
 - Interactive content pack slicing — still concept-only, needs a bounded
   first slice cut from `interactive-content-pack.md`.
 - Record Ken's Role Reversal answers → `role-reversal-design.md` + `v0.4.61-plan`.

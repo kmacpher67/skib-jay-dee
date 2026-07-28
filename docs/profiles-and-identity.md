@@ -153,6 +153,12 @@ whole roadmap to find everything that touches identity/profile:
   display feature over existing `highestLevel`/`deathsHistory`, would
   read especially well now that a player can have more than one save
   slot to compare against each other.
+- **Level-start warp passes / direct select** (planned, 2026-07-28) —
+  likely needs `levelClearCounts` plus a separate
+  `highestUnlockedStartLevel` cap so the shop can gate permanent start-
+  level unlocks without reusing `ownedItems`. Keep it separate from
+  item-loss and stat bonuses; see
+  `docs/handoffs/roadmap-handoff-v0.4.73-plan.md`.
 - **Sheebs debt economy / high-level item loss** (landed v0.4.26) — both
   already gated on `highestLevel`, both now correctly scoped per-profile
   since each save slot has its own `highestLevel`.

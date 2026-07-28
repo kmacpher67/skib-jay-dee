@@ -208,10 +208,14 @@ default to different chaser "types" with different speed/ability
 profiles, not just a reskinned face. Once Phase 3 (character abilities)
 lands, wire a `chaserType` per level.
 4. **Level unlock gating / direct select.** Right now all levels are
-   reached in one continuous run (advance via skreem threshold). Consider
-   letting the menu jump straight to any level up to
-   `profile.highestLevel` — quality-of-life, not an architecture change,
-   safe to do anytime after item 1.
+   reached in one continuous run (advance via skreem threshold). Refinement
+   from the 2026-07-28 planning pass: make this a **shop-gated warp pass**
+   instead of a free selector. Recommended shape: after a player clears a
+   target level 3 times, the shop offers the next warp unlock for `1500
+   sheebs`, which permanently raises the menu's start-level cap by one
+   (Level 1 stays the default). Keep warp unlocks out of `ownedItems`, so
+   capture item-loss and stat bonus logic stay untouched. See
+   `docs/handoffs/roadmap-handoff-v0.4.73-plan.md`.
 5. **The PDF's "Infinite Tiled Labyrinth."** The launch map in the PDF is
    described as infinitely regenerating corridors, not a fixed layout.
    That's a genuinely different rendering/collision model (procedural

@@ -1,7 +1,9 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Claude Sonnet 5 — 2026-07-28 (v0.4.71 completeness audit)
+**Created on:** 2026-07-27
+**Last updated by:** Codex GPT-5 — 2026-07-28 (level-warp pass refinement)
+**Last updated on:** 2026-07-28
 
 Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.70** —
 Level 5 speed rebalance + difficulty wiring fix + Ramen Aisle reward
@@ -53,6 +55,9 @@ already cover it once the code catches up.
   already shipped standalone (v0.4.64).
 - **Interactive content pack** — not code-ready, needs a Mode A slicing
   pass first.
+- **Level-start warp passes** — a separate future Mode B candidate now
+  exists as `roadmap-handoff-v0.4.73-plan.md`, but it is not the next
+  code slice; the queue still starts with Micro-Skib.
 - Everything through v0.4.70 listed as shipped in
   `roadmap-handoff-v0.4.71-plan.md`'s status table (and its "Update"
   note) — do not re-implement.
