@@ -6,6 +6,28 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.64.2 — Level 4 warning race condition fix (Claude Code, 2026-07-28)
+
+**Root cause:** v0.4.64.1 fixed `start()` not re-binding input, but missed a
+race: the natural level-up path calls `_syncLevelState()` (with
+`notify: true`) from *inside* `update()`, which runs inside the currently
+executing `requestAnimationFrame` callback. That triggers
+`onLevelChange` → App's Level 4 handler → `engine.stop()`, synchronously,
+mid-frame. `stop()` nulled `this._raf`, but the still-executing `loop`
+closure unconditionally re-armed it at its last line
+(`this._raf = requestAnimationFrame(loop)`), undoing the stop. `rafActive`
+looked `true` afterward, and `start()`'s guard (`if (this._raf) return`)
+then no-opped on "I ACCEPT MY FATE," so `_bindInput()` never ran. Console
+cheats that jumped to Level 4 outside an in-flight RAF frame didn't hit
+this race, which is why manual repro looked fine while natural
+progression into Ramen Aisle still hung.
+
+**Fix:** Added a `_running` flag that is the source of truth for whether
+the loop should keep scheduling itself; `stop()` sets it `false`
+immediately, and the `loop` closure checks it both before `update()` runs
+and before rescheduling, so a mid-frame `stop()` sticks. `start()`'s
+re-entry guard now checks `_running` instead of `_raf`.
+
 ## v0.4.64.1 — Level 4 warning input hotfix (Cursor Composer, 2026-07-28)
 
 **Root cause:** Entering Level 4 (Ramen Aisle) shows the stakes warning overlay,

@@ -55,3 +55,44 @@ test('level 4 warning overlay shows once per run and pauses game', async ({ page
   await page.waitForTimeout(500)
   await expect(page.locator('.level-4-warning')).toHaveCount(0)
 })
+
+test('level 4 warning triggered by a natural mid-frame level-up still leaves input working', async ({ page }) => {
+  // Regression test for v0.4.64.2: unlike calling onLevelChange() directly
+  // from the console (outside any in-flight RAF callback), a real level-up
+  // fires _syncLevelState()/onLevelChange() from *inside* update(), which
+  // runs inside the active requestAnimationFrame closure. That's the path
+  // where stop() got silently undone by the loop re-arming itself.
+  await page.goto('./')
+  await page.locator('.play-btn').first().click()
+  await expect(page.locator('canvas')).toBeVisible()
+
+  await page.evaluate(() => {
+    const engine = window.__skibEngine
+    engine.levelIndex = 2
+    engine.pendingLevelIndex = 3
+    engine.phase = 'level-up'
+    engine.phaseTimer = 0.001
+  })
+
+  // Let the running RAF loop itself carry phaseTimer past 0 and perform
+  // the transition — this is what makes the race reproducible.
+  await expect(page.locator('.level-4-warning')).toBeVisible()
+
+  const isEnginePaused = await page.evaluate(() => window.__skibEngine._raf === null)
+  expect(isEnginePaused).toBe(true)
+
+  await page.locator('.accept-btn').click()
+  await expect(page.locator('.level-4-warning')).toHaveCount(0)
+
+  const movedAfterAccept = await page.evaluate(() => {
+    const engine = window.__skibEngine
+    const startY = engine.runner.y
+    engine.keys.down = true
+    for (let i = 0; i < 12; i += 1) {
+      engine._moveWithCollision(engine.runner, 0, 8)
+    }
+    engine.keys.down = false
+    return engine.runner.y > startY
+  })
+  expect(movedAfterAccept).toBe(true)
+})

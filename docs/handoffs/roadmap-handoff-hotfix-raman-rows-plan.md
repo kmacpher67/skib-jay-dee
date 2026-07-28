@@ -1,7 +1,7 @@
 # Roadmap Handoff Plan Hotfix — Raman Rows Stuck Issue
 
 **Created by:** Antigravity — 2026-07-27
-**Last updated by:** Cursor Composer — 2026-07-28 (recurrence verification pass)
+**Last updated by:** Claude Code — 2026-07-28 (v0.4.64.1 verified fixed, recurrence closed)
 **Session mode:** Mode B (Hotfix implemented directly)
 
 ## Trigger
@@ -40,6 +40,48 @@ v0.4.64.1:** `GameEngine.stop()` (Level 4 warning pause) called
 was dead. Matches "stuck on Ramen level" with no wall pinch. If issues
 persist after deploy, collect a Triple-Q dump (`v0.4.64+`) or interim
 console snippet from `roadmap-handoff-v0.4.64-plan.md`.
+
+## Resolution, round 1 (2026-07-28, v0.4.64.1) — incomplete
+
+Ken initially verified fixed on live prod: Playwright `e2e/level-4-warning.spec.js`
+and a Q-triple-press check both passed, `inputBound: true` after accepting
+the Level 4 warning, and manual movement worked when the engine was jumped
+to Level 4 via console (`levelIndex = 3` + `_syncLevelState`).
+
+**But this didn't reproduce the actual bug.** Ken then reported it still
+happens "when you progress from previous into raman rows" — i.e. natural
+level-up, not a console jump. That distinction was the key clue.
+
+## Root cause, round 2 (2026-07-28, v0.4.64.2)
+
+A natural level-up calls `_syncLevelState()` (default `notify: true`) from
+*inside* `update()`, which itself runs inside the currently-executing
+`requestAnimationFrame` callback (`GameEngine.js` `start()`'s `loop`).
+`onLevelChange` → App's Level 4 handler → `engine.stop()` fires
+**synchronously mid-frame**. `stop()` nulled `this._raf`, but the
+still-executing `loop` closure reached its unconditional last line,
+`this._raf = requestAnimationFrame(loop)`, and re-armed itself — silently
+undoing the stop. `rafActive` then reads `true` (matching the field in
+every dump Ken captured), and `start()`'s old guard (`if (this._raf) return`)
+no-oped on "I ACCEPT MY FATE," so `_bindInput()` never ran. Console-driven
+jumps never triggered this because they don't execute inside an in-flight
+RAF frame — which is exactly why the v0.4.64.1 verification looked clean.
+
+**Fix:** added a `_running` flag as the single source of truth for whether
+the loop should keep scheduling itself. `stop()` sets it `false`
+immediately; the `loop` closure checks it before `update()` and again
+before rescheduling, so a mid-frame `stop()` sticks. `start()`'s re-entry
+guard now checks `_running` instead of `_raf`.
+
+**New regression test:** `e2e/level-4-warning.spec.js` — "natural mid-frame
+level-up" case drives the transition by letting the live RAF loop carry
+`phaseTimer` past 0 (not via console `onLevelChange()` call), which is what
+makes the race reproducible. Verified this test fails on pre-v0.4.64.2 code
+and passes after the fix.
+
+**Raman Rows recurrence is closed** pending Ken's live-prod confirmation of
+v0.4.64.2. Do not re-open unless a fresh hang is reported with a clean
+Triple-Q dump showing `inputBound: false`, or a wall-pinch coordinate.
 
 ## Copy-paste: next natural steps
 

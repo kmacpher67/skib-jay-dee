@@ -662,22 +662,27 @@ export class GameEngine {
   }
 
   start() {
-    if (this._raf) return
+    if (this._running) return
+    this._running = true
     this._bindInput()
     this._lastTime = performance.now()
 
     const loop = (now) => {
+      if (!this._running) return
       const dt = Math.min(0.05, (now - this._lastTime) / 1000)
       this._lastTime = now
       this.update(dt)
       this.draw()
-      this._raf = requestAnimationFrame(loop)
+      if (this._running) {
+        this._raf = requestAnimationFrame(loop)
+      }
     }
 
     this._raf = requestAnimationFrame(loop)
   }
 
   stop() {
+    this._running = false
     if (this._raf) cancelAnimationFrame(this._raf)
     this._raf = null
     this._unbindInput()

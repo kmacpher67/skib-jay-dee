@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.64.2',
+    title: 'Level 4 Warning Hotfix, Part 2',
+    description: 'Fixed a race condition where the Level 4 warning pause, triggered mid-frame during a natural level-up, silently re-armed the game loop and left keyboard/touch input dead even after dismissing the warning.',
+  },
+  {
     version: 'v0.4.64.1',
     title: 'Level 4 Warning Hotfix',
     description: 'Fixed an issue where the game lost keyboard and touch input on the Ramen Aisle after dismissing the Level 4 warning overlay.',
