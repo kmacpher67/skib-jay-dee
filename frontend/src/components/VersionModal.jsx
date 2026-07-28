@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.62',
+    title: 'Rewards Clarification',
+    description: 'Added "from Shleeb Shop" labels to the Speed, Stamina, and Rewards pills to clarify that they reflect permanent stat upgrades from the shop, not temporary map buffs. Renamed QUICK PLAY to PLAY AS RUNNER to distinguish it from the new Chaser beta mode.',
+  },
+  {
     version: 'v0.4.61',
     title: 'Play as Chaser (Beta)',
     description: 'Fixed human chaser movement. Added basic wall-aware AI for the runner. Limited chaser mode to a strict 1v1 60-second capture/timeout loop with a rematch/menu result card.',

@@ -5,7 +5,7 @@ test.describe('Rod of Poopdom', () => {
     await page.goto('/');
 
     // Start a game and skip intro
-    await page.getByRole('button', { name: 'QUICK PLAY' }).click();
+    await page.getByRole('button', { name: 'PLAY AS RUNNER' }).click();
     await expect(page.locator('canvas')).toBeVisible();
     await page.waitForFunction(() => window.__skibEngine && window.__skibEngine.phase === 'chase');
     

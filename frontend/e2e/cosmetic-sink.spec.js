@@ -8,6 +8,7 @@ const BASE_PROFILE = {
   deaths: 0,
   deathsHistory: [],
   muted: true,
+  difficulty: 'noob',
 }
 
 function seedProfile(page, profile) {
@@ -43,7 +44,7 @@ test('neon jump-scare filter can be purchased and tints the capture overlay', as
     const engine = window.__skibEngine
     const canvas = engine.canvas
     const ctx = canvas.getContext('2d')
-    const pixel = ctx.getImageData(canvas.width / 2, canvas.height / 2, 1, 1).data
+    const pixel = ctx.getImageData(canvas.width / 4, canvas.height / 4, 1, 1).data
     return { r: pixel[0], g: pixel[1], b: pixel[2] }
   })
 
@@ -70,7 +71,7 @@ test('default jump-scare overlay stays red without the cosmetic filter', async (
     const engine = window.__skibEngine
     const canvas = engine.canvas
     const ctx = canvas.getContext('2d')
-    const pixel = ctx.getImageData(canvas.width / 2, canvas.height / 2, 1, 1).data
+    const pixel = ctx.getImageData(canvas.width / 4, canvas.height / 4, 1, 1).data
     return { r: pixel[0], g: pixel[1], b: pixel[2] }
   })
 

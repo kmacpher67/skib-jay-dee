@@ -828,12 +828,15 @@ function MainMenu({
       </div>
 
       <div className="perk-strip">
-        <span>Speed +{loadout.speedBonus}</span>
-        <span>Stamina +{loadout.staminaBonus}</span>
-        <button type="button" className="perk-btn rewards-btn" onClick={onOpenRewardsHistory} style={{ background: 'none', border: 'none', color: 'inherit', font: 'inherit', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}>
+        <span title="From Shleeb Shop purchases">Speed +{loadout.speedBonus}</span>
+        <span title="From Shleeb Shop purchases">Stamina +{loadout.staminaBonus}</span>
+        <button type="button" className="perk-btn rewards-btn" onClick={onOpenRewardsHistory} title="From Shleeb Shop purchases" style={{ background: 'none', border: 'none', color: 'inherit', font: 'inherit', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}>
           Rewards +{Math.round(loadout.rewardBonus * 100)}%
         </button>
-        {loadout.luckBonus > 0 && <span>Luck +{Math.round(loadout.luckBonus * 100)}%</span>}
+        {loadout.luckBonus > 0 && <span title="From Shleeb Shop purchases">Luck +{Math.round(loadout.luckBonus * 100)}%</span>}
+      </div>
+      <div style={{ textAlign: 'center', fontSize: '0.8rem', color: '#ccc', marginTop: '2px', marginBottom: '8px' }}>
+        (Shop bonuses)
       </div>
 
       <p className="hint">
