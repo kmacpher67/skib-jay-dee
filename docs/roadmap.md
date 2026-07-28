@@ -514,6 +514,11 @@ and chaser-bark voice clips, 1:1 with text.
   **Slice B still open** (shop labels). Pickup tracking + Play Recap →
   **code-ready**, queued as **v0.4.62 Slice 2**. See
   [`roadmap-handoff-v0.4.62-plan.md`](handoffs/roadmap-handoff-v0.4.62-plan.md).
+- [ ] **Badge award counts / repeat-award history.** `earnedBadges` only
+  records unique badge ids today, so repeat badge/token grants collapse
+  to one entry. Add a separate count or award-history structure if we
+  want the profile or Rewards modal to show "earned N times" without
+  changing badge gating. Exact surface still TBD.
 - [ ] **Feature: Pickup-consumption tracking + "Play Recap" screen.** **Code-ready**
   (Ken 2026-07-27): level-clear/menu return only; Stats tab in Rewards modal;
   comedic bad-pickup tone. Queued as **v0.4.62 Slice 2**. See

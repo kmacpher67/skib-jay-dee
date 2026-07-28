@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Cursor Composer — 2026-07-28 (v0.4.64.1 Level 4 input hotfix)
+**Last updated by:** Codex GPT-5 — 2026-07-28 (badge award counts roadmap addendum)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -17,6 +17,11 @@ entry heading so the change trail stays obvious at a glance.
   Ramen Aisle. `GameEngine.stop()` unbound input for the overlay but
   `start()` never re-bound it after "I ACCEPT MY FATE". Fixed; e2e asserts
   movement after accept. `GAME_ITERATION` = v0.4.64.1. **Deploy to prod.**
+
+- **v0.4.66-plan addendum (docs only — 2026-07-28):** queued badge
+  award-count tracking because `earnedBadges` only stores unique ids.
+  Treat repeat-award visibility as a separate tally/history slice, not
+  a gating change. No code, build, version bump, or deploy.
 
 - **v0.4.64 (real code, shipped — 2026-07-28):**
   Implemented Debug State Dump. Triple-Q dumps state to console/clipboard via

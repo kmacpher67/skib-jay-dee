@@ -58,3 +58,6 @@ feeding a new player-facing history panel opened from the menu's `Rewards`
 pill (same pattern as the `Deaths` pill → `DeathsModal.jsx`). This is
 additive only — it does not change how badges are gated or which array the
 game reads to check if a badge is already earned.
+If we later want a visible "earned N times" tally for repeat awards or
+token-style achievements, that will need a separate count/history field;
+`earnedBadges` should stay the unique unlock set.

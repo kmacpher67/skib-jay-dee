@@ -67,13 +67,16 @@ the Ramen Aisle recurrence") ahead of the previously-queued bundle order.
 | 5 | Micro-Skib chaser | Code-ready | `v0.4.55-plan.md` |
 | 6 | Role Reversal Beta label/recolor only | Code-ready, small, decided | LT roadmap item in `roadmap.md`, design in `role-reversal-design.md` |
 | 7 | Role Reversal full v1.5 recovery | Partially blocked (outcome UX) | `v0.4.61-plan.md` |
+| 8 | Badge award counts / repeat-award history | Code-ready-ish, needs surface decision | `docs/badges.md` / `docs/profiles-and-identity.md` |
 
 Next unblocked pick after Debug Dump: **#2, post-deploy push automation**.
 
 Items 1–6 need **no further design refinement** — a Mode B agent can
 pick any of them up cold. They're listed here as review/sanity-check
-targets per Ken's ask, not because they're actually stuck. Item 7 is
-blocked on one open question, called out in its own block below.
+targets per Ken's ask, not because they're actually stuck. Item 8 is a
+small follow-up with one surface decision still to confirm. Item 7
+remains blocked on one open question, called out in its own block
+below.
 
 ### 1. Debug State Dump — SHIPPED, no longer a candidate
 
@@ -218,6 +221,29 @@ soften the "blocked" language.
 
 Output: either a recorded decision + unblock, or no change (still
 blocked). Do not implement code.
+```
+
+### 8. Badge award counts / repeat-award history — queued follow-up, not a blocker
+
+`profile.earnedBadges` only tells us whether a badge exists, not how
+many times it was earned. If we want repeat-award visibility for badges
+or token-style achievements, the next slice should add a separate
+count/history structure and keep gating on the existing unique set.
+
+```text
+Task: `profile.earnedBadges` only tells us whether a badge exists, not
+how many times it was earned. Add a separate count/history field if we
+want repeat-award visibility for badges or token-style achievements.
+
+Read: docs/badges.md, docs/profiles-and-identity.md,
+roadmap-handoff-v0.4.41-plan.md, roadmap-handoff-v0.4.62-plan.md.
+
+Do: decide whether the count belongs in `rewardsHistory`, a new profile
+field, or both. Keep the existing unique `earnedBadges` set unchanged
+for unlock checks.
+
+Output: a code-ready mini-slice or a note that the surface stays parked
+if Ken wants a UX decision first.
 ```
 
 ## Needs real design refinement (not just a staleness check)

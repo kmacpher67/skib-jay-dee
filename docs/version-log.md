@@ -6,6 +6,15 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.66-plan addendum — Badge award counts (Codex GPT-5, 2026-07-28)
+
+Mode A — docs only; no code, build, version bump, or deploy.
+
+Queued a new rewards follow-up because `earnedBadges` is still a unique
+id set and cannot show repeated badge/token earns. The roadmap now tracks
+badge award counts as a separate history/tally slice so the UI can show
+"earned N times" without changing badge gating.
+
 ## v0.4.64.3 — Level 4 warning visibility fix (Claude Code, 2026-07-28)
 
 **Root cause:** v0.4.64.2 fixed the engine's pause/resume logic, but the

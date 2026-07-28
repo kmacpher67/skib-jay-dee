@@ -120,7 +120,8 @@ whole roadmap to find everything that touches identity/profile:
 - **Rewards/badges system** (landed v0.4.30) — badge ids live alongside
   `ownedItems`/`deathsHistory` in the same profile object as
   `earnedBadges`, automatically per-save-slot since the switcher landed
-  first.
+  first. Today `earnedBadges` is still a unique id set; repeat-award
+  counts would need a separate field so unlock checks do not change.
 - **Rewards & History panel / HUD live-data pills** (design-only,
   2026-07-27) — a planned `rewardsHistory` field (capped last-50 log of
   badge-earn and purchase events, same shape convention as
