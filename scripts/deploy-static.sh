@@ -62,3 +62,8 @@ git -C "$WEBSITE_ROOT" push
 
 echo "Deployed, committed, and pushed changes from: $DEPLOY_DIR"
 echo "Commit message: $COMMIT_MESSAGE"
+
+MARKER_FILE="$ROOT_DIR/.skib-deploy-marker"
+echo "ITERATION=$ITERATION" > "$MARKER_FILE"
+echo "TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$MARKER_FILE"
+echo "Deploy marker written to: $MARKER_FILE"

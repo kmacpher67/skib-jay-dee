@@ -17,3 +17,4 @@ frontend/playwright/.cache/
 
 # OS / editor
 .DS_Store
+.skib-deploy-marker

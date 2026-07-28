@@ -64,7 +64,7 @@ read that first before picking work from this section. Summary:
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next (ranked)** | 5 | ~~Debug State Dump~~ (shipped v0.4.64) → post-deploy push automation → Play Recap/pickup tracking → pose collapse → Micro-Skib → Role Reversal Beta label (`v0.4.66-plan` candidates 2-6) |
+| **Unblocked — code next (ranked)** | 5 | ~~Debug State Dump~~ (shipped v0.4.64) → ~~post-deploy push automation~~ (shipped v0.4.65) → Play Recap/pickup tracking → pose collapse → Micro-Skib → Role Reversal Beta label (`v0.4.66-plan` candidates 2-6) |
 | **Parallel quality debt** | 1 | Role Reversal Beta full recovery (`v0.4.61-plan`; outcome UX blocked on Ken) |
 | **Design-only / TBD** | 3 | Debt Lock math, Level 7+ Mosaic (blocked on Ken's trigger-mechanism answer), Interactive content pack (`v0.4.66-plan` candidates A-C) |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |

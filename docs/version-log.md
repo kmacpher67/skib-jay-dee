@@ -6,6 +6,16 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.65 — Post-deploy game-repo push (Antigravity, 2026-07-28)
+
+Mode B — full code and delivery. (No version push / GAME_ITERATION bump as it does not impact gameplay).
+
+- Implemented post-deploy automation to push the game repo automatically after `deploy-static.sh` succeeds.
+- Added `scripts/wait-and-push-game-repo.sh` to poll for a deploy marker.
+- Added `scripts/game-repo-post-commit.sh` triggered by a git hook to detach the waiter.
+- Modified `scripts/deploy-static.sh` to write the `.skib-deploy-marker` upon successful website push.
+- Hook does not fire for documentation or non-version-bump commits.
+
 ## v0.4.64.2 — Level 4 warning race condition fix (Claude Code, 2026-07-28)
 
 **Root cause:** v0.4.64.1 fixed `start()` not re-binding input, but missed a

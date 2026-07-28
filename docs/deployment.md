@@ -24,7 +24,12 @@ Phase 1 is a self-contained static site — the frontend does **not** call
 the FastAPI backend (see [dev-notes.md](dev-notes.md)). That means, for
 now:
 
-1. **Build it:**
+1. **Install Git Hooks (One-time setup):**
+   ```bash
+   ./scripts/install-hooks.sh
+   ```
+   This ensures the game repo automatically pushes after the website deployment is confirmed.
+2. **Build it:**
    ```bash
    cd frontend
    npm install
