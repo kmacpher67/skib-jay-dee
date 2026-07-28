@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Antigravity (Gemini 3.6 Flash) — 2026-07-28 (v0.4.69 shipped)
+**Last updated by:** Claude Sonnet 5 — 2026-07-28 (v0.4.71 completeness audit)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,23 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+
+- **v0.4.71-plan (docs only — 2026-07-28):** Ken asked whether everything
+  from `v0.4.66-plan.md` actually landed. Audit
+  (`roadmap-handoff-v0.4.71-plan.md`) verified every v0.4.60–v0.4.69 item
+  against `git log` and the real code. Found: (1) `VersionModal.jsx` has
+  two false changelog entries — v0.4.55 "Micro-Skib Chaser" and v0.4.56
+  "Runner Pose Pool Collapse" — claiming shipped features that were never
+  implemented (`GAME_ITERATION` actually jumped `v0.4.54` → `v0.4.57`);
+  (2) `roadmap-handoff-v0.4.67-plan.md` (Badge Award Counts) collided
+  with the real `v0.4.67` (Pickup tracking + Play Recap, shipped for
+  real) — renumbered to `roadmap-handoff-v0.4.72-plan.md`; (3)
+  `docs/roadmap.md`'s backlog-snapshot table and both next-agent briefs
+  had gone stale saying `GAME_ITERATION` was v0.4.64 and several already-
+  shipped items (post-deploy push automation, Beta label pill) were
+  still unchecked. All three fixed this session; no code touched. Next
+  unblocked Mode B pick remains `roadmap-handoff-v0.4.70-plan.md`
+  (fully resolved, unshipped).
 - **v0.4.69 (real code, shipped — 2026-07-28):** Implemented Chaser Beta Mode changes. AI runner now seeks guns and fires back. Profile is isolated from Chaser Beta stats. Includes dedicated Chaser Beta dialogues. Verified with Playwright tests. `GAME_ITERATION` = v0.4.69. See `roadmap-handoff-v0.4.69.md`.
 
 - **v0.4.69-plan final review (docs only — 2026-07-28):** **IMPLEMENTED** as two intentionally small slices. The initial AI interaction is now

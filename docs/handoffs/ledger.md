@@ -8,6 +8,7 @@ full session write-up see the matching
 v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
+2026-07-28 | v0.4.70 | Level 5 Tuning, difficulty wiring fix, and Ramen Aisle positive pickup rebalance (Turdstone relocated behind Schleimy gap).
 2026-07-28 | docs (Cursor Composer) | v0.4.69 post-ship Mode A code review: ship stands, medium chaser-win/_updateCaught theater gap + low e2e gaps; refinement copy-paste in roadmap-handoff-v0.4.69.md; no code
 2026-07-28 | v0.4.69 | Chaser Beta Mode changes: profile save isolation, AI runner gun logic, and dedicated dialog (opener, runner gun taunt, win line). Verified via Playwright.
 2026-07-28 | docs (Antigravity) | v0.4.69-plan review: tightened dialog pools (3-4 lines each), verified mode-boundary leaks in GameEngine.js/App.jsx, annotated parked workloads, set Status to READY FOR MODE B; no code
@@ -735,3 +736,11 @@ Never edit past lines. Append a new line (or block) per version when you
 
 2026-07-28 | docs (Codex GPT-5) | v0.4.69-plan final review: gun-first AI interaction, full Chaser-Beta profile callback isolation, tighter dialog, and two small Mode B / Code Monkey slices; no code
 2026-07-28 | docs (Codex GPT-5) | v0.4.69-plan addendum: zero inherited shop loadout in Chaser Beta so player upgrades cannot buff the AI runner; no code
+
+## v0.4.71-plan — 2026-07-28 (Claude Sonnet 5, docs-only completeness audit)
+- Verified every v0.4.60–v0.4.69 item against `git log` and the real code (not doc claims); confirmed `GAME_ITERATION` is actually v0.4.69, more shipped than Ken's "only .67" impression.
+- Found and flagged: `VersionModal.jsx` has two false changelog entries (v0.4.55 Micro-Skib, v0.4.56 pose collapse) for features never actually implemented — left for a Mode B session, recommended fix is shipping them for real.
+- Found and fixed: `roadmap-handoff-v0.4.67-plan.md` (Badge Award Counts) collided with the real, shipped v0.4.67 (Pickup tracking + Play Recap) — renumbered the unshipped plan to `roadmap-handoff-v0.4.72-plan.md`, left a correction header on the original.
+- Fixed stale `docs/roadmap.md` backlog-snapshot table and two already-shipped-but-unchecked items (post-deploy push automation v0.4.65, Role Reversal Beta label pill).
+- Rewrote `docs/next-agent-planning-brief.md` and `docs/next-agent-coding-brief.md` to point at the new `v0.4.71-plan.md` triage and the correct next Mode B pick (`v0.4.70-plan.md`, fully resolved, unshipped).
+- Added `docs/handoffs/roadmap-handoff-v0.4.71-plan.md` and `docs/handoffs/roadmap-handoff-v0.4.72-plan.md`.

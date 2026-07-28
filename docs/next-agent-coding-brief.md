@@ -1,56 +1,68 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Claude Sonnet 5 — 2026-07-28 (v0.4.66 triage consolidation)
+**Last updated by:** Claude Sonnet 5 — 2026-07-28 (v0.4.71 completeness audit)
 
-Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.64** —
-Debug State Dump shipped this session, see `roadmap-handoff-v0.4.64.md`).
+Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.69** —
+Chaser Beta gun AI + profile isolation, see `roadmap-handoff-v0.4.69.md`).
 
-Full ranked candidate queue with readiness notes:
-`docs/handoffs/roadmap-handoff-v0.4.66-plan.md`. Next unblocked pick:
-**post-deploy game-repo push automation** (`v0.4.65-plan.md`).
+Full audit and ranked candidate queue:
+`docs/handoffs/roadmap-handoff-v0.4.71-plan.md` (supersedes the earlier
+`v0.4.66-plan.md` — v0.4.65/v0.4.67/v0.4.68/v0.4.69 all shipped since
+then). Next unblocked pick: **`v0.4.70-plan.md`** (Level 5 speed
+rebalance + difficulty selector wiring fix + Level 4 reward pass) — every
+open question on it is already resolved by Ken.
 
-## Sentry/PostHog SDK slice — still blocked
+## Do this next — `roadmap-handoff-v0.4.70-plan.md`
 
-Do **not** install Sentry/PostHog from `roadmap-handoff-v0.4.64-plan.md`'s
-SDK section yet — blocked on Ken (tool tier + privacy/consent posture).
-The Debug State Dump slice from the same handoff already shipped.
+Fully code-ready, no open questions. Fixes a real bug (the difficulty
+selector shipped in v0.4.60 has zero effect on chase difficulty — dead
+`'easy'`/`'hardcore'` checks instead of the real `'noob'`/`'casual'`/
+`'4chan-st'` values) plus rebalances Level 5 chaser pressure and adds a
+Ramen Aisle (Level 4) reward pass. Full copy-paste block is at the bottom
+of that file — follow it directly.
 
-## Primary queue — `roadmap-handoff-v0.4.62-plan.md`
-
-Slice 1 (Rewards HUD shop labels) already shipped as `v0.4.62`. Pick the
-**oldest unfinished slice** in this order (one slice per session):
+## After that — pick from the ranked queue in `v0.4.71-plan.md`
 
 | Order | Slice | Handoff detail |
 |---|---|---|
-| 1 | Pickup tracking + Play Recap | `v0.4.62-plan.md` Slice 2 / `v0.4.41-plan.md` addendum |
-| 2 | Runner pose collapse (3 unique) | `v0.4.56-plan.md` |
-| 3 | Micro-Skib chaser | `v0.4.55-plan.md` |
+| 1 | Level 5 rebalance + difficulty wiring fix | `v0.4.70-plan.md` — do first |
+| 2 | Micro-Skib chaser | `v0.4.55-plan.md` |
+| 3 | Runner pose collapse (3 unique) | `v0.4.56-plan.md` |
+| 4 | Badge award counts | `v0.4.72-plan.md` (renumbered from `v0.4.67-plan.md` — that slot was consumed by a different shipped feature, see `v0.4.71-plan.md` Finding #2) |
+
+**Note on #2 and #3:** `frontend/src/components/VersionModal.jsx` already
+has changelog entries claiming Micro-Skib (v0.4.55) and pose collapse
+(v0.4.56) shipped — they didn't (verified: no `micro-skib` string
+anywhere in the engine, `RUNNER_FACE_POOL` still has 5 entries not 3).
+Shipping these two for real makes the existing entries true instead of
+false; don't add new duplicate changelog text for them, the old entries
+already cover it once the code catches up.
 
 ## Do not pick up yet
 
-- **Full Difficulty Function / Debt Lock** — selector shipped v0.4.60; math
-  still design-only in `difficulty-mechanics-plan.md`.
+- **Full Difficulty Function / Debt Lock math** — the *wiring bug* is
+  fixed by `v0.4.70-plan.md`; the auto-tuner/full Method C formula stays
+  design-only in `difficulty-mechanics-plan.md`.
 - **Audio 2 phase 1** — blocked on Ken recording `CAPTURE_LINES` clips.
 - **Yoodeling Unc-2** — blocked on asset drop.
-- **Role Reversal full v1.5 recovery** — menu Beta treatment is decided, but
-  outcome UX (60s timer, Rematch/Menu) needs Ken's answer. See
-  `v0.4.61-plan.md`. Do not ship a movement-only debug toggle as "recovered."
-- **Neon Jump-Scare Upgrade, near-miss burst, Rod hotfix, Desktop FOW,
-  Difficulty selector** — already shipped (v0.4.54–v0.4.60). Do not
-  re-implement.
+- **Role Reversal full v1.5 recovery, outcome UX** — the menu Beta pill
+  and Chaser Beta AI/profile-isolation work are shipped; the 60s
+  timer/Rematch-Menu question in `v0.4.61-plan.md` is still unanswered.
+  Do not ship outcome UX changes without that answer.
 - **Sentry + PostHog SDK slice** (`v0.4.64-plan.md` § SDK) — blocked on
-  Ken (tool tier + privacy/consent). Debug State Dump from same handoff
-  is unblocked and may ship standalone.
+  Ken (tool tier + privacy/consent). Debug State Dump from the same plan
+  already shipped standalone (v0.4.64).
+- **Interactive content pack** — not code-ready, needs a Mode A slicing
+  pass first.
+- Everything through v0.4.69 listed as shipped in
+  `roadmap-handoff-v0.4.71-plan.md`'s status table — do not re-implement.
 
 ## Parallel track (Ken priority override)
 
-If Ken says "fix Play as Chaser first," use `v0.4.61-plan.md` instead of
-the v0.4.62 bundle — but still wait for timer/rematch confirmation before
-outcome UX.
-
-If Ken says "ship debug dump," use `v0.4.64-plan.md` Debug State Dump
-slice only (see Ken priority override above).
+If Ken redirects to something not in this queue, use his instruction —
+but still respect the "blocked on Ken" list above; don't invent an
+answer to an open design question on his behalf.
 
 ## Verification
 
@@ -62,5 +74,5 @@ slice only (see Ken priority override above).
 
 1. `docs/skib-sdlc.md`
 2. `docs/update-directions.md`
-3. `docs/handoffs/roadmap-handoff-v0.4.62-plan.md`
-4. The specific slice handoff you are implementing
+3. `docs/handoffs/roadmap-handoff-v0.4.71-plan.md`
+4. The specific slice handoff you are implementing (`v0.4.70-plan.md` first)

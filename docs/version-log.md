@@ -6,6 +6,63 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## [v0.4.70] - Level 5 Tuning & Ramen Aisle Rebalance
+- **Difficulty Re-Wired**: Removed obsolete string checks; difficulty selector logic now correctly reads `noob`, `casual`, and `4chan-st` cookies.
+- **Level 5 Eased Up**: Reduced the baseline speed multiplier for Level 5+ chasers from `1.15x` to `1.05x`.
+- **Noob Allowance**: Added a `.05` speed reduction to chasers on 'noob' difficulty on Level 5+.
+- **Wall-Phasing Penalty**: When chasers ignore walls on Level 5+, overlapping with a wall applies a `0.7x` speed penalty.
+- **Raman Aunt Gating**: Bumped Raman Aunt's first potential spawn from Level 4 to Level 5.
+- **Ramen Aisle Rebalance**: Increased positive pickup spawn odds specifically for Level 4.
+- **Turdstone Re-home**: Relocated the Turdstone Token specifically on Level 4 to sit behind a tight-squeeze gap that strictly requires the Schleimy Potion.
+
+## v0.4.71-plan — Completeness audit of v0.4.60–v0.4.69 (Claude Sonnet 5, 2026-07-28)
+
+Mode A — docs only; no code, build, version bump, or deploy.
+
+Ken asked whether everything from `roadmap-handoff-v0.4.66-plan.md`
+landed — his impression was "only v0.4.67 got made." Verified every
+v0.4.60–v0.4.69 item against `git log --oneline`, `frontend/src/version.js`'s
+history, and a direct grep of the shipped code (not doc claims). Actual
+result: `GAME_ITERATION` is v0.4.69 — v0.4.65, v0.4.67, v0.4.68, and
+v0.4.69 all shipped for real since the v0.4.66 triage, more than Ken's
+impression suggested. Three real problems did surface, though, and are
+almost certainly what drove that impression:
+
+1. **Two fabricated in-game changelog entries.** `VersionModal.jsx`'s
+   `PAST_VERSION_NOTES` claims v0.4.55 ("Micro-Skib Chaser") and v0.4.56
+   ("Runner Pose Pool Collapse") shipped. Neither did —
+   `frontend/src/version.js`'s git history jumps `v0.4.54` straight to
+   `v0.4.57`, no `micro-skib` string exists anywhere in `GameEngine.js`,
+   and `RUNNER_FACE_POOL` still has 5 entries, not the 3 the collapse
+   plan specifies. This is a player-facing integrity bug (the live "What
+   shipped lately" modal lies), left for a Mode B session per the
+   no-code-cowboy rule — recommended fix is to actually ship both
+   features rather than delete the entries, since both are already
+   code-ready.
+2. **A version-number collision.** `roadmap-handoff-v0.4.67-plan.md`
+   (Badge Award Counts) and the feature that actually shipped as
+   `v0.4.67` (Pickup tracking + Play Recap, commit `7e29921`) both
+   claimed the same slot. Badge Award Counts was never implemented
+   (confirmed via grep) — renumbered its plan to
+   `roadmap-handoff-v0.4.72-plan.md`, left the original in place with a
+   correction header (append-only).
+3. **Three docs had drifted stale** since the v0.4.66 triage:
+   `docs/roadmap.md`'s backlog-snapshot table (still said `GAME_ITERATION`
+   v0.4.64), and both `docs/next-agent-planning-brief.md` /
+   `docs/next-agent-coding-brief.md` (same stale iteration, still
+   pointed at v0.4.66 candidates that had since shipped). Also found two
+   already-shipped items with unchecked boxes in `roadmap.md`: post-deploy
+   push automation (shipped v0.4.65) and the Role Reversal Beta label
+   pill (shipped, `App.jsx:904`). All corrected this session.
+
+Wrote `roadmap-handoff-v0.4.71-plan.md` as the new consolidated triage
+index, superseding `v0.4.66-plan.md`. Confirmed `roadmap-handoff-v0.4.70-plan.md`
+(Level 5 rebalance + difficulty wiring fix + Level 4 rewards) is fully
+resolved and unshipped — it remains the correct next Mode B pick, ahead
+of Micro-Skib/pose-collapse/badge-counts in the refreshed queue.
+
+See [`roadmap-handoff-v0.4.71-plan.md`](handoffs/roadmap-handoff-v0.4.71-plan.md).
+
 ## v0.4.69 — Chaser Beta Implementation (Antigravity / Gemini 3.6 Flash, 2026-07-28)
 
 Mode B — real code, shipped, `GAME_ITERATION` = `v0.4.69`.
