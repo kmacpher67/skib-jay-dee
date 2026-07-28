@@ -1,5 +1,20 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.64.1',
+    title: 'Level 4 Warning Hotfix',
+    description: 'Fixed an issue where the game lost keyboard and touch input on the Ramen Aisle after dismissing the Level 4 warning overlay.',
+  },
+  {
+    version: 'v0.4.64',
+    title: 'Debug State Dump',
+    description: 'Added a Triple-Q trigger to instantly dump the game state for bug tracking. Press Q three times rapidly during a run to copy your position, level, and chaser data directly to the clipboard.',
+  },
+  {
+    version: 'v0.4.63',
+    title: 'Main Menu UI Cleanup',
+    description: 'Refined the main menu layout. Moved the mute toggle next to the character portraits and organized the five profile stats into a clean, compact row for better mobile viewing.',
+  },
+  {
     version: 'v0.4.62',
     title: 'Rewards Clarification',
     description: 'Added "from Shleeb Shop" labels to the Speed, Stamina, and Rewards pills to clarify that they reflect permanent stat upgrades from the shop, not temporary map buffs. Renamed QUICK PLAY to PLAY AS RUNNER to distinguish it from the new Chaser beta mode.',
