@@ -56,10 +56,13 @@ almost certainly what drove that impression:
    pill (shipped, `App.jsx:904`). All corrected this session.
 
 Wrote `roadmap-handoff-v0.4.71-plan.md` as the new consolidated triage
-index, superseding `v0.4.66-plan.md`. Confirmed `roadmap-handoff-v0.4.70-plan.md`
-(Level 5 rebalance + difficulty wiring fix + Level 4 rewards) is fully
-resolved and unshipped — it remains the correct next Mode B pick, ahead
-of Micro-Skib/pose-collapse/badge-counts in the refreshed queue.
+index, superseding `v0.4.66-plan.md`. While writing it, a concurrent
+Mode B session shipped `roadmap-handoff-v0.4.70-plan.md` for real
+(`GAME_ITERATION` → v0.4.70) — updated this doc, `roadmap.md`, and both
+next-agent briefs to reflect that mid-session, per the same
+append-don't-silently-overwrite handling `v0.4.66-plan.md` used for
+Debug State Dump. Next unblocked pick is now Micro-Skib
+(`v0.4.55-plan.md`).
 
 See [`roadmap-handoff-v0.4.71-plan.md`](handoffs/roadmap-handoff-v0.4.71-plan.md).
 

@@ -10,9 +10,10 @@ Use this when Ken opens a **Mode A** session. For coding, use
 
 **`docs/handoffs/roadmap-handoff-v0.4.71-plan.md`** is the current
 consolidated triage — it supersedes `v0.4.66-plan.md` (v0.4.65,
-v0.4.67-v0.4.69 all shipped for real since that doc was written; this
-brief and `roadmap.md`'s summary table had gone stale pointing at it).
-Read the full v0.4.71 doc before re-deriving a backlog list from
+v0.4.67-v0.4.70 all shipped for real since that doc was written,
+including v0.4.70 shipping mid-audit by a concurrent Mode B session;
+this brief and `roadmap.md`'s summary table had gone stale pointing at
+it). Read the full v0.4.71 doc before re-deriving a backlog list from
 scratch — it verifies every v0.4.60–v0.4.69 item against `git log` and
 the actual code, not just doc claims, and surfaces two real bugs (a
 version-number collision and two false in-game changelog entries).
@@ -26,12 +27,12 @@ until the v0.4.71 audit corrected it. No further action needed here.
 
 ## Current production state
 
-- `GAME_ITERATION`: **v0.4.69** (Chaser Beta gun AI + profile isolation,
-  shipped 2026-07-28).
-- `roadmap-handoff-v0.4.70-plan.md` (Level 5 speed rebalance + difficulty
-  selector wiring fix + Level 4 reward pass) is **fully code-ready,
-  unshipped** — Ken has answered every open question on it. This is the
-  correct next Mode B pick, not a planning task.
+- `GAME_ITERATION`: **v0.4.70** (Level 5 speed rebalance + difficulty
+  selector wiring fix + Ramen Aisle reward pass, shipped 2026-07-28 —
+  landed mid-audit by a concurrent Mode B session, see
+  `roadmap-handoff-v0.4.70.md`).
+- Next unblocked Mode B pick is **Micro-Skib chaser** (`v0.4.55-plan.md`),
+  not a planning task.
 - Role Reversal menu mode (`v0.4.53`→`v0.4.61` recovery) is **live and
   playable**, with its Beta pill shipped too. Outcome UX (60s
   capture/timeout + Rematch/Menu) is still unconfirmed — see below.
@@ -52,8 +53,8 @@ until the v0.4.71 audit corrected it. No further action needed here.
 ## Useful Mode A follow-ups (optional)
 
 - Debt Lock Method C spec — the *wiring bug* (selector had zero gameplay
-  effect) is fixed by `v0.4.70-plan.md`; the actual debt-lock math is
-  still design-only in `difficulty-mechanics-plan.md`.
+  effect) was fixed by v0.4.70; the actual debt-lock math is still
+  design-only in `difficulty-mechanics-plan.md`.
 - Interactive content pack slicing — still concept-only, needs a bounded
   first slice cut from `interactive-content-pack.md`.
 - Record Ken's Role Reversal answers → `role-reversal-design.md` + `v0.4.61-plan`.

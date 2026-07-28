@@ -742,5 +742,6 @@ Never edit past lines. Append a new line (or block) per version when you
 - Found and flagged: `VersionModal.jsx` has two false changelog entries (v0.4.55 Micro-Skib, v0.4.56 pose collapse) for features never actually implemented — left for a Mode B session, recommended fix is shipping them for real.
 - Found and fixed: `roadmap-handoff-v0.4.67-plan.md` (Badge Award Counts) collided with the real, shipped v0.4.67 (Pickup tracking + Play Recap) — renumbered the unshipped plan to `roadmap-handoff-v0.4.72-plan.md`, left a correction header on the original.
 - Fixed stale `docs/roadmap.md` backlog-snapshot table and two already-shipped-but-unchecked items (post-deploy push automation v0.4.65, Role Reversal Beta label pill).
-- Rewrote `docs/next-agent-planning-brief.md` and `docs/next-agent-coding-brief.md` to point at the new `v0.4.71-plan.md` triage and the correct next Mode B pick (`v0.4.70-plan.md`, fully resolved, unshipped).
+- Rewrote `docs/next-agent-planning-brief.md` and `docs/next-agent-coding-brief.md` to point at the new `v0.4.71-plan.md` triage.
+- Mid-session: a concurrent Mode B session shipped v0.4.70 for real (Level 5 rebalance + difficulty wiring fix) — updated `roadmap.md` and both next-agent briefs again; next unblocked pick is now Micro-Skib (`v0.4.55-plan.md`).
 - Added `docs/handoffs/roadmap-handoff-v0.4.71-plan.md` and `docs/handoffs/roadmap-handoff-v0.4.72-plan.md`.

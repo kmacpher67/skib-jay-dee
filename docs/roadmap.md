@@ -66,17 +66,18 @@ before picking work from this section. Summary:
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next (ranked)** | 4 | Level 5 speed rebalance + difficulty wiring fix (`v0.4.70-plan`, fully resolved) → Micro-Skib → pose collapse → Badge award counts (`v0.4.72-plan`, renumbered) |
+| **Unblocked — code next (ranked)** | 3 | ~~Level 5 speed rebalance + difficulty wiring fix~~ (shipped v0.4.70, mid-audit) → Micro-Skib → pose collapse → Badge award counts (`v0.4.72-plan`, renumbered) |
 | **Parallel quality debt** | 1 | Role Reversal Beta full recovery (`v0.4.61-plan`; outcome UX blocked on Ken) |
 | **Design-only / TBD** | 3 | Debt Lock math, Level 7+ Mosaic (blocked on Ken's trigger-mechanism answer), Interactive content pack |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 | **Needs a Mode B decision** | 1 | `VersionModal.jsx` has two false changelog entries (v0.4.55/v0.4.56) for features never actually shipped — see `v0.4.71-plan.md` Finding #1 |
 
-`GAME_ITERATION` is **v0.4.69** (`frontend/src/version.js`, Chaser Beta
-gun AI + profile isolation — see `roadmap-handoff-v0.4.69.md`).
-`roadmap-handoff-v0.4.70-plan.md` (Level 5 rebalance) is code-ready and
-unshipped — it is the correct next Mode B pick.
+`GAME_ITERATION` is **v0.4.70** (`frontend/src/version.js`, Level 5 speed
+rebalance + difficulty selector wiring fix + Ramen Aisle reward pass —
+shipped by a concurrent Mode B session partway through this audit, see
+`roadmap-handoff-v0.4.70.md`). Next unblocked pick is **Micro-Skib**
+(`v0.4.55-plan.md`).
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.

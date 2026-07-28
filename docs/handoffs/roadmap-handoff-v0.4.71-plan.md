@@ -22,6 +22,22 @@ real. But three real problems surfaced during this audit, listed below,
 and several docs (`roadmap.md`'s backlog snapshot, both next-agent
 briefs) had drifted stale enough to cause exactly this confusion.
 
+## Update (2026-07-28, same session): v0.4.70 shipped for real mid-audit
+
+While this audit was being written, a concurrent Mode B session shipped
+`roadmap-handoff-v0.4.70-plan.md` for real — `GAME_ITERATION` is now
+**v0.4.70**, not v0.4.69 as stated in most of the tables below (left
+as-written rather than silently rewritten, per `docs/skib-sdlc.md`'s
+append-don't-overwrite guidance for in-flight concurrent work — this is
+the same situation `v0.4.66-plan.md` documented for Debug State Dump).
+Confirmed via `docs/handoffs/roadmap-handoff-v0.4.70.md` (new, untracked
+at time of writing) and `frontend/src/version.js`. The v0.4.70 row in the
+status table below should be read as **shipped**, and it is no longer
+the "next unblocked pick" — that's now **Micro-Skib
+(`v0.4.55-plan.md`)** per the updated queue. `docs/roadmap.md` and the
+two next-agent briefs were updated to reflect v0.4.70 as current in this
+same session, after this concurrent commit was discovered.
+
 ## Verification method
 
 For every `-plan.md` between v0.4.60 and v0.4.69, checked:

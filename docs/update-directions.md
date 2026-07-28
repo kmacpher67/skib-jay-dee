@@ -26,9 +26,12 @@ entry heading so the change trail stays obvious at a glance.
   `docs/roadmap.md`'s backlog-snapshot table and both next-agent briefs
   had gone stale saying `GAME_ITERATION` was v0.4.64 and several already-
   shipped items (post-deploy push automation, Beta label pill) were
-  still unchecked. All three fixed this session; no code touched. Next
-  unblocked Mode B pick remains `roadmap-handoff-v0.4.70-plan.md`
-  (fully resolved, unshipped).
+  still unchecked. All three fixed this session; no code touched by this
+  audit. **Mid-session update:** a concurrent Mode B session shipped
+  `roadmap-handoff-v0.4.70-plan.md` for real while this audit was being
+  written (`GAME_ITERATION` → v0.4.70) — `roadmap.md` and both
+  next-agent briefs were updated again to reflect that. Next unblocked
+  Mode B pick is now **Micro-Skib** (`v0.4.55-plan.md`).
 - **v0.4.69 (real code, shipped — 2026-07-28):** Implemented Chaser Beta Mode changes. AI runner now seeks guns and fires back. Profile is isolated from Chaser Beta stats. Includes dedicated Chaser Beta dialogues. Verified with Playwright tests. `GAME_ITERATION` = v0.4.69. See `roadmap-handoff-v0.4.69.md`.
 
 - **v0.4.69-plan final review (docs only — 2026-07-28):** **IMPLEMENTED** as two intentionally small slices. The initial AI interaction is now
