@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Codex (GPT-5) — 2026-07-28 (v0.4.69-plan final Mode B readiness review)
+**Last updated by:** Antigravity (Gemini 3.6 Flash) — 2026-07-28 (v0.4.69 shipped)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,8 +12,9 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
-- **v0.4.69-plan final review (docs only — 2026-07-28):** **READY FOR MODE
-  B** as two intentionally small slices. The initial AI interaction is now
+- **v0.4.69 (real code, shipped — 2026-07-28):** Implemented Chaser Beta Mode changes. AI runner now seeks guns and fires back. Profile is isolated from Chaser Beta stats. Includes dedicated Chaser Beta dialogues. Verified with Playwright tests. `GAME_ITERATION` = v0.4.69. See `roadmap-handoff-v0.4.69.md`.
+
+- **v0.4.69-plan final review (docs only — 2026-07-28):** **IMPLEMENTED** as two intentionally small slices. The initial AI interaction is now
   gun-first (seek gun only in the far branch, make a turn-and-panic-shot,
   avoid rolling `isGood: false` hazards), not a generic `POSITIVE_PICKUPS`
   loadout. Code review found the profile boundary was broader than the

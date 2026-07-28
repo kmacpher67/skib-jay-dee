@@ -17,6 +17,9 @@ import {
   BROTH_CAPTURE_LINES,
   NEON_HEADSTART_LINES,
   NEON_BROKE_LINE,
+  CHASER_BETA_OPENER_LINES,
+  CHASER_BETA_RUNNER_GUN_TAUNTS,
+  CHASER_BETA_WIN_LINES,
 } from './dialog.js'
 import { CHASER_FACE_POOL, CHASER_TYPES, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS, turdstoneTokenSprite } from './gameContent.js'
 import { PORCELAIN_GRID, PIPEWORKS_GRID, FLOODED_ANNEX_GRID, RAMEN_AISLE_GRID, WORLD_STAR_GRID, JAYDENS_NIGHTMARE_HOUSE_GRID } from './mapGrids.js'
@@ -630,10 +633,10 @@ export class GameEngine {
 
   setLoadout(loadout = {}) {
     this.loadout = {
-      speedBonus: Number.isFinite(loadout.speedBonus) ? loadout.speedBonus : 0,
-      staminaBonus: Number.isFinite(loadout.staminaBonus) ? loadout.staminaBonus : 0,
-      rewardBonus: Number.isFinite(loadout.rewardBonus) ? loadout.rewardBonus : 0,
-      luckBonus: Number.isFinite(loadout.luckBonus) ? loadout.luckBonus : 0,
+      speedBonus: this.isChaserMode ? 0 : (Number.isFinite(loadout.speedBonus) ? loadout.speedBonus : 0),
+      staminaBonus: this.isChaserMode ? 0 : (Number.isFinite(loadout.staminaBonus) ? loadout.staminaBonus : 0),
+      rewardBonus: this.isChaserMode ? 0 : (Number.isFinite(loadout.rewardBonus) ? loadout.rewardBonus : 0),
+      luckBonus: this.isChaserMode ? 0 : (Number.isFinite(loadout.luckBonus) ? loadout.luckBonus : 0),
     }
 
     this.runner.baseSpeed = 180 + this.loadout.speedBonus
@@ -948,11 +951,38 @@ export class GameEngine {
     let targetVec = { x: 0, y: 0 }
     
     if (minDist > 250) {
-      // Far: move towards center waypoint or random wander
-      const dxCenter = (WORLD.width / 2) - (this.runner.x + this.runner.w/2)
-      const dyCenter = (WORLD.height / 2) - (this.runner.y + this.runner.h/2)
-      targetVec.x = dxCenter
-      targetVec.y = dyCenter
+      let targetPickup = null
+      let minPickupDist = Infinity
+      
+      for (const p of this.pickups) {
+        if (p.type === 'gun') {
+          const dist = Math.hypot(this.runner.x - p.x, this.runner.y - p.y)
+          if (dist < minPickupDist) {
+            minPickupDist = dist
+            targetPickup = p
+          }
+        }
+      }
+      
+      if (targetPickup) {
+        targetVec.x = targetPickup.x - this.runner.x
+        targetVec.y = targetPickup.y - this.runner.y
+      } else {
+        const dxCenter = (WORLD.width / 2) - (this.runner.x + this.runner.w/2)
+        const dyCenter = (WORLD.height / 2) - (this.runner.y + this.runner.h/2)
+        targetVec.x = dxCenter
+        targetVec.y = dyCenter
+      }
+
+      for (const rp of this.rollingPickups) {
+        if (rp.isGood === false) {
+          const dist = Math.hypot(this.runner.x - rp.x, this.runner.y - rp.y)
+          if (dist < 200) {
+            targetVec.x += (this.runner.x - rp.x)
+            targetVec.y += (this.runner.y - rp.y)
+          }
+        }
+      }
     } else {
       // Near: flee from closest chaser
       targetVec.x = this.runner.x - closestChaser.x
@@ -1017,7 +1047,9 @@ export class GameEngine {
     this.level = LEVELS[this.levelIndex]
     this.map = this.level.buildMap()
     this.chaser.baseSpeed = this.level.chaserSpeed
-    this.bannerText = this.level.banner
+    this.bannerText = this.isChaserMode
+      ? CHASER_BETA_OPENER_LINES[Math.floor(Math.random() * CHASER_BETA_OPENER_LINES.length)]
+      : this.level.banner
     this.pendingLevelIndex = null
     this.zoom = 1
     this.chaserLine = ''
@@ -1304,6 +1336,22 @@ export class GameEngine {
        move = this._getRunnerEvadeVector(dt)
        // We don't boost the AI runner for now to keep v1 simple
        speed = this.runner.baseSpeed
+       
+       if (this.runner.gun && this.chasers.length > 0) {
+         const dx = this.chasers[0].x - this.runner.x
+         const dy = this.chasers[0].y - this.runner.y
+         const dist = Math.hypot(dx, dy)
+         if (dist < 400 && this.fireCooldown <= 0 && this.runner.gun.chambers > 0) {
+           const mag = dist || 1
+           this.runner.facing = { x: dx / mag, y: dy / mag }
+           const bulletCount = this.bullets.length
+           this._tryFire()
+           if (this.bullets.length > bulletCount) {
+             this.runnerLine = CHASER_BETA_RUNNER_GUN_TAUNTS[Math.floor(Math.random() * CHASER_BETA_RUNNER_GUN_TAUNTS.length)]
+             this.runnerLineTimer = 2.2
+           }
+         }
+       }
     } else {
        move = this._getMoveVector()
     }
@@ -1527,7 +1575,9 @@ export class GameEngine {
         this.phase = 'caught'
         this._caughtFaceStage = 0
         this.zoom = 1
-        this.onCaught({ captureLine: 'Gotcha! Round over.' }) // generic for now
+        const line = CHASER_BETA_WIN_LINES[Math.floor(Math.random() * CHASER_BETA_WIN_LINES.length)]
+        this.captureLine = line
+        this.onCaught({ captureLine: line }) // Chaser-Beta tag win
       } else {
         this._triggerCaught(caughtBy)
       }

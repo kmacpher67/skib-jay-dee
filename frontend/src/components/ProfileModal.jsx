@@ -11,7 +11,7 @@ export default function ProfileModal({ profile, mode = 'caught', isChaserMode = 
     null
   const primaryLabel = mode === 'caught' ? 'CONTINUE' : 'BACK TO LOG'
   const note = mode === 'caught'
-    ? (isChaserMode ? 'Play as Chaser test complete.' : 'This toilet cleanup killen gets logged in your profile before the menu comes back.')
+    ? (isChaserMode ? 'Chaser Beta round complete. Flush again?' : 'This toilet cleanup killen gets logged in your profile before the menu comes back.')
     : 'Tap back to return to the deaths log after checking the killer profile.'
 
   return (

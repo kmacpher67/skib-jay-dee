@@ -158,17 +158,19 @@ export default function App() {
     playOneShot(levelClearUrl, 0.4)
     if (index === 2) setShowLvl2Transition(!!showLvl2Transition)
 
-    syncProfile((current) => {
-      const bestRun = current.bestRun || { level: 1, deaths: 0 }
-      const sessionDeaths = sessionDeathsRef.current
-      if (index > bestRun.level || (index === bestRun.level && sessionDeaths < bestRun.deaths)) {
-        return {
-          ...current,
-          bestRun: { level: index, deaths: sessionDeaths }
+    if (!isChaserMode) {
+      syncProfile((current) => {
+        const bestRun = current.bestRun || { level: 1, deaths: 0 }
+        const sessionDeaths = sessionDeathsRef.current
+        if (index > bestRun.level || (index === bestRun.level && sessionDeaths < bestRun.deaths)) {
+          return {
+            ...current,
+            bestRun: { level: index, deaths: sessionDeaths }
+          }
         }
-      }
-      return current
-    })
+        return current
+      })
+    }
 
     if (index !== undefined) {
       if (engineRef.current) {
@@ -276,7 +278,9 @@ export default function App() {
   }
 
   const handleSheebsChange = (nextSheebs) => {
-    syncProfile((current) => ({ ...current, sheebs: nextSheebs }))
+    if (!isChaserMode) {
+      syncProfile((current) => ({ ...current, sheebs: nextSheebs }))
+    }
   }
 
   const handleDeath = (payload) => {
@@ -303,25 +307,29 @@ export default function App() {
 
     sessionDeathsRef.current += 1
 
-    syncProfile((current) => {
-      const nextHistory = [
-        ...(Array.isArray(current.deathsHistory) ? current.deathsHistory : []),
-        { timestamp: Date.now(), level, levelName, chaserId, timePlayed, sessionSheebDelta, sessionSkreemDelta },
-      ]
+    if (!isChaserMode) {
+      syncProfile((current) => {
+        const nextHistory = [
+          ...(Array.isArray(current.deathsHistory) ? current.deathsHistory : []),
+          { timestamp: Date.now(), level, levelName, chaserId, timePlayed, sessionSheebDelta, sessionSkreemDelta },
+        ]
 
-      return {
-        ...current,
-        deaths: Number.isFinite(nextDeaths) ? Math.max(current.deaths, nextDeaths) : current.deaths + 1,
-        deathsHistory: nextHistory.slice(-50),
-      }
-    })
+        return {
+          ...current,
+          deaths: Number.isFinite(nextDeaths) ? Math.max(current.deaths, nextDeaths) : current.deaths + 1,
+          deathsHistory: nextHistory.slice(-50),
+        }
+      })
+    }
   }
 
   const handleLevelChange = ({ index }) => {
-    syncProfile((current) => ({
-      ...current,
-      highestLevel: Math.max(current.highestLevel, index),
-    }))
+    if (!isChaserMode) {
+      syncProfile((current) => ({
+        ...current,
+        highestLevel: Math.max(current.highestLevel, index),
+      }))
+    }
     handleLevelChangeAudio()
     setDadCaseSpawned(false)
 
@@ -367,45 +375,49 @@ export default function App() {
       // The Turdstone overlay fires via handleCaughtProfileReady once the
       // jump-scare animation finishes, so store the flag for that handler.
       turdstoneOverlayRef.current = true
-      playCaughtAudio()
+      if (!isChaserMode) playCaughtAudio()
       return
     }
 
     setLastCaptureLine(captureLine)
-    playCaughtAudio()
+    if (!isChaserMode) playCaughtAudio()
 
-    syncProfile((current) => {
-      let nextOwnedItems = current.ownedItems
-      if (current.highestLevel > 4 && Math.random() < 0.25 && current.ownedItems.length > 0) {
-        const randomIndex = Math.floor(Math.random() * current.ownedItems.length)
-        nextOwnedItems = current.ownedItems.filter((_, idx) => idx !== randomIndex)
-      }
-      return { ...current, ownedItems: nextOwnedItems }
-    })
+    if (!isChaserMode) {
+      syncProfile((current) => {
+        let nextOwnedItems = current.ownedItems
+        if (current.highestLevel > 4 && Math.random() < 0.25 && current.ownedItems.length > 0) {
+          const randomIndex = Math.floor(Math.random() * current.ownedItems.length)
+          nextOwnedItems = current.ownedItems.filter((_, idx) => idx !== randomIndex)
+        }
+        return { ...current, ownedItems: nextOwnedItems }
+      })
+    }
   }
 
   const handleBadgeEarned = (badgeId) => {
     if (profile.earnedBadges.includes(badgeId)) return
     
-    syncProfile((current) => {
-      if (current.earnedBadges.includes(badgeId)) return current
+    if (!isChaserMode) {
+      syncProfile((current) => {
+        if (current.earnedBadges.includes(badgeId)) return current
 
-      const badge = BADGES[badgeId]
-      const historyEntry = {
-        timestamp: Date.now(),
-        type: 'badge',
-        label: badge ? badge.name : badgeId,
-        amount: 50,
-        level: engineRef.current ? engineRef.current.levelIndex + 1 : null,
-        levelName: engineRef.current && engineRef.current.levels && engineRef.current.levels[engineRef.current.levelIndex] ? engineRef.current.levels[engineRef.current.levelIndex].name : null,
-      }
+        const badge = BADGES[badgeId]
+        const historyEntry = {
+          timestamp: Date.now(),
+          type: 'badge',
+          label: badge ? badge.name : badgeId,
+          amount: 50,
+          level: engineRef.current ? engineRef.current.levelIndex + 1 : null,
+          levelName: engineRef.current && engineRef.current.levels && engineRef.current.levels[engineRef.current.levelIndex] ? engineRef.current.levels[engineRef.current.levelIndex].name : null,
+        }
 
-      return { 
-        ...current, 
-        earnedBadges: [...current.earnedBadges, badgeId],
-        rewardsHistory: [...(current.rewardsHistory || []), historyEntry].slice(-50),
-      }
-    })
+        return { 
+          ...current, 
+          earnedBadges: [...current.earnedBadges, badgeId],
+          rewardsHistory: [...(current.rewardsHistory || []), historyEntry].slice(-50),
+        }
+      })
+    }
 
     if (engineRef.current) {
       const nextSheebs = engineRef.current.sheebs + 50
@@ -429,21 +441,23 @@ export default function App() {
     runStatsRef.current.pickups[type].count += 1
     if (outcome === 'bad') runStatsRef.current.pickups[type].outcome = 'bad' // if any bad, keep bad for joke
 
-    syncProfile((current) => {
-      const historyEntry = {
-        timestamp: Date.now(),
-        type: 'pickup',
-        label: type,
-        amount: 0,
-        level: engineRef.current ? engineRef.current.levelIndex + 1 : null,
-        levelName: engineRef.current && engineRef.current.levels && engineRef.current.levels[engineRef.current.levelIndex] ? engineRef.current.levels[engineRef.current.levelIndex].name : null,
-      }
+    if (!isChaserMode) {
+      syncProfile((current) => {
+        const historyEntry = {
+          timestamp: Date.now(),
+          type: 'pickup',
+          label: type,
+          amount: 0,
+          level: engineRef.current ? engineRef.current.levelIndex + 1 : null,
+          levelName: engineRef.current && engineRef.current.levels && engineRef.current.levels[engineRef.current.levelIndex] ? engineRef.current.levels[engineRef.current.levelIndex].name : null,
+        }
 
-      return {
-        ...current,
-        rewardsHistory: [...(current.rewardsHistory || []), historyEntry].slice(-50),
-      }
-    })
+        return {
+          ...current,
+          rewardsHistory: [...(current.rewardsHistory || []), historyEntry].slice(-50),
+        }
+      })
+    }
   }
 
   const handleCaughtProfileReady = (payload) => {

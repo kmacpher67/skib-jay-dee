@@ -6,6 +6,16 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.69 — Chaser Beta Implementation (Antigravity / Gemini 3.6 Flash, 2026-07-28)
+
+Mode B — real code, shipped, `GAME_ITERATION` = `v0.4.69`.
+
+Implemented the Chaser Beta Mode changes mapped out in `roadmap-handoff-v0.4.69-plan.md`. This fully disconnected the beta mode from the profile save loop (sheebs, badges, history, and level records) to prevent Chaser progress from ruining the main campaign data. It also zeroed out the chaser's inherited profile-loadout buffs to ensure a baseline challenge. In `GameEngine.js`, AI logic was expanded to purposefully hunt guns and dodge harmful pickups in the Chaser role, as well as actively use its gun with a taunt once in range. 
+
+Wired the finalized dialogue candidate lines for Beta opener, Runner panic-fire taunts, and Chaser win quotes. Fully verified with new Playwright tests: `Slice A` ensuring profile persistence guards remain tight and loadout is zeroed, and `Slice B` covering the AI runner's evade-and-shoot fallback and modal win line capture. 
+
+See [`roadmap-handoff-v0.4.69.md`](handoffs/roadmap-handoff-v0.4.69.md).
+
 ## v0.4.68 — Level 4 warning audio pass (Antigravity / Gemini 3.1 Pro, 2026-07-28)
 
 Mode B — real code, shipped, `GAME_ITERATION` = `v0.4.68`.
