@@ -15,8 +15,8 @@ if [ ! -f "$REPO_ROOT/$VERSION_FILE" ]; then
 fi
 
 # Compare GAME_ITERATION at HEAD vs HEAD^
-CURRENT_ITERATION=$(git show HEAD:"$VERSION_FILE" 2>/dev/null | grep -oP 'const GAME_ITERATION = "\K[^"]+')
-PREVIOUS_ITERATION=$(git show HEAD^:"$VERSION_FILE" 2>/dev/null | grep -oP 'const GAME_ITERATION = "\K[^"]+')
+CURRENT_ITERATION=$(git show HEAD:"$VERSION_FILE" 2>/dev/null | grep -oP "const GAME_ITERATION = ['\"]\K[^'\"]+")
+PREVIOUS_ITERATION=$(git show HEAD^:"$VERSION_FILE" 2>/dev/null | grep -oP "const GAME_ITERATION = ['\"]\K[^'\"]+")
 
 # If GAME_ITERATION hasn't changed or we couldn't parse it, exit
 if [ -z "$CURRENT_ITERATION" ] || [ "$CURRENT_ITERATION" = "$PREVIOUS_ITERATION" ]; then
