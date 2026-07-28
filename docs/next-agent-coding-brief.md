@@ -1,16 +1,17 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Cursor Grok 4.5 — 2026-07-27 (v0.4.58-plan desktop FOV refine)
+**Last updated by:** Cursor Grok 4.5 — 2026-07-28 (v0.4.59-plan PX refine)
 
-`frontend/src/version.js` confirms **v0.4.54** is current (near-miss burst
-+ vignette shipped).
+`frontend/src/version.js` confirms **v0.4.58** is current (desktop FOW
+Option A shipped).
 
 ## Do not pick up yet
 
-- **`roadmap-handoff-v0.4.58-plan.md` (Desktop Screen Support)** — blocked
-  until Ken picks Option **A** or **C**. Option B is soft-parked. Copy-paste
-  block in that handoff is intentionally a hard stop.
+- **Full Difficulty Function / Debt Lock** — still design-heavy; only the
+  minimal selector slice in `v0.4.60-plan.md` is code-ready.
+- **Audio 2 phase 1** — blocked on Ken recording `CAPTURE_LINES` clips.
+- **Yoodeling Unc-2** — blocked on asset drop.
 
 ## Session focus (next unblocked slices)
 
@@ -22,10 +23,10 @@ Pick the oldest unfinished *unblocked* handoff. Candidates:
 | `v0.4.41-plan.md` addendum | Play Recap + pickup tracking | Code-ready |
 | `v0.4.55-plan.md` | Micro-Skib | Code-ready |
 | `v0.4.56-plan.md` | Runner pose collapse (3 unique) | Code-ready |
-| `v0.4.59-plan.md` | Neon Jump-Scare Upgrade (500ms headstart, 250/50) | Code-ready plan |
+| `v0.4.59-plan.md` | Neon Jump-Scare Upgrade | Code-ready — **PX refine 2026-07-28**; stun-chasers headstart + neon theater |
+| `v0.4.60-plan.md` | Difficulty selector (minimal) | Cookie + menu only; no Debt Lock math |
 
-`v0.4.54` (near-miss burst) and Rod hotfix `v0.4.57` are already shipped —
-do not re-implement.
+`v0.4.54` / `v0.4.57` / `v0.4.58` are already shipped — do not re-implement.
 
 ## Verification
 

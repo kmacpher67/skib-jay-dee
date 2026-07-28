@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Claude Sonnet 5 — 2026-07-28 (v0.4.60-plan difficulty selector review)
+**Last updated by:** Cursor Grok 4.5 — 2026-07-28 (v0.4.59-plan PX/fun refine)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,9 +12,17 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.59-plan (docs-only refine — 2026-07-28):** Mode A PX/fun pass on
+  Neon Jump-Scare Upgrade. Corrected stale draft (item id
+  `jump-scare-filter-neon`, `cost` not `price`, real flow
+  caught→caught-profile→resume-countdown→chase, reuse `stunnedUntil`).
+  Locked the funny beat: keep magenta/cyan scare tint; after 3…2…1,
+  player runs while chasers stun 500ms for −50 sheebs; neon vignette +
+  `NEON_HEADSTART_LINES`; broke refusal gag. Still code-ready. See
+  `roadmap-handoff-v0.4.59-plan.md`.
+
 - **v0.4.58 (real code, shipped — 2026-07-28):**
   Implemented Option A (Fog of War) desktop screen expansion. Removed the strict 9:16 CSS aspect-ratio constraint from `.portrait-frame`. Updated `GameEngine.js` to calculate `VIEW_W` dynamically based on the actual canvas aspect ratio (clamped to at least 9/16). Implemented a difficulty-based fog of war (radial gradient mask) that obscures the extended peripheral vision for 'normal' and 'hardcore' difficulties. Updated `cookies.js` and `App.jsx` to parse and pass down the `difficulty` state to the `GameEngine`. Fixed E2E test `cosmetic-sink.spec.js` by forcing a 360x640 viewport. `GAME_ITERATION` = v0.4.58. See `roadmap-handoff-v0.4.58.md`.
-
 
 - **v0.4.60-plan (docs-only, 2026-07-28):** SDLC review, no code — Ken
   asked where the Easy/Normal/4chan-st difficulty setting is. Confirmed
@@ -31,7 +39,8 @@ entry heading so the change trail stays obvious at a glance.
   `roadmap-handoff-v0.4.58-plan.md`. Live gate is **Option A (fog-of-war
   wider shell) vs Option C (scale 9:16 + side art)**; Option B (full FOV)
   soft-parked. Dual Mode B branches written but **blocked on Ken**. No
-  code. See also `docs/roadmap.md` backlog line.
+  code. See also `docs/roadmap.md` backlog line. *(Note: Option A later
+  shipped as real `v0.4.58` code — this plan entry is historical.)*
 
 - **v0.4.54 (real code, shipped — 2026-07-27):**
   Near-miss particle burst + brief screen-edge vignette pulse. Also a
@@ -40,9 +49,6 @@ entry heading so the change trail stays obvious at a glance.
 
 - **v0.4.57 (real code, shipped — 2026-07-27):**
   Hotfix for Rod of Poopdom. Decremented `stinkyTimer` in chase loop to allow a second teleport. Fixed `smokeEffects` particle persistence. See `roadmap-handoff-v0.4.57.md`.
-
-- **v0.4.59-plan (docs-only, 2026-07-27):**
-  Mode A pass — created handoff for Neon Jump-Scare Upgrade (`roadmap-handoff-v0.4.59-plan.md`). Changes the existing cosmetic filter into an active mechanic (500ms headstart after a jump-scare), costs 250 sheebs to buy, deducts 50 sheebs each use. Updated `docs/roadmap.md`. Ready to code.
 
 - **v0.4.52 (real code, shipped — 2026-07-27):**
   Turdstone Token — Resurrection Ward. New Epic/Rare map pickup; level-indexed
