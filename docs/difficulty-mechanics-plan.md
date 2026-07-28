@@ -1,7 +1,24 @@
 # Difficulty Mechanics Plan
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Codex (GPT-5) — 2026-07-28
+**Last updated by:** Claude Sonnet 5 — 2026-07-28
+
+## Wiring bug found (2026-07-28) — the selector currently does nothing
+
+Ken played a run on **Noob-Noob** (shipped v0.4.60, UI + cookie
+persistence only) and reported it felt just as brutal as any other run.
+Confirmed root cause: `GameEngine.js`'s only read of `this.difficulty`
+(the desktop fog-of-war radial mask from v0.4.58, `GameEngine.js:2607-2608`)
+checks for the string values `'easy'`/`'hardcore'`, which were never the
+actual profile values (`'noob'`/`'casual'`/`'4chan-st'`, see
+`frontend/src/lib/cookies.js:116`) even before this section's own Debt
+Lock math was scoped. Nothing in `GameEngine.js` adjusts chaser speed,
+spawn odds, or any pressure knob based on difficulty today — the
+selector is fully cosmetic. This is being fixed as part of
+[`roadmap-handoff-v0.4.70-plan.md`](handoffs/roadmap-handoff-v0.4.70-plan.md)
+(bundled with a Level 5 difficulty rebalance), but only the wiring bug
+and a manual per-tier discount — the full rolling deaths/sheebs
+auto-tuner described below is still fully TBD and not part of that slice.
 
 **Mode impact:** `Runner only` for the current plan. In Play as Chaser
 Beta, difficulty would mean AI-runner competence, not debt pressure,

@@ -713,3 +713,19 @@ chaser-bark voice clips, 1:1 with text.
   `sleep` inside `deploy-static.sh` would stall coding agents; options:
   detached delayed push, probe-then-push script, git hook, or manual
   checklist. See [`roadmap-handoff-v0.4.65-plan.md`](handoffs/roadmap-handoff-v0.4.65-plan.md).
+- [ ] **Level 5 attack slowdown + Level 4 reward pass.** **Needs Ken's
+  answers on 6 open questions, otherwise code-ready** — Ken's 2026-07-28
+  playtest: World Star Parking Lot (Level 5) is way too difficult and
+  needs its chaser pressure slowed; The Ramen Aisle (Level 4) needs more
+  relics/rewards as a gearing-up level. Root cause found: the Noob-Noob
+  difficulty selector (shipped v0.4.60 UI-only) has **zero effect on
+  chase difficulty** — `GameEngine.js` still checks dead `'easy'`/
+  `'hardcore'` string values instead of the real `'noob'`/`'casual'`/
+  `'4chan-st'` profile values, so picking Noob-Noob changes nothing.
+  Level 5 also stacks several independently-shipped levers for the first
+  time at once (`LEVEL5_PLUS_CHASER_SPEED_MULT = 1.15`, the
+  `chaserSpeedMod` rubber-band capping highest exactly here, all 5
+  `MAX_CHASERS` available, Raman-Aunt eligible starting this level, and a
+  one-door quest-room chokepoint gating level clear). Full analysis,
+  proposed numbers, and the six open questions for Ken are in
+  [`roadmap-handoff-v0.4.70-plan.md`](handoffs/roadmap-handoff-v0.4.70-plan.md).
