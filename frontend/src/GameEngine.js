@@ -434,6 +434,7 @@ export class GameEngine {
       initialSheebs,
       initialDeaths = 0,
       highestLevel = 0,
+      startLevelIndex = 0,
       earnedBadges = [],
       loadout = {},
       neonJumpscareFilter = false,
@@ -503,8 +504,8 @@ export class GameEngine {
     this.chasers = [this.chaser]
     this.extraChaserTimer = EXTRA_CHASER_INTERVAL
 
-    this.levelIndex = 0
-    this.level = LEVELS[0]
+    this.levelIndex = startLevelIndex || 0
+    this.level = LEVELS[this.levelIndex] || LEVELS[0]
     this.map = this.level.buildMap()
     this.bannerText = this.level.banner
     this.pendingLevelIndex = null

@@ -6,6 +6,12 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## [v0.4.73] - Level Warp Passes
+- **Warp Passes**: Added a new progression unlock feature to the Shop.
+- **Profile Updates**: Added tracking of level clear counts to player profiles (`levelClearCounts`) and a permanent unlocked start level (`highestUnlockedStartLevel`).
+- **Start Level Picker**: Updated the main menu to show a compact level-picker dropdown when `highestUnlockedStartLevel > 1`.
+- **Warp Gating**: The shop now sells "Warp Pass: Level N" for 1500 sheebs each, gated by 3 clears of Level N-1.
+
 ## [v0.4.71] - Chaser Beta Refinements
 - **Win State Fix**: Fixed the jumpscare zoom when the human chaser wins, skipping straight to the victory card.
 - **Cosmetic Fixes**: Gated badge toasts and sheeb increments so they don't visually trigger during Chaser Beta.

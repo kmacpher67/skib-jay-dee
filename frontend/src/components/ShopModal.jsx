@@ -1,6 +1,6 @@
 import { SHOP_ITEMS } from '../gameContent.js'
 
-export default function ShopModal({ balance, ownedItems, onPurchase, onClose }) {
+export default function ShopModal({ balance, ownedItems, highestUnlockedStartLevel = 1, levelClearCounts = {}, onPurchase, onPurchaseWarpPass, onClose }) {
   const owned = new Set(ownedItems)
 
   return (
@@ -41,6 +41,27 @@ export default function ShopModal({ balance, ownedItems, onPurchase, onClose }) 
               </article>
             )
           })}
+          
+          {highestUnlockedStartLevel < 6 && (
+            <article className="shop-card warp-pass-card" style={{ border: '2px solid #52c486', backgroundColor: '#eafff2' }}>
+              <div className="shop-card-top">
+                <h3 style={{ color: '#0d4023' }}>Warp Pass: Level {highestUnlockedStartLevel + 1}</h3>
+                <span className="shop-cost" style={{ color: '#0d4023' }}>1500</span>
+              </div>
+              <p className="shop-effect" style={{ color: '#2b7b4e' }}>Permanent Start Level Unlock</p>
+              <p className="shop-desc" style={{ color: '#1a5c37' }}>
+                Skip the early game. Requires 3 clears of Level {highestUnlockedStartLevel} to unlock. (You have {levelClearCounts[highestUnlockedStartLevel] || 0}/3)
+              </p>
+              <button
+                className="shop-buy-btn"
+                disabled={balance < 1500 || (levelClearCounts[highestUnlockedStartLevel] || 0) < 3}
+                onClick={() => onPurchaseWarpPass(highestUnlockedStartLevel + 1)}
+                style={{ backgroundColor: '#2ecc71', color: 'black' }}
+              >
+                {(levelClearCounts[highestUnlockedStartLevel] || 0) < 3 ? 'LOCKED (NEED CLEARS)' : balance < 1500 ? 'NEED MORE SHEEBS' : 'BUY'}
+              </button>
+            </article>
+          )}
         </div>
 
         <p className="shop-note">

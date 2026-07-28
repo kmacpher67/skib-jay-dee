@@ -42,6 +42,7 @@ export default function GameCanvas({
   onBadgeEarned,
   onShart,
   onEngineReady,
+  startLevelIndex,
 }) {
   const canvasRef = useRef(null)
   const engineRef = useRef(null)
@@ -67,6 +68,7 @@ export default function GameCanvas({
       initialSheebs,
       initialDeaths,
       highestLevel,
+      startLevelIndex,
       earnedBadges,
       difficulty,
       loadout: {

@@ -214,8 +214,7 @@ lands, wire a `chaserType` per level.
    target level 3 times, the shop offers the next warp unlock for `1500
    sheebs`, which permanently raises the menu's start-level cap by one
    (Level 1 stays the default). Keep warp unlocks out of `ownedItems`, so
-   capture item-loss and stat bonus logic stay untouched. See
-   `docs/handoffs/roadmap-handoff-v0.4.73-plan.md`.
+   capture item-loss and stat bonus logic stay untouched. Shipped as `v0.4.73`.
 5. **The PDF's "Infinite Tiled Labyrinth."** The launch map in the PDF is
    described as infinitely regenerating corridors, not a fixed layout.
    That's a genuinely different rendering/collision model (procedural

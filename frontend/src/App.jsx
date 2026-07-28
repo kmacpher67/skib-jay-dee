@@ -56,6 +56,7 @@ export default function App() {
   const [versionOpen, setVersionOpen] = useState(false)
   const [deathsOpen, setDeathsOpen] = useState(false)
   const [rewardsHistoryOpen, setRewardsHistoryOpen] = useState(false)
+  const [startLevelIndex, setStartLevelIndex] = useState(0)
   const [runnerFaceSelection, setRunnerFaceSelection] = useState(() => randomFaces().runnerFace)
   const [chaserFaceSelection, setChaserFaceSelection] = useState(() => randomFaces().chaserFace)
   const [runnerIsCustom, setRunnerIsCustom] = useState(false)
@@ -162,13 +163,17 @@ export default function App() {
       syncProfile((current) => {
         const bestRun = current.bestRun || { level: 1, deaths: 0 }
         const sessionDeaths = sessionDeathsRef.current
+        const currentCount = current.levelClearCounts?.[index] || 0
+        const nextCounts = { ...(current.levelClearCounts || {}), [index]: currentCount + 1 }
+
         if (index > bestRun.level || (index === bestRun.level && sessionDeaths < bestRun.deaths)) {
           return {
             ...current,
+            levelClearCounts: nextCounts,
             bestRun: { level: index, deaths: sessionDeaths }
           }
         }
-        return current
+        return { ...current, levelClearCounts: nextCounts }
       })
     }
 
@@ -272,6 +277,28 @@ export default function App() {
         ...current,
         sheebs: current.sheebs - shopItem.cost,
         ownedItems: [...current.ownedItems, itemId],
+        rewardsHistory: [...(current.rewardsHistory || []), historyEntry].slice(-50),
+      }
+    })
+  }
+
+  const handlePurchaseWarpPass = (targetLevel) => {
+    syncProfile((current) => {
+      if (current.sheebs < 1500 || current.highestUnlockedStartLevel >= targetLevel) return current
+
+      const historyEntry = {
+        timestamp: Date.now(),
+        type: 'purchase',
+        label: `Warp Pass: Level ${targetLevel}`,
+        amount: -1500,
+        level: null,
+        levelName: null,
+      }
+
+      return {
+        ...current,
+        sheebs: current.sheebs - 1500,
+        highestUnlockedStartLevel: targetLevel,
         rewardsHistory: [...(current.rewardsHistory || []), historyEntry].slice(-50),
       }
     })
@@ -630,6 +657,8 @@ export default function App() {
               loadout={loadout}
               onRunnerFace={handleRunnerFace}
               onChaserFace={handleChaserFace}
+              startLevelIndex={startLevelIndex}
+              onStartLevelChange={setStartLevelIndex}
               onPlay={() => handlePlay(false)}
               onPlayAsChaser={() => handlePlay(true)}
               onOpenShop={() => {
@@ -655,7 +684,10 @@ export default function App() {
               <ShopModal
                 balance={profile.sheebs}
                 ownedItems={profile.ownedItems}
+                highestUnlockedStartLevel={profile.highestUnlockedStartLevel}
+                levelClearCounts={profile.levelClearCounts}
                 onPurchase={handlePurchase}
+                onPurchaseWarpPass={handlePurchaseWarpPass}
                 onClose={() => setShopOpen(false)}
               />
             )}
@@ -708,6 +740,7 @@ export default function App() {
               initialSheebs={profile.sheebs}
               initialDeaths={profile.deaths}
               highestLevel={profile.highestLevel}
+              startLevelIndex={startLevelIndex}
               earnedBadges={profile.earnedBadges}
               difficulty={profile.difficulty}
               onCaught={handleCaught}
@@ -817,6 +850,8 @@ function MainMenu({
   loadout,
   onRunnerFace,
   onChaserFace,
+  startLevelIndex,
+  onStartLevelChange,
   onPlay,
   onPlayAsChaser,
   onOpenShop,
@@ -903,9 +938,35 @@ function MainMenu({
       </div>
 
       <div className="menu-actions">
-        <button className="play-btn" onClick={onPlay}>
-          PLAY AS RUNNER
-        </button>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '8px', alignItems: 'stretch' }}>
+          <button className="play-btn" onClick={onPlay} style={{ flexGrow: 1 }}>
+            PLAY AS RUNNER
+          </button>
+          {profile.highestUnlockedStartLevel > 1 && (
+            <select
+              value={startLevelIndex}
+              onChange={(e) => onStartLevelChange(Number(e.target.value))}
+              className="start-level-select"
+              style={{
+                backgroundColor: '#111',
+                color: '#fff',
+                border: '2px solid #555',
+                borderRadius: '8px',
+                padding: '0 12px',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+              }}
+              title="Select Starting Level"
+            >
+              {Array.from({ length: profile.highestUnlockedStartLevel }).map((_, i) => (
+                <option key={i} value={i}>
+                  Level {i + 1}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
         <div className="chaser-btn-wrapper" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <button
             className="play-btn chaser-btn"
