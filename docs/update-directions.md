@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Cursor Composer — 2026-07-28 (Raman Rows recurrence verification)
+**Last updated by:** Cursor Composer — 2026-07-28 (v0.4.64.1 Level 4 input hotfix)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,16 +12,20 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
-- **v0.4.64 (real code, shipped — 2026-07-28):**
-  Implemented Debug State Dump. Added `buildDebugDump()` to `GameEngine.js` triggered by three quick `q` keypresses to dump game state (position, phase, difficulty, etc.) to the console and clipboard for troubleshooting (e.g. the Raman Rows hang). Includes e2e test. SDK pieces remain parked. `GAME_ITERATION` = v0.4.64. See `roadmap-handoff-v0.4.64.md`.
+- **v0.4.64.1 (real code — 2026-07-28):** Level 4 warning input hotfix.
+  Chrome DevTools showed `.level-4-warning` while runner was immobile on
+  Ramen Aisle. `GameEngine.stop()` unbound input for the overlay but
+  `start()` never re-bound it after "I ACCEPT MY FATE". Fixed; e2e asserts
+  movement after accept. `GAME_ITERATION` = v0.4.64.1. **Deploy to prod.**
 
-- **Raman Rows recurrence check (docs only — 2026-07-28):** Ken still
-  reports hanging on Level 4 (Ramen Aisle) on prod v0.4.60. Verified the
-  v0.4.52.1 `mapGrids.js` seal is still in the tree (commit `2d61ed0`, no
-  later edits to that file). `audit-map-widths.py` passes. Treat as open
-  RCA — likely a non-map hang or an un-audited pinch. Interim browser
-  dump instructions added to `roadmap-handoff-v0.4.64-plan.md`; recommend
-  shipping Debug State Dump next (unblocked). See
+- **v0.4.64 (real code, shipped — 2026-07-28):**
+  Implemented Debug State Dump. Triple-Q dumps state to console/clipboard via
+  `buildDebugDump()` in `GameEngine.js`. SDK pieces remain parked. See
+  `roadmap-handoff-v0.4.64.md`.
+
+- **Raman Rows recurrence — resolved (2026-07-28):** Was not a wall pinch
+  regression; v0.4.52.1 map seal still in tree. Actual bug was Level 4
+  warning input dead-zone (v0.4.64.1). See
   `roadmap-handoff-hotfix-raman-rows-plan.md` § Recurrence check.
 
 - **v0.4.63-plan refinement (docs only — 2026-07-28):** Folded the
