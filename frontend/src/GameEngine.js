@@ -602,7 +602,6 @@ export class GameEngine {
 
     this._raf = null
     this._lastTime = null
-    this._bindInput()
   }
 
   setFaces({ runnerFace, chaserFace, chaserFaceId, runnerIsCustom, runnerGettingCapturedFace, runnerCapturedFace }) {
@@ -657,12 +656,14 @@ export class GameEngine {
       deaths: this.deaths,
       difficulty: this.difficulty,
       rafActive: this._raf != null,
+      inputBound: this._inputBound ?? false,
     }
     return dump
   }
 
   start() {
     if (this._raf) return
+    this._bindInput()
     this._lastTime = performance.now()
 
     const loop = (now) => {
@@ -683,6 +684,8 @@ export class GameEngine {
   }
 
   _bindInput() {
+    if (this._inputBound) return
+    this._inputBound = true
     this._onPointerDown = (e) => this._handlePointerDown(e)
     this._onPointerMove = (e) => this._handlePointerMove(e)
     this._onPointerUp = (e) => this._handlePointerUp(e)
@@ -704,6 +707,8 @@ export class GameEngine {
   }
 
   _unbindInput() {
+    if (!this._inputBound) return
+    this._inputBound = false
     this.canvas.removeEventListener('pointerdown', this._onPointerDown)
     window.removeEventListener('pointermove', this._onPointerMove)
     window.removeEventListener('pointerup', this._onPointerUp)

@@ -6,6 +6,18 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.64.1 — Level 4 warning input hotfix (Cursor Composer, 2026-07-28)
+
+**Root cause:** Entering Level 4 (Ramen Aisle) shows the stakes warning overlay,
+which calls `GameEngine.stop()`. `stop()` unbinds keyboard/pointer listeners
+but `start()` (on "I ACCEPT MY FATE") only resumed `requestAnimationFrame` —
+input stayed dead. Looked like a wall soft-lock; Chrome DevTools DOM showed
+`.level-4-warning` active.
+
+**Fix:** `_bindInput()` now runs in `start()` (with `_inputBound` guard).
+E2E `level-4-warning.spec.js` asserts runner movement after accept.
+`buildDebugDump()` now includes `inputBound` for future RCA.
+
 ## v0.4.64 — Debug State Dump (Antigravity, 2026-07-28)
 
 Implemented the client-only Debug State Dump slice from the v0.4.64 handoff plan to assist in RCA of the Raman Rows recurrence. Pressing `q` three times rapidly now dumps the game state (player position, level, active chasers, timers) directly to the console and clipboard via `GameEngine.js`. The analytics SDKs (Sentry/PostHog) remain parked per the plan, pending user feedback on vendor selection and privacy posture. Tested and deployed to prod.

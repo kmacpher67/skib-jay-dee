@@ -32,12 +32,14 @@ commit touched `frontend/src/mapGrids.js` after `2d61ed0` (v0.4.52.1).
 | E2E `wall-pinch-seals.spec.js` | Covers shelf pinch only; **does not** regression-test the v0.4.52.1 quest-room seam |
 
 **Verdict:** the documented wall-pinch fix was implemented and not
-reverted. If Ken still soft-locks, treat it as either (a) a **different**
-pinch the audit script misses, (b) a **non-map** hang (phase freeze,
-broth-slip steering, chaser push into a corner), or (c) prod/cache lag
-(unlikely at v0.4.60, which post-dates v0.4.52.1). Needs a fresh RCA with
-a position dump — see interim browser instructions in
-`roadmap-handoff-v0.4.64-plan.md` § "Interim browser dump (today)".
+reverted. Ken's 2026-07-28 Chrome DevTools session surfaced
+`.level-4-warning` in the DOM — **separate root cause found and fixed in
+v0.4.64.1:** `GameEngine.stop()` (Level 4 warning pause) called
+`_unbindInput()` but `start()` never re-bound listeners, so after
+"I ACCEPT MY FATE" the canvas kept rendering but keyboard/joystick input
+was dead. Matches "stuck on Ramen level" with no wall pinch. If issues
+persist after deploy, collect a Triple-Q dump (`v0.4.64+`) or interim
+console snippet from `roadmap-handoff-v0.4.64-plan.md`.
 
 ## Copy-paste: next natural steps
 
