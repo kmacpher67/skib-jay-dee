@@ -6,6 +6,27 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.69-plan — Chaser Beta: runner AI item use (Claude Sonnet 5, 2026-07-28)
+
+Mode A — docs only; no code, build, version bump, or deploy.
+
+Ken playtested `PLAY AS CHASER — BETA` in the browser after the `v0.4.61`
+movement/steering recovery: the mode is playable now, but the AI runner
+picked up the Jayden Gun and never fired it back. Read `docs/role-reversal-
+design.md`'s mode-boundary matrix and cross-checked it against
+`GameEngine.js` — found the matrix said pickups were "off in recovery
+slice" for Chaser Beta, but `_syncLevelState()` never actually gated any
+of the pickup/badge/token spawn calls on `isChaserMode`, so that row was
+never true in code. Decision: pickups stay **on** (Ken's playtest
+supersedes the earlier "off" call), badges/tokens stay cosmetic-only (no
+profile/economy writes — audit that as part of the same slice), and the
+AI runner gets seek-helpful/avoid-harmful pickup steering plus gun-fire-
+back logic, reusing the existing `POSITIVE_PICKUPS` classification and
+`_tryFire()`/bullet path rather than new systems. Full scope in
+[`roadmap-handoff-v0.4.69-plan.md`](handoffs/roadmap-handoff-v0.4.69-plan.md).
+Updated `role-reversal-design.md` (mode matrix + Beta exit criteria) and
+`roadmap.md` (LT Role Reversal item) to match.
+
 ## v0.4.68-plan — Level 4 warning audio pass (Codex GPT-5, 2026-07-28)
 
 Mode A — docs only; no code, build, version bump, or deploy.

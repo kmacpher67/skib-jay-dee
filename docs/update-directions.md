@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Codex GPT-5 — 2026-07-28 (badge award counts roadmap addendum)
+**Last updated by:** Claude Sonnet 5 — 2026-07-28 (Chaser Beta runner AI item-use handoff)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,16 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.69-plan (docs only — 2026-07-28):** Ken playtested Chaser Beta
+  live in the browser (movement/steering recovery from `v0.4.61` holds)
+  and found the AI runner picks up the Jayden Gun but never fires it back.
+  New handoff `roadmap-handoff-v0.4.69-plan.md` scopes seek-helpful/
+  avoid-harmful pickup steering plus gun-fire-back logic for the AI
+  runner, and corrects `role-reversal-design.md`'s mode-boundary matrix
+  (it claimed pickups were "off in recovery slice" for Chaser Beta, but
+  `_syncLevelState()` never actually gated any pickup/badge/token spawn
+  on `isChaserMode` — that row was aspirational, not real). No code yet.
+
 - **v0.4.68-plan (docs only — 2026-07-28):** New Level 4 warning audio
   pass queued in `roadmap-handoff-v0.4.68-plan.md`. The three clips are
   already present under `frontend/src/assets/audio/`; next code slice is

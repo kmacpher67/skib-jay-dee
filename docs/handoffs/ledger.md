@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-28 | docs (Claude Sonnet 5) | v0.4.69-plan: Chaser Beta runner-AI item-use handoff created from Ken's live playtest (gun picked up, never fired); corrected role-reversal-design.md mode matrix (pickups were never actually gated off in code); no code
 2026-07-28 | docs (Codex GPT-5) | v0.4.68-plan: Level 4 warning audio pass handoff created; sting + voice on overlay open, accept-fate on button click; no code
 2026-07-28 | docs (Codex GPT-5) | v0.4.67-plan: badge award counts / repeat-award history handoff created; earnedBadges stays unique-id only; no code
 2026-07-28 | docs (Codex GPT-5) | v0.4.66-plan addendum: queued badge award-count / repeat-award history follow-up because earnedBadges is unique-id only; no code

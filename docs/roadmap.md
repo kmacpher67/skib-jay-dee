@@ -132,9 +132,9 @@ for the full session write-up and
 1. **Finish the grand arc — Level 10 finale.** **Resolved:** CEO of Drains
    stays **Level 7 mid-arc boss**; **Level 10 = new finale** (Ken developing);
    **endless play after L10**. Levels 8–9 TBD.
-2. **Role Reversal Beta — recovery planned:** the menu-mode scaffold
-   shipped in `v0.4.53`, but the human chaser cannot move and campaign
-   systems leak into the side mode. Keep it as a visibly experimental
+2. **Role Reversal Beta — recovery landed in `v0.4.61`** (human chaser
+   moves, AI runner flees/steers around walls); Ken has since playtested
+   it live in-browser. Keep it as a visibly experimental
    human-chaser-vs-AI-runner mode, with no economy or multiplayer. The
    recovery plan, two-mode contract, and go/no-go gate are in
    [role-reversal-design.md](role-reversal-design.md) and
@@ -144,6 +144,16 @@ for the full session write-up and
      treatment only after the documented Beta exit criteria pass and Ken
      says the play is no longer rough. If two bounded recovery slices
      cannot make the chase fun, soft-hide the public entry instead.
+   - [ ] **Runner AI item use (Ken, 2026-07-28 playtest finding):** the AI
+     runner picked up the Jayden Gun during a live Chaser Beta round and
+     never fired it back — it has no pickup awareness at all. Add
+     seek-helpful/avoid-harmful pickup steering plus gun-fire-back logic
+     to `_getRunnerEvadeVector()`, and audit the badge/token spawn calls
+     in `_syncLevelState()` that turned out to be running unconditionally
+     in Chaser Beta despite the design doc saying pickups were "off in
+     recovery slice" (they never actually were gated). Mode impact:
+     `Chaser Beta only`. **Code-ready**, see
+     [roadmap-handoff-v0.4.69-plan.md](handoffs/roadmap-handoff-v0.4.69-plan.md).
 3. **MOBA/PvP** — still parked (format + infra open).
 
 Sequencing: **Level 10 arc → Role Reversal → MOBA**.

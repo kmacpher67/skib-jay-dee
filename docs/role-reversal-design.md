@@ -2,9 +2,25 @@
 
 **Created by:** Cursor Grok 4.5 — 2026-07-28
 **Created on:** 2026-07-28
-**Last updated by:** Codex (GPT-5) — 2026-07-28
+**Last updated by:** Claude Sonnet 5 — 2026-07-28
 **Last updated on:** 2026-07-28
 **Session mode:** Mode A (planning / refine — docs only, no code)
+
+> **2026-07-28 update (Claude Sonnet 5):** Ken playtested Chaser Beta in
+> the browser after the `v0.4.61` movement/steering recovery — the mode
+> is playable (human chaser moves, AI runner flees) but the AI runner
+> picked up the Jayden Gun and never shot back. New requirement: the
+> runner AI must use helpful items and avoid harmful ones. This also
+> surfaced that the "Pickups/quest rooms: Off in recovery slice" row in
+> the mode matrix below was **never actually enforced in code** —
+> `_syncLevelState()` spawns campaign pickups unconditionally regardless
+> of `isChaserMode`. See
+> [`roadmap-handoff-v0.4.69-plan.md`](handoffs/roadmap-handoff-v0.4.69-plan.md)
+> for the corrected scope: pickups stay **on** (superseding the earlier
+> "off" call, since Ken has now played and wants to keep them, just used
+> intelligently), badges/tokens stay cosmetic-only (no profile/economy
+> writes), and the AI runner gets seek-helpful/avoid-harmful pickup
+> steering plus gun-fire-back logic.
 
 Dedicated design doc for the Role Reversal / "Play as Chaser" feature that
 shipped early as `v0.4.53`. Companion handoff:
@@ -322,7 +338,7 @@ state with the actors swapped.
 | Level progression | Campaign Levels 1–10 / endless plan | None; one explicit arena |
 | Economy/profile writes | Sheebs, badges, deaths, best run, rewards | None in v1; do not mutate the profile |
 | Shop/loadout bonuses | Apply to human runner | Do not leak onto the AI runner or human chaser |
-| Pickups/quest rooms | Campaign rules | Off in recovery slice |
+| Pickups/quest rooms | Campaign rules | **On, corrected 2026-07-28** — pickups spawn and the AI runner should seek helpful ones (per `POSITIVE_PICKUPS`) and use them (e.g. fire the gun at the human chaser), and route around harmful ones; badges/tokens stay visually present but must not write profile/economy state. See [`roadmap-handoff-v0.4.69-plan.md`](handoffs/roadmap-handoff-v0.4.69-plan.md). |
 | Extra chasers | Campaign pressure | Off; 1v1 only |
 | Skreems/near-capture/death flow | Runner campaign | Replaced by target + clock + result |
 | Difficulty selector | Runner campaign tuning | Pin a documented Beta baseline until runner-AI difficulty is designed |
@@ -385,6 +401,10 @@ The button loses its experimental treatment only when all are true:
 - Portrait mobile and desktop playtests make the target findable.
 - At least five manual tuning rounds show non-automatic outcomes: catches
   require route choice, while timeouts remain possible.
+- **(Added 2026-07-28)** The AI runner visibly uses pickups it collects —
+  at minimum, fires the gun back at the pursuing human chaser — instead
+  of carrying items inertly. See
+  [`roadmap-handoff-v0.4.69-plan.md`](handoffs/roadmap-handoff-v0.4.69-plan.md).
 - Ken explicitly approves removing the Beta treatment.
 
 If those criteria cannot be met in two bounded Mode B slices, soft-hide
