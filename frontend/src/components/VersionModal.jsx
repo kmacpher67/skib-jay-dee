@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.69',
+    title: 'Chaser Beta implementation',
+    description: 'Fully isolated Chaser Mode from the main campaign progress (sheebs, badges, history) so it doesn\'t pollute your stats. The AI runner also now targets guns and fires back.',
+  },
+  {
     version: 'v0.4.68',
     title: 'Level 4 Warning Audio',
     description: 'Added audio stings to the Level 4 warning overlay. The warning now plays a sting and voiceover when it opens, and a voice line when you accept your fate.',

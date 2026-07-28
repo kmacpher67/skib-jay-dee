@@ -56,22 +56,27 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 `frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js`. Shipped as
 `v0.4.36.1`. See `docs/handoffs/roadmap-handoff-v0.4.36.1.md`.
 
-## Frontend open backlog snapshot (2026-07-28, Mode A pass — v0.4.66 triage)
+## Frontend open backlog snapshot (2026-07-28, Mode A pass — v0.4.71 completeness audit)
 
 Consolidated ranked candidate queue + refinement briefs now live in
-[`roadmap-handoff-v0.4.66-plan.md`](handoffs/roadmap-handoff-v0.4.66-plan.md) —
-read that first before picking work from this section. Summary:
+[`roadmap-handoff-v0.4.71-plan.md`](handoffs/roadmap-handoff-v0.4.71-plan.md) —
+this supersedes the earlier `v0.4.66-plan.md` triage (v0.4.65,
+v0.4.67-v0.4.69 have all since shipped for real; read v0.4.71 first
+before picking work from this section. Summary:
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next (ranked)** | 5 | ~~Debug State Dump~~ (shipped v0.4.64) → ~~post-deploy push automation~~ (shipped v0.4.65) → Play Recap/pickup tracking → pose collapse → Micro-Skib → Role Reversal Beta label (`v0.4.66-plan` candidates 2-6) |
+| **Unblocked — code next (ranked)** | 4 | Level 5 speed rebalance + difficulty wiring fix (`v0.4.70-plan`, fully resolved) → Micro-Skib → pose collapse → Badge award counts (`v0.4.72-plan`, renumbered) |
 | **Parallel quality debt** | 1 | Role Reversal Beta full recovery (`v0.4.61-plan`; outcome UX blocked on Ken) |
-| **Design-only / TBD** | 3 | Debt Lock math, Level 7+ Mosaic (blocked on Ken's trigger-mechanism answer), Interactive content pack (`v0.4.66-plan` candidates A-C) |
+| **Design-only / TBD** | 3 | Debt Lock math, Level 7+ Mosaic (blocked on Ken's trigger-mechanism answer), Interactive content pack |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
+| **Needs a Mode B decision** | 1 | `VersionModal.jsx` has two false changelog entries (v0.4.55/v0.4.56) for features never actually shipped — see `v0.4.71-plan.md` Finding #1 |
 
-`GAME_ITERATION` is **v0.4.64** (`frontend/src/version.js`, Debug State
-Dump — shipped this session, see `roadmap-handoff-v0.4.64.md`).
+`GAME_ITERATION` is **v0.4.69** (`frontend/src/version.js`, Chaser Beta
+gun AI + profile isolation — see `roadmap-handoff-v0.4.69.md`).
+`roadmap-handoff-v0.4.70-plan.md` (Level 5 rebalance) is code-ready and
+unshipped — it is the correct next Mode B pick.
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.
@@ -139,11 +144,14 @@ for the full session write-up and
    recovery plan, two-mode contract, and go/no-go gate are in
    [role-reversal-design.md](role-reversal-design.md) and
    [roadmap-handoff-v0.4.61-plan.md](handoffs/roadmap-handoff-v0.4.61-plan.md).
-   - [ ] **Beta-removal debt (Ken, 2026-07-28):** recolor and label the
-     `PLAY AS CHASER` entry as experimental/Beta now. Remove that
-     treatment only after the documented Beta exit criteria pass and Ken
-     says the play is no longer rough. If two bounded recovery slices
-     cannot make the chase fun, soft-hide the public entry instead.
+   - [x] **Beta-removal debt (Ken, 2026-07-28):** recolor and label the
+     `PLAY AS CHASER` entry as experimental/Beta now. **Already shipped**
+     — `frontend/src/App.jsx:904` renders a red "BETA" pill on the
+     button. Checkbox corrected 2026-07-28 in the `v0.4.71-plan.md`
+     completeness audit. Remove the treatment only after the documented
+     Beta exit criteria pass and Ken says the play is no longer rough.
+     If two bounded recovery slices cannot make the chase fun, soft-hide
+     the public entry instead.
    - [ ] **Runner AI item use (Ken, 2026-07-28 playtest finding):** the AI
      runner picked up the Jayden Gun during a live Chaser Beta round and
      never fired it back — it has no pickup awareness at all. **Final
@@ -393,7 +401,11 @@ chaser-bark voice clips, 1:1 with text.
   [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
 - [ ] **Micro-Skib chaser (challenge counterweight to the potion).** **Code-ready**
   per Ken 2026-07-27 — replace extra spawn, L3+, 65% hitbox, 0.85× speed.
-  See [`roadmap-handoff-v0.4.55-plan.md`](handoffs/roadmap-handoff-v0.4.55-plan.md).
+  **Not yet shipped** despite an existing `VersionModal.jsx` changelog
+  entry claiming otherwise (that entry is false — flagged as Finding #1
+  in [`roadmap-handoff-v0.4.71-plan.md`](handoffs/roadmap-handoff-v0.4.71-plan.md);
+  shipping this for real resolves it). See
+  [`roadmap-handoff-v0.4.55-plan.md`](handoffs/roadmap-handoff-v0.4.55-plan.md).
 - [x] **Level 4+ Difficulty Constraints.** Landed in v0.4.33 — Level 4 and higher now requires at least 90 seconds (scaling up with higher levels) of running and evasion of 5 chasers before the level can clear.
 - [x] **Skib-Chaser Evolution (Level 5+).** Landed in v0.4.34 — chasers turned out to have no wall collision at all pre-v0.4.34 (only the runner did), so this gave them real wall-aware movement on Levels 1-4 and kept the always-pass-through behavior plus a `1.15x` speed multiplier for Level 5+ (`levelIndex >= 4`). See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
 - [x] **The "Gawd Particle" (Level 5+).** Landed in v0.4.34 — an 8%-per-level Level 5+ pickup grants the runner a 10s wall-hack buff; touching a chaser while it's active despawns the chaser (15s respawn timer) instead of capturing the runner. See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
@@ -543,8 +555,10 @@ chaser-bark voice clips, 1:1 with text.
   records unique badge ids today, so repeat badge/token grants collapse
   to one entry. Add a separate count or award-history structure if we
   want the profile or Rewards modal to show "earned N times" without
-  changing badge gating. Exact surface still TBD; queued as
-  `roadmap-handoff-v0.4.67-plan.md`.
+  changing badge gating. Exact surface still TBD; code-ready, queued as
+  `roadmap-handoff-v0.4.72-plan.md` (renumbered from `v0.4.67-plan.md`
+  2026-07-28 — that version slot was consumed by a different shipped
+  feature, see `v0.4.71-plan.md` Finding #2).
 - [ ] **Feature: Pickup-consumption tracking + "Play Recap" screen.** **Code-ready**
   (Ken 2026-07-27): level-clear/menu return only; Stats tab in Rewards modal;
   comedic bad-pickup tone. Queued as **v0.4.62 Slice 2**. See
@@ -600,7 +614,11 @@ chaser-bark voice clips, 1:1 with text.
   `frontend/src/GameEngine.js`, and `docs/characters.md`.
 - [ ] **Follow-up (runner poses): collapse to 3 unique.** **Code-ready**
   (Ken 2026-07-27) — remove duplicate pool entries; distinct photos optional
-  later. See [`roadmap-handoff-v0.4.56-plan.md`](handoffs/roadmap-handoff-v0.4.56-plan.md).
+  later. **Not yet shipped** despite an existing `VersionModal.jsx`
+  changelog entry claiming otherwise (that entry is false — flagged as
+  Finding #1 in [`roadmap-handoff-v0.4.71-plan.md`](handoffs/roadmap-handoff-v0.4.71-plan.md);
+  shipping this for real resolves it). See
+  [`roadmap-handoff-v0.4.56-plan.md`](handoffs/roadmap-handoff-v0.4.56-plan.md).
 - [ ] **App tracking / instrumentation (analytics + error monitoring).**
   **Design-only / TBD** — Ken asked for a features refinement pass on
   [`docs/notes-snippets/app-tracking-instrumentation.md`](../notes-snippets/app-tracking-instrumentation.md).
@@ -710,12 +728,11 @@ chaser-bark voice clips, 1:1 with text.
   Option C (scale 9:16 + side art) remains a future alternative if Ken wants
   a different desktop feel.
 - [x] **Feature: Debug State Dump.** Add a debug function (e.g., triggered by `Triple Q` or `ctrl+alt+del`) that performs a debug dump and allows copying game position data, relative position level, and all debug info for problem-solving. **Related to the App tracking / instrumentation item above** — this is the manual, client-only, no-SDK support path (clipboard dump, no network call), complementary to the Sentry-tagged "Report a Bug" button scoped there. **Code-ready and unblocked** — copy-paste in [`roadmap-handoff-v0.4.64-plan.md`](handoffs/roadmap-handoff-v0.4.64-plan.md). Until shipped, Ken can use the interim DevTools console snippet in that same handoff (§ "Interim browser dump"). **Priority bump (2026-07-28):** helps RCA the Ramen Aisle recurrence Ken reported on v0.4.60 prod.
-- [ ] **Tooling: Post-deploy delayed `git push` (game repo).** **Needs
-  refinement (2026-07-28).** Ken pushes this repo only after prod deploy
-  is live (~30–60s) so production e2e can verify the live site. Blocking
-  `sleep` inside `deploy-static.sh` would stall coding agents; options:
-  detached delayed push, probe-then-push script, git hook, or manual
-  checklist. See [`roadmap-handoff-v0.4.65-plan.md`](handoffs/roadmap-handoff-v0.4.65-plan.md).
+- [x] **Tooling: Post-deploy delayed `git push` (game repo).** Landed
+  v0.4.65 (commit `d0197f6`) — post-commit hook + marker probe +
+  background wait (Option E). Checkbox corrected 2026-07-28 in the
+  `v0.4.71-plan.md` completeness audit; this had shipped but the box was
+  never checked. See [`roadmap-handoff-v0.4.65-plan.md`](handoffs/roadmap-handoff-v0.4.65-plan.md).
 - [ ] **Level 5 attack slowdown + Level 4 reward pass.** **Code-ready** —
   Ken's 2026-07-28 playtest: World Star Parking Lot (Level 5) is way too
   difficult and needs its chaser pressure slowed; The Ramen Aisle

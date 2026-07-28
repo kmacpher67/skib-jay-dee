@@ -1,16 +1,22 @@
-# Roadmap Handoff Plan v0.4.67 — Badge Award Counts / Repeat-Award History
+# Roadmap Handoff Plan v0.4.72 — Badge Award Counts / Repeat-Award History
 
-**Created by:** Codex GPT-5 — 2026-07-28
+**Created by:** Codex GPT-5 — 2026-07-28 (as `v0.4.67-plan.md`)
+**Renumbered by:** Claude Sonnet 5 — 2026-07-28 (completeness audit,
+`roadmap-handoff-v0.4.71-plan.md` Finding #2)
 **Session mode:** Mode A (Planning / refinement only — docs only, no code,
 no build, `GAME_ITERATION` not bumped)
 
-> **SUPERSEDED (2026-07-28, `roadmap-handoff-v0.4.71-plan.md` Finding
-> #2):** the `v0.4.67` slot was independently consumed by a different
-> feature that actually shipped (Pickup-consumption tracking + Play
-> Recap, commit `7e29921`). This content was never implemented and has
-> been renumbered to
-> [`roadmap-handoff-v0.4.72-plan.md`](roadmap-handoff-v0.4.72-plan.md) —
-> read that file instead. Kept here unmodified, append-only, for history.
+## Renumbering note (2026-07-28)
+
+This doc was originally written as `roadmap-handoff-v0.4.67-plan.md`.
+That version number was independently consumed by a different feature
+(Pickup-consumption tracking + Play Recap, shipped for real as `v0.4.67`,
+commit `7e29921`) before this plan was picked up for coding. This content
+was never implemented — confirmed via
+`grep -rn "badgeAwardCounts" frontend/src/` returning nothing. Renumbered
+to `v0.4.72` (next free slot as of the `v0.4.71` completeness audit) so a
+coding agent doesn't collide with the real `v0.4.67`. Content below is
+otherwise unchanged from the original.
 
 ## Why this doc exists
 
@@ -80,7 +86,7 @@ rewriting the badge system.
 
 ```text
 Read docs/skib-sdlc.md, then docs/update-directions.md, then this file
-(docs/handoffs/roadmap-handoff-v0.4.67-plan.md), then
+(docs/handoffs/roadmap-handoff-v0.4.72-plan.md), then
 docs/roadmap.md and docs/badges.md, then
 docs/profiles-and-identity.md.
 

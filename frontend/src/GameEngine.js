@@ -338,7 +338,8 @@ function chaserSpeedModMaxForLevel(levelIndex) {
 // same for a short window and turns contact with a chaser into a despawn +
 // respawn-timer instead of a capture.
 const LEVEL5_PLUS_START_INDEX = 4
-const LEVEL5_PLUS_CHASER_SPEED_MULT = 1.15
+const LEVEL5_PLUS_CHASER_SPEED_MULT = 1.05
+const NOOB_DIFFICULTY_CHASER_SPEED_SHAVE = 0.05
 const GAWD_PARTICLE_SPAWN_CHANCE = 0.08
 const GAWD_PARTICLE_PICKUP_SIZE = 28
 const GAWD_PARTICLE_BUFF_SECONDS = 10
@@ -1429,6 +1430,8 @@ export class GameEngine {
         if (chaser.stunGracePeriod > 0) chaser.stunGracePeriod -= dt
         const joinRampMod = lerp(CHASER_JOIN_RAMP_START, 1, chaser.joinRamp)
         let speedMult = wallHackLevel ? LEVEL5_PLUS_CHASER_SPEED_MULT : 1
+        if (this.difficulty === 'noob') speedMult = Math.max(0, speedMult - NOOB_DIFFICULTY_CHASER_SPEED_SHAVE)
+        if (wallHackLevel && this._hitsWall(chaser)) speedMult *= 0.7
         if (this.schleimyPotionActive) speedMult *= 1.2
         for (const trail of this.soggyTrails) {
           if (rectsIntersect(chaser, trail)) {
@@ -1606,7 +1609,7 @@ export class GameEngine {
     let extraChaserType = null
     let extraBaseSpeed = this.chaser.baseSpeed
 
-    if (this.levelIndex >= 4 && Math.random() < RAMAN_AUNT.spawnChance) {
+    if (this.levelIndex >= 5 && Math.random() < RAMAN_AUNT.spawnChance) {
       extraChaserType = RAMAN_AUNT.id
       extraBaseSpeed *= RAMAN_AUNT.speedMult
       const ramanFaces = CHASER_FACE_POOL.filter((face) => RAMAN_AUNT.faceIds.includes(face.id))
@@ -1857,7 +1860,8 @@ export class GameEngine {
 
   _maybeSpawnGunPickup() {
     const luckBonus = this.loadout.luckBonus || 0
-    const baseRoll = Math.random() < GUN_BASE_SPAWN_CHANCE
+    const baseChance = this.levelIndex === 3 ? 0.3 : GUN_BASE_SPAWN_CHANCE
+    const baseRoll = Math.random() < baseChance
     let luckProced = false
 
     if (!baseRoll && luckBonus > 0) {
@@ -1944,6 +1948,16 @@ export class GameEngine {
   _maybeSpawnTurdstoneToken() {
     // Only one Turdstone Token can be held at a time — no point spawning another.
     if (this.runner.hasTurdstoneToken) return
+    if (this.levelIndex === 3) {
+      this.pickups.push({
+        type: 'turdstone-token',
+        x: 820,
+        y: 220,
+        w: TURDSTONE_TOKEN_PICKUP_SIZE,
+        h: TURDSTONE_TOKEN_PICKUP_SIZE,
+      })
+      return
+    }
     const chance = turdstoneTokenSpawnChance(this.levelIndex)
     if (Math.random() > chance) return
     const spawn = this._findRandomWalkableSpawn()
@@ -1958,7 +1972,8 @@ export class GameEngine {
   }
 
   _maybeSpawnSchleimyPotion() {
-    if (Math.random() > 0.15) return
+    const chance = this.levelIndex === 3 ? 1.0 : 0.15
+    if (Math.random() > chance) return
     const cx = WORLD.width / 2
     const cy = WORLD.height / 2
     this.pickups.push({
@@ -1974,7 +1989,8 @@ export class GameEngine {
   }
 
   _maybeSpawnTacoBell() {
-    if (Math.random() > 0.05) return
+    const chance = this.levelIndex === 3 ? 0.3 : 0.05
+    if (Math.random() > chance) return
     const cx = this.map.walls[0].x + this.map.walls[0].w / 2
     const cy = this.map.walls[0].y + this.map.walls[0].h / 2
     this.pickups.push({
@@ -1990,7 +2006,8 @@ export class GameEngine {
   }
 
   _maybeSpawnDecoy() {
-    if (Math.random() > 0.05) return
+    const chance = this.levelIndex === 3 ? 0.3 : 0.05
+    if (Math.random() > chance) return
     const cx = WORLD.width / 2
     const cy = WORLD.height / 2
     this.pickups.push({
@@ -2654,8 +2671,8 @@ export class GameEngine {
       ctx.restore()
     }
 
-    if (this.difficulty !== 'easy') {
-      const isHardcore = this.difficulty === 'hardcore'
+    if (this.difficulty !== 'noob') {
+      const isHardcore = this.difficulty === '4chan-st'
       const focus = this.isChaserMode ? this.chasers[0] : this.runner
       const cx = focus.x + focus.w / 2
       const cy = focus.y + focus.h / 2
