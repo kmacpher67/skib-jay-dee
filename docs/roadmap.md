@@ -56,30 +56,22 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 `frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js`. Shipped as
 `v0.4.36.1`. See `docs/handoffs/roadmap-handoff-v0.4.36.1.md`.
 
-## Frontend open backlog snapshot (2026-07-28, Mode A pass — revised)
+## Frontend open backlog snapshot (2026-07-28, Mode A pass — v0.4.66 triage)
 
-**12** unchecked items remain in the incremental backlog below (revised
-2026-07-28: checked off Cool Play, Broth Slip, Rod hotfix, Desktop Screen
-Support Option A, Turdstone, Neon Jump-Scare Upgrade, Difficulty Selector
-minimal slice; consolidated queue in `roadmap-handoff-v0.4.62-plan.md`).
-All are front-end–scoped or front-end–first unless noted. LT roadmap items
-(Level 10 arc, Role Reversal, MOBA/PvP) stay in
-`roadmap-handoff-v0.4.43-plan.md`.
+Consolidated ranked candidate queue + refinement briefs now live in
+[`roadmap-handoff-v0.4.66-plan.md`](handoffs/roadmap-handoff-v0.4.66-plan.md) —
+read that first before picking work from this section. Summary:
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next** | 4 | v0.4.41 Slice B + Play Recap → v0.4.56 poses → v0.4.55 Micro-Skib (`v0.4.62-plan`) |
-| **Parallel quality debt** | 1 | Role Reversal Beta recovery (`v0.4.61-plan`; outcome UX blocked on Ken) |
-| **Design-only / TBD** | 4 | Debt Lock math, Level 7+ Mosaic, Interactive content pack, Post-deploy game-repo push (`v0.4.65-plan`) |
+| **Unblocked — code next (ranked)** | 5 | ~~Debug State Dump~~ (shipped v0.4.64) → post-deploy push automation → Play Recap/pickup tracking → pose collapse → Micro-Skib → Role Reversal Beta label (`v0.4.66-plan` candidates 2-6) |
+| **Parallel quality debt** | 1 | Role Reversal Beta full recovery (`v0.4.61-plan`; outcome UX blocked on Ken) |
+| **Design-only / TBD** | 3 | Debt Lock math, Level 7+ Mosaic (blocked on Ken's trigger-mechanism answer), Interactive content pack (`v0.4.66-plan` candidates A-C) |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 
-**Coding queue (bundled in `roadmap-handoff-v0.4.62-plan.md`):** v0.4.41
-Slice B (shop labels) → v0.4.41 Play Recap + pickup tracking → v0.4.56
-runner pose collapse → v0.4.55 Micro-Skib. **Parallel:** Role Reversal
-v1.5 hotfix (`v0.4.61-plan`) when Ken confirms timer/rematch.
-
-`GAME_ITERATION` is **v0.4.60** (`frontend/src/version.js`).
+`GAME_ITERATION` is **v0.4.64** (`frontend/src/version.js`, Debug State
+Dump — shipped this session, see `roadmap-handoff-v0.4.64.md`).
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.

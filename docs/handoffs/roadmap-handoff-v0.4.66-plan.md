@@ -21,23 +21,22 @@ own scope. `docs/next-agent-planning-brief.md` and
 `docs/next-agent-coding-brief.md` are updated alongside this to stop
 pointing at stale iteration numbers.
 
-## ⚠️ Flag before anything else: uncommitted stray version bump
+## Update (2026-07-28, same session): Debug State Dump shipped for real
 
-`frontend/src/version.js` currently reads `GAME_ITERATION = 'v0.4.64'` in
-the **working tree, uncommitted** (`git diff` confirms; last real commit
-set it to `v0.4.63`). No commit implements v0.4.64 — `buildDebugDump()`
-does not exist anywhere in `frontend/src/` or `frontend/e2e/`. This looks
-like a leftover from a Mode B session that bumped the constant before
-writing the feature, then stopped.
+This doc originally flagged an uncommitted stray `v0.4.64` version bump
+with no matching code. While this triage was being written, a concurrent
+Mode B session (Antigravity) landed the real implementation —
+`buildDebugDump()` + Triple-Q trigger in `GameEngine.js`,
+`frontend/e2e/debug-dump.spec.js`, commit `2fb958a` "Shipped v0.4.64:
+Debug State Dump." The stray-bump concern is resolved; `v0.4.64` is now a
+real shipped version. Candidate #1 below is struck through accordingly —
+left in place rather than deleted so the ranking rationale stays visible,
+per `docs/skib-sdlc.md`'s append-don't-silently-overwrite guidance for
+in-flight concurrent work.
 
-**Mode A does not touch `frontend/src/`, so this file was left as found.**
-Whoever picks up the next Mode B session (most likely to implement Debug
-State Dump itself, see below) should either:
-- finish the Debug State Dump slice and let `v0.4.64` become real, or
-- revert the file to `'v0.4.63'` first if picking up different work,
-
-so the constant never ships out of sync with what actually landed. Do not
-carry this stray edit into a docs-only commit.
+This is itself a live example of why `docs/skib-sdlc.md` step "Check for
+a running/parallel planning session first" matters — this repo runs
+several concurrent agent sessions and file state can move mid-session.
 
 ## Current confirmed state (verified this session, not from stale notes)
 
@@ -61,7 +60,7 @@ the Ramen Aisle recurrence") ahead of the previously-queued bundle order.
 
 | # | Candidate | Readiness | Source doc |
 |---|---|---|---|
-| 1 | Debug State Dump | Code-ready, unblocked | `v0.4.64-plan.md` |
+| ~~1~~ | ~~Debug State Dump~~ | **Shipped v0.4.64** (`2fb958a`, this session) | `v0.4.64.md` |
 | 2 | Post-deploy game-repo push automation | Code-ready, unblocked (tooling, not gameplay) | `v0.4.65-plan.md` |
 | 3 | Pickup-consumption tracking + Play Recap | Code-ready | `v0.4.62-plan.md` Slice 2 / `v0.4.41-plan.md` addendum |
 | 4 | Runner pose collapse (3 unique) | Code-ready | `v0.4.56-plan.md` |
@@ -69,37 +68,19 @@ the Ramen Aisle recurrence") ahead of the previously-queued bundle order.
 | 6 | Role Reversal Beta label/recolor only | Code-ready, small, decided | LT roadmap item in `roadmap.md`, design in `role-reversal-design.md` |
 | 7 | Role Reversal full v1.5 recovery | Partially blocked (outcome UX) | `v0.4.61-plan.md` |
 
+Next unblocked pick after Debug Dump: **#2, post-deploy push automation**.
+
 Items 1–6 need **no further design refinement** — a Mode B agent can
 pick any of them up cold. They're listed here as review/sanity-check
 targets per Ken's ask, not because they're actually stuck. Item 7 is
 blocked on one open question, called out in its own block below.
 
-### 1. Debug State Dump — copy-paste for a reviewing agent
+### 1. Debug State Dump — SHIPPED, no longer a candidate
 
-```text
-Task: Sanity-check roadmap-handoff-v0.4.64-plan.md's Debug State Dump
-slice (bottom copy-paste block only — ignore the Sentry/PostHog section,
-that stays blocked on Ken) before it goes to a Mode B session.
-
-Read: roadmap-handoff-v0.4.64-plan.md, GameEngine.js's existing
-window.__skibEngine hook, docs/skib-sdlc.md Mode A rules (no code).
-
-Check for:
-1. Does the proposed buildDebugDump() field list still match current
-   GameEngine state fields (phase, runner shape, chasers, brothFrictionTimer,
-   sheebs, deaths, difficulty)? Grep GameEngine.js for any fields added
-   since 2026-07-28 that a debug dump should also capture (e.g. new
-   pickup timers from Micro-Skib or Play Recap if those land first).
-2. Is Triple-Q still a safe keybind, or does anything newer already bind
-   Q (check _onKeyDown)?
-3. Note frontend/src/version.js currently has an UNCOMMITTED stray bump
-   to v0.4.64 with no matching code — flag this to whoever picks up the
-   Mode B session so they don't double-bump or ship a mismatched version.
-
-Output: either confirm the copy-paste block in v0.4.64-plan.md is still
-accurate as-is, or edit that file's block in place with corrections.
-Do not implement code. Do not touch frontend/src/.
-```
+Landed this session as `v0.4.64` (commit `2fb958a`, `buildDebugDump()` +
+Triple-Q trigger in `GameEngine.js`, `frontend/e2e/debug-dump.spec.js`).
+See `docs/handoffs/roadmap-handoff-v0.4.64.md`. No further action here —
+left in place only so the ranking history stays legible.
 
 ### 2. Post-deploy game-repo push automation — copy-paste for a reviewing agent
 
@@ -365,8 +346,7 @@ answer in the specific source doc named next to that item (not just
 here), then update this doc's status line and docs/roadmap.md's
 checkbox/annotation to match.
 
-Also check whether frontend/src/version.js's uncommitted v0.4.64 stray
-bump (flagged at the top of this doc) has been resolved — if a Mode B
-session shipped real v0.4.64 code, note that at the top of this section;
-if not and it's still dangling, keep flagging it.
+Debug State Dump (candidate 1) already shipped as v0.4.64 this session —
+the next unblocked pick is candidate 2 (post-deploy push automation)
+unless Ken redirects.
 ```

@@ -1,27 +1,31 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Cursor Composer — 2026-07-28 (v0.4.64 debug-dump priority)
+**Last updated by:** Claude Sonnet 5 — 2026-07-28 (v0.4.66 triage consolidation)
 
-Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.63**).
+Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.64** —
+Debug State Dump shipped this session, see `roadmap-handoff-v0.4.64.md`).
 
-## Ken priority override (2026-07-28)
+Full ranked candidate queue with readiness notes:
+`docs/handoffs/roadmap-handoff-v0.4.66-plan.md`. Next unblocked pick:
+**post-deploy game-repo push automation** (`v0.4.65-plan.md`).
 
-If Ken says "ship debug dump" or "fix Raman RCA tooling," implement the
-**Debug State Dump slice only** from `roadmap-handoff-v0.4.64-plan.md`
-(copy-paste block at bottom). Bump to **v0.4.64**. Do **not** install
-Sentry/PostHog — SDK slice is still blocked on Ken.
+## Sentry/PostHog SDK slice — still blocked
+
+Do **not** install Sentry/PostHog from `roadmap-handoff-v0.4.64-plan.md`'s
+SDK section yet — blocked on Ken (tool tier + privacy/consent posture).
+The Debug State Dump slice from the same handoff already shipped.
 
 ## Primary queue — `roadmap-handoff-v0.4.62-plan.md`
 
-Pick the **oldest unfinished slice** in this order (one slice per session):
+Slice 1 (Rewards HUD shop labels) already shipped as `v0.4.62`. Pick the
+**oldest unfinished slice** in this order (one slice per session):
 
 | Order | Slice | Handoff detail |
 |---|---|---|
-| 1 | Rewards HUD shop labels | `v0.4.41-plan.md` Slice B |
-| 2 | Pickup tracking + Play Recap | `v0.4.41-plan.md` addendum |
-| 3 | Runner pose collapse (3 unique) | `v0.4.56-plan.md` |
-| 4 | Micro-Skib chaser | `v0.4.55-plan.md` |
+| 1 | Pickup tracking + Play Recap | `v0.4.62-plan.md` Slice 2 / `v0.4.41-plan.md` addendum |
+| 2 | Runner pose collapse (3 unique) | `v0.4.56-plan.md` |
+| 3 | Micro-Skib chaser | `v0.4.55-plan.md` |
 
 ## Do not pick up yet
 
