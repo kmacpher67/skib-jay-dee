@@ -21,6 +21,10 @@ entry heading so the change trail stays obvious at a glance.
   `roadmap-handoff-v0.4.61-plan.md`. **Did not edit `docs/roadmap.md`.**
   No code.
 
+- **v0.4.60 (real code, shipped — 2026-07-28):**
+  Difficulty Selector implemented. Added `difficulty` to the cookie-backed profile, defaulting to `casual`. Added a Difficulty Selector control to the main menu (Noob-Noob / Casual / 4chan-st). Difficulty persists through existing cookie save path. Passed into `GameEngine.js` for future features. `GAME_ITERATION` = v0.4.60. See `roadmap-handoff-v0.4.60-plan.md`.
+
+
 - **v0.4.59-plan (docs-only refine — 2026-07-28):** Mode A PX/fun pass on
   Neon Jump-Scare Upgrade. Corrected stale draft (item id
   `jump-scare-filter-neon`, `cost` not `price`, real flow

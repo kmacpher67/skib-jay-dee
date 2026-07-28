@@ -6,6 +6,15 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.60 — Difficulty Selector (Noob-Noob / Casual / 4chan-st)
+
+Mode B — full code and delivery.
+
+- Added a `difficulty` field to the cookie-backed profile, defaulting to `casual`.
+- Added a Difficulty Selector control to the main menu with values: Noob-Noob, Casual, and 4chan-st.
+- Difficulty setting persists through the existing cookie-profile save path.
+- Passed `profile.difficulty` into `GameEngine.js` at run start to serve as the single source of truth for future features.
+
 ## v0.4.61-plan — Role Reversal refine / Play as Chaser postmortem (Cursor Grok 4.5, 2026-07-28)
 
 Mode A — docs only, no code. `GAME_ITERATION` unchanged.
