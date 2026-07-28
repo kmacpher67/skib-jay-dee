@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Cursor Composer — 2026-07-28 (v0.4.62-plan iteration bundle)
+**Last updated by:** Codex (GPT-5) — 2026-07-28 (v0.4.63-plan menu refinement)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,13 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.63-plan refinement (docs only — 2026-07-28):** Folded the
+  compact mute-control request into the existing Main Menu UI cleanup.
+  The code-ready slice keeps the five profile stats in one mobile row,
+  tightens vertical spacing, and moves the menu mute glyph into unused
+  space left of the unchanged 88×88 Runner/Chaser portraits. The in-game
+  mute stays in its corner. No code, build, version bump, or deploy.
+
 - **v0.4.62 (real code, shipped — 2026-07-28):**
   Implemented Slice 1 of `roadmap-handoff-v0.4.62-plan.md`. Added "from Shleeb Shop" labels to the Speed, Stamina, and Rewards pills to clarify that they reflect permanent stat upgrades from the shop. Renamed QUICK PLAY to PLAY AS RUNNER to distinguish it from the new Chaser beta mode. Fixed E2E test locator issues and a color sampling flake in `cosmetic-sink.spec.js`. `GAME_ITERATION` = v0.4.62. See `roadmap-handoff-v0.4.62.md`.
 
@@ -406,6 +413,7 @@ entry heading so the change trail stays obvious at a glance.
 - `docs/handoffs/roadmap-handoff-v0.4.38-plan.md`
 - `docs/handoffs/roadmap-handoff-v0.4.39-plan.md`
 - `docs/handoffs/roadmap-handoff-v0.4.40-plan.md`
+- `docs/handoffs/roadmap-handoff-v0.4.63-plan.md`
 - `docs/next-agent-planning-brief.md`
 - `docs/next-agent-coding-brief.md`
 - `docs/role-reversal-design.md`
@@ -474,6 +482,10 @@ manually:
 
 ## Natural follow-up work
 
+- **Focused Main Menu slice:** `roadmap-handoff-v0.4.63-plan.md` is
+  code-ready as one bounded responsive pass, including the compact
+  portrait-row mute control. Do not route this UI work through the
+  unrelated v0.4.65 deploy/push tooling handoff.
 - **Next coding bundle:** `roadmap-handoff-v0.4.62-plan.md` — Rewards shop
   labels → Play Recap → pose collapse → Micro-Skib (one slice per session).
 - **Play as Chaser is broken in live builds that include v0.4.53+.** See

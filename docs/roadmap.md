@@ -502,7 +502,14 @@ and chaser-bark voice clips, 1:1 with text.
   truth in [docs/players-guide.md](players-guide.md) (includes Rod of
   Poopdom as of v0.4.47 doc update). See
   [roadmap-handoff-v0.4.45.md](handoffs/roadmap-handoff-v0.4.45.md).
-- [ ] **Main Menu UI Clean Up:** Make the top profile stats (User ID, difficulty, sheebs, etc.) fit on a single line on mobile via responsive flex wrapping or responsive sizing. Tighten up vertical spacing throughout the Main Menu so that the bottom version info and links fit on screen without scrolling. **Code-ready** (Include with Menu HUD styling passes).
+- [ ] **Main Menu UI Clean Up:** Keep the top profile stats (User ID,
+  difficulty, sheebs, best level, deaths) in one responsive mobile row
+  and tighten vertical spacing while retaining short-screen scrolling.
+  In the same slice, move the compact menu mute/unmute glyph into the
+  unused space left of the Runner/Chaser portrait pair; preserve both
+  88×88 portraits and their gap, and leave the in-game mute control
+  untouched. **Code-ready as v0.4.63.** See
+  [`roadmap-handoff-v0.4.63-plan.md`](handoffs/roadmap-handoff-v0.4.63-plan.md).
 - [x] **Menu HUD: make the Speed/Stamina/Rewards pills reflect real live
   data.** **Slice B code-ready (Ken chose (a), 2026-07-27):** shop label
   only — add "from Shleeb Shop" caption/tooltip; no difficulty modifiers.

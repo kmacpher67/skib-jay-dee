@@ -6,6 +6,22 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.63-plan refinement — Main Menu mute placement (Codex GPT-5, 2026-07-28)
+
+Mode A — docs only; no code, build, version bump, or deploy.
+
+Folded Ken's new mute-placement request into the existing v0.4.63 Main
+Menu cleanup instead of creating another increment. The menu mute glyph
+will move from the top-left corner into reserved space immediately left
+of the Runner/Chaser portrait pair. The portraits remain 88×88 with their
+existing gap, and the in-game mute button remains in its corner.
+
+The same bounded slice retains v0.4.63's original responsive goals: all
+five profile stats stay in one compact mobile row and Main Menu vertical
+spacing is tightened without removing short-screen scrolling. Added
+measurable mobile/desktop acceptance checks and a Code Monkey copy-paste
+contract to `roadmap-handoff-v0.4.63-plan.md`.
+
 ## v0.4.65-plan — Post-deploy game-repo push (needs refinement) (Cursor Composer, 2026-07-28)
 
 Mode A session closeout — docs only.
