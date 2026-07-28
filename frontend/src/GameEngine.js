@@ -1618,8 +1618,16 @@ export class GameEngine {
     let extraFaceId = null
     let extraChaserType = null
     let extraBaseSpeed = this.chaser.baseSpeed
+    let extraW = 44
+    let extraH = 44
 
-    if (this.levelIndex >= 5 && Math.random() < RAMAN_AUNT.spawnChance) {
+    if (this.levelIndex >= 2 && Math.random() < 0.15) {
+      extraChaserType = 'micro-skib'
+      extraBaseSpeed *= 0.85
+      extraW = 28
+      extraH = 28
+      extraFace = null
+    } else if (this.levelIndex >= 5 && Math.random() < RAMAN_AUNT.spawnChance) {
       extraChaserType = RAMAN_AUNT.id
       extraBaseSpeed *= RAMAN_AUNT.speedMult
       const ramanFaces = CHASER_FACE_POOL.filter((face) => RAMAN_AUNT.faceIds.includes(face.id))
@@ -1643,8 +1651,8 @@ export class GameEngine {
     this.chasers.push({
       x: spawn.x,
       y: spawn.y,
-      w: 44,
-      h: 44,
+      w: extraW,
+      h: extraH,
       baseSpeed: extraBaseSpeed,
       joinRamp: 0,
       stunnedUntil: 0,
@@ -2904,6 +2912,17 @@ export class GameEngine {
   }
 
   _drawEntity(ctx, entity) {
+    if (entity.chaserType === 'micro-skib') {
+      ctx.beginPath()
+      ctx.arc(entity.x + entity.w / 2, entity.y + entity.h / 2, entity.w / 2, 0, Math.PI * 2)
+      ctx.fillStyle = entity.color || '#ff0000'
+      ctx.fill()
+      ctx.strokeStyle = '#000'
+      ctx.lineWidth = 2
+      ctx.stroke()
+      return
+    }
+
     if (entity.face) {
       ctx.save()
       ctx.beginPath()

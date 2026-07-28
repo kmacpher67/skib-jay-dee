@@ -22,9 +22,7 @@ export { turdstoneTokenSprite }
 export const RUNNER_FACE_POOL = [
   { id: 'jayden-default', label: 'Jayden Default', src: jaydenDefault },
   { id: 'jayden-captured', label: 'Jayden Captured', src: jaydenCaptured },
-  { id: 'jayden-uncaring', label: 'Jayden Uncaring', src: jaydenUncaring },
   { id: 'jayden-skibby', label: 'Jayden Skibby', src: jaydenSkibby },
-  { id: 'jayden-getting-captured', label: 'Jayden Getting Captured', src: jaydenGettingCaptured },
 ]
 
 export const CHASER_FACE_POOL = [
@@ -299,7 +297,7 @@ export function randomFaces() {
 // random default rotation above — used to swap Jayden's face during the
 // jump-scare/caught beat instead of picking a random pose for it.
 export const RUNNER_STATE_FACES = {
-  gettingCaptured: RUNNER_FACE_POOL.find((face) => face.id === 'jayden-getting-captured')?.src ?? null,
+  gettingCaptured: RUNNER_FACE_POOL.find((face) => face.id === 'jayden-captured')?.src ?? null,
   captured: RUNNER_FACE_POOL.find((face) => face.id === 'jayden-captured')?.src ?? null,
 }
 

@@ -22,6 +22,10 @@ real. But three real problems surfaced during this audit, listed below,
 and several docs (`roadmap.md`'s backlog snapshot, both next-agent
 briefs) had drifted stale enough to cause exactly this confusion.
 
+## Update (2026-07-28, later session): Micro-Skib and Pose Collapse Shipped
+
+During a Mode B session, implemented Micro-Skib (v0.4.55) and Runner Pose Pool Collapse (v0.4.56), fixing the `VersionModal.jsx` bug where these features were incorrectly marked as shipped. The entries in `VersionModal.jsx` are now retroactively true.
+
 ## Update (2026-07-28, same session): v0.4.70 shipped for real mid-audit
 
 While this audit was being written, a concurrent Mode B session shipped
