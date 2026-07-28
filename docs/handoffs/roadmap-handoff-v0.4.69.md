@@ -163,3 +163,4 @@ Pick the oldest unfinished, Ken-unblocked item from docs/roadmap.md
 - Ken: playtest Chaser Beta tag win — confirm whether zoom/jumpscare on win feels wrong.
 - If yes → run refinement copy-paste above as v0.4.70.
 - If no → proceed to next roadmap item; optional test hardening can ride along any future Chaser touch.
+\n## Update: v0.4.71 Refinement Completed\nRefinement slice was implemented in v0.4.71. The jumpscare zoom for Chaser Beta win state is fixed, badge toasts and sheeb increments are completely hidden in Chaser Mode, and E2E tests have been strengthened.

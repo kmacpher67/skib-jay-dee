@@ -5,6 +5,7 @@ in order. This is the fast-scan index; for *why* a change happened, see the
 matching entry in [docs/version-log.md](../version-log.md), and for the
 full session write-up see the matching
 `docs/handoffs/roadmap-handoff-vX.Y.Z.md` file (introduced starting
+- `v0.4.71`: Chaser Beta Refinements (jumpscare fixed, UI gated, E2E strengthened)
 v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you add

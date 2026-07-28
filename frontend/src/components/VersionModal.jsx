@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.71',
+    title: 'Chaser Beta Refinements',
+    description: 'Fixed jumpscare zoom when catching the runner as the chaser, skipping straight to the victory card. Ensured Chaser mode badge toasts and sheeb increments are completely hidden during play. Added stricter end-to-end tests for AI runner behavior and win conditions.',
+  },
+  {
     version: 'v0.4.70',
     title: 'Level 5 Tuning & Ramen Aisle Rebalance',
     description: 'Reduced the baseline chaser speed on Level 5 and added a speed penalty when chasers move through walls. Relocated the Turdstone Token on Level 4 behind a gap that requires the Schleimy Potion to reach.',

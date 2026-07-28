@@ -60,53 +60,92 @@ test.describe('Chaser Beta Mode', () => {
     expect(savedProfile.earnedBadges).not.toContain('flaming-ass')
   })
   
-  test('Slice B: AI Runner Panic Fire and Win Line', async ({ page }) => {
+  test('Slice B: AI Runner Panic Fire, Seek Gun, and Real Win Line', async ({ page }) => {
     await page.goto('/')
     await page.click('button:has-text("PLAY AS CHASER")')
     await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
 
-    const result = await page.evaluate(() => {
+    const result = await page.evaluate(async () => {
       return new Promise((resolve) => {
         const engine = window.__skibEngine
         
-        // Give AI gun ammo
+        // 1. Far branch gun seek
+        engine.runner.x = engine.level.runnerSpawn.x
+        engine.runner.y = engine.level.runnerSpawn.y
+        engine.chasers[0].x = engine.runner.x - 300
+        engine.chasers[0].y = engine.runner.y
+        engine.pickups = [{ type: 'gun', x: engine.runner.x + 200, y: engine.runner.y, size: 28 }]
+        
+        // Disable wander for test predictability
+        engine.runner.aiWanderX = 0
+        engine.runner.aiWanderY = 0
+        engine.runner.aiWanderTimer = 10
+        
+        const moveVec = engine._getRunnerEvadeVector(1/60)
+        const movesToGun = moveVec.x > 0.5 // Should move strongly rightwards towards gun
+
+        // 2. Panic fire & hit stun
+        engine.pickups = []
         engine.runner.gun = { ammo: 1, chambers: 1 }
         engine.fireCooldown = 0
-        
-        // Move chaser close
         engine.chasers[0].x = engine.runner.x + 100
         engine.chasers[0].y = engine.runner.y
         
-        // Run one frame of update
         engine.update(1/60)
-        
         const shotFired = engine.bullets.length > 0
-        const isStunned = engine.chasers[0].stunnedUntil > 0
         const tauntUsed = engine.runnerLine !== ''
         
-        // Now force a capture
-        engine._checkCaptures = function() {
-          this.phase = 'caught'
-          this.zoom = 1
-          this.captureLine = 'TEST WIN LINE'
-          this.onCaught({ captureLine: 'TEST WIN LINE' })
+        // Let bullets fly to hit chaser
+        let frames = 0
+        while (engine.chasers[0].stunnedUntil <= 0 && frames < 60) {
+          engine.update(1/60)
+          frames++
         }
-        engine._checkCaptures()
+        const isStunned = engine.chasers[0].stunnedUntil > 0
+
+        // 3. Real capture
+        engine.chasers[0].stunnedUntil = 0
+        engine.chasers[0].x = engine.runner.x
+        engine.chasers[0].y = engine.runner.y
+        
+        // Allow the collision frame to run
+        engine.update(1/60)
         
         resolve({
+          movesToGun,
           shotFired,
           isStunned,
-          tauntUsed
+          tauntUsed,
+          captureLine: engine.captureLine
         })
       })
     })
     
+    expect(result.movesToGun).toBe(true)
     expect(result.shotFired).toBe(true)
     expect(result.tauntUsed).toBe(true)
+    expect(result.isStunned).toBe(true)
+    
+    const CHASER_BETA_WIN_LINES = [
+      "TAGGED! THE BOWL TAKES IT!",
+      "FLUSHED! HUNT COMPLETE!",
+      "CAUGHT IN 4K: PORCELAIN VICTORY!",
+      "DOWN THE DRAIN! CHASER WINS!",
+      "Caught. Sit still and learn something.",
+      "Game over. The runner loses, physics wins.",
+      "Efficient. Maybe next time, try a harder path."
+    ]
+    expect(CHASER_BETA_WIN_LINES).toContain(result.captureLine)
+    
+    // Fast forward phase timer
+    await page.evaluate(() => {
+      window.__skibEngine.phaseTimer = 0
+      window.__skibEngine.update(1/60)
+    })
     
     // Verify custom Chaser capture line shows in modal
     await page.waitForSelector('.profile-quote')
     const quoteText = await page.textContent('.profile-quote')
-    expect(quoteText).toContain('TEST WIN LINE')
+    expect(quoteText).toContain(result.captureLine)
   })
 })

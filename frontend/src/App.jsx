@@ -419,19 +419,21 @@ export default function App() {
       })
     }
 
-    if (engineRef.current) {
-      const nextSheebs = engineRef.current.sheebs + 50
-      engineRef.current.setSheebs(nextSheebs)
-      handleSheebsChange(nextSheebs)
-    }
+    if (!isChaserMode) {
+      if (engineRef.current) {
+        const nextSheebs = engineRef.current.sheebs + 50
+        engineRef.current.setSheebs(nextSheebs)
+        handleSheebsChange(nextSheebs)
+      }
 
-    const badge = BADGES[badgeId]
-    if (badge) {
-      setActiveBadgeToast(badge)
-      setTimeout(() => setActiveBadgeToast(null), 5000)
+      const badge = BADGES[badgeId]
+      if (badge) {
+        setActiveBadgeToast(badge)
+        setTimeout(() => setActiveBadgeToast(null), 5000)
+      }
+      
+      runStatsRef.current.badges.push(badgeId)
     }
-    
-    runStatsRef.current.badges.push(badgeId)
   }
 
   const handlePickupConsumed = (type, outcome) => {

@@ -1197,6 +1197,15 @@ export class GameEngine {
       return
     }
 
+    if (this.phase === 'chaser-win') {
+      this.phaseTimer -= dt
+      if (this.phaseTimer <= 0) {
+        this.phase = 'caught-profile'
+        this.onCaughtProfileReady({ captureLine: this.captureLine, isChaserMode: true })
+      }
+      return
+    }
+
     if (this.phase === 'caught-profile') {
       return
     }
@@ -1230,7 +1239,7 @@ export class GameEngine {
         if (this.flushClock <= 0) {
            this.captureLine = "TIME'S UP! THE RUNNER ESCAPED!"
            this._caughtFaceStage = 'held'
-           this.phase = 'caught'
+           this.phase = 'chaser-win'
            this.phaseTimer = 3.0
            this.zoom = 1
            this.onCaught(this.captureLine)
@@ -1575,8 +1584,9 @@ export class GameEngine {
       }
       if (this.isChaserMode) {
         // Chaser mode win condition: capture once -> round ends. No economy.
-        this.phase = 'caught'
-        this._caughtFaceStage = 0
+        this.phase = 'chaser-win'
+        this.phaseTimer = 1.5
+        this._caughtFaceStage = 'held'
         this.zoom = 1
         const line = CHASER_BETA_WIN_LINES[Math.floor(Math.random() * CHASER_BETA_WIN_LINES.length)]
         this.captureLine = line

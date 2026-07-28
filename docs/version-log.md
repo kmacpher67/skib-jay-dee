@@ -1,3 +1,5 @@
+# Version Log — Skib-Jay-Dee-Toilet
+
 This file memorializes the design and plan decisions made during the
 front-end upgrade pass. Starting v0.4.0, each version also gets a fuller
 session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
