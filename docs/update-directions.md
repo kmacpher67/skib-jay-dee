@@ -12,6 +12,12 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.67-plan (docs only — 2026-07-28):** Badge award counts /
+  repeat-award history is now queued in
+  `roadmap-handoff-v0.4.67-plan.md`. `earnedBadges` stays the unique
+  unlock set; the new slice adds a separate count/history surface. Play
+  Recap remains separate in `v0.4.62-plan.md`.
+
 - **v0.4.64.1 (real code — 2026-07-28):** Level 4 warning input hotfix.
   Chrome DevTools showed `.level-4-warning` while runner was immobile on
   Ramen Aisle. `GameEngine.stop()` unbound input for the overlay but

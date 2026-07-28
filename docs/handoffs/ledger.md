@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-28 | docs (Codex GPT-5) | v0.4.67-plan: badge award counts / repeat-award history handoff created; earnedBadges stays unique-id only; no code
 2026-07-28 | docs (Codex GPT-5) | v0.4.66-plan addendum: queued badge award-count / repeat-award history follow-up because earnedBadges is unique-id only; no code
 2026-07-28 | v0.4.64.1 | Level 4 warning hotfix: re-bind input in GameEngine.start() after stop() unbound it — fixes dead movement on Ramen Aisle after "I ACCEPT MY FATE"
 2026-07-28 | v0.4.64 | Implemented Debug State Dump triggered by Triple-Q in GameEngine; analytics SDKs remain parked

@@ -122,6 +122,8 @@ whole roadmap to find everything that touches identity/profile:
   `earnedBadges`, automatically per-save-slot since the switcher landed
   first. Today `earnedBadges` is still a unique id set; repeat-award
   counts would need a separate field so unlock checks do not change.
+  Planned in `roadmap-handoff-v0.4.67-plan.md`: `badgeAwardCounts` as a
+  separate tally for award-count visibility.
 - **Rewards & History panel / HUD live-data pills** (design-only,
   2026-07-27) — a planned `rewardsHistory` field (capped last-50 log of
   badge-earn and purchase events, same shape convention as

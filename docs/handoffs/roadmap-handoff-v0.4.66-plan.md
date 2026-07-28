@@ -67,7 +67,7 @@ the Ramen Aisle recurrence") ahead of the previously-queued bundle order.
 | 5 | Micro-Skib chaser | Code-ready | `v0.4.55-plan.md` |
 | 6 | Role Reversal Beta label/recolor only | Code-ready, small, decided | LT roadmap item in `roadmap.md`, design in `role-reversal-design.md` |
 | 7 | Role Reversal full v1.5 recovery | Partially blocked (outcome UX) | `v0.4.61-plan.md` |
-| 8 | Badge award counts / repeat-award history | Code-ready-ish, needs surface decision | `docs/badges.md` / `docs/profiles-and-identity.md` |
+| 8 | Badge award counts / repeat-award history | Code-ready-ish, needs surface decision | `roadmap-handoff-v0.4.67-plan.md` |
 
 Next unblocked pick after Debug Dump: **#2, post-deploy push automation**.
 

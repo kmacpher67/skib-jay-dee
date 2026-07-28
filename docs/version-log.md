@@ -6,6 +6,15 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.67-plan — Badge award counts (Codex GPT-5, 2026-07-28)
+
+Mode A — docs only; no code, build, version bump, or deploy.
+
+Scoped a new counts follow-up for rewards so badges/tokens can report how
+many times they were awarded without changing `earnedBadges` from a unique
+unlock set. The plan keeps Play Recap separate and points the next coding
+agent at a small count-summary surface instead of a full rewards rewrite.
+
 ## v0.4.66-plan addendum — Badge award counts (Codex GPT-5, 2026-07-28)
 
 Mode A — docs only; no code, build, version bump, or deploy.

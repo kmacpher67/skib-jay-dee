@@ -60,4 +60,6 @@ additive only — it does not change how badges are gated or which array the
 game reads to check if a badge is already earned.
 If we later want a visible "earned N times" tally for repeat awards or
 token-style achievements, that will need a separate count/history field;
-`earnedBadges` should stay the unique unlock set.
+`earnedBadges` should stay the unique unlock set. The planned follow-up
+for this is `roadmap-handoff-v0.4.67-plan.md`, which introduces a
+separate award-count surface.

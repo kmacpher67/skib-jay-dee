@@ -518,7 +518,8 @@ and chaser-bark voice clips, 1:1 with text.
   records unique badge ids today, so repeat badge/token grants collapse
   to one entry. Add a separate count or award-history structure if we
   want the profile or Rewards modal to show "earned N times" without
-  changing badge gating. Exact surface still TBD.
+  changing badge gating. Exact surface still TBD; queued as
+  `roadmap-handoff-v0.4.67-plan.md`.
 - [ ] **Feature: Pickup-consumption tracking + "Play Recap" screen.** **Code-ready**
   (Ken 2026-07-27): level-clear/menu return only; Stats tab in Rewards modal;
   comedic bad-pickup tone. Queued as **v0.4.62 Slice 2**. See
