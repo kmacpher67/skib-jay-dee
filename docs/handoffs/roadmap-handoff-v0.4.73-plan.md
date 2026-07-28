@@ -26,6 +26,8 @@ as a consumable skip:
      profile.
    - Use a dedicated profile field such as `levelClearCounts`.
    - This is the missing prerequisite for any repeat-clear gating.
+   - A warped run still counts only the levels the player actually
+     clears; skipped levels stay untouched and do not get backfilled.
 2. **Add a permanent start-level cap.**
    - Use a separate profile field such as `highestUnlockedStartLevel`.
    - This should represent the highest level the player is allowed to
@@ -45,6 +47,9 @@ as a consumable skip:
      levels.
    - Skipped levels should not refund rewards or auto-grant earlier
      progression badges.
+   - Keep the shop unlock and the picker visually separate: the shop
+     sells the warp pass, the main menu only lets the player choose from
+     already-unlocked start levels.
 
 ## Current state
 
@@ -86,6 +91,9 @@ as a consumable skip:
   this feature, but it should be called out in the UI copy.
 - A later challenge-mode stat split may be useful if we ever want to
   distinguish natural runs from warp-start runs in the menu brag area.
+- If the picker and purchase UI start to sprawl, land the persisted
+  fields + unlock purchase first and push the picker into a follow-up
+  handoff instead of cramming both surfaces into one session.
 
 ## Files likely touched
 
