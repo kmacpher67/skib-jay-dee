@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Claude Sonnet 5 — 2026-07-28 (Chaser Beta runner AI item-use handoff)
+**Last updated by:** Cursor Grok 4.5 — 2026-07-28 (v0.4.69-plan dialog refine)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,14 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.69-plan refine (docs only — 2026-07-28):** Extended the Chaser
+  Beta runner-AI item-use handoff with light dialog theater (opener / AI
+  gun taunt / win lines) and a `handleCaught` mode-boundary leak (death
+  sting + shop-item strip still fire on a Beta tag). FLUSH CLOCK and
+  full reverse-bark work stay parked. Next step preferred: a short Mode A
+  refine-before-code-monkey pass (copy-paste block at bottom of
+  `roadmap-handoff-v0.4.69-plan.md`), then Mode B / code-monkey. No code.
+
 - **v0.4.69-plan (docs only — 2026-07-28):** Ken playtested Chaser Beta
   live in the browser (movement/steering recovery from `v0.4.61` holds)
   and found the AI runner picks up the Jayden Gun but never fires it back.
@@ -530,13 +538,13 @@ manually:
   unrelated v0.4.65 deploy/push tooling handoff.
 - **Next coding bundle:** `roadmap-handoff-v0.4.62-plan.md` — Rewards shop
   labels → Play Recap → pose collapse → Micro-Skib (one slice per session).
-- **Play as Chaser is broken in live builds that include v0.4.53+.** See
-  `docs/role-reversal-design.md` + `roadmap-handoff-v0.4.61-plan.md`.
-  Ken wants the entry kept visible with experimental/Beta treatment and
-  wants `QUICK PLAY` renamed `PLAY AS RUNNER`. Do not dispatch the full
-  recovery until Ken confirms or changes the proposed 60-second outcome
-  and Rematch/Menu shape. If two bounded recovery slices still do not
-  make it fun, soft-hide it.
+- **Play as Chaser Beta:** movement/steering recovered in `v0.4.61`; next
+  coding slice is `roadmap-handoff-v0.4.69-plan.md` (AI runner item use +
+  light dialog + `handleCaught` gate). Prefer a Mode A refine-before-
+  code-monkey pass first (copy-paste at bottom of that handoff). Do not
+  pull FLUSH CLOCK / Bowl Rush until Ken confirms those open questions
+  in `role-reversal-design.md` §8. Beta-removal still gated on exit
+  criteria in §13.
 - **The uncommitted working tree from earlier this session is resolved** —
   finished and shipped as `v0.4.36.1`. No longer on this list.
 - **Level 6 ("Jayden's Nightmare House") has already landed** —

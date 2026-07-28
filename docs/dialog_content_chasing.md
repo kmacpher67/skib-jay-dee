@@ -182,6 +182,42 @@ Raman-Aunt-Toilet Lady specifically makes the catch):*
 - [ ] "*[Wet fart sound effect followed by manic laughing]* EXHAUST PIPES COMIN' HOT!"
   - **Suggested filename:** `shyt-talker-near5.mp3`
 
+### Chaser Beta (Play as Chaser) — proposed pools (Mode A, 2026-07-28)
+
+**Mode impact:** `Chaser Beta only`. Source of truth for the mode contract:
+[`role-reversal-design.md` §15](role-reversal-design.md). Queued into
+[`roadmap-handoff-v0.4.69-plan.md`](handoffs/roadmap-handoff-v0.4.69-plan.md)
+as a **light** add-on beside AI item use — text-only popups; **no voice
+recording required** for these (Audio 2 stays on runner `CAPTURE_LINES`).
+
+When these land in `frontend/src/dialog.js`, keep this section in sync.
+
+**Opener** *(banner/toast when Chaser Beta chase starts — `CHASER_BETA_OPENER_LINES`):*
+- [ ] "YOU'RE THE TOILET NOW — TAG THEM ONCE."
+- [ ] "HUNT MODE. ONE TAG. NO SHEEBS."
+- [ ] "FLUSH THE RUNNER. JOYSTICK + SPRINT. GO."
+
+**AI runner gun taunt** *(speech bubble on the AI runner when it fires — `CHASER_BETA_RUNNER_GUN_TAUNTS`):*
+- [ ] "EAT LEAD, TOILET!"
+- [ ] "NOT TODAY, PLUMBING!"
+- [ ] "I BROUGHT THE GUN THIS TIME!"
+- [ ] "PEW PEW, SKIB!"
+
+**Chaser win** *(toast / result quote on a successful tag — `CHASER_BETA_WIN_LINES`; replaces hardcoded `Gotcha! Round over.`):*
+- [ ] "CAUGHT IN 4K (AND PORCELAIN)!"
+- [ ] "FLUSHED. ROUND OVER."
+- [ ] "TAGGED. THE BOWL WINS."
+- [ ] "DOWN THE DRAIN — YOUR TURN."
+
+**Reuse (no new pool):** when the human chaser is gun-stunned, keep using
+existing `GUN_HIT_LINES` (`OW MY BUTTHOLE!`, etc.) — they already read as
+toilet-POV.
+
+**Parked (do not record / implement in v0.4.69):**
+- Timeout-loss lines (needs Ken-confirmed FLUSH CLOCK).
+- Full AI-runner proximity bark pool (mirror of `CHASER_LINES`).
+- Near-capture card flipped for the hunter.
+
 ---
 
 ## Voice Acting Hints & Stylistic Direction

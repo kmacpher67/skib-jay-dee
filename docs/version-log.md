@@ -19,6 +19,26 @@ and reset `currentTime` before each play. Verified with `npm run build`
 and the `level-4-warning.spec.js` Playwright suite. See
 [`roadmap-handoff-v0.4.68.md`](handoffs/roadmap-handoff-v0.4.68.md).
 
+## v0.4.69-plan refine — Chaser Beta dialog + handleCaught leak (Cursor Grok 4.5, 2026-07-28)
+
+Mode A — docs only; no code, build, version bump, or deploy.
+
+Extended the existing `v0.4.69-plan` (do not fork a new version) after a
+dialog/chaser-play review:
+
+- Added `role-reversal-design.md` §15 (thin dialog contract) and a Chaser
+  Beta proposed-line section in `dialog_content_chasing.md`.
+- Folded light theater into the same Mode B workload: opener lines, AI
+  gun-fire taunts, win lines replacing hardcoded `Gotcha! Round over.`,
+  and a `ProfileModal` note soften — reuse `GUN_HIT_LINES` for stun.
+- Surfaced a mode-boundary leak: `App.jsx` `handleCaught` still plays the
+  runner death sting and can strip shop items on a Chaser Beta tag; gate
+  that in the same slice as the badge/token profile audit.
+- Explicitly parked FLUSH CLOCK / timeout-loss / full reverse bark pool /
+  Bowl Rush / voice clips so the coding slice stays code-monkey-sized.
+- Added a **refine-before-code-monkey** copy-paste block at the bottom of
+  the handoff for a follow-up Mode A review agent.
+
 ## v0.4.69-plan — Chaser Beta: runner AI item use (Claude Sonnet 5, 2026-07-28)
 
 Mode A — docs only; no code, build, version bump, or deploy.

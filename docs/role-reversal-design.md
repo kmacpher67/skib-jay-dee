@@ -2,7 +2,7 @@
 
 **Created by:** Cursor Grok 4.5 — 2026-07-28
 **Created on:** 2026-07-28
-**Last updated by:** Claude Sonnet 5 — 2026-07-28
+**Last updated by:** Cursor Grok 4.5 — 2026-07-28
 **Last updated on:** 2026-07-28
 **Session mode:** Mode A (planning / refine — docs only, no code)
 
@@ -21,6 +21,14 @@
 > intelligently), badges/tokens stay cosmetic-only (no profile/economy
 > writes), and the AI runner gets seek-helpful/avoid-harmful pickup
 > steering plus gun-fire-back logic.
+>
+> **2026-07-28 refine (Cursor Grok 4.5):** Same handoff extended with a
+> **light dialog theater** add-on (opener + win lines + AI gun taunt) and
+> a mode-boundary leak found in `App.jsx` `handleCaught` (still plays the
+> runner death sting and can strip shop items on a Chaser Beta tag).
+> Full FLUSH CLOCK / timeout-loss copy stays parked until Ken confirms
+> the arcade loop. Candidate lines live in §15 and
+> [`dialog_content_chasing.md`](dialog_content_chasing.md).
 
 Dedicated design doc for the Role Reversal / "Play as Chaser" feature that
 shipped early as `v0.4.53`. Companion handoff:
@@ -343,7 +351,7 @@ state with the actors swapped.
 | Skreems/near-capture/death flow | Runner campaign | Replaced by target + clock + result |
 | Difficulty selector | Runner campaign tuning | Pin a documented Beta baseline until runner-AI difficulty is designed |
 | Camera/fog | Focus human runner | Focus human chaser; supply target-finding aid |
-| Audio/dialog | Runner panic, chaser threats | Runner taunts/panic, chaser victory/failure; no runner-death sting |
+| Audio/dialog | Runner panic, chaser threats | Opener + AI-runner gun taunts + chaser-win lines; **no** runner-death sting / item-loss / `CAPTURE_LINES` jump-scare on a successful tag (see §15) |
 | Face selections | Human runner / AI lead chaser | AI runner / human lead chaser |
 
 The recovery acceptance test must assert the right-hand column. Fixing
@@ -405,6 +413,9 @@ The button loses its experimental treatment only when all are true:
   at minimum, fires the gun back at the pursuing human chaser — instead
   of carrying items inertly. See
   [`roadmap-handoff-v0.4.69-plan.md`](handoffs/roadmap-handoff-v0.4.69-plan.md).
+- **(Added 2026-07-28 refine)** A successful tag reads as a *chaser win*
+  (funny win line + Rematch/Menu), not a runner death: no capture sting
+  audio, no shop-item strip, no `CAPTURE_LINES` jump-scare copy.
 - Ken explicitly approves removing the Beta treatment.
 
 If those criteria cannot be met in two bounded Mode B slices, soft-hide
@@ -426,3 +437,46 @@ might be useful later.
 | Desktop FOV/fog | Both — shared shell | Camera focus and target locator follow the human entity |
 | Player's Guide | Both after recovery | Document Beta controls/objective without implying campaign rewards |
 | Multiplayer / 2v2 | Future both | Reuse role ownership seams, not single-player AI rules or profile economy |
+
+## 15. Chaser Beta dialog & theater (thin, this slice)
+
+Dialog is the cheapest way to make the hunt *feel* like a game instead of
+a debug toggle. Keep it tiny: pools in `frontend/src/dialog.js`, mirrored
+in [`dialog_content_chasing.md`](dialog_content_chasing.md). No new voice
+recordings this slice (Audio 2 stays Ken-blocked on runner `CAPTURE_LINES`).
+
+### In-scope for `v0.4.69` (alongside AI item use)
+
+| Beat | Who speaks | Wire point | Candidate pool |
+|---|---|---|---|
+| Round start | Banner / toast | Chaser-mode engine start / first frame of chase | `CHASER_BETA_OPENER_LINES` |
+| AI fires gun | Speech bubble on AI runner | Right after AI `_tryFire()` succeeds | `CHASER_BETA_RUNNER_GUN_TAUNTS` |
+| Human chaser tagged by gun | Existing bubble on stunned chaser | Reuse `GUN_HIT_LINES` as-is (already chaser-POV) | no new pool |
+| Successful tag (chaser wins) | Toast + result quote | Replace hardcoded `'Gotcha! Round over.'` | `CHASER_BETA_WIN_LINES` |
+| Result card chrome | `ProfileModal` copy | Soften "test complete" → hunt-flavored note | short static strings OK |
+
+**Candidate lines (planning copy — Mode B may tune wording):**
+
+- **Opener:** `YOU'RE THE TOILET NOW — TAG THEM ONCE.` / `HUNT MODE. ONE TAG. NO SHEEBS.`
+- **AI gun taunt:** `EAT LEAD, TOILET!` / `NOT TODAY, PLUMBING!` / `I BROUGHT THE GUN THIS TIME!`
+- **Win:** `CAUGHT IN 4K (AND PORCELAIN)!` / `FLUSHED. ROUND OVER.` / `TAGGED. THE BOWL WINS.`
+
+### Mode-boundary leak to fix in the same slice (not new scope)
+
+`App.jsx` `handleCaught` currently always `playCaughtAudio()` and may strip
+a shop item when `highestLevel > 4`. That path still runs on a Chaser Beta
+tag via `onCaught({ captureLine: ... })`. Gate both behind
+`!isChaserMode` (or an explicit chaser-win branch). Same spirit as the
+badge/token profile audit already in the handoff.
+
+### Explicitly parked (do not pull into `v0.4.69`)
+
+- FLUSH CLOCK / timeout-loss lines ("OUTRUN BY A HUMAN…") — blocked on
+  Ken confirming the 60s arcade recommendation.
+- Full AI-runner bark pool mirroring `CHASER_LINES` under pressure.
+- Near-capture interlude flipped for the human hunter.
+- Voice clips for any Chaser Beta pools.
+- `BOWL RUSH` ability theater.
+
+Those stay recommendations in §10 until Ken answers the open questions in
+§8.

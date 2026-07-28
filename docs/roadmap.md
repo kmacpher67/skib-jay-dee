@@ -151,8 +151,12 @@ for the full session write-up and
      to `_getRunnerEvadeVector()`, and audit the badge/token spawn calls
      in `_syncLevelState()` that turned out to be running unconditionally
      in Chaser Beta despite the design doc saying pickups were "off in
-     recovery slice" (they never actually were gated). Mode impact:
-     `Chaser Beta only`. **Code-ready**, see
+     recovery slice" (they never actually were gated). **Refine
+     (2026-07-28):** same slice also gets light dialog theater (opener /
+     AI gun taunt / win lines) and must gate `handleCaught` death-sting +
+     shop-item strip so a tag reads as a chaser win, not a runner death.
+     Mode impact: `Chaser Beta only`. **Code-ready after optional Mode A
+     dialog polish**, see
      [roadmap-handoff-v0.4.69-plan.md](handoffs/roadmap-handoff-v0.4.69-plan.md).
 3. **MOBA/PvP** — still parked (format + infra open).
 
