@@ -2,8 +2,11 @@
 
 **Created by:** Cursor Grok 4.5 — 2026-07-28
 **Last updated by:** Codex (GPT-5) — 2026-07-28
-**Session mode:** Mode B (Coding)
-**Status:** Shipped v0.4.61. Menu naming/Beta treatment, narrow technical isolation, timer/rematch all coded, built and deployed.
+**Session mode:** Mode A (Planning / refine — docs only, no code)
+**Status:** Refined recovery plan recorded. Menu naming/Beta treatment and
+the narrow technical isolation work are unblocked. Timer/rematch and the
+later active ability remain planning recommendations until Ken confirms.
+Deep kit / multiplayer / 2v2 stay out of scope.
 **Design source of truth:** [`docs/role-reversal-design.md`](../role-reversal-design.md)
 
 ## Trigger
