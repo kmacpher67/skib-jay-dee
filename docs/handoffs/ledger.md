@@ -8,6 +8,7 @@ full session write-up see the matching
 v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
+2026-07-28 | docs (Cursor Composer) | v0.4.69 post-ship Mode A code review: ship stands, medium chaser-win/_updateCaught theater gap + low e2e gaps; refinement copy-paste in roadmap-handoff-v0.4.69.md; no code
 2026-07-28 | v0.4.69 | Chaser Beta Mode changes: profile save isolation, AI runner gun logic, and dedicated dialog (opener, runner gun taunt, win line). Verified via Playwright.
 2026-07-28 | docs (Antigravity) | v0.4.69-plan review: tightened dialog pools (3-4 lines each), verified mode-boundary leaks in GameEngine.js/App.jsx, annotated parked workloads, set Status to READY FOR MODE B; no code
 2026-07-28 | docs (Cursor Grok 4.5) | v0.4.69-plan refine: light Chaser Beta dialog theater (opener/gun-taunt/win) + handleCaught death-sting/item-loss leak; refine-before-code-monkey copy-paste; no code
