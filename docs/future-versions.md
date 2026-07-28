@@ -82,6 +82,18 @@ get lost:
   Skib-Daddy landed in v0.4.38.
 - Multiplayer spike (Phase 5) — biggest single item, do last.
 
+## Deploy / CI workflow (new 2026-07-28)
+
+Ken's habit: push the **game repo** only after prod shows the new
+`GAME_ITERATION` (~30–60s after `deploy-static.sh` pushes the website
+repo), so production e2e can verify live. Automating a blocking `sleep` in
+the deploy script would stall coding agents.
+
+**Needs refinement** — see
+[`roadmap-handoff-v0.4.65-plan.md`](handoffs/roadmap-handoff-v0.4.65-plan.md)
+for options (detached delayed push, probe-then-push, hook, or manual
+checklist). Not code-ready until Ken picks an approach.
+
 ## App tracking / instrumentation (new 2026-07-28)
 
 Design-only, see

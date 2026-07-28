@@ -12,6 +12,13 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.65-plan (docs only — 2026-07-28):** Session closeout. Ken
+  described post-deploy game-repo `git push` workflow (wait for prod,
+  then push so production e2e can verify). Scoped as **needs refinement**
+  in `roadmap-handoff-v0.4.65-plan.md` — options include detached delayed
+  push, probe-then-push, git hook, or manual checklist; blocking sleep in
+  `deploy-static.sh` rejected to avoid stalling Mode B agents. No code.
+
 - **v0.4.62-plan (docs only — 2026-07-28):** Mode A backlog triage at
   `GAME_ITERATION` v0.4.60. Corrected stale `docs/roadmap.md` checkboxes
   (Cool Play, Broth Slip, Rod hotfix, Desktop FOW, Turdstone, Difficulty
@@ -401,6 +408,7 @@ entry heading so the change trail stays obvious at a glance.
 - `docs/role-reversal-design.md`
 - `docs/handoffs/roadmap-handoff-v0.4.61-plan.md`
 - `docs/handoffs/roadmap-handoff-v0.4.62-plan.md`
+- `docs/handoffs/roadmap-handoff-v0.4.65-plan.md`
 - `docs/handoffs/roadmap-handoff-v0.4.53.md`
 - `docs/difficulty-mechanics-plan.md`
 - `docs/level-progression-and-endgame-plan.md`

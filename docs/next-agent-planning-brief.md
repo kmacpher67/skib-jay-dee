@@ -1,10 +1,16 @@
 # Next Agent Planning Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
-**Last updated by:** Cursor Composer — 2026-07-28 (v0.4.62 iteration bundle)
+**Last updated by:** Cursor Composer — 2026-07-28 (v0.4.65 deploy-push refine)
 
 Use this when Ken opens a **Mode A** session. For coding, use
 `docs/next-agent-coding-brief.md`.
+
+## Ken deploy note
+
+Game repo `git push` is intentionally **after** prod shows the new
+iteration (~30–60s post `deploy-static.sh`). Automation scoped in
+`roadmap-handoff-v0.4.65-plan.md` — **needs refinement**, not coded.
 
 ## Current production state
 

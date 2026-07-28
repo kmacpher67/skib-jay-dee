@@ -70,7 +70,7 @@ All are front-end–scoped or front-end–first unless noted. LT roadmap items
 |---|---|---|
 | **Unblocked — code next** | 4 | v0.4.41 Slice B + Play Recap → v0.4.56 poses → v0.4.55 Micro-Skib (`v0.4.62-plan`) |
 | **Parallel quality debt** | 1 | Role Reversal Beta recovery (`v0.4.61-plan`; outcome UX blocked on Ken) |
-| **Design-only / TBD** | 3 | Debt Lock math, Level 7+ Mosaic, Interactive content pack |
+| **Design-only / TBD** | 4 | Debt Lock math, Level 7+ Mosaic, Interactive content pack, Post-deploy game-repo push (`v0.4.65-plan`) |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 
@@ -680,3 +680,9 @@ and chaser-bark voice clips, 1:1 with text.
   Option C (scale 9:16 + side art) remains a future alternative if Ken wants
   a different desktop feel.
 - [ ] **Feature: Debug State Dump.** Add a debug function (e.g., triggered by `Triple Q` or `ctrl+alt+del`) that performs a debug dump and allows copying game position data, relative position level, and all debug info for problem-solving. **Related to the App tracking / instrumentation item above** — this is the manual, client-only, no-SDK support path (clipboard dump, no network call), complementary to the Sentry-tagged "Report a Bug" button scoped there. Unblocked (no open decisions); recommend shipping this first, then folding its output format into the Sentry event payload once the SDK tier is chosen. See [`roadmap-handoff-v0.4.64-plan.md`](handoffs/roadmap-handoff-v0.4.64-plan.md).
+- [ ] **Tooling: Post-deploy delayed `git push` (game repo).** **Needs
+  refinement (2026-07-28).** Ken pushes this repo only after prod deploy
+  is live (~30–60s) so production e2e can verify the live site. Blocking
+  `sleep` inside `deploy-static.sh` would stall coding agents; options:
+  detached delayed push, probe-then-push script, git hook, or manual
+  checklist. See [`roadmap-handoff-v0.4.65-plan.md`](handoffs/roadmap-handoff-v0.4.65-plan.md).

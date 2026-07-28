@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-28 | docs (Cursor Composer) | v0.4.65-plan: post-deploy delayed game-repo git push — Ken workflow captured, needs refinement (4 options); session closeout; no code
 2026-07-28 | docs (Cursor Composer) | v0.4.62-plan: frontend iteration bundle (Rewards finish + pose collapse + Micro-Skib); roadmap checkbox corrections; refreshed agent briefs; no code
 2026-07-28 | docs (Codex GPT-5) | v0.4.61-plan Role Reversal experience refine: Ken's Play as Runner/Beta menu direction; one-minute arcade recommendation; AI/navigation and strict mode-isolation contract; roadmap Beta exit debt; no code
 2026-07-28 | v0.4.60 | Difficulty Selector (Noob-Noob / Casual / 4chan-st) added to cookie profile and menu; passed to GameEngine for future feature hooks

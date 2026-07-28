@@ -6,6 +6,24 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.65-plan — Post-deploy game-repo push (needs refinement) (Cursor Composer, 2026-07-28)
+
+Mode A session closeout — docs only.
+
+Ken's workflow: deploy via `deploy-static.sh` (website repo push is
+automated), wait for prod to show the new `GAME_ITERATION`, then push the
+game repo so production e2e can verify live. Blocking `sleep` inside the
+deploy script would stall coding agents.
+
+Captured four candidate approaches (detached delayed push, probe-then-push,
+git hook, manual checklist) in `roadmap-handoff-v0.4.65-plan.md`. Status:
+**needs refinement** — Ken must pick an option before Mode B.
+
+Also clarified in this session (conversation, not new commits earlier):
+Role Reversal "60s" is a gameplay round timer recommendation, not a
+result-screen timeout; Play Recap = per-run summary on level-clear (Stats
+tab = lifetime aggregates in Rewards modal, deferrable follow-up).
+
 ## v0.4.62-plan — Frontend iteration bundle (Cursor Composer, 2026-07-28)
 
 Mode A — docs only, no code/build/version bump/deploy.
