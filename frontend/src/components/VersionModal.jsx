@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.70',
+    title: 'Level 5 Tuning & Ramen Aisle Rebalance',
+    description: 'Reduced the baseline chaser speed on Level 5 and added a speed penalty when chasers move through walls. Relocated the Turdstone Token on Level 4 behind a gap that requires the Schleimy Potion to reach.',
+  },
+  {
     version: 'v0.4.69',
     title: 'Chaser Beta implementation',
     description: 'Fully isolated Chaser Mode from the main campaign progress (sheebs, badges, history) so it doesn\'t pollute your stats. The AI runner also now targets guns and fires back.',
