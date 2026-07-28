@@ -12,6 +12,12 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.68-plan (docs only — 2026-07-28):** New Level 4 warning audio
+  pass queued in `roadmap-handoff-v0.4.68-plan.md`. The three clips are
+  already present under `frontend/src/assets/audio/`; next code slice is
+  just wiring sting + voice on overlay open and accept-fate on the button
+  click, while respecting the global mute toggle.
+
 - **v0.4.67-plan (docs only — 2026-07-28):** Badge award counts /
   repeat-award history is now queued in
   `roadmap-handoff-v0.4.67-plan.md`. `earnedBadges` stays the unique

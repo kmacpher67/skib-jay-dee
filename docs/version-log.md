@@ -6,6 +6,15 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.68-plan — Level 4 warning audio pass (Codex GPT-5, 2026-07-28)
+
+Mode A — docs only; no code, build, version bump, or deploy.
+
+Queued a focused Level 4 warning audio slice for the Ramen Aisle stakes
+overlay. The plan wires the new sting, voiceover, and accept-fate clips
+into the existing App.jsx warning flow, keeps the global mute toggle in
+force, and leaves the underlying warning pause/resume logic untouched.
+
 ## v0.4.67-plan — Badge award counts (Codex GPT-5, 2026-07-28)
 
 Mode A — docs only; no code, build, version bump, or deploy.
@@ -2164,4 +2173,3 @@ Executing the `v0.4.38-plan` handoff. Migrating the old maps to grids sets up th
   - Added a "Stats" tab in the `RewardsHistoryModal` to display lifetime stats like total time played and pickups consumed.
   - Updated `GAME_ITERATION` to `v0.4.67`.
 - **Why:** To give the player visibility into their per-run performance and lifetime stats (Slice 2 of the `v0.4.62` plan / `v0.4.66` candidate 3).
-

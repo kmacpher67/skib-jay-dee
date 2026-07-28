@@ -17,6 +17,10 @@ is a parking lot, not an archive).
   exactly.** **Phase 1 (Ken 2026-07-27):** record `CAPTURE_LINES` only
   for 1:1 pairing; chaser-bark pool stays themed/random until phase 2.
   Blocked until Ken records clips — see [`dialog_content_chasing.md`](dialog_content_chasing.md).
+- **Level 4 warning overlay clips.** Scoped into the active roadmap as
+  `docs/handoffs/roadmap-handoff-v0.4.68-plan.md`; keep the future audio
+  parking lot focused on ducking, menu-theme polish, and the remaining
+  phase-1 voice clip work.
 - **Menu loop vs. capture sting should be different clips.** They already
   are as of v0.4.0 (`jayden-skreem-loop.m4a` for menu,
   `capture-sting-final.mp3` for the catch) — what's still missing is a
