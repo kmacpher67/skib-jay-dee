@@ -6,6 +6,16 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.59 — Neon Jump-Scare Upgrade (Antigravity, 2026-07-28)
+
+Mode B — full code and delivery.
+
+- Upgraded the Neon Jump-Scare Filter to be a real perk.
+- After a scare, players with the filter and 50+ sheebs get a 0.5s headstart where chasers are stunned.
+- The filter now deducts 50 sheebs per use.
+- Chaser stun visual effect uses magenta/cyan tint.
+- Added E2E tests for the headstart and broke scenarios.
+
 ## v0.4.58 — Desktop Screen Support (Antigravity, 2026-07-28)
 
 Mode B — full code and delivery.

@@ -139,6 +139,25 @@ Raman-Aunt-Toilet Lady specifically makes the catch):*
 - [ ] "INTO THE POT YOU GO!"
   - **Suggested filename:** `broth-capture-intothepot.mp3`
 
+### Neon Jump-Scare Upgrade Lines
+*Shown when the player buys a 0.5s headstart after a jump-scare (costs 50 sheebs).*
+
+**Runner successful dodge lines:**
+- [ ] "NEON DODGE — YOU PAID FOR THAT!"
+  - **Suggested filename:** `neon-dodge-paid.mp3`
+- [ ] "FILTER SAYS RUN! (−50)"
+  - **Suggested filename:** `neon-dodge-filter.mp3`
+- [ ] "GLITCH ESCAPE UNLOCKED!"
+  - **Suggested filename:** `neon-dodge-glitch.mp3`
+- [ ] "BRIBED THE TOILETS. DON'T LOOK BACK."
+  - **Suggested filename:** `neon-dodge-bribed.mp3`
+- [ ] "0.5 SECONDS OF PURE COWARDICE."
+  - **Suggested filename:** `neon-dodge-cowardice.mp3`
+
+**Runner broke refusal line:**
+- [ ] "NEON FILTER NEEDS 50 SHEEBS — YOU'RE BROKE LOL"
+  - **Suggested filename:** `neon-dodge-broke.mp3`
+
 ### 4chan-st (Shyt-Talker) Capture Lines
 *Shown full-screen, jump-scare style, when the runner gets caught on 4chan-st difficulty. These blend the stuttering, cynical meta-commentary of Rick and Morty with aggressive, internet-poisoned trash talk.*
 

@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-28 | v0.4.59 | Upgraded Neon Jump-Scare Filter: after scare, players with filter and 50+ sheebs get 0.5s headstart where chasers are stunned (magenta/cyan tint) and deduct 50 sheebs; broke refusal gag; e2e tests
 2026-07-28 | docs (Cursor Grok 4.5) | v0.4.59-plan PX/fun refine: correct live IDs/flow, lock headstart-as-chasers-stun + neon theater + broke gag; still Mode A / code-ready; no code
 2026-07-28 | v0.4.58 | Implemented Option A (Fog of War) desktop screen expansion with difficulty-based masks (easy, normal, hardcore); fixed cosmetic-sink e2e test viewports
 2026-07-28 | docs (Claude Sonnet 5) | v0.4.60-plan: SDLC review — confirmed the Easy/Normal/4chan-st difficulty setting was never shipped (design-only in difficulty-mechanics-plan.md); scoped code-ready minimal slice (cookie field + menu selector, no Debt Lock math); unblocks v0.4.58-plan's difficulty-picker question; no code

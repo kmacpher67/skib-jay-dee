@@ -15,6 +15,8 @@ import {
   BROTH_SPAWN_LINES,
   BROTH_HIT_LINES,
   BROTH_CAPTURE_LINES,
+  NEON_HEADSTART_LINES,
+  NEON_BROKE_LINE,
 } from './dialog.js'
 import { CHASER_FACE_POOL, CHASER_TYPES, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS, turdstoneTokenSprite } from './gameContent.js'
 import { PORCELAIN_GRID, PIPEWORKS_GRID, FLOODED_ANNEX_GRID, RAMEN_AISLE_GRID, WORLD_STAR_GRID, JAYDENS_NIGHTMARE_HOUSE_GRID } from './mapGrids.js'
@@ -1242,9 +1244,12 @@ export class GameEngine {
 
       if (chaser.stunnedUntil > 0) {
         chaser.stunnedUntil = Math.max(0, chaser.stunnedUntil - dt)
-        if (chaser.stunnedUntil <= 0 && chaser.gunStunned) {
-          chaser.gunStunned = false
-          chaser.stunGracePeriod = FRIENDLY_FIRE_GRACE_SECONDS
+        if (chaser.stunnedUntil <= 0) {
+          if (chaser.gunStunned) {
+            chaser.gunStunned = false
+            chaser.stunGracePeriod = FRIENDLY_FIRE_GRACE_SECONDS
+          }
+          chaser.neonStun = false
         }
       } else {
         chaser.joinRamp = Math.min(1, (chaser.joinRamp ?? 1) + dt / CHASER_JOIN_RAMP_SECONDS)
@@ -2333,6 +2338,22 @@ export class GameEngine {
   _updateResumeCountdown(dt) {
     this.countdownTimer -= dt
     if (this.countdownTimer <= 0) {
+      if (this.neonJumpscareFilter) {
+        if (this.highestLevel > 3 || this.sheebs >= 50) {
+          this.sheebs -= 50
+          this.onSheebsChange(this.sheebs)
+          for (const chaser of this.chasers) {
+            chaser.stunnedUntil = 0.5
+            chaser.neonStun = true
+          }
+          this.nearMissVignetteTimer = 0.35
+          this.runnerLine = NEON_HEADSTART_LINES[Math.floor(Math.random() * NEON_HEADSTART_LINES.length)]
+          this.runnerLineTimer = 2
+        } else {
+          this.runnerLine = NEON_BROKE_LINE
+          this.runnerLineTimer = 2
+        }
+      }
       this.phase = 'chase'
       this.phaseTimer = 0
     }
@@ -2645,7 +2666,13 @@ export class GameEngine {
 
   _drawStunEffect(ctx, chaser) {
     ctx.save()
-    ctx.fillStyle = 'rgba(255, 220, 80, 0.35)'
+    if (chaser.neonStun) {
+      // Magenta / cyan mix per the handoff (alternating based on time or just a fixed neon color)
+      // I'll use a fixed neon cyan-magenta mix, or just magenta. Let's use cyan with magenta shadow if possible, or just magenta.
+      ctx.fillStyle = 'rgba(255, 0, 255, 0.35)'
+    } else {
+      ctx.fillStyle = 'rgba(255, 220, 80, 0.35)'
+    }
     ctx.fillRect(chaser.x, chaser.y, chaser.w, chaser.h)
     ctx.font = 'bold 14px sans-serif'
     ctx.textAlign = 'center'

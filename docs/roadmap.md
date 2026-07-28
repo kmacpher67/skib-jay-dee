@@ -463,7 +463,7 @@ and chaser-bark voice clips, 1:1 with text.
   Landed v0.4.50 — Neon Jump-Scare Filter (200 sheebs, magenta/cyan
   capture tint). See
   [roadmap-handoff-v0.4.50.md](handoffs/roadmap-handoff-v0.4.50.md).
-- [ ] **Feature: Neon Jump-Scare Upgrade.** Upgrades Neon Jump-Scare Filter
+- [x] **Feature: Neon Jump-Scare Upgrade.** Upgrades Neon Jump-Scare Filter
   (id `jump-scare-filter-neon`): shop cost 250; keeps magenta/cyan scare
   tint; after resume countdown, player runs while chasers stun 500ms for
   −50 sheebs/use (debt rules); neon vignette + funny headstart lines;

@@ -277,10 +277,9 @@ export const SHOP_ITEMS = [
   {
     id: 'jump-scare-filter-neon',
     name: 'Neon Jump-Scare Filter',
-    cost: 200,
-    description: 'Tints your capture jump-scare overlay with a sick magenta/cyan glitch.',
-    effectLabel: 'Cosmetic only',
-    cosmetic: true,
+    cost: 250,
+    description: 'After a scare, bribe the filter for a 0.5s neon headstart. Costs 50 sheebs each escape.',
+    effectLabel: '+0.5s headstart (−50/use)',
   },
 ]
 
