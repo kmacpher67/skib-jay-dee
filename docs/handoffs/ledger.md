@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-28 | v0.4.64 | Implemented Debug State Dump triggered by Triple-Q in GameEngine; analytics SDKs remain parked
 2026-07-28 | docs (Codex GPT-5) | Refined v0.4.63 Main Menu cleanup: compact mute control beside unchanged Runner/Chaser portraits, five-stat mobile row, responsive acceptance checks, bounded Code Monkey handoff; no code
 2026-07-28 | v0.4.62 | Rewards Clarification: Added "from Shleeb Shop" titles to HUD pills; renamed "QUICK PLAY" button to "PLAY AS RUNNER"; updated related e2e tests
 2026-07-28 | docs (Cursor Composer) | v0.4.65-plan: post-deploy delayed game-repo git push — Ken workflow captured, needs refinement (4 options); session closeout; no code

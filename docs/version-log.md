@@ -6,6 +6,10 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.64 — Debug State Dump (Antigravity, 2026-07-28)
+
+Implemented the client-only Debug State Dump slice from the v0.4.64 handoff plan to assist in RCA of the Raman Rows recurrence. Pressing `q` three times rapidly now dumps the game state (player position, level, active chasers, timers) directly to the console and clipboard via `GameEngine.js`. The analytics SDKs (Sentry/PostHog) remain parked per the plan, pending user feedback on vendor selection and privacy posture. Tested and deployed to prod.
+
 ## v0.4.63-plan refinement — Main Menu mute placement (Codex GPT-5, 2026-07-28)
 
 Mode A — docs only; no code, build, version bump, or deploy.

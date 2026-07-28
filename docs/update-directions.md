@@ -12,6 +12,9 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.64 (real code, shipped — 2026-07-28):**
+  Implemented Debug State Dump. Added `buildDebugDump()` to `GameEngine.js` triggered by three quick `q` keypresses to dump game state (position, phase, difficulty, etc.) to the console and clipboard for troubleshooting (e.g. the Raman Rows hang). Includes e2e test. SDK pieces remain parked. `GAME_ITERATION` = v0.4.64. See `roadmap-handoff-v0.4.64.md`.
+
 - **Raman Rows recurrence check (docs only — 2026-07-28):** Ken still
   reports hanging on Level 4 (Ramen Aisle) on prod v0.4.60. Verified the
   v0.4.52.1 `mapGrids.js` seal is still in the tree (commit `2d61ed0`, no

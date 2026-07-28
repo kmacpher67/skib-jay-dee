@@ -640,6 +640,27 @@ export class GameEngine {
     this.stamina = clamp(this.stamina, 0, this.maxStamina)
   }
 
+  buildDebugDump() {
+    const dump = {
+      version: GAME_ITERATION,
+      capturedAt: new Date().toISOString(),
+      phase: this.phase,
+      phaseTimer: this.phaseTimer,
+      levelIndex: this.levelIndex,
+      levelName: this.level?.name,
+      levelSeconds: this.levelSeconds,
+      runner: { x: this.runner.x, y: this.runner.y, w: this.runner.w, h: this.runner.h, tile: [Math.floor(this.runner.x / 10), Math.floor(this.runner.y / 10)], facing: this.runner.facing, driftVel: this.runner.driftVel },
+      chasers: this.chasers.map((c, i) => ({ i, x: c.x, y: c.y, chaserType: c.chaserType, face: c.face?.src?.split('/').pop() })),
+      brothFrictionTimer: this.brothFrictionTimer,
+      brothTrailCount: this.brothTrails?.length ?? 0,
+      sheebs: this.sheebs,
+      deaths: this.deaths,
+      difficulty: this.difficulty,
+      rafActive: this._raf != null,
+    }
+    return dump
+  }
+
   start() {
     if (this._raf) return
     this._lastTime = performance.now()
@@ -714,6 +735,21 @@ export class GameEngine {
   _handleKey(e, isDown) {
     const code = e.code
     let handled = true
+
+    if (isDown && (code === 'KeyQ' || e.key.toLowerCase() === 'q')) {
+      const now = performance.now()
+      this._qPresses = (this._qPresses || []).filter((t) => now - t < 600)
+      this._qPresses.push(now)
+      if (this._qPresses.length >= 3 && this._raf != null) {
+        this._qPresses = []
+        const dump = this.buildDebugDump()
+        const text = JSON.stringify(dump, null, 2)
+        console.log('Debug dump copied:\n' + text)
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(() => {})
+        }
+      }
+    }
 
     switch (code) {
       case 'ArrowUp':
