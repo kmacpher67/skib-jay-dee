@@ -395,31 +395,40 @@ export default function App() {
   }
 
   const handleBadgeEarned = (badgeId) => {
-    if (profile.earnedBadges.includes(badgeId)) return
-    
+    const wasAlreadyEarned = profile.earnedBadges.includes(badgeId)
+
     if (!isChaserMode) {
       syncProfile((current) => {
-        if (current.earnedBadges.includes(badgeId)) return current
-
         const badge = BADGES[badgeId]
-        const historyEntry = {
-          timestamp: Date.now(),
-          type: 'badge',
-          label: badge ? badge.name : badgeId,
-          amount: 50,
-          level: engineRef.current ? engineRef.current.levelIndex + 1 : null,
-          levelName: engineRef.current && engineRef.current.levels && engineRef.current.levels[engineRef.current.levelIndex] ? engineRef.current.levels[engineRef.current.levelIndex].name : null,
+        const isNew = !current.earnedBadges.includes(badgeId)
+        
+        const currentCount = current.badgeAwardCounts?.[badgeId] || 0
+        const nextCounts = { ...(current.badgeAwardCounts || {}), [badgeId]: currentCount + 1 }
+        
+        let nextHistory = current.rewardsHistory || []
+        
+        if (isNew) {
+          const historyEntry = {
+            timestamp: Date.now(),
+            type: 'badge',
+            label: badge ? badge.name : badgeId,
+            amount: 50,
+            level: engineRef.current ? engineRef.current.levelIndex + 1 : null,
+            levelName: engineRef.current && engineRef.current.levels && engineRef.current.levels[engineRef.current.levelIndex] ? engineRef.current.levels[engineRef.current.levelIndex].name : null,
+          }
+          nextHistory = [...nextHistory, historyEntry].slice(-50)
         }
 
         return { 
           ...current, 
-          earnedBadges: [...current.earnedBadges, badgeId],
-          rewardsHistory: [...(current.rewardsHistory || []), historyEntry].slice(-50),
+          earnedBadges: isNew ? [...current.earnedBadges, badgeId] : current.earnedBadges,
+          badgeAwardCounts: nextCounts,
+          rewardsHistory: nextHistory,
         }
       })
     }
 
-    if (!isChaserMode) {
+    if (!isChaserMode && !wasAlreadyEarned) {
       if (engineRef.current) {
         const nextSheebs = engineRef.current.sheebs + 50
         engineRef.current.setSheebs(nextSheebs)
@@ -666,6 +675,7 @@ export default function App() {
             {rewardsHistoryOpen && (
               <RewardsHistoryModal
                 rewardsHistory={profile.rewardsHistory}
+                badgeAwardCounts={profile.badgeAwardCounts}
                 onClose={() => setRewardsHistoryOpen(false)}
               />
             )}

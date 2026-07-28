@@ -6,7 +6,7 @@ function formatTime(timestamp) {
   return new Date(timestamp).toLocaleString()
 }
 
-export default function RewardsHistoryModal({ rewardsHistory, onClose }) {
+export default function RewardsHistoryModal({ rewardsHistory, badgeAwardCounts, onClose }) {
   const [activeTab, setActiveTab] = useState('history')
   const recentRewards = [...(Array.isArray(rewardsHistory) ? rewardsHistory : [])].slice(-MAX_REWARDS).reverse()
 
@@ -18,6 +18,10 @@ export default function RewardsHistoryModal({ rewardsHistory, onClose }) {
     }
   })
   const pickupEntries = Object.entries(pickupStats).sort((a, b) => b[1] - a[1])
+
+  const totalBadgeAwards = badgeAwardCounts 
+    ? Object.values(badgeAwardCounts).reduce((sum, count) => sum + count, 0)
+    : 0
 
   return (
     <div className="deaths-modal rewards-modal" role="dialog" aria-modal="true" aria-label="Rewards history">
@@ -53,6 +57,11 @@ export default function RewardsHistoryModal({ rewardsHistory, onClose }) {
           {activeTab === 'history' ? (
             <>
               <p className="version-note">Most recent 20 rewards and purchases.</p>
+              {totalBadgeAwards > 0 && (
+                <div style={{ fontSize: '0.9rem', marginBottom: '8px', color: '#888' }}>
+                  Badge awards: {totalBadgeAwards}
+                </div>
+              )}
               {recentRewards.length > 0 ? (
                 <div className="deaths-list rewards-list">
                   {recentRewards.map((entry, index) => (

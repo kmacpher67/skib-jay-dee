@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.72',
+    title: 'Badge Award Counts',
+    description: 'Added a badge award counts tracker so that you can see how many times you have earned a badge in total. You can see the total number of badges awarded in the Rewards history tab.',
+  },
+  {
     version: 'v0.4.71',
     title: 'Chaser Beta Refinements',
     description: 'Fixed jumpscare zoom when catching the runner as the chaser, skipping straight to the victory card. Ensured Chaser mode badge toasts and sheeb increments are completely hidden during play. Added stricter end-to-end tests for AI runner behavior and win conditions.',

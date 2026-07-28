@@ -117,6 +117,7 @@ export function normalizeProfile(profile = {}) {
     sheebs: Number.isFinite(profile.sheebs) ? Math.floor(profile.sheebs) : 0,
     ownedItems,
     earnedBadges,
+    badgeAwardCounts: typeof profile.badgeAwardCounts === 'object' && profile.badgeAwardCounts !== null ? profile.badgeAwardCounts : {},
     highestLevel: Number.isFinite(profile.highestLevel) ? Math.max(1, Math.floor(profile.highestLevel)) : 1,
     deaths: Number.isFinite(profile.deaths) ? Math.max(0, Math.floor(profile.deaths)) : 0,
     bestRun: profile.bestRun || { level: 1, deaths: 0 },
