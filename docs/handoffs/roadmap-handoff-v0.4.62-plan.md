@@ -146,8 +146,18 @@ face-swap if getting-captured/captured merge; update `characters.md`.
 2. **Play Recap fast-follow:** OK to ship per-run recap in Slice 2 and defer
    the Stats tab to a tiny follow-up if session time is tight? (Recommended
    yes — recap is the higher-impact half.)
-3. **Debug State Dump:** no handoff exists yet — worth a dedicated `-plan`
-   if you want it in the coding queue.
+3. **Debug State Dump:** now has a dedicated plan — it turns out to
+   belong with the App tracking / instrumentation work (analytics +
+   error monitoring), not as a standalone item. It's the manual,
+   unblocked, no-SDK support path (clipboard dump, no network call),
+   complementary to the Sentry-tagged "Report a Bug" button scoped
+   there. See
+   [`roadmap-handoff-v0.4.64-plan.md`](roadmap-handoff-v0.4.64-plan.md)
+   (renumbered from `v0.4.62` after this file claimed that number
+   concurrently — see that file's note on file history). Recommend
+   shipping Debug State Dump first since it has no open blockers, then
+   folding its output into the Sentry event payload once Ken picks the
+   SDK tier.
 
 ## Relationship to other handoffs
 
