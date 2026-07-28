@@ -1,8 +1,17 @@
 # Roadmap Handoff v0.4.53 — Role Reversal v1 (Menu Mode)
 
 **Created by:** Composer — 2026-07-27
-**Last updated by:** Composer — 2026-07-27
-**Session mode:** Mode B — **shipped**
+**Last updated by:** Cursor Grok 4.5 — 2026-07-28 (postmortem annotate)
+**Session mode:** Mode B — **shipped (under-reviewed; playable refine queued)**
+
+> **2026-07-28 postmortem (Mode A):** Ken playtested — Play as Chaser is
+> broken (human does not move; directional controls dead; no clear goal).
+> Shipped too soon without kit confirmation or playtest. Full RCA + keep/
+> refine verdict + LT/2v2 answers live in
+> [`docs/role-reversal-design.md`](../role-reversal-design.md). Next work:
+> [`roadmap-handoff-v0.4.61-plan.md`](roadmap-handoff-v0.4.61-plan.md).
+> Do not deepen kit from this file; treat this ship as scaffolding that
+> needs a hotfix before it counts as a real mode.
 
 ## Source
 

@@ -93,8 +93,13 @@ for the full writeup and refinement questions.
 - Finish the grand arc — Level 10 as the final scene (open reconciliation
   against the existing Level 7 "CEO of Drains" climax plan in
   [level-progression-and-endgame-plan.md](level-progression-and-endgame-plan.md)).
-- Role Reversal — players choose chaser or runner. Recommended smallest
-  first slice: single-player vs. an AI runner, before any multiplayer work.
+- Role Reversal — players choose chaser or runner. Menu-mode v1 shipped
+  early as `v0.4.53` and is **broken / under-reviewed**. Keep+refine
+  verdict and thin playable hotfix live in
+  [role-reversal-design.md](role-reversal-design.md) /
+  [roadmap-handoff-v0.4.61-plan.md](handoffs/roadmap-handoff-v0.4.61-plan.md).
+  Deep kit and multiplayer variants still LT; do not treat the broken
+  ship as done.
 - MOBA/PvP mode (2v2 or 4v4 deathmatch-style) — depends on the Phase 5
   multiplayer spike above landing for real first.
 

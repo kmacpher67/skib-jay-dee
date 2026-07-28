@@ -6,6 +6,35 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.61-plan — Role Reversal refine / Play as Chaser postmortem (Cursor Grok 4.5, 2026-07-28)
+
+Mode A — docs only, no code. `GAME_ITERATION` unchanged.
+
+Ken flagged that Role Reversal v1 (`v0.4.53`) shipped too soon: Play as
+Chaser does not move the player, directional controls feel dead, and
+there is no clear chaser fantasy because the product is runner-centric
+and no real NPC runner role exists.
+
+**Decisions / answers recorded (not Ken overrides — planning
+recommendations):**
+
+- **Keep + refine**, do not rip out; full chaser campaign / 2v2 now is
+  **too much**.
+- Thin playable loop is feasible (fix `const stepX` bug, wander+flee AI
+  runner, 1v1 isolation, clean round end).
+- Iterative attack path: reuse NPC chase body for human input first;
+  optionally port Plunger Launch onto FIRE later — do not invent a new
+  combat system yet.
+- Role reversal helps runner design as a **mirror/lab** once playable.
+- Advances LT 2v2 only as **control-scheme scaffolding**; networking
+  still Phase 5. Keep Ken's deep order (L10 arc → Role Reversal → MOBA)
+  for deep work; hotfix the broken menu surface separately.
+- **Did not edit `docs/roadmap.md`** per Ken.
+
+Artifacts: `docs/role-reversal-design.md`,
+`docs/handoffs/roadmap-handoff-v0.4.61-plan.md`, postmortem note on
+`roadmap-handoff-v0.4.53.md`.
+
 ## v0.4.59 — Neon Jump-Scare Upgrade (Antigravity, 2026-07-28)
 
 Mode B — full code and delivery.

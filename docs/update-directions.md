@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Cursor Grok 4.5 — 2026-07-28 (v0.4.59-plan PX/fun refine)
+**Last updated by:** Cursor Grok 4.5 — 2026-07-28 (v0.4.61-plan Role Reversal refine)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,15 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.61-plan (docs-only refine — 2026-07-28):** Mode A — Role Reversal /
+  Play as Chaser postmortem. Shipped `v0.4.53` too soon; human chaser
+  movement broken (`const stepX` reassignment), AI runner stub, unclear
+  player goal. Verdict: **keep + refine** (thin playable loop), not rip
+  out, not expand to 2v2. Dedicated design doc:
+  `docs/role-reversal-design.md`. Hotfix handoff:
+  `roadmap-handoff-v0.4.61-plan.md`. **Did not edit `docs/roadmap.md`.**
+  No code.
+
 - **v0.4.59-plan (docs-only refine — 2026-07-28):** Mode A PX/fun pass on
   Neon Jump-Scare Upgrade. Corrected stale draft (item id
   `jump-scare-filter-neon`, `cost` not `price`, real flow
@@ -362,6 +371,9 @@ entry heading so the change trail stays obvious at a glance.
 - `docs/handoffs/roadmap-handoff-v0.4.39-plan.md`
 - `docs/handoffs/roadmap-handoff-v0.4.40-plan.md`
 - `docs/next-agent-planning-brief.md`
+- `docs/role-reversal-design.md`
+- `docs/handoffs/roadmap-handoff-v0.4.61-plan.md`
+- `docs/handoffs/roadmap-handoff-v0.4.53.md`
 - `docs/difficulty-mechanics-plan.md`
 - `docs/level-progression-and-endgame-plan.md`
 - `frontend/src/mapGrids.js`
@@ -423,6 +435,11 @@ manually:
 
 ## Natural follow-up work
 
+- **Play as Chaser is broken in live builds that include v0.4.53+.** See
+  `docs/role-reversal-design.md` + `roadmap-handoff-v0.4.61-plan.md`.
+  Prefer a Mode B hotfix (or soft-hide the menu button) when Ken
+  prioritizes fixing the broken surface; otherwise leave parked behind
+  other unblocked coding slices.
 - **The uncommitted working tree from earlier this session is resolved** —
   finished and shipped as `v0.4.36.1`. No longer on this list.
 - **Level 6 ("Jayden's Nightmare House") has already landed** —
