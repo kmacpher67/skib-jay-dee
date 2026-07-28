@@ -19,6 +19,18 @@ and reset `currentTime` before each play. Verified with `npm run build`
 and the `level-4-warning.spec.js` Playwright suite. See
 [`roadmap-handoff-v0.4.68.md`](handoffs/roadmap-handoff-v0.4.68.md).
 
+## v0.4.69-plan review — Chaser Beta Mode B Readiness Sign-off (Antigravity / Gemini 3.6 Flash, 2026-07-28)
+
+Mode A — docs only; no code, build, version bump, or deploy.
+
+Reviewed and refined the `v0.4.69-plan` before dispatching to Mode B / Code Monkey:
+
+- Tightened candidate dialog pools to 3–4 punchy lines each for opener, AI gun taunt, and chaser win lines across `roadmap-handoff-v0.4.69-plan.md`, `role-reversal-design.md`, and `dialog_content_chasing.md`.
+- Spot-checked live codebase (`GameEngine.js:916` `_getRunnerEvadeVector`, `GameEngine.js:1525` capture branch, `App.jsx:354` `handleCaught`) and verified mode-boundary leaks: `handleCaught` death sting + item loss leak when `isChaserMode` is active, and profile state writes on badge/token collections.
+- Confirmed workload guardrails: FLUSH CLOCK, timeout loss, full reverse bark pool, Bowl Rush, and voice clips remain explicitly parked.
+- Improved bounded copy-paste instructions for the Mode B / Code Monkey execution session.
+- Updated status to **READY FOR MODE B**.
+
 ## v0.4.69-plan refine — Chaser Beta dialog + handleCaught leak (Cursor Grok 4.5, 2026-07-28)
 
 Mode A — docs only; no code, build, version bump, or deploy.

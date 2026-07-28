@@ -1,13 +1,10 @@
 # Roadmap Handoff Plan v0.4.69 — Chaser Beta: Runner AI Item Use (+ light dialog)
 
 **Created by:** Claude Sonnet 5 — 2026-07-28
-**Last updated by:** Cursor Grok 4.5 — 2026-07-28
+**Last updated by:** Antigravity (Gemini 3.6 Flash) — 2026-07-28
 **Session mode:** Mode A (Planning / refinement only — docs only, no code,
 no build, `GAME_ITERATION` not bumped)
-**Status:** Design decision recorded, scope bounded. Code-ready for the
-next Mode B session once a refine-pass agent (or Ken) signs off the
-dialog candidate lines below. Heavy-plunger default still proposed, not
-blocking.
+**Status:** READY FOR MODE B — Scope bounded, dialog pools tightened (3–4 lines each), mode-boundary leaks verified (App.jsx:354 handleCaught death audio + item strip leak, badge/token profile writes).
 **Mode impact:** `Chaser Beta only` (see
 [`role-reversal-design.md`](../role-reversal-design.md#12-documentation-contract-for-two-modes)).
 
@@ -61,9 +58,9 @@ Ken played `PLAY AS CHASER — BETA` in the browser (2026-07-28) after the
    runner's point of view — no new taxonomy needed, just a decision on
    whether it needs runner-specific tweaks (see open question below).
 5. **(Refine 2026-07-28)** Dialog/theater is still runner-centric. Tag win
-   uses hardcoded `'Gotcha! Round over.'`; `App.jsx` `handleCaught` still
-   plays the runner death sting and can strip shop items even on a Chaser
-   Beta tag. Rematch/Menu already exist on `ProfileModal` for chaser mode
+   uses hardcoded `'Gotcha! Round over.'`; `App.jsx` `handleCaught` (line 354) still
+   plays the runner death sting (`playCaughtAudio()`) and can strip shop items even on a Chaser
+   Beta tag when `highestLevel > 4`. Rematch/Menu already exist on `ProfileModal` for chaser mode
    — do not rebuild that card. Light dialog pools + gating the death path
    make the win feel like a hunt, not a runner death.
 
@@ -106,22 +103,35 @@ points that sit next to work already in this slice. See
 
 1. Add pools to `frontend/src/dialog.js` (mirror in dialog doc):
    - `CHASER_BETA_OPENER_LINES` — set `bannerText` (or a short toast) when
-     Chaser Beta chase starts.
+     Chaser Beta chase starts:
+     - `"YOU'RE THE TOILET NOW. TAG EM ONCE!"`
+     - `"HUNT MODE: ONE FLUSH, NO SHEEBS."`
+     - `"CATCH THE RUNNER! JOYSTICK + SPRINT!"`
+     - `"PORCELAIN POWER! GET THAT HUMAN!"`
    - `CHASER_BETA_RUNNER_GUN_TAUNTS` — speech bubble on the AI runner when
-     AI `_tryFire()` succeeds.
+     AI `_tryFire()` succeeds:
+     - `"EAT LEAD, TOILET!"`
+     - `"NOT TODAY, PLUMBING!"`
+     - `"I BROUGHT THE GUN THIS TIME!"`
+     - `"PEW PEW! BACK OFF BOWL!"`
    - `CHASER_BETA_WIN_LINES` — replace hardcoded `'Gotcha! Round over.'`
-     in the chaser-mode capture branch.
+     in the chaser-mode capture branch (`GameEngine.js:1530`):
+     - `"CAUGHT IN 4K (AND PORCELAIN)!"`
+     - `"FLUSHED! THE BOWL WINS!"`
+     - `"TAGGED! DOWN THE DRAIN THEY GO!"`
+     - `"SWIRLED AND CLEARED!"`
 2. Reuse `GUN_HIT_LINES` when the human chaser is stunned by the AI gun
    (already chaser-POV; no new pool).
 3. Soften `ProfileModal` chaser-mode note from "Play as Chaser test
-   complete." to hunt-flavored static copy (one string is enough).
+   complete." to hunt-flavored static copy (e.g. `"Chaser Beta round complete. Flush again?"`).
 
 ### C. Mode-boundary correctness (same slice, not creep)
 
 Expand the planned badge/token profile audit to also cover
-`App.jsx` `handleCaught`: when `isChaserMode`, **do not**
+`App.jsx` `handleCaught` (line 354): when `isChaserMode`, **do not**
 `playCaughtAudio()` and **do not** run the shop-item-strip roll. A Chaser
-Beta tag is a round win, not a runner death.
+Beta tag is a round win, not a runner death. Also ensure badge/token collection
+paths (`App.jsx` `handleBadgeEarned` and `GameEngine.js` `_syncLevelState`) do not write profile state (`sheebs`, `earnedBadges`, `rewardsHistory`, `deathsHistory`) when `isChaserMode` is true.
 
 Keep this narrowly scoped to what Ken actually asked for (the gun) plus
 helpful/harmful framing, plus the minimum dialog so fire-back and tag
@@ -177,7 +187,7 @@ profile leaks beyond what's needed to confirm this. Same for
 - `frontend/src/GameEngine.js` — `_getRunnerEvadeVector()` (pickup
   seek/avoid steering), a new small AI-fire decision hook near the
   existing `_tryFire()` call site, chaser-win line pool, opener banner,
-  AI gun-taunt bubble, and a `isChaserMode` guard audit on
+  AI gun-taunt bubble, and an `isChaserMode` guard audit on
   any badge/token spawn or collection path found to be writing profile
   state.
 - `frontend/src/App.jsx` — gate `handleCaught` death-sting + item-loss
@@ -210,9 +220,9 @@ profile leaks beyond what's needed to confirm this. Same for
 Read docs/skib-sdlc.md, then docs/role-reversal-design.md (§11, §13, §15),
 then this file (docs/handoffs/roadmap-handoff-v0.4.69-plan.md), then
 docs/dialog_content_chasing.md (Chaser Beta section), then inspect
-_getRunnerEvadeVector(), _maybeSpawnGunPickup(), the pickup-collision/
-onPickupConsumed() path, the isChaserMode capture branch, and App.jsx
-handleCaught in frontend/src/.
+_getRunnerEvadeVector() (GameEngine.js:916), _syncLevelState(), the pickup-collision/
+onPickupConsumed() path, the isChaserMode capture branch (GameEngine.js:1525), and App.jsx
+handleCaught (App.jsx:354) in frontend/src/.
 
 Implement Chaser Beta runner item use + light dialog (Chaser Beta only):
 
@@ -230,13 +240,13 @@ Implement Chaser Beta runner item use + light dialog (Chaser Beta only):
    successful AI fire, show a speech bubble from
    CHASER_BETA_RUNNER_GUN_TAUNTS (new pool in dialog.js).
 3. Add CHASER_BETA_OPENER_LINES and set banner/toast at Chaser Beta chase
-   start. Replace hardcoded 'Gotcha! Round over.' with a random
+   start. Replace hardcoded 'Gotcha! Round over.' in GameEngine.js:1530 with a random
    CHASER_BETA_WIN_LINES entry. Soften ProfileModal chaser-mode note.
    Reuse GUN_HIT_LINES when the human chaser is gun-stunned.
 4. Audit _syncLevelState()'s badge/token spawn/collection paths AND
-   App.jsx handleCaught: when isChaserMode, gate profile/economy writes,
-   do not playCaughtAudio(), and do not strip shop items. In-scope bug
-   fix per this handoff, not new scope creep.
+   App.jsx handleCaught: when isChaserMode is true, gate profile/economy writes (sheebs,
+   earnedBadges, rewardsHistory, deathsHistory), do NOT call playCaughtAudio(),
+   and do NOT strip shop items. In-scope bug fix per this handoff, not new scope creep.
 5. Leave the heavy-plunger POSITIVE_PICKUPS classification as-is (Ken's
    proposed default in this handoff) unless Ken has since said otherwise.
 6. Add a focused Playwright test: seed a gun pickup near the AI runner in

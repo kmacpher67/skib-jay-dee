@@ -457,9 +457,9 @@ recordings this slice (Audio 2 stays Ken-blocked on runner `CAPTURE_LINES`).
 
 **Candidate lines (planning copy — Mode B may tune wording):**
 
-- **Opener:** `YOU'RE THE TOILET NOW — TAG THEM ONCE.` / `HUNT MODE. ONE TAG. NO SHEEBS.`
-- **AI gun taunt:** `EAT LEAD, TOILET!` / `NOT TODAY, PLUMBING!` / `I BROUGHT THE GUN THIS TIME!`
-- **Win:** `CAUGHT IN 4K (AND PORCELAIN)!` / `FLUSHED. ROUND OVER.` / `TAGGED. THE BOWL WINS.`
+- **Opener:** `YOU'RE THE TOILET NOW. TAG EM ONCE!` / `HUNT MODE: ONE FLUSH, NO SHEEBS.` / `CATCH THE RUNNER! JOYSTICK + SPRINT!` / `PORCELAIN POWER! GET THAT HUMAN!`
+- **AI gun taunt:** `EAT LEAD, TOILET!` / `NOT TODAY, PLUMBING!` / `I BROUGHT THE GUN THIS TIME!` / `PEW PEW! BACK OFF BOWL!`
+- **Win:** `CAUGHT IN 4K (AND PORCELAIN)!` / `FLUSHED! THE BOWL WINS!` / `TAGGED! DOWN THE DRAIN THEY GO!` / `SWIRLED AND CLEARED!`
 
 ### Mode-boundary leak to fix in the same slice (not new scope)
 

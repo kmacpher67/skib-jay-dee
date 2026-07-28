@@ -193,21 +193,22 @@ recording required** for these (Audio 2 stays on runner `CAPTURE_LINES`).
 When these land in `frontend/src/dialog.js`, keep this section in sync.
 
 **Opener** *(banner/toast when Chaser Beta chase starts — `CHASER_BETA_OPENER_LINES`):*
-- [ ] "YOU'RE THE TOILET NOW — TAG THEM ONCE."
-- [ ] "HUNT MODE. ONE TAG. NO SHEEBS."
-- [ ] "FLUSH THE RUNNER. JOYSTICK + SPRINT. GO."
+- [ ] "YOU'RE THE TOILET NOW. TAG EM ONCE!"
+- [ ] "HUNT MODE: ONE FLUSH, NO SHEEBS."
+- [ ] "CATCH THE RUNNER! JOYSTICK + SPRINT!"
+- [ ] "PORCELAIN POWER! GET THAT HUMAN!"
 
 **AI runner gun taunt** *(speech bubble on the AI runner when it fires — `CHASER_BETA_RUNNER_GUN_TAUNTS`):*
 - [ ] "EAT LEAD, TOILET!"
 - [ ] "NOT TODAY, PLUMBING!"
 - [ ] "I BROUGHT THE GUN THIS TIME!"
-- [ ] "PEW PEW, SKIB!"
+- [ ] "PEW PEW! BACK OFF BOWL!"
 
 **Chaser win** *(toast / result quote on a successful tag — `CHASER_BETA_WIN_LINES`; replaces hardcoded `Gotcha! Round over.`):*
 - [ ] "CAUGHT IN 4K (AND PORCELAIN)!"
-- [ ] "FLUSHED. ROUND OVER."
-- [ ] "TAGGED. THE BOWL WINS."
-- [ ] "DOWN THE DRAIN — YOUR TURN."
+- [ ] "FLUSHED! THE BOWL WINS!"
+- [ ] "TAGGED! DOWN THE DRAIN THEY GO!"
+- [ ] "SWIRLED AND CLEARED!"
 
 **Reuse (no new pool):** when the human chaser is gun-stunned, keep using
 existing `GUN_HIT_LINES` (`OW MY BUTTHOLE!`, etc.) — they already read as

@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Cursor Grok 4.5 — 2026-07-28 (v0.4.69-plan dialog refine)
+**Last updated by:** Antigravity (Gemini 3.6 Flash) — 2026-07-28 (v0.4.69-plan review & Mode B readiness sign-off)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,13 +12,12 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
-- **v0.4.69-plan refine (docs only — 2026-07-28):** Extended the Chaser
-  Beta runner-AI item-use handoff with light dialog theater (opener / AI
-  gun taunt / win lines) and a `handleCaught` mode-boundary leak (death
-  sting + shop-item strip still fire on a Beta tag). FLUSH CLOCK and
-  full reverse-bark work stay parked. Next step preferred: a short Mode A
-  refine-before-code-monkey pass (copy-paste block at bottom of
-  `roadmap-handoff-v0.4.69-plan.md`), then Mode B / code-monkey. No code.
+- **v0.4.69-plan review (docs only — 2026-07-28):** Completed SDLC Mode A review of
+  Chaser Beta v0.4.69 plan. Tightened dialog candidate pools (3–4 lines each for opener,
+  AI gun taunt, and win lines), verified mode-boundary leaks with exact code line numbers
+  (`App.jsx:354` `handleCaught` death audio + item strip; `_syncLevelState()` badge/token profile writes),
+  annotated parked workloads (FLUSH CLOCK, timeout loss, full bark pool, Bowl Rush, voice clips),
+  and updated handoff status to **READY FOR MODE B**. Improved copy-paste instructions block for Mode B / Code Monkey. No code.
 
 - **v0.4.69-plan (docs only — 2026-07-28):** Ken playtested Chaser Beta
   live in the browser (movement/steering recovery from `v0.4.61` holds)

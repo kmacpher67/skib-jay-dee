@@ -8,7 +8,7 @@ full session write-up see the matching
 v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
-update `docs/version-log.md`.
+2026-07-28 | docs (Antigravity) | v0.4.69-plan review: tightened dialog pools (3-4 lines each), verified mode-boundary leaks in GameEngine.js/App.jsx, annotated parked workloads, set Status to READY FOR MODE B; no code
 2026-07-28 | docs (Cursor Grok 4.5) | v0.4.69-plan refine: light Chaser Beta dialog theater (opener/gun-taunt/win) + handleCaught death-sting/item-loss leak; refine-before-code-monkey copy-paste; no code
 2026-07-28 | v0.4.68 | Level 4 Warning Audio: Added audio stings and voiceover to the Level 4 warning overlay.
 2026-07-28 | docs (Claude Sonnet 5) | v0.4.69-plan: Chaser Beta runner-AI item-use handoff created from Ken's live playtest (gun picked up, never fired); corrected role-reversal-design.md mode matrix (pickups were never actually gated off in code); no code
