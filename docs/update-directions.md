@@ -12,6 +12,9 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.62 (real code, shipped — 2026-07-28):**
+  Implemented Slice 1 of `roadmap-handoff-v0.4.62-plan.md`. Added "from Shleeb Shop" labels to the Speed, Stamina, and Rewards pills to clarify that they reflect permanent stat upgrades from the shop. Renamed QUICK PLAY to PLAY AS RUNNER to distinguish it from the new Chaser beta mode. Fixed E2E test locator issues and a color sampling flake in `cosmetic-sink.spec.js`. `GAME_ITERATION` = v0.4.62. See `roadmap-handoff-v0.4.62.md`.
+
 - **v0.4.65-plan (docs only — 2026-07-28):** Session closeout. Ken
   described post-deploy game-repo `git push` workflow (wait for prod,
   then push so production e2e can verify). Scoped as **needs refinement**
