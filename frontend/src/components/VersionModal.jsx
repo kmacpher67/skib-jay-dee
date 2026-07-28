@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.68',
+    title: 'Level 4 Warning Audio',
+    description: 'Added audio stings to the Level 4 warning overlay. The warning now plays a sting and voiceover when it opens, and a voice line when you accept your fate.',
+  },
+  {
     version: 'v0.4.67',
     title: 'Pickup Tracking & Play Recap',
     description: 'Added a Play Recap modal when you clear a level or exit to the menu to show your stats for that run. Also added a Stats tab in the Rewards modal to show your lifetime pickups consumed.',

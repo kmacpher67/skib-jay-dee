@@ -22,11 +22,10 @@ entry heading so the change trail stays obvious at a glance.
   `_syncLevelState()` never actually gated any pickup/badge/token spawn
   on `isChaserMode` — that row was aspirational, not real). No code yet.
 
-- **v0.4.68-plan (docs only — 2026-07-28):** New Level 4 warning audio
-  pass queued in `roadmap-handoff-v0.4.68-plan.md`. The three clips are
-  already present under `frontend/src/assets/audio/`; next code slice is
-  just wiring sting + voice on overlay open and accept-fate on the button
-  click, while respecting the global mute toggle.
+- **v0.4.68 (real code, shipped — 2026-07-28):** Implemented the Level 4 warning
+  audio pass (`roadmap-handoff-v0.4.68.md`). Wired sting + voiceover on overlay
+  open and accept-fate on the button click, utilizing `playOneShot` to respect
+  the global mute toggle. `GAME_ITERATION` = v0.4.68.
 
 - **v0.4.67-plan (docs only — 2026-07-28):** Badge award counts /
   repeat-award history is now queued in

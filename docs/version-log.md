@@ -6,6 +6,19 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.68 — Level 4 warning audio pass (Antigravity / Gemini 3.1 Pro, 2026-07-28)
+
+Mode B — real code, shipped, `GAME_ITERATION` = `v0.4.68`.
+
+Wired the three Level 4 warning clips (sting, voiceover, accept-fate) into
+the existing Ramen Aisle warning overlay in `App.jsx` using the shared
+`playOneShot` helper, exactly per `roadmap-handoff-v0.4.68-plan.md`. Sting
++ voice fire when `showLevel4Warning` flips true; accept-fate fires from
+`handleAcceptLevel4Warning()`; all three respect the global mute toggle
+and reset `currentTime` before each play. Verified with `npm run build`
+and the `level-4-warning.spec.js` Playwright suite. See
+[`roadmap-handoff-v0.4.68.md`](handoffs/roadmap-handoff-v0.4.68.md).
+
 ## v0.4.69-plan — Chaser Beta: runner AI item use (Claude Sonnet 5, 2026-07-28)
 
 Mode A — docs only; no code, build, version bump, or deploy.

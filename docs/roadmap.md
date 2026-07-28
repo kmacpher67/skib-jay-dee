@@ -229,7 +229,7 @@ memorable.
 Recommended next-session order, if we want the tightest handoff:
 extra-chaser speed ramp (done, v0.4.8) -> Pipeworks 5-chaser clear +
 lvl2 timing + ambient layering (done, v0.4.10) -> Audio 2.1: Level 4
-warning overlay SFX (v0.4.68-plan) -> Audio 2: capture-line and
+warning overlay SFX (done, v0.4.68) -> Audio 2: capture-line and
 chaser-bark voice clips, 1:1 with text.
 
 - [x] **Fix initial Sheebs balance.** Landed v0.4.16 — new profiles now
@@ -450,13 +450,13 @@ chaser-bark voice clips, 1:1 with text.
   **Blocked on Ken recording** — see [`dialog_content_chasing.md`](dialog_content_chasing.md)
   and [`sound-effects-howto.md`](sound-effects-howto.md). Optional enhancement;
   game is fully playable muted.
-- [ ] **Audio 2.1: Level 4 warning overlay SFX.** Wire the new
+- [x] **Audio 2.1: Level 4 warning overlay SFX.** Landed v0.4.68 — wired
   `level-4-warning-sting.mp3`, `level-4-warning-voice.mp3`, and
-  `level-4-accept-fate.mp3` clips into the existing Ramen Aisle warning
-  overlay in `frontend/src/App.jsx`: play sting + voice when
-  `showLevel4Warning` opens, play accept-fate on the button click, reset
-  `currentTime` before each play, and respect the global mute toggle.
-  See [`roadmap-handoff-v0.4.68-plan.md`](handoffs/roadmap-handoff-v0.4.68-plan.md).
+  `level-4-accept-fate.mp3` into the existing Ramen Aisle warning overlay
+  in `frontend/src/App.jsx` via the shared `playOneShot` helper (sting +
+  voice on `showLevel4Warning` open, accept-fate on the button click,
+  `currentTime` reset, global mute respected). See
+  [`roadmap-handoff-v0.4.68.md`](handoffs/roadmap-handoff-v0.4.68.md).
 - [x] **Audio 3: ambient chase loop.** Landed v0.4.10 —
   `chase-ambient-bopbop.mp3` now stays quiet on chase start and only
   arms after roughly 15 seconds or the first extra chaser spawn,

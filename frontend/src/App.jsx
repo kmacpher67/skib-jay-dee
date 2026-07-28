@@ -25,6 +25,9 @@ import lvl2TransitionUrl from './assets/video/lvl2-transition.mp4'
 import dadCaseDoorUrl from './assets/audio/door-sounds.m4a'
 import dadCaseLightsUrl from './assets/audio/lights.m4a'
 import warningBgUrl from './assets/level-4-warning-transition-screen.jpeg'
+import level4WarningStingUrl from './assets/audio/level-4-warning-sting.mp3'
+import level4WarningVoiceUrl from './assets/audio/level-4-warning-voice.mp3'
+import level4AcceptFateUrl from './assets/audio/level-4-accept-fate.mp3'
 import {
   CHASER_FACE_POOL,
   buildLoadout,
@@ -325,11 +328,14 @@ export default function App() {
     if (index === 4 && !hasSeenLevel4WarningRef.current) {
       hasSeenLevel4WarningRef.current = true
       setShowLevel4Warning(true)
+      playOneShot(level4WarningStingUrl, 0.45)
+      playOneShot(level4WarningVoiceUrl, 0.45)
       engineRef.current?.stop()
     }
   }
 
   const handleAcceptLevel4Warning = () => {
+    playOneShot(level4AcceptFateUrl, 0.45)
     setShowLevel4Warning(false)
     engineRef.current?.start()
   }
