@@ -82,6 +82,27 @@ get lost:
   Skib-Daddy landed in v0.4.38.
 - Multiplayer spike (Phase 5) — biggest single item, do last.
 
+## App tracking / instrumentation (new 2026-07-28)
+
+Design-only, see
+[`roadmap-handoff-v0.4.64-plan.md`](handoffs/roadmap-handoff-v0.4.64-plan.md)
+for the full refinement (renumbered from `v0.4.62-plan.md` after a
+concurrent session claimed that number for unrelated content — see that
+file's note on file history). Also related: the **Debug State Dump**
+roadmap item is the manual, unblocked, no-SDK counterpart to the
+Sentry/PostHog "Report a Bug" flow scoped there. Summary of what's parked here specifically
+(the front-end-only slice is tracked in `roadmap.md`'s incremental
+backlog instead, since it doesn't need server-side work):
+
+- **Interplayer chat.** Needs a live channel + moderation — a Phase 5
+  (real backend/WebSocket) dependency, not an analytics-SDK feature.
+  Do not bundle with the tracking item above; revisit once multiplayer
+  spike lands.
+- **Real-time match/session telemetry** (queue times, match balance) —
+  waits for Phase 5 multiplayer to exist at all.
+- **Live leaderboards backed by a shared DB** — waits for Phase 6
+  (Mongo-backed profile).
+
 ## Long-Term (LT) roadmap (new 2026-07-27)
 
 Three LT-horizon items dictated by Ken, design-only, sequenced by his own

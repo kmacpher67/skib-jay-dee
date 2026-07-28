@@ -867,7 +867,7 @@ export class GameEngine {
 
   _getRunnerEvadeVector(dt) {
     if (!this.chasers || this.chasers.length === 0) return { x: 0, y: 0 }
-    // Simple AI: evade the closest chaser
+    
     let closestChaser = null
     let minDist = Infinity
     for (const c of this.chasers) {
@@ -877,23 +877,86 @@ export class GameEngine {
         closestChaser = c
       }
     }
-    if (minDist > 300 || !closestChaser) return { x: 0, y: 0 }
     
-    let dx = this.runner.x - closestChaser.x
-    let dy = this.runner.y - closestChaser.y
-    const mag = Math.hypot(dx, dy) || 1
+    // Stuck recovery timer
+    const speed = Math.hypot(this.runner.x - (this.runner.prevX || this.runner.x), this.runner.y - (this.runner.prevY || this.runner.y))
+    this.runner.prevX = this.runner.x
+    this.runner.prevY = this.runner.y
+    if (speed < 0.5 * dt) {
+      this.runner.stuckTimer = (this.runner.stuckTimer || 0) + dt
+    } else {
+      this.runner.stuckTimer = 0
+    }
     
-    // Add some random noise to wandering
+    if (this.runner.stuckTimer > 0.5) {
+      // Pick a random escape vector if stuck for half a second
+      this.runner.aiWanderX = (Math.random() - 0.5) * 2
+      this.runner.aiWanderY = (Math.random() - 0.5) * 2
+      this.runner.stuckTimer = -1.0 // won't trigger again for 1s
+    }
+
+    if (!closestChaser) return { x: 0, y: 0 }
+    
+    let targetVec = { x: 0, y: 0 }
+    
+    if (minDist > 250) {
+      // Far: move towards center waypoint or random wander
+      const dxCenter = (WORLD.width / 2) - (this.runner.x + this.runner.w/2)
+      const dyCenter = (WORLD.height / 2) - (this.runner.y + this.runner.h/2)
+      targetVec.x = dxCenter
+      targetVec.y = dyCenter
+    } else {
+      // Near: flee from closest chaser
+      targetVec.x = this.runner.x - closestChaser.x
+      targetVec.y = this.runner.y - closestChaser.y
+    }
+    
+    const mag = Math.hypot(targetVec.x, targetVec.y) || 1
+    let dx = targetVec.x / mag
+    let dy = targetVec.y / mag
+
+    // Probes for wall avoidance
+    const probeLen = 40
+    const testAngles = [0, 45, -45, 90, -90, 135, -135, 180]
+    const baseAngle = Math.atan2(dy, dx)
+    
+    let bestDir = { x: dx, y: dy }
+    let foundClear = false
+    
+    for (const offset of testAngles) {
+       const rad = baseAngle + (offset * Math.PI / 180)
+       const px = Math.cos(rad)
+       const py = Math.sin(rad)
+       
+       const testRect = {
+         x: this.runner.x + px * probeLen,
+         y: this.runner.y + py * probeLen,
+         w: this.runner.w,
+         h: this.runner.h
+       }
+       
+       let hit = false
+       for (const wall of this.map.walls) {
+         if (rectsIntersect(testRect, wall)) {
+           hit = true; break;
+         }
+       }
+       if (!hit) {
+         bestDir = { x: px, y: py }
+         foundClear = true
+         break;
+       }
+    }
+
     this.runner.aiWanderTimer = (this.runner.aiWanderTimer || 0) - dt
     if (this.runner.aiWanderTimer <= 0) {
        this.runner.aiWanderX = (Math.random() - 0.5) * 2
        this.runner.aiWanderY = (Math.random() - 0.5) * 2
-       this.runner.aiWanderTimer = 1.0 + Math.random() * 2
+       this.runner.aiWanderTimer = 0.5 + Math.random() * 1.5
     }
     
-    dx = (dx / mag) + (this.runner.aiWanderX || 0) * 0.5
-    dy = (dy / mag) + (this.runner.aiWanderY || 0) * 0.5
-    
+    dx = bestDir.x + (this.runner.aiWanderX || 0) * 0.3
+    dy = bestDir.y + (this.runner.aiWanderY || 0) * 0.3
     const finalMag = Math.hypot(dx, dy) || 1
     return { x: dx / finalMag, y: dy / finalMag }
   }
@@ -916,6 +979,7 @@ export class GameEngine {
     this.levelSkreems = 0
     this.levelElapsed = 0
     this.pipeworksSkreems = 0
+    this.flushClock = 60
     this.chaser.chaserType = this.levelIndex === 5 ? 'skib-daddy' : null
     this.chaser.plungerCooldown = 2
     this.chasers = [this.chaser]
@@ -1079,6 +1143,19 @@ export class GameEngine {
     if (this.phase === 'chase' || this.phase === 'near-capture') {
       this.levelSeconds += dt
       this.sessionSeconds += dt
+
+      if (this.isChaserMode) {
+        this.flushClock -= dt
+        if (this.flushClock <= 0) {
+           this.captureLine = "TIME'S UP! THE RUNNER ESCAPED!"
+           this._caughtFaceStage = 'held'
+           this.phase = 'caught'
+           this.phaseTimer = 3.0
+           this.zoom = 1
+           this.onCaught(this.captureLine)
+           return
+        }
+      }
       const wasExhausted = this.stamina <= 0
 
       if (this.gawdParticleActive) {
@@ -1273,8 +1350,8 @@ export class GameEngine {
               ? RAMAN_AUNT.speedMult
               : 1
         const chaserSpeed = chaser.baseSpeed * this.chaserSpeedMod * joinRampMod * speedMult * chaserTypeSpeedMod
-        const stepX = (dir.x / dist) * chaserSpeed * dt
-        const stepY = (dir.y / dist) * chaserSpeed * dt
+        let stepX = (dir.x / dist) * chaserSpeed * dt
+        let stepY = (dir.y / dist) * chaserSpeed * dt
         if (chaser.chaserType === 'skib-daddy') {
           chaser.plungerCooldown -= dt
           if (chaser.plungerCooldown <= 0 && dist > 100 && dist < 400) {
@@ -1412,6 +1489,7 @@ export class GameEngine {
   }
 
   _maybeSpawnExtraChaser(dt) {
+    if (this.isChaserMode) return
     if (this.chasers.length >= MAX_CHASERS) return
 
     this.extraChaserTimer -= dt
@@ -2747,7 +2825,11 @@ export class GameEngine {
     ctx.textAlign = 'left'
     ctx.textBaseline = 'middle'
     ctx.fillText(`DEATHS: ${this.deaths}`, 10, 44)
-    if (this.chasers.length > 1) {
+    if (this.isChaserMode) {
+      ctx.textAlign = 'right'
+      ctx.fillStyle = '#ffd27a'
+      ctx.fillText(`FLUSH CLOCK: ${Math.ceil(this.flushClock)}s`, VIEW_W - 10, 44)
+    } else if (this.chasers.length > 1) {
       ctx.textAlign = 'right'
       ctx.fillStyle = '#ffd27a'
       ctx.fillText(`TOILETS ON YOU: ${this.chasers.length}`, VIEW_W - 10, 44)

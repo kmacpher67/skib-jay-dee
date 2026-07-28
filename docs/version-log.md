@@ -2024,3 +2024,8 @@ Executing the `v0.4.38-plan` handoff. Migrating the old maps to grids sets up th
   - Updated `frontend/e2e/rod-of-poopdom.spec.js` to call engine `_tryFire` instead of simulating fast keypresses, eliminating test flakiness.
 - **Why:** The first teleport set the `stinkyTimer` cooldown correctly, but the timer was never decremented during the chase phase. This left the user permanently locked out of subsequent teleports.
 - **What's next:** Proceed to feature slices (e.g. Slice B HUD Pills, Near-Miss Burst, or Play Recap).
+
+## v0.4.61 - Play as Chaser (Beta)
+- Fixed human chaser movement.
+- Added basic wall-aware AI for the runner.
+- Limited chaser mode to a strict 1v1 60-second capture/timeout loop with a rematch/menu result card.

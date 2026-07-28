@@ -182,7 +182,7 @@ export default function App() {
 
   const toggleDifficulty = () => {
     syncProfile((current) => {
-      const diffs = ['easy', 'normal', 'hardcore']
+      const diffs = ['noob', 'casual', '4chan-st']
       const idx = diffs.indexOf(current.difficulty)
       const nextDiff = diffs[(idx + 1) % diffs.length]
       return { ...current, difficulty: nextDiff }
@@ -663,7 +663,9 @@ export default function App() {
           <ProfileModal
             profile={profileModal}
             mode={profileModalMode}
+            isChaserMode={isChaserMode}
             onPrimary={handleContinueAfterProfile}
+            onRematch={() => handlePlay(true)}
             onClose={handleContinueAfterProfile}
           />
         )}
@@ -763,9 +765,9 @@ function MainMenu({
             e.stopPropagation()
             onToggleDifficulty()
           }}
-          style={{ textTransform: 'capitalize', backgroundColor: profile.difficulty === 'hardcore' ? '#8a2be2' : profile.difficulty === 'easy' ? '#2e8b57' : '#4a90e2' }}
+          style={{ backgroundColor: profile.difficulty === '4chan-st' ? '#8a2be2' : profile.difficulty === 'noob' ? '#2e8b57' : '#4a90e2' }}
         >
-          {profile.difficulty}
+          {profile.difficulty === 'noob' ? 'Noob-Noob' : profile.difficulty === '4chan-st' ? '4chan-st' : 'Casual'}
         </button>
         {profile.sheebs < 0 ? (
           <span className="debt-badge" style={{ backgroundColor: '#ff2e2e', color: 'white', padding: '0 6px', borderRadius: '4px' }}>DEBT: {profile.sheebs}</span>
@@ -802,11 +804,21 @@ function MainMenu({
 
       <div className="menu-actions">
         <button className="play-btn" onClick={onPlay}>
-          QUICK PLAY
+          PLAY AS RUNNER
         </button>
-        <button className="play-btn chaser-btn" onClick={onPlayAsChaser} style={{ backgroundColor: '#8a5a34' }}>
-          PLAY AS CHASER
-        </button>
+        <div className="chaser-btn-wrapper" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <button
+            className="play-btn chaser-btn"
+            onClick={onPlayAsChaser}
+            style={{ backgroundColor: '#FFD54A', color: '#111' }}
+            aria-describedby="chaser-beta-desc"
+          >
+            PLAY AS CHASER <span style={{ backgroundColor: '#ff2e2e', color: 'white', fontSize: '0.65em', padding: '2px 6px', borderRadius: '4px', marginLeft: '6px', verticalAlign: 'middle' }}>BETA</span>
+          </button>
+          <div id="chaser-beta-desc" className="chaser-beta-explanation" style={{ fontSize: '0.75rem', color: '#FFD54A', lineHeight: '1.2' }}>
+            Experimental Beta mode. heavily simplified.
+          </div>
+        </div>
         <button className="shop-btn" onClick={onOpenShop}>
           OPEN SHLEEB SHOP
         </button>

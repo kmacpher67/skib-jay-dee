@@ -582,8 +582,10 @@ and chaser-bark voice clips, 1:1 with text.
   block or get blocked by the Multiplayer spike. Blocked on Ken: tool
   tier (Sentry+PostHog vs. all-in-one vs. self-hosted) and
   privacy/consent posture for session replay (must mask the face-upload
-  input at minimum). See
-  [`roadmap-handoff-v0.4.62-plan.md`](handoffs/roadmap-handoff-v0.4.62-plan.md).
+  input at minimum). Related: the **Debug State Dump** item below is a
+  complementary, unblocked, no-SDK manual support path — ship that
+  first. See
+  [`roadmap-handoff-v0.4.64-plan.md`](handoffs/roadmap-handoff-v0.4.64-plan.md).
 - [ ] **Multiplayer spike (Phase 5).** Only after everything above feels
   solid. Make the frontend actually connect to `/ws/match`, sync two
   browser tabs, server decides who's Chaser. This is the biggest single
@@ -677,4 +679,4 @@ and chaser-bark voice clips, 1:1 with text.
   decision brief: [roadmap-handoff-v0.4.58-plan.md](handoffs/roadmap-handoff-v0.4.58-plan.md).
   Option C (scale 9:16 + side art) remains a future alternative if Ken wants
   a different desktop feel.
-- [ ] **Feature: Debug State Dump.** Add a debug function (e.g., triggered by `Triple Q` or `ctrl+alt+del`) that performs a debug dump and allows copying game position data, relative position level, and all debug info for problem-solving.
+- [ ] **Feature: Debug State Dump.** Add a debug function (e.g., triggered by `Triple Q` or `ctrl+alt+del`) that performs a debug dump and allows copying game position data, relative position level, and all debug info for problem-solving. **Related to the App tracking / instrumentation item above** — this is the manual, client-only, no-SDK support path (clipboard dump, no network call), complementary to the Sentry-tagged "Report a Bug" button scoped there. Unblocked (no open decisions); recommend shipping this first, then folding its output format into the Sentry event payload once the SDK tier is chosen. See [`roadmap-handoff-v0.4.64-plan.md`](handoffs/roadmap-handoff-v0.4.64-plan.md).

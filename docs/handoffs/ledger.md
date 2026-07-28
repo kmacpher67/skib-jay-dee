@@ -714,3 +714,8 @@ update `docs/version-log.md`.
 - Hotfix: Decrement `stinkyTimer` in chase loop to allow second teleport for Rod of Poopdom.
 - Hotfix: Age and filter `smokeEffects` properly so brown smoke dissipates.
 - Update `rod-of-poopdom.spec.js` test to use engine `_tryFire` instead of quick DOM inputs, fixing flake.
+
+### v0.4.61
+- **Focus**: Play as Chaser (Beta) mode.
+- **Changes**: Fixed human chaser movement, added basic wall-aware AI for the runner, and built a 60-second capture/timeout loop with a rematch/menu result card.
+- **Status**: Shipped.

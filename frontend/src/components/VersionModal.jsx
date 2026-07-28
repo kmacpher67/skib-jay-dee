@@ -1,5 +1,15 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.61',
+    title: 'Play as Chaser (Beta)',
+    description: 'Fixed human chaser movement. Added basic wall-aware AI for the runner. Limited chaser mode to a strict 1v1 60-second capture/timeout loop with a rematch/menu result card.',
+  },
+  {
+    version: 'v0.4.60',
+    title: 'Difficulty Selector UI',
+    description: 'Added a Difficulty Selector control to the main menu allowing you to choose between Noob-Noob, Casual, and 4chan-st.',
+  },
+  {
     version: 'v0.4.59',
     title: 'Neon Jump-Scare Upgrade',
     description: 'The Neon Jump-Scare Filter is now a real perk! Bribe the filter after a scare for a 0.5s headstart. Costs 50 sheebs each escape.',
