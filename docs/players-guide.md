@@ -23,8 +23,7 @@ and we'll fold it into this guide.
 
 ## Game modes
 
-- The normal campaign is the **runner** game: survive, collect items,
-  advance levels, and use the profile economy described below.
+- The intro app screen (officially called the **Main Menu**) launches the normal campaign where you play as the **runner**: survive, collect items, advance levels, and use the profile economy described below.
 - A **Play as Chaser** menu scaffold exists, but it is currently a broken
   experimental Beta: directional control for the human chaser is not
   reliable and the side-mode rules are not yet isolated from the
