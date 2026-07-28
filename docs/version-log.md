@@ -6,6 +6,33 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.60-plan — Difficulty Selector SDLC review (Claude Sonnet 5, 2026-07-28)
+
+Mode A — docs only, no code. `GAME_ITERATION` stays **v0.4.57**.
+
+Ken asked where the Easy/Normal/4chan-st difficulty setting lives, whether
+it shipped, and whether it's still backlogged. Investigation: grepped
+`frontend/src` for `difficulty`/`4chan` — the only hit is an unrelated
+`GameEngine.js:301` comment about a Level 4+ time/chaser floor. No
+`difficulty` field exists in the cookie profile, no menu UI, no engine
+state. The concept is fully design-only, specced in
+`docs/difficulty-mechanics-plan.md` (Method C Debt Lock + Noob-Noob /
+Casual / 4chan-st starting selector) and still an open, unchecked line in
+`docs/roadmap.md`.
+
+Also surfaced: `roadmap-handoff-v0.4.58-plan.md` (Desktop FOV) is blocked
+in part on this exact question ("does a difficulty picker already exist?")
+— answered here: no. Wrote `roadmap-handoff-v0.4.60-plan.md` scoping a
+deliberately narrow, single-session slice: a `difficulty` cookie field plus
+a main-menu selector (using Ken's own tier names verbatim), wired
+read-only into `GameEngine.js` so later work (Method C economy math, and
+v0.4.58's per-tier FOV) has one source of truth. Explicitly did not scope
+the Debt Lock math, dialog-pool overrides, or any FOV behavior in this same
+handoff — those stay separate, blocked/design-only tracks.
+
+Synced `docs/roadmap.md`, `docs/update-directions.md`, and
+`docs/handoffs/ledger.md`.
+
 ## v0.4.58-plan — Desktop Screen Support refine (Cursor Grok 4.5, 2026-07-27)
 
 Mode A — docs only, no code. `GAME_ITERATION` stays **v0.4.54**.

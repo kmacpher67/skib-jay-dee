@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Cursor Grok 4.5 — 2026-07-27 (v0.4.58-plan desktop FOV refine)
+**Last updated by:** Claude Sonnet 5 — 2026-07-28 (v0.4.60-plan difficulty selector review)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,16 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.60-plan (docs-only, 2026-07-28):** SDLC review, no code — Ken
+  asked where the Easy/Normal/4chan-st difficulty setting is. Confirmed
+  it was never shipped: only a design doc
+  (`docs/difficulty-mechanics-plan.md`) and an open roadmap line exist, no
+  code in `frontend/src`. Scoped a minimal code-ready slice (cookie
+  `difficulty` field + main-menu selector, no Debt Lock math yet) in
+  `roadmap-handoff-v0.4.60-plan.md`. This also unblocks `v0.4.58-plan`'s
+  first open question (whether a difficulty picker already exists — it
+  didn't, now it's scoped).
+
 - **v0.4.58-plan (docs-only, 2026-07-27):** Mode A refine — Desktop Screen
   Support decision brief cleaned up in
   `roadmap-handoff-v0.4.58-plan.md`. Live gate is **Option A (fog-of-war
