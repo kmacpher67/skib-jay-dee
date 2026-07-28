@@ -2154,3 +2154,14 @@ Executing the `v0.4.38-plan` handoff. Migrating the old maps to grids sets up th
 - Fixed human chaser movement.
 - Added basic wall-aware AI for the runner.
 - Limited chaser mode to a strict 1v1 60-second capture/timeout loop with a rematch/menu result card.
+
+## v0.4.67 (2026-07-28) - Pickup Tracking & Play Recap
+
+- **What changed:**
+  - Added `PlayRecapModal` to show run stats on level-clear and when exiting to the menu (but not on death).
+  - Updated `App.jsx` to track run stats and show the recap modal.
+  - Added `handlePickupConsumed` callback in `GameEngine.js` and `GameCanvas.jsx` to track pickup consumption (badges, items) during a run.
+  - Added a "Stats" tab in the `RewardsHistoryModal` to display lifetime stats like total time played and pickups consumed.
+  - Updated `GAME_ITERATION` to `v0.4.67`.
+- **Why:** To give the player visibility into their per-run performance and lifetime stats (Slice 2 of the `v0.4.62` plan / `v0.4.66` candidate 3).
+

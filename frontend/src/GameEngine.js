@@ -426,6 +426,7 @@ export class GameEngine {
       onCaughtProfileReady,
       onBadgeEarned,
       onShart,
+      onPickupConsumed,
       initialSheebs,
       initialDeaths = 0,
       highestLevel = 0,
@@ -462,6 +463,7 @@ export class GameEngine {
     this.onCaughtProfileReady = onCaughtProfileReady || (() => {})
     this.onBadgeEarned = onBadgeEarned || (() => {})
     this.onShart = onShart || (() => {})
+    this.onPickupConsumed = onPickupConsumed || (() => {})
 
     this.runner = {
       x: WORLD.width / 2 - 20,
@@ -1678,6 +1680,8 @@ export class GameEngine {
         this.runnerLine = 'Turdstone Token secured. Toilet insurance engaged!'
         this.runnerLineTimer = 2
       }
+      
+      this.onPickupConsumed(pickup.type, POSITIVE_PICKUPS.includes(pickup.type) || pickup.type.endsWith('-badge') || pickup.type === 'badge' ? 'good' : 'bad')
       return false
     })
   }
@@ -1722,6 +1726,8 @@ export class GameEngine {
             this.onSkreem(Math.floor(this.skreems))
           }
         }
+        
+        this.onPickupConsumed(pickup.effect, pickup.isGood ? 'good' : 'bad')
         return false
       }
       return true

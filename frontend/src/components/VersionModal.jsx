@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.67',
+    title: 'Pickup Tracking & Play Recap',
+    description: 'Added a Play Recap modal when you clear a level or exit to the menu to show your stats for that run. Also added a Stats tab in the Rewards modal to show your lifetime pickups consumed.',
+  },
+  {
     version: 'v0.4.64.3',
     title: 'Level 4 Warning Visibility Fix',
     description: 'The Level 4 warning overlay had no CSS positioning and was rendering invisibly underneath the canvas — the game paused correctly but there was nothing visible to click to resume. Added proper full-screen modal styling.',

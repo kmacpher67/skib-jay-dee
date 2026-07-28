@@ -5,6 +5,7 @@ import ProfileModal from './components/ProfileModal.jsx'
 import ProfileSwitcherModal from './components/ProfileSwitcherModal.jsx'
 import DeathsModal from './components/DeathsModal.jsx'
 import RewardsHistoryModal from './components/RewardsHistoryModal.jsx'
+import PlayRecapModal from './components/PlayRecapModal.jsx'
 import ShopModal from './components/ShopModal.jsx'
 import VersionModal from './components/VersionModal.jsx'
 import skreemLoopUrl from './assets/audio/jayden-skreem-loop.m4a'
@@ -62,6 +63,9 @@ export default function App() {
   const [isChaserMode, setIsChaserMode] = useState(false)
   const [showLevel4Warning, setShowLevel4Warning] = useState(false)
   const [activeBadgeToast, setActiveBadgeToast] = useState(null)
+  const [recapOpen, setRecapOpen] = useState(false)
+  const [isExiting, setIsExiting] = useState(false)
+  const runStatsRef = useRef({ pickups: {}, badges: [], sheebsEarned: 0, skreemsEarned: 0 })
   const hasSeenLevel4WarningRef = useRef(false)
   const sessionDeathsRef = useRef(0)
   const turdstoneOverlayRef = useRef(false)
@@ -162,6 +166,35 @@ export default function App() {
       }
       return current
     })
+
+    if (index !== undefined) {
+      if (engineRef.current) {
+        runStatsRef.current.sheebsEarned = engineRef.current.sheebs - engineRef.current.initialSheebs
+        runStatsRef.current.skreemsEarned = engineRef.current.skreems - (engineRef.current.initialSkreems || 0)
+        engineRef.current.stop()
+      }
+      setRecapOpen(true)
+    }
+  }
+
+  const handleExitClick = () => {
+    if (engineRef.current) {
+      runStatsRef.current.sheebsEarned = engineRef.current.sheebs - engineRef.current.initialSheebs
+      runStatsRef.current.skreemsEarned = engineRef.current.skreems - (engineRef.current.initialSkreems || 0)
+      engineRef.current.stop()
+    }
+    setIsExiting(true)
+    setRecapOpen(true)
+  }
+
+  const handleCloseRecap = () => {
+    setRecapOpen(false)
+    if (isExiting) {
+      setScreen('menu')
+      setIsExiting(false)
+    } else {
+      engineRef.current?.start()
+    }
   }
 
   const handleLevelChangeAudio = () => playOneShot(levelStartUrl, 0.35)
@@ -206,6 +239,10 @@ export default function App() {
     setDadCaseSpawned(false)
     setProfileModal(null)
     setProfileModalMode(null)
+    runStatsRef.current = { pickups: {}, badges: [], sheebsEarned: 0, skreemsEarned: 0 }
+    if (engineRef.current) {
+      engineRef.current.initialSkreems = engineRef.current.skreems
+    }
     setScreen('playing')
   }
 
@@ -375,6 +412,32 @@ export default function App() {
       setActiveBadgeToast(badge)
       setTimeout(() => setActiveBadgeToast(null), 5000)
     }
+    
+    runStatsRef.current.badges.push(badgeId)
+  }
+
+  const handlePickupConsumed = (type, outcome) => {
+    if (!runStatsRef.current.pickups[type]) {
+      runStatsRef.current.pickups[type] = { count: 0, outcome }
+    }
+    runStatsRef.current.pickups[type].count += 1
+    if (outcome === 'bad') runStatsRef.current.pickups[type].outcome = 'bad' // if any bad, keep bad for joke
+
+    syncProfile((current) => {
+      const historyEntry = {
+        timestamp: Date.now(),
+        type: 'pickup',
+        label: type,
+        amount: 0,
+        level: engineRef.current ? engineRef.current.levelIndex + 1 : null,
+        levelName: engineRef.current && engineRef.current.levels && engineRef.current.levels[engineRef.current.levelIndex] ? engineRef.current.levels[engineRef.current.levelIndex].name : null,
+      }
+
+      return {
+        ...current,
+        rewardsHistory: [...(current.rewardsHistory || []), historyEntry].slice(-50),
+      }
+    })
   }
 
   const handleCaughtProfileReady = (payload) => {
@@ -627,6 +690,7 @@ export default function App() {
               onCaughtProfileReady={handleCaughtProfileReady}
               onBadgeEarned={handleBadgeEarned}
               onShart={handleShart}
+              onPickupConsumed={handlePickupConsumed}
               onEngineReady={(engine) => {
                 engineRef.current = engine
               }}
@@ -646,7 +710,10 @@ export default function App() {
             {showLevel4Warning && (
               <Level4WarningOverlay onAccept={handleAcceptLevel4Warning} />
             )}
-            <button className="exit-btn" onClick={() => setScreen('menu')}>
+            {recapOpen && (
+              <PlayRecapModal stats={runStatsRef.current} onClose={handleCloseRecap} />
+            )}
+            <button className="exit-btn" onClick={handleExitClick}>
               ✕
             </button>
             <button

@@ -74,6 +74,10 @@ test.describe('Rewards & History panel', () => {
     
     // Exit to menu
     await page.locator('button.exit-btn').click()
+    
+    // Close the Play Recap modal
+    await expect(page.getByRole('dialog', { name: 'Play Recap' })).toBeVisible()
+    await page.getByRole('button', { name: 'CONTINUE' }).click()
 
     // Open rewards modal
     await page.locator('button.rewards-btn').click()

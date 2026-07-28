@@ -37,6 +37,11 @@ test('lvl2 transition overlay is dismissed when a capture starts', async ({ page
     window.__skibEngine.chaserSpeedMod = 0
   })
   await page.waitForFunction(() => window.__skibEngine.phase === 'level-up')
+  
+  // Close the Play Recap modal
+  await expect(page.getByRole('dialog', { name: 'Play Recap' })).toBeVisible()
+  await page.getByRole('button', { name: 'CONTINUE' }).click()
+
   await expect(page.locator('.lvl2-transition')).toBeVisible()
 
   await page.waitForFunction(() => window.__skibEngine.phase === 'chase', null, { timeout: 5000 })
@@ -62,6 +67,11 @@ test('lvl2 transition finishes without a crash after playback ends', async ({ pa
 
   await primePipeworks(page, { advance: true })
   await page.waitForFunction(() => window.__skibEngine.phase === 'level-up')
+  
+  // Close the Play Recap modal
+  await expect(page.getByRole('dialog', { name: 'Play Recap' })).toBeVisible()
+  await page.getByRole('button', { name: 'CONTINUE' }).click()
+
   await expect(page.locator('.lvl2-transition')).toBeVisible()
 
   await page.evaluate(() => {
