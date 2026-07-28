@@ -2,6 +2,7 @@
 
 **Author:** kenmac
 **Created:** 2026-07-26
+**Last updated by:** Codex (GPT-5) — 2026-07-28 (v0.4.69 Chaser Beta final plan review)
 
 This document memorializes the in-game dialog text used during the chase and capture events. 
 It exists as a human-AI documentation trail to track what lines exist, where they are used, and to organize the to-do list for human voice recording.
@@ -193,31 +194,35 @@ recording required** for these (Audio 2 stays on runner `CAPTURE_LINES`).
 When these land in `frontend/src/dialog.js`, keep this section in sync.
 
 **Opener** *(banner/toast when Chaser Beta chase starts — `CHASER_BETA_OPENER_LINES`):*
-- [ ] "YOU'RE THE TOILET NOW. TAG EM ONCE!"
-- [ ] "HUNT MODE: ONE FLUSH, NO SHEEBS."
-- [ ] "CATCH THE RUNNER! JOYSTICK + SPRINT!"
-- [ ] "PORCELAIN POWER! GET THAT HUMAN!"
+- [ ] "YOU'RE THE TOILET. TAG JAYDEN ONCE!"
+- [ ] "HUNT MODE: ONE TAG. NO SHEEBS. ALL BOWL."
+- [ ] "SPRINT, CORNER, FLUSH THE RUNNER!"
+- [ ] "THE HUMAN HAS A GUN. GET THEM ANYWAY."
 
 **AI runner gun taunt** *(speech bubble on the AI runner when it fires — `CHASER_BETA_RUNNER_GUN_TAUNTS`):*
-- [ ] "EAT LEAD, TOILET!"
-- [ ] "NOT TODAY, PLUMBING!"
-- [ ] "I BROUGHT THE GUN THIS TIME!"
-- [ ] "PEW PEW! BACK OFF BOWL!"
+- [ ] "BACK UP, BOWL BOY!"
+- [ ] "I FOUND A GUN! RUN!"
+- [ ] "FLUSH THIS, TOILET!"
+- [ ] "PEW! PERSONAL SPACE!"
 
 **Chaser win** *(toast / result quote on a successful tag — `CHASER_BETA_WIN_LINES`; replaces hardcoded `Gotcha! Round over.`):*
-- [ ] "CAUGHT IN 4K (AND PORCELAIN)!"
-- [ ] "FLUSHED! THE BOWL WINS!"
-- [ ] "TAGGED! DOWN THE DRAIN THEY GO!"
-- [ ] "SWIRLED AND CLEARED!"
+- [ ] "TAGGED! THE BOWL TAKES IT!"
+- [ ] "FLUSHED! HUNT COMPLETE!"
+- [ ] "CAUGHT IN 4K: PORCELAIN VICTORY!"
+- [ ] "DOWN THE DRAIN! CHASER WINS!"
 
 **Reuse (no new pool):** when the human chaser is gun-stunned, keep using
 existing `GUN_HIT_LINES` (`OW MY BUTTHOLE!`, etc.) — they already read as
 toilet-POV.
 
 **Parked (do not record / implement in v0.4.69):**
-- Timeout-loss lines (needs Ken-confirmed FLUSH CLOCK).
-- Full AI-runner proximity bark pool (mirror of `CHASER_LINES`).
-- Near-capture card flipped for the hunter.
+- Timeout-loss lines: the existing FLUSH CLOCK/timeout rules need Ken's
+  decision; this pass does not redesign its arcade loop.
+- Full AI-runner proximity bark pool: needs frequency/timing tuning and
+  would obscure the new gun-feedback beat.
+- Near-capture card flipped for the hunter: a separate outcome/state flow.
+- Voice recording: Audio 2 remains Ken-blocked on runner `CAPTURE_LINES`.
+- Bowl Rush theater: a new ability needs separate balance and input work.
 
 ---
 
@@ -241,4 +246,3 @@ To get that perfect blend of unhinged cynicism and chaotic 4chan energy, focus o
 
 **4. The Core Aesthetic**
 * Dark nihilism, cynical deconstruction of tropes, and unfiltered absurdist irony. The game acknowledges its own UI and mechanics to roast the player.
-

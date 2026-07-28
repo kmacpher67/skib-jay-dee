@@ -2,7 +2,7 @@
 
 **Created by:** Cursor Grok 4.5 — 2026-07-28
 **Created on:** 2026-07-28
-**Last updated by:** Cursor Grok 4.5 — 2026-07-28
+**Last updated by:** Codex (GPT-5) — 2026-07-28
 **Last updated on:** 2026-07-28
 **Session mode:** Mode A (planning / refine — docs only, no code)
 
@@ -345,8 +345,8 @@ state with the actors swapped.
 | AI-controlled entity | One or more chasers | One runner |
 | Level progression | Campaign Levels 1–10 / endless plan | None; one explicit arena |
 | Economy/profile writes | Sheebs, badges, deaths, best run, rewards | None in v1; do not mutate the profile |
-| Shop/loadout bonuses | Apply to human runner | Do not leak onto the AI runner or human chaser |
-| Pickups/quest rooms | Campaign rules | **On, corrected 2026-07-28** — pickups spawn and the AI runner should seek helpful ones (per `POSITIVE_PICKUPS`) and use them (e.g. fire the gun at the human chaser), and route around harmful ones; badges/tokens stay visually present but must not write profile/economy state. See [`roadmap-handoff-v0.4.69-plan.md`](handoffs/roadmap-handoff-v0.4.69-plan.md). |
+| Shop/loadout bonuses | Apply to human runner | Do not leak onto the AI runner or human chaser; v0.4.69 zeroes the inherited profile loadout at the Chaser-Beta engine boundary |
+| Pickups/quest rooms | Campaign rules | **On, corrected 2026-07-28** — v0.4.69 is deliberately **gun-first**: the AI runner may seek a gun, fire it at the human chaser, and avoid rolling pickups marked harmful (`isGood: false`). Do not treat campaign `POSITIVE_PICKUPS` as a generic AI loadout. Badges/tokens may remain visual but must not write profile/economy state. See [`roadmap-handoff-v0.4.69-plan.md`](handoffs/roadmap-handoff-v0.4.69-plan.md). |
 | Extra chasers | Campaign pressure | Off; 1v1 only |
 | Skreems/near-capture/death flow | Runner campaign | Replaced by target + clock + result |
 | Difficulty selector | Runner campaign tuning | Pin a documented Beta baseline until runner-AI difficulty is designed |
@@ -416,6 +416,14 @@ The button loses its experimental treatment only when all are true:
 - **(Added 2026-07-28 refine)** A successful tag reads as a *chaser win*
   (funny win line + Rematch/Menu), not a runner death: no capture sting
   audio, no shop-item strip, no `CAPTURE_LINES` jump-scare copy.
+- **(Final v0.4.69 review, 2026-07-28)** Profile isolation covers every
+  shared App callback that persists campaign state — sheebs, badges,
+  rewards history, deaths history, highest level, and best run — not only
+  badge/token collection. The inherited shop loadout is also zeroed so the
+  human chaser's purchases cannot buff the AI runner. In-round item, gun,
+  and stun effects remain temporary gameplay state. The existing FLUSH
+  CLOCK/timeout path is not being redesigned in this slice; Ken must decide
+  its final arcade role.
 - Ken explicitly approves removing the Beta treatment.
 
 If those criteria cannot be met in two bounded Mode B slices, soft-hide
@@ -429,7 +437,7 @@ might be useful later.
 |---|---|---|
 | Levels 7–10 / endgame | Runner only | Deep Role Reversal still follows the story arc; Beta is one arena |
 | Difficulty / Debt Lock | Runner only for now | Chaser difficulty later means runner-AI competence, not harsher debt |
-| Pickups / interactive content | Runner only in recovery | Each future item must declare which actor can collect/use it |
+| Pickups / interactive content | Both — role-specific | v0.4.69 permits gun-first runner AI use in Chaser Beta; each future item must declare which actor can collect/use it |
 | New chaser abilities | Both — role-specific later | Separate AI trigger from human input before exposing a kit |
 | Faces / characters | Both — role-specific | Menu-selected runner becomes NPC in Chaser Beta; selected chaser is human |
 | Audio/dialog | Both — role-specific | Speaker and target must not assume the human is always Jayden |
@@ -457,26 +465,32 @@ recordings this slice (Audio 2 stays Ken-blocked on runner `CAPTURE_LINES`).
 
 **Candidate lines (planning copy — Mode B may tune wording):**
 
-- **Opener:** `YOU'RE THE TOILET NOW. TAG EM ONCE!` / `HUNT MODE: ONE FLUSH, NO SHEEBS.` / `CATCH THE RUNNER! JOYSTICK + SPRINT!` / `PORCELAIN POWER! GET THAT HUMAN!`
-- **AI gun taunt:** `EAT LEAD, TOILET!` / `NOT TODAY, PLUMBING!` / `I BROUGHT THE GUN THIS TIME!` / `PEW PEW! BACK OFF BOWL!`
-- **Win:** `CAUGHT IN 4K (AND PORCELAIN)!` / `FLUSHED! THE BOWL WINS!` / `TAGGED! DOWN THE DRAIN THEY GO!` / `SWIRLED AND CLEARED!`
+- **Opener:** `YOU'RE THE TOILET. TAG JAYDEN ONCE!` / `HUNT MODE: ONE TAG. NO SHEEBS. ALL BOWL.` / `SPRINT, CORNER, FLUSH THE RUNNER!` / `THE HUMAN HAS A GUN. GET THEM ANYWAY.`
+- **AI gun taunt:** `BACK UP, BOWL BOY!` / `I FOUND A GUN! RUN!` / `FLUSH THIS, TOILET!` / `PEW! PERSONAL SPACE!`
+- **Win:** `TAGGED! THE BOWL TAKES IT!` / `FLUSHED! HUNT COMPLETE!` / `CAUGHT IN 4K: PORCELAIN VICTORY!` / `DOWN THE DRAIN! CHASER WINS!`
 
 ### Mode-boundary leak to fix in the same slice (not new scope)
 
 `App.jsx` `handleCaught` currently always `playCaughtAudio()` and may strip
 a shop item when `highestLevel > 4`. That path still runs on a Chaser Beta
 tag via `onCaught({ captureLine: ... })`. Gate both behind
-`!isChaserMode` (or an explicit chaser-win branch). Same spirit as the
-badge/token profile audit already in the handoff.
+`!isChaserMode` (or an explicit chaser-win branch). The same bounded App
+callback boundary must also suppress Chaser-Beta writes to sheebs, badges,
+reward/death history, highest level, and best run; it does not suppress
+temporary in-round item effects.
 
 ### Explicitly parked (do not pull into `v0.4.69`)
 
-- FLUSH CLOCK / timeout-loss lines ("OUTRUN BY A HUMAN…") — blocked on
-  Ken confirming the 60s arcade recommendation.
-- Full AI-runner bark pool mirroring `CHASER_LINES` under pressure.
+- FLUSH CLOCK / timeout-loss lines ("OUTRUN BY A HUMAN…") — a 60-second
+  clock already exists, but its outcome UX and final rules need Ken's
+  decision; reworking them would change the arcade loop.
+- Full AI-runner bark pool mirroring `CHASER_LINES` under pressure — needs
+  frequency/timing tuning and would bury the new gun feedback.
 - Near-capture interlude flipped for the human hunter.
-- Voice clips for any Chaser Beta pools.
-- `BOWL RUSH` ability theater.
+- Voice clips for any Chaser Beta pools — Audio 2 remains Ken-blocked on
+  recording the runner `CAPTURE_LINES` first.
+- `BOWL RUSH` ability theater — a new player ability requires its own
+  balance and input-validation slice.
 
 Those stay recommendations in §10 until Ken answers the open questions in
 §8.

@@ -2239,3 +2239,24 @@ Executing the `v0.4.38-plan` handoff. Migrating the old maps to grids sets up th
   - Added a "Stats" tab in the `RewardsHistoryModal` to display lifetime stats like total time played and pickups consumed.
   - Updated `GAME_ITERATION` to `v0.4.67`.
 - **Why:** To give the player visibility into their per-run performance and lifetime stats (Slice 2 of the `v0.4.62` plan / `v0.4.66` candidate 3).
+
+## v0.4.69-plan final review — Chaser Beta gun interaction (Codex / GPT-5, 2026-07-28)
+
+Mode A — docs only; no code, build, version bump, or deploy.
+
+- Narrowed the runner's first intelligent item behavior to the player-visible
+  gun: seek it only while safe, turn to make a readable panic-shot, and avoid
+  only rolling pickups already marked harmful. `POSITIVE_PICKUPS` remains a
+  campaign reward list, not a generic AI loadout.
+- Replaced the dialog pools with four clearer, punchier lines per beat and
+  split the Mode B work into a profile-isolation slice followed by a
+  gun-interaction slice for Code Monkey/Ollama sizing.
+- Corrected the mode-boundary audit: Chaser Beta must suppress all shared
+  profile callback writes (sheebs, badges, histories, highest level, best
+  run) as well as runner capture audio and owned-item loss.
+- Kept FLUSH CLOCK/timeout redesign, full bark pools, Bowl Rush, and voice
+  recording parked. Ken still needs to choose the post-gun AI item roster
+  and whether the existing timeout loop remains the final arcade rule.
+- Final boundary correction: the player profile's shop loadout currently
+  reaches the AI runner. Slice A now zeros it in Chaser Beta so speed,
+  stamina, reward, and luck bonuses stay Runner-only.

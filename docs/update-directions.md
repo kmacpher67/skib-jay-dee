@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Antigravity (Gemini 3.6 Flash) — 2026-07-28 (v0.4.69-plan review & Mode B readiness sign-off)
+**Last updated by:** Codex (GPT-5) — 2026-07-28 (v0.4.69-plan final Mode B readiness review)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,19 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.69-plan final review (docs only — 2026-07-28):** **READY FOR MODE
+  B** as two intentionally small slices. The initial AI interaction is now
+  gun-first (seek gun only in the far branch, make a turn-and-panic-shot,
+  avoid rolling `isGood: false` hazards), not a generic `POSITIVE_PICKUPS`
+  loadout. Code review found the profile boundary was broader than the
+  old badge/token wording: Chaser Beta must suppress shared writes to
+  sheebs, badges, histories, highest level, and best run, plus its
+  capture-sting/item-strip leak and inherited shop loadout (which otherwise
+  buffs the AI runner). Existing FLUSH CLOCK/timeout code is explicitly
+  untouched; full barks, Bowl Rush, and recording remain parked. Ken's
+  later decisions: the post-gun AI item roster and whether the pre-existing
+  timeout loop stays. See `roadmap-handoff-v0.4.69-plan.md`.
+
 - **v0.4.69-plan review (docs only — 2026-07-28):** Completed SDLC Mode A review of
   Chaser Beta v0.4.69 plan. Tightened dialog candidate pools (3–4 lines each for opener,
   AI gun taunt, and win lines), verified mode-boundary leaks with exact code line numbers

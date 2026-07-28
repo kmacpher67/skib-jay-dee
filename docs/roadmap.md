@@ -146,17 +146,20 @@ for the full session write-up and
      cannot make the chase fun, soft-hide the public entry instead.
    - [ ] **Runner AI item use (Ken, 2026-07-28 playtest finding):** the AI
      runner picked up the Jayden Gun during a live Chaser Beta round and
-     never fired it back — it has no pickup awareness at all. Add
-     seek-helpful/avoid-harmful pickup steering plus gun-fire-back logic
-     to `_getRunnerEvadeVector()`, and audit the badge/token spawn calls
-     in `_syncLevelState()` that turned out to be running unconditionally
-     in Chaser Beta despite the design doc saying pickups were "off in
-     recovery slice" (they never actually were gated). **Refine
-     (2026-07-28):** same slice also gets light dialog theater (opener /
-     AI gun taunt / win lines) and must gate `handleCaught` death-sting +
-     shop-item strip so a tag reads as a chaser win, not a runner death.
-     Mode impact: `Chaser Beta only`. **Code-ready after optional Mode A
-     dialog polish**, see
+     never fired it back — it has no pickup awareness at all. **Final
+     v0.4.69 review:** make this first interaction deliberately gun-first:
+     seek a gun only while safe, panic-shoot the human chaser with the
+     existing bullet path, and avoid rolling pickups explicitly marked
+     harmful. Do not turn `POSITIVE_PICKUPS` into a generic AI loadout.
+     The same two small Mode B slices add light dialog theater (opener /
+     AI gun taunt / win lines), isolate **all** shared profile callbacks
+     (sheebs, badges, history, best run, progression), zero the inherited
+     shop loadout so it cannot buff the AI runner, and gate `handleCaught`
+     capture-audio/shop-item loss so a tag reads as a chaser win rather
+     than a runner death. FLUSH CLOCK/timeout, bark pool, Bowl Rush, and
+     recording remain parked; Ken still needs to decide the future item
+     roster and whether the pre-existing timeout loop stays. Mode impact:
+     `Chaser Beta only`. **Ready for Mode B — run slices A then B**, see
      [roadmap-handoff-v0.4.69-plan.md](handoffs/roadmap-handoff-v0.4.69-plan.md).
 3. **MOBA/PvP** — still parked (format + infra open).
 

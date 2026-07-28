@@ -730,3 +730,6 @@ Never edit past lines. Append a new line (or block) per version when you
 - **Focus**: Play as Chaser (Beta) mode.
 - **Changes**: Fixed human chaser movement, added basic wall-aware AI for the runner, and built a 60-second capture/timeout loop with a rematch/menu result card.
 - **Status**: Shipped.
+
+2026-07-28 | docs (Codex GPT-5) | v0.4.69-plan final review: gun-first AI interaction, full Chaser-Beta profile callback isolation, tighter dialog, and two small Mode B / Code Monkey slices; no code
+2026-07-28 | docs (Codex GPT-5) | v0.4.69-plan addendum: zero inherited shop loadout in Chaser Beta so player upgrades cannot buff the AI runner; no code

@@ -1,10 +1,13 @@
 # Roadmap Handoff Plan v0.4.69 — Chaser Beta: Runner AI Item Use (+ light dialog)
 
 **Created by:** Claude Sonnet 5 — 2026-07-28
-**Last updated by:** Antigravity (Gemini 3.6 Flash) — 2026-07-28
+**Last updated by:** Codex (GPT-5) — 2026-07-28
 **Session mode:** Mode A (Planning / refinement only — docs only, no code,
 no build, `GAME_ITERATION` not bumped)
-**Status:** READY FOR MODE B — Scope bounded, dialog pools tightened (3–4 lines each), mode-boundary leaks verified (App.jsx:354 handleCaught death audio + item strip leak, badge/token profile writes).
+**Status:** READY FOR MODE B — Run the two small slices below in order. The
+final re-audit confirms the `handleCaught` leak and broadens the bounded
+profile fix to every shared profile-writing callback; the first AI item
+behavior is intentionally **gun-first**, not a generic loadout system.
 **Mode impact:** `Chaser Beta only` (see
 [`role-reversal-design.md`](../role-reversal-design.md#12-documentation-contract-for-two-modes)).
 
@@ -49,14 +52,16 @@ Ken played `PLAY AS CHASER — BETA` in the browser (2026-07-28) after the
    runner), and then just... keep fleeing. It has no fire logic, no
    concept of "this item helps me," and no concept of "this item hurts
    me, route around it."
-4. **A helpful/harmful classification already exists and is reusable.**
-   `gameContent.js` exports `POSITIVE_PICKUPS` (`gun`, `schleimy-potion`,
-   `taco-bell`, `gawd-particle`, `decoy`, `heavy-plunger`, …) and
-   `GameEngine.js`'s `onPickupConsumed()` call already buckets every
-   pickup into `'good'` vs `'bad'` for telemetry using that same list.
-   This is the natural source of truth for "helpful vs. harmful" from the
-   runner's point of view — no new taxonomy needed, just a decision on
-   whether it needs runner-specific tweaks (see open question below).
+4. **The existing classifications are useful, but are not a safe generic
+   AI loadout.** `POSITIVE_PICKUPS` is a campaign reward list, not an
+   NPC-intent list: it includes `heavy-plunger` (which slows the runner and
+   replaces the gun), omits the Rod, and rolling pickups use their own
+   `isGood` flag. Badge-pickup telemetry also special-cases badge types as
+   good. Therefore this slice must not make the runner automatically seek
+   every `POSITIVE_PICKUPS` entry. It should seek the **gun** that prompted
+   Ken's playtest finding, avoid rolling pickups explicitly marked
+   `isGood: false`, and leave all other item priorities for a later,
+   Ken-approved AI-loadout decision.
 5. **(Refine 2026-07-28)** Dialog/theater is still runner-centric. Tag win
    uses hardcoded `'Gotcha! Round over.'`; `App.jsx` `handleCaught` (line 354) still
    plays the runner death sting (`playCaughtAudio()`) and can strip shop items even on a Chaser
@@ -73,26 +78,29 @@ but the AI runner needs to actually *engage* with them instead of
 ignoring them. Primary work, plus a light dialog add-on that fits the
 same Mode B session without inventing the full arcade loop:
 
-### A. AI pickup awareness + fire-back (primary)
+### A. Gun-first AI awareness + fire-back (primary)
 
-1. **Give the AI runner pickup awareness — seek helpful, avoid harmful.**
-   Extend `_getRunnerEvadeVector()` (or a small sibling helper it calls)
-   so that, when not under immediate flee pressure (i.e. the existing
-   "far" branch, `minDist > 250`), the runner steers toward the nearest
-   pickup in `POSITIVE_PICKUPS` instead of only the map-center waypoint.
-   When a pickup is *not* in `POSITIVE_PICKUPS` (i.e. would land in the
-   `'bad'` bucket `onPickupConsumed()` already computes), the same
-   steering should bias away from it the way it already biases away from
-   walls, using the existing wall-probe steering shape rather than a new
-   system.
+1. **Give the AI runner one legible item goal — the gun.** Extend
+   `_getRunnerEvadeVector()` (or a small sibling helper) so that, only in
+   its existing low-pressure / far branch (`minDist > 250`), the runner
+   may steer toward the nearest `gun` pickup instead of the center
+   waypoint. Keep the existing wall-probe shape. Do not pursue every
+   `POSITIVE_PICKUPS` entry and do not add a new item taxonomy. For harm
+   avoidance, bias away from nearby rolling pickups whose existing
+   `isGood` flag is `false`; static pickups do not currently carry a
+   reliable harmful flag, so do not guess by treating every non-positive
+   static item as poison.
 2. **Give the AI runner offensive item use.** Once the runner is holding
-   a usable item that has an active/fire action (gun ammo > 0 today; keep
-   the hook generic enough that a future item — e.g. a Kill Fart charge —
-   can plug into the same decision point later), fire it at the pursuing
-   human chaser under the same conditions a human player would use the
-   fire button: chaser within a reasonable range and roughly in front of
-   the runner's facing direction. Reuse the existing `_tryFire()` /
-   bullet path — do not invent a second projectile system for AI use.
+   gun ammo, is in Chaser Beta, and the human chaser is in a modest firing
+   range, make a brief, readable **turn-and-panic-shot**: aim the runner at
+   `chasers[0]` for that shot, call the existing `_tryFire()` / bullet path,
+   then let normal flee movement retake facing on the next update. Do not
+   require the chaser to be ahead of the runner's movement-facing direction
+   — a fleeing runner naturally faces away, which would make the proposed
+   fire branch unreachable. `_tryFire()` currently returns no success value;
+   show the taunt only if the bullet count increases after the call, rather
+   than changing the shared human-input contract. Do not generalize this
+   hook to Rod, Plunger, Shart, or a future item kit in this slice.
 
 ### B. Light dialog theater (add-on — keep small)
 
@@ -104,22 +112,22 @@ points that sit next to work already in this slice. See
 1. Add pools to `frontend/src/dialog.js` (mirror in dialog doc):
    - `CHASER_BETA_OPENER_LINES` — set `bannerText` (or a short toast) when
      Chaser Beta chase starts:
-     - `"YOU'RE THE TOILET NOW. TAG EM ONCE!"`
-     - `"HUNT MODE: ONE FLUSH, NO SHEEBS."`
-     - `"CATCH THE RUNNER! JOYSTICK + SPRINT!"`
-     - `"PORCELAIN POWER! GET THAT HUMAN!"`
+     - `"YOU'RE THE TOILET. TAG JAYDEN ONCE!"`
+     - `"HUNT MODE: ONE TAG. NO SHEEBS. ALL BOWL."`
+     - `"SPRINT, CORNER, FLUSH THE RUNNER!"`
+     - `"THE HUMAN HAS A GUN. GET THEM ANYWAY."`
    - `CHASER_BETA_RUNNER_GUN_TAUNTS` — speech bubble on the AI runner when
      AI `_tryFire()` succeeds:
-     - `"EAT LEAD, TOILET!"`
-     - `"NOT TODAY, PLUMBING!"`
-     - `"I BROUGHT THE GUN THIS TIME!"`
-     - `"PEW PEW! BACK OFF BOWL!"`
+     - `"BACK UP, BOWL BOY!"`
+     - `"I FOUND A GUN! RUN!"`
+     - `"FLUSH THIS, TOILET!"`
+     - `"PEW! PERSONAL SPACE!"`
    - `CHASER_BETA_WIN_LINES` — replace hardcoded `'Gotcha! Round over.'`
      in the chaser-mode capture branch (`GameEngine.js:1530`):
-     - `"CAUGHT IN 4K (AND PORCELAIN)!"`
-     - `"FLUSHED! THE BOWL WINS!"`
-     - `"TAGGED! DOWN THE DRAIN THEY GO!"`
-     - `"SWIRLED AND CLEARED!"`
+     - `"TAGGED! THE BOWL TAKES IT!"`
+     - `"FLUSHED! HUNT COMPLETE!"`
+     - `"CAUGHT IN 4K: PORCELAIN VICTORY!"`
+     - `"DOWN THE DRAIN! CHASER WINS!"`
 2. Reuse `GUN_HIT_LINES` when the human chaser is stunned by the AI gun
    (already chaser-POV; no new pool).
 3. Soften `ProfileModal` chaser-mode note from "Play as Chaser test
@@ -127,11 +135,30 @@ points that sit next to work already in this slice. See
 
 ### C. Mode-boundary correctness (same slice, not creep)
 
-Expand the planned badge/token profile audit to also cover
-`App.jsx` `handleCaught` (line 354): when `isChaserMode`, **do not**
-`playCaughtAudio()` and **do not** run the shop-item-strip roll. A Chaser
-Beta tag is a round win, not a runner death. Also ensure badge/token collection
-paths (`App.jsx` `handleBadgeEarned` and `GameEngine.js` `_syncLevelState`) do not write profile state (`sheebs`, `earnedBadges`, `rewardsHistory`, `deathsHistory`) when `isChaserMode` is true.
+`GameEngine` does not write cookie-backed profiles directly; its shared
+callbacks do. Expand the planned badge/token audit into one small callback
+boundary in `App.jsx`. When `isChaserMode` is true, do not persist from
+`handleSheebsChange`, `handleBadgeEarned`, `handlePickupConsumed`,
+`handleDeath`, `handleLevelChange` (highest level), or `handleLevelClear`
+(best run). This covers the actual leaks: a positive pickup adds sheebs,
+an AI gun hit currently awards sheebs, badge/token collection writes badge
+and reward history, and campaign callbacks can write death/progression
+state. Keep the transient in-round pickup/gun/stun behavior intact; only
+the profile callbacks are muted.
+
+The same audit found one direct **shop-loadout** leak: `GameCanvas` passes
+the current profile's speed, stamina, reward, and luck bonuses into every
+engine, and `GameEngine.setLoadout()` applies speed/stamina/luck to the
+runner. In Chaser Beta that makes the AI runner faster/stronger because of
+the human chaser's purchases. At the `GameEngine.setLoadout()` boundary,
+use a zeroed loadout when `isChaserMode`; keep normal Runner-mode loadouts
+unchanged. This is a fairness correction, not new itemization.
+
+Also update `App.jsx` `handleCaught` (line 354): in Chaser Beta, still set
+the result line/card but **do not** `playCaughtAudio()` and **do not** run
+the shop-item-strip roll. A tag is a round win, not a runner death. This
+also safely applies to the already-present timeout path without redesigning
+its clock or loss presentation.
 
 Keep this narrowly scoped to what Ken actually asked for (the gun) plus
 helpful/harmful framing, plus the minimum dialog so fire-back and tag
@@ -139,33 +166,31 @@ reads as intentional. Do **not** use this slice for FLUSH CLOCK,
 timeout-loss lines, full AI bark pools, near-capture flip, Bowl Rush, or
 new pickup types.
 
-## Open question for Ken (has a proposed default — not blocking)
+## Ken decisions still needed (not blockers for this slice)
 
-`heavy-plunger` is listed in `POSITIVE_PICKUPS` (offensive knockback
-tool) even though picking it up also imposes a `-30%` movement-speed
-penalty while held — a mixed blessing for a fleeing runner in a way it
-isn't for the human runner in campaign mode (who can also choose not to
-pick it up). **Proposed default:** treat `POSITIVE_PICKUPS` as-is for the
-"seek" bias (reuse the existing list verbatim, no runner-specific carve
--out) for this first slice, and revisit only if playtesting shows the AI
-runner grabbing the plunger and then dying because it's slowed. Flag this
-explicitly in the shipped handoff either way so it's not silently
-decided.
+1. **Future AI item roster:** after gun playtesting, which other items, if
+   any, should the runner deliberately seek and actively use? Heavy Plunger
+   is a mixed blessing because it slows the fleeing runner and replaces its
+   gun; Rod and other actives need their own player-readable counterplay.
+   v0.4.69 deliberately makes no decision here.
+2. **Existing FLUSH CLOCK:** the 60-second countdown and a timeout
+   `onCaught()` path already exist in the code, despite earlier docs calling
+   them a recommendation. This plan leaves them untouched. Ken must decide
+   after a few rounds whether that pre-existing loss condition stays,
+   changes, or is removed before it receives bespoke timeout theater.
 
 ## Mode boundary note (for `role-reversal-design.md` §11)
 
 This plan also corrects the design doc's Pickups row, which said "Off in
 recovery slice" while the shipped code never enforced that. The row is
 being updated to reflect actual, Ken-approved behavior: pickups are **on**
-in Chaser Beta, and the AI runner is expected to use them. Quest-room
-badges, progression badges, and turdstone tokens are cosmetically present
-but should have **no profile/economy effect** in Chaser Beta (the
-mode-boundary rule that *does* still hold — no sheebs, no badges granted,
-no `deathsHistory`/`highestLevel` writes). If any of those spawn calls
-are found to be writing profile state in Chaser Beta during the Mode B
-session, that's an in-scope bug fix for this same slice (it would be a
-correctness gap, not new scope) — but do not go looking for unrelated
-profile leaks beyond what's needed to confirm this. Same for
+in Chaser Beta, and the AI runner is expected to use the gun. Quest-room
+badges, progression badges, and turdstone tokens may remain visually
+present, but must have **no profile/economy effect** in Chaser Beta. The
+Mode B audit is intentionally complete at the callback boundary: no
+sheebs, badges, rewards history, death history, best-run, owned-item, or
+highest-level writes; see section C. This is a bounded correctness fix,
+not an invitation to hunt unrelated profile leaks. Same for
 `handleCaught` audio/item-loss (section C above).
 
 ## Explicitly not done in this pass
@@ -173,94 +198,117 @@ profile leaks beyond what's needed to confirm this. Same for
 - No code changes yet.
 - No `GAME_ITERATION` bump.
 - No deploy.
-- No new pickup types, no AI itemization strategy beyond "use the gun,
-  route around obviously bad pickups."
+- No new pickup types, no general AI loadout, and no decision to seek/use
+  any active item other than the gun; rolling pickups with `isGood: false`
+  are the only currently proven harm-avoidance target.
 - No changes to the human-runner (`PLAY AS RUNNER` / campaign) AI or
   pickup logic — this only touches `isChaserMode` behavior.
-- No resolution of the `heavy-plunger` mixed-blessing question beyond the
-  proposed default above.
-- No FLUSH CLOCK, timeout-loss dialog, full reverse bark pool, near-
-  capture flip, Bowl Rush, or voice recording.
+- No FLUSH CLOCK or timeout-loss redesign: its existing code remains
+  untouched pending Ken's decision; no timeout dialog, full reverse bark
+  pool, near-capture flip, Bowl Rush, or voice recording.
 
 ## Files likely touched (next Mode B session)
 
-- `frontend/src/GameEngine.js` — `_getRunnerEvadeVector()` (pickup
-  seek/avoid steering), a new small AI-fire decision hook near the
-  existing `_tryFire()` call site, chaser-win line pool, opener banner,
-  AI gun-taunt bubble, and an `isChaserMode` guard audit on
-  any badge/token spawn or collection path found to be writing profile
-  state.
-- `frontend/src/App.jsx` — gate `handleCaught` death-sting + item-loss
-  when `isChaserMode`.
+- `frontend/src/GameEngine.js` — `_getRunnerEvadeVector()` (gun-first
+  seek + flagged rolling-hazard avoidance), a small turn-and-panic-shot
+  hook near `_tryFire()`, the opener/win/AI-gun-taunt wire points, and the
+  Chaser-Beta zero-loadout guard in `setLoadout()`.
+- `frontend/src/App.jsx` — Chaser-Beta guards around the profile-writing
+  callback boundary plus `handleCaught` death-sting/item-loss gate.
 - `frontend/src/dialog.js` — three new Chaser Beta pools (above).
 - `frontend/src/components/ProfileModal.jsx` — one-line note soften.
-- `frontend/src/gameContent.js` — only if the open question above comes
-  back with a runner-specific carve-out; otherwise no change needed here.
+- `frontend/src/gameContent.js` — no change in this slice; do not repurpose
+  `POSITIVE_PICKUPS` into a new AI-loadout taxonomy.
 - `docs/role-reversal-design.md` / `docs/dialog_content_chasing.md` —
   already updated this Mode A refine; Mode B only notes what shipped.
-- `frontend/e2e/` — a focused Chaser Beta test that seeds a gun pickup
-  near the AI runner and asserts it fires at least once at the human
-  chaser within a bounded time window, plus a harmful-pickup-avoidance
-  check if that's feasible to assert deterministically. Optional soft
-  assert: chaser-win captureLine is not the old hardcoded Gotcha string.
+- `frontend/e2e/` — one deterministic Chaser-Beta gun test (pickup →
+  panic-shot → stunned human chaser, plus a non-`Gotcha` win line) and one
+  profile-isolation test that compares the seeded cookie fields before/after
+  a Chaser-Beta pickup/gun/tag sequence.
 
 ## Workload guardrails (do not overload)
 
 | In | Out |
 |---|---|
-| Seek/avoid + AI `_tryFire` | New pickup types / loadout AI |
+| Gun-first seek/flagged-hazard avoid + AI `_tryFire` | New pickup types / loadout AI |
 | 3 small dialog pools + wire | FLUSH CLOCK / timeout / Rematch redesign |
-| `handleCaught` gate + badge audit | Full reverse `CHASER_LINES` bark system |
+| Full profile callback boundary + `handleCaught` gate | Full reverse `CHASER_LINES` bark system |
 | Reuse `GUN_HIT_LINES` | Voice clips / Audio 2 |
-| Playwright gun-fire assert | Bowl Rush / multi-toilet |
+| Two focused Playwright assertions | Bowl Rush / multi-toilet |
 
-## Copy-paste: next coding session
+## Final Mode A review addendum (Codex / GPT-5, 2026-07-28)
+
+- **Ready verdict:** yes — two sequential, bounded Mode B slices are safer
+  than one broad code-monkey prompt.
+- **Code correction:** the old "badge/token profile audit" wording missed
+  `handleSheebsChange` (positive pickup and AI gun-hit rewards),
+  `handlePickupConsumed` (rewards history), and campaign death/progression
+  callbacks. Guarding the App callback boundary is smaller and more complete
+  than trying to gate every pickup spawn in the engine.
+- **Fairness correction:** the profile loadout currently reaches the AI
+  runner. Zero it at `setLoadout()` in Chaser Beta so shop purchases never
+  make the opponent faster, tougher, or luckier.
+- **Fun correction:** a fleeing runner's movement-facing points away from
+  the hunter, so an "only fire when the target is ahead" rule could never
+  reliably trigger. The planned turn-and-panic-shot makes the counterplay
+  visible and fair.
+- **Scope correction:** `POSITIVE_PICKUPS` is not an NPC loadout. Gun-only
+  seeking plus flagged rolling-hazard avoidance honors Ken's gun feedback
+  without accidentally teaching the runner to take Heavy Plunger or an
+  unapproved active item.
+
+## Copy-paste: next coding session — Slice A (profile isolation, first)
 
 ```text
-Read docs/skib-sdlc.md, then docs/role-reversal-design.md (§11, §13, §15),
-then this file (docs/handoffs/roadmap-handoff-v0.4.69-plan.md), then
-docs/dialog_content_chasing.md (Chaser Beta section), then inspect
-_getRunnerEvadeVector() (GameEngine.js:916), _syncLevelState(), the pickup-collision/
-onPickupConsumed() path, the isChaserMode capture branch (GameEngine.js:1525), and App.jsx
-handleCaught (App.jsx:354) in frontend/src/.
+Mode B, Chaser Beta only. Read docs/skib-sdlc.md, then this handoff §C,
+and inspect GameEngine.setLoadout() plus App.jsx's handleCaught,
+handleSheebsChange, handleBadgeEarned, handlePickupConsumed, handleDeath,
+handleLevelChange, and handleLevelClear.
 
-Implement Chaser Beta runner item use + light dialog (Chaser Beta only):
+Implement only this small slice:
+1. When isChaserMode, let the round UI still update but prevent those six
+   callbacks from persisting sheebs, badges, rewardsHistory, deathsHistory,
+   highestLevel, or bestRun. Keep temporary engine pickup/gun/stun effects.
+2. In GameEngine.setLoadout(), zero the Chaser-Beta loadout so the AI runner
+   cannot inherit the human chaser's shop speed/stamina/reward/luck bonuses;
+   do not change Runner-mode loadouts.
+3. In handleCaught, do not play the runner capture sting or strip owned
+   items in Chaser Beta; preserve the result line/card. Do not alter the
+   already-existing FLUSH CLOCK or timeout behavior.
+4. Change only the Chaser-Beta ProfileModal note to hunt-flavored copy.
+5. Add one deterministic Playwright assertion for both: unchanged seeded
+   cookie fields after a Chaser-Beta pickup/gun/tag sequence, and a loaded
+   profile producing a zero engine loadout in Chaser Beta. Run
+   `cd frontend && npm run build` and that test. Commit this slice, then stop.
 
-1. Extend _getRunnerEvadeVector() so that when the runner is not under
-   immediate flee pressure (the existing minDist > 250 branch), it steers
-   toward the nearest pickup whose type is in POSITIVE_PICKUPS
-   (gameContent.js), reusing the existing wall-probe steering shape
-   rather than a new system. Bias away from non-POSITIVE_PICKUPS pickups
-   the same way.
-2. Add an AI-fire decision: when isChaserMode is true, the runner is
-   holding gun ammo, and the human chaser (chasers[0]) is within firing
-   range and roughly ahead of the runner's facing direction, trigger the
-   same fire path a human player's fire button uses (reuse _tryFire() /
-   the bullet system — do not build a second projectile path). On a
-   successful AI fire, show a speech bubble from
-   CHASER_BETA_RUNNER_GUN_TAUNTS (new pool in dialog.js).
-3. Add CHASER_BETA_OPENER_LINES and set banner/toast at Chaser Beta chase
-   start. Replace hardcoded 'Gotcha! Round over.' in GameEngine.js:1530 with a random
-   CHASER_BETA_WIN_LINES entry. Soften ProfileModal chaser-mode note.
-   Reuse GUN_HIT_LINES when the human chaser is gun-stunned.
-4. Audit _syncLevelState()'s badge/token spawn/collection paths AND
-   App.jsx handleCaught: when isChaserMode is true, gate profile/economy writes (sheebs,
-   earnedBadges, rewardsHistory, deathsHistory), do NOT call playCaughtAudio(),
-   and do NOT strip shop items. In-scope bug fix per this handoff, not new scope creep.
-5. Leave the heavy-plunger POSITIVE_PICKUPS classification as-is (Ken's
-   proposed default in this handoff) unless Ken has since said otherwise.
-6. Add a focused Playwright test: seed a gun pickup near the AI runner in
-   Chaser Beta, run the loop forward, assert the runner fires it at the
-   human chaser within a bounded time window.
-7. Verify with cd frontend && npm run build and npx playwright test.
-8. Update docs/version-log.md, docs/handoffs/ledger.md,
-   docs/update-directions.md, docs/roadmap.md, and this handoff's shipped
-   twin (roadmap-handoff-v0.4.69.md) per docs/skib-sdlc.md step 4. Bump
-   GAME_ITERATION and deploy only once verified.
+Do not start AI steering, dialog pools, timeout work, bark pools, Bowl Rush,
+audio recording, or any Runner-mode change in this slice.
+```
 
-Do not expand into new pickup types, AI itemization strategy,
-FLUSH CLOCK / timeout dialog, full reverse bark pools, Bowl Rush, voice
-clips, or human-runner (campaign) AI changes. Chaser Beta only.
+## Copy-paste: next coding session — Slice B (gun interaction, after A)
+
+```text
+Mode B, Chaser Beta only. Read this handoff §§A-B and inspect
+GameEngine.js _getRunnerEvadeVector(), _tryFire(), the bullet update, and
+the chaser capture branch; inspect dialog.js and dialog_content_chasing.md.
+
+Implement only this small slice:
+1. In the far/low-pressure AI branch, seek a gun pickup using existing wall
+   probes; bias away from rolling pickups with isGood === false. Do not seek
+   every POSITIVE_PICKUPS entry and do not create an item taxonomy.
+2. With gun ammo and the human chaser in range, turn the runner toward
+   chasers[0], reuse _tryFire()/bullets for one panic-shot, then restore
+   normal flee-facing next update. On an actual shot, use the new runner
+   gun-taunt pool (detect success from a new bullet, not a changed _tryFire
+   return contract). Do not add Rod/Plunger/Shart AI use.
+3. Add the three documented 4-line Chaser-Beta pools, random opener and win
+   line, and reuse GUN_HIT_LINES. Add one deterministic Playwright test for
+   pickup → shot → human-chaser stun and a non-Gotcha win line.
+4. Run `cd frontend && npm run build` and the focused tests. Complete the
+   Mode B doc trail, version bump, and deploy only after both slices verify.
+
+Do not alter FLUSH CLOCK/timeout, full bark pools, Bowl Rush, voice, or
+Runner-mode behavior.
 ```
 
 ## Copy-paste: refine-before-code-monkey (Mode A review agent)
