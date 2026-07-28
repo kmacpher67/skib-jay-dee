@@ -79,9 +79,42 @@ level-up" case drives the transition by letting the live RAF loop carry
 makes the race reproducible. Verified this test fails on pre-v0.4.64.2 code
 and passes after the fix.
 
+## Root cause, round 3 (2026-07-28, v0.4.64.3) — the real one
+
+v0.4.64.2 deployed and worked exactly as designed: Ken hit a natural
+level-up into Ramen Aisle and got a real `buildDebugDump()` showing
+`_raf: null`, `_running: false`, `_inputBound: false`, `phase: 'chase'`,
+`levelIndex: 3` — a correctly-paused engine, not a race. But Ken's screen
+showed no warning overlay at all, just a frozen game with dead input and
+no way to proceed. That's a UI bug, not an engine bug.
+
+**Root cause:** `Level4WarningOverlay` (`App.jsx`) renders a
+`<div className="modal-overlay level-4-warning">` wrapping
+`modal-content warning-content`. Neither `modal-overlay` nor
+`modal-content` had **any CSS rule anywhere in the codebase** — every
+other modal in the game (`.shop-modal`, `.profile-modal`, `.version-modal`,
+etc.) gets `position: absolute; inset: 0; z-index: 30` from
+`App.css:260-274`, but this one never did. Result: the overlay rendered in
+the DOM (so `page.locator('.level-4-warning').click()` in Playwright
+always "worked" — it doesn't check visual stacking), but with no
+position/z-index it painted underneath the canvas, invisible and
+unreachable to a real player. This explains every prior "verification":
+the e2e suite and console-driven checks all interact with the DOM
+directly, so they never caught that a human couldn't actually see or
+click the accept button.
+
+**Fix:** added proper CSS for `.modal-overlay` / `.modal-overlay
+.modal-content` (full-screen, `z-index: 50`, above every other overlay).
+
+**New regression test:** the overlay spec now asserts the bounding box
+covers ~90%+ of the viewport and that `document.elementFromPoint()` at the
+accept button's center actually lands on that button — not just DOM
+presence. Verified it fails against the pre-fix CSS and passes after.
+
 **Raman Rows recurrence is closed** pending Ken's live-prod confirmation of
-v0.4.64.2. Do not re-open unless a fresh hang is reported with a clean
-Triple-Q dump showing `inputBound: false`, or a wall-pinch coordinate.
+v0.4.64.3. If a hang is reported again, check for a visible overlay first
+— if `buildDebugDump()` shows `_running: false` but nothing is visibly
+onscreen, suspect CSS/rendering before suspecting engine logic.
 
 ## Copy-paste: next natural steps
 

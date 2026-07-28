@@ -6,6 +6,31 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.64.3 — Level 4 warning visibility fix (Claude Code, 2026-07-28)
+
+**Root cause:** v0.4.64.2 fixed the engine's pause/resume logic, but the
+`Level4WarningOverlay` component (`App.jsx`) used `modal-overlay` /
+`modal-content` classes that had **zero CSS rules anywhere in the
+codebase** — unlike every other modal (`.shop-modal`, `.profile-modal`,
+etc.), which get `position: absolute; inset: 0; z-index: 30` from
+`App.css:260-274`. The overlay rendered in the DOM (so Playwright's
+`.click()` on `.accept-btn` always "worked," since it doesn't check
+visual stacking) but with no position/z-index it painted underneath the
+canvas — invisible and unreachable to a real player. Ken hit this after
+the v0.4.64.2 fix correctly paused the engine: `_raf: null`,
+`_running: false`, `_inputBound: false` — a legitimate pause with no
+visible way to accept the warning and resume.
+
+**Fix:** added `.modal-overlay` / `.modal-overlay .modal-content` rules to
+`App.css` (full-screen, `z-index: 50`, above every other overlay).
+
+**New regression test:** `e2e/level-4-warning.spec.js` now asserts the
+overlay's bounding box covers ~90%+ of the viewport and that
+`document.elementFromPoint()` at the accept button's center actually hits
+that button — not just that the element exists and isn't `display:none`.
+Verified this check fails against the pre-fix (unstyled) CSS and passes
+after.
+
 ## v0.4.65 — Post-deploy game-repo push (Antigravity, 2026-07-28)
 
 Mode B — full code and delivery. (No version push / GAME_ITERATION bump as it does not impact gameplay).

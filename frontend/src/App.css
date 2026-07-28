@@ -261,7 +261,8 @@
 .version-modal,
 .deaths-modal,
 .caught-profile-modal,
-.profile-modal {
+.profile-modal,
+.modal-overlay {
   position: absolute;
   inset: 0;
   z-index: 30;
@@ -271,6 +272,20 @@
   padding: 16px;
   background: rgba(0, 0, 0, 0.58);
   backdrop-filter: blur(8px);
+}
+
+.modal-overlay.level-4-warning {
+  z-index: 50;
+}
+
+.modal-overlay .modal-content {
+  width: min(100%, 380px);
+  max-height: 100%;
+  overflow: auto;
+  padding: 20px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.45);
 }
 
 .shop-panel,

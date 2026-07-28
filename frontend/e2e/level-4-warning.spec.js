@@ -15,6 +15,24 @@ test('level 4 warning overlay shows once per run and pauses game', async ({ page
   await expect(page.locator('.warning-header')).toHaveText('WARNING: WELCOME TO LEVEL 4. THE STAKES ARE REAL.')
   await expect(page.locator('.accept-btn')).toHaveText('I ACCEPT MY FATE')
 
+  // toBeVisible() only checks non-zero size / no display:none — it does not
+  // catch an overlay with no position/z-index rendered underneath the
+  // canvas, invisible and unreachable to a real player even though it's a
+  // clickable DOM node (this happened: .modal-overlay had zero CSS). Assert
+  // the overlay actually covers the viewport above the canvas.
+  const overlayBox = await page.locator('.level-4-warning').boundingBox()
+  const viewport = page.viewportSize()
+  expect(overlayBox.width).toBeGreaterThanOrEqual(viewport.width * 0.9)
+  expect(overlayBox.height).toBeGreaterThanOrEqual(viewport.height * 0.9)
+
+  const acceptBtnCenter = await page.locator('.accept-btn').evaluate((el) => {
+    const rect = el.getBoundingClientRect()
+    const cx = rect.left + rect.width / 2
+    const cy = rect.top + rect.height / 2
+    return document.elementFromPoint(cx, cy) === el || el.contains(document.elementFromPoint(cx, cy))
+  })
+  expect(acceptBtnCenter).toBe(true)
+
   // The engine should be paused (no requestAnimationFrame)
   const isEnginePaused = await page.evaluate(() => {
     return window.__skibEngine._raf === null
