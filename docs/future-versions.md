@@ -98,8 +98,11 @@ for the full writeup and refinement questions.
   verdict and thin playable hotfix live in
   [role-reversal-design.md](role-reversal-design.md) /
   [roadmap-handoff-v0.4.61-plan.md](handoffs/roadmap-handoff-v0.4.61-plan.md).
-  Deep kit and multiplayer variants still LT; do not treat the broken
-  ship as done.
+  Ken's follow-up keeps the menu entry visible but requires a distinct
+  experimental/Beta color and explanation; `QUICK PLAY` becomes
+  `PLAY AS RUNNER`. The Beta label stays until the design doc's exit
+  criteria pass. Deep kit and multiplayer variants still LT; do not
+  treat the broken ship as done.
 - MOBA/PvP mode (2v2 or 4v4 deathmatch-style) — depends on the Phase 5
   multiplayer spike above landing for real first.
 

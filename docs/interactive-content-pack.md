@@ -2,6 +2,12 @@
 
 This doc collects the next content-only pass after the gun, badges, quest rooms, and difficulty spikes. The goal is to make the game feel more alive without needing a new engine architecture: more funny pickups, more secret awards, and clearer room identity.
 
+**Mode impact:** `Runner only` by default. Play as Chaser Beta disables
+campaign pickups in its recovery slice. Any later item enabled in both
+modes must name the collecting actor, target actor, input/AI trigger, and
+profile/economy effect; see
+[role-reversal-design.md](role-reversal-design.md#12-documentation-contract-for-two-modes).
+
 ## Map Verdict
 
 The current maps are mechanically solid. The part that still needs work is personality and readability:

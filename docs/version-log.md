@@ -6,6 +6,40 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.61-plan refinement — Role Reversal experience and two-mode contract (Codex GPT-5, 2026-07-28)
+
+Mode A — docs only, no code/build/version bump/deploy.
+
+Synthesized the prior postmortem and outside-agent input into a stricter
+product call: keep Play as Chaser only as a visibly experimental,
+single-arena arcade Beta. Ken explicitly chose a distinct Beta color and
+float-over for `PLAY AS CHASER`, requested `QUICK PLAY` →
+`PLAY AS RUNNER`, and asked the roadmap to retain a Beta-removal reminder.
+
+Planning decisions/recommendations:
+
+- Reuse the existing generic movement-vector producer through an
+  active-human-entity seam; do not create a new `InputHandler` class for
+  a `const` reassignment bug.
+- Runner AI needs continuous waypoint movement, bounded wall-aware flee
+  probes, and stuck recovery—not just an opposite vector inside 300px.
+- Recommended fun loop is a 60-second `FLUSH CLOCK`, target locator,
+  funny capture/timeout results, and Rematch/Menu. These outcome choices
+  remain flagged for Ken; they were not invented as answered decisions.
+- Prefer a later universal `BOWL RUSH` lunge over giving every face
+  Skib-Daddy's Plunger Launch. Keep extra AI toilets off; they steal the
+  human's objective.
+- Added a strict mode boundary for progression, economy, pickups,
+  difficulty, HUD, camera, audio, faces, and tests; every future gameplay
+  plan now declares `Mode impact`.
+- Added measurable Beta exit criteria and a two-bounded-slice salvage
+  gate. If the mode still is not fun, soft-hide it instead of preserving
+  a broken public surface.
+
+Artifacts: `docs/role-reversal-design.md`,
+`docs/handoffs/roadmap-handoff-v0.4.61-plan.md`, `docs/roadmap.md`, and
+short cross-links in affected feature references.
+
 ## v0.4.60 — Difficulty Selector (Noob-Noob / Casual / 4chan-st)
 
 Mode B — full code and delivery.

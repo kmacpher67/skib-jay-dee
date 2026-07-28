@@ -9,6 +9,7 @@ v0.4.0 — earlier versions only have a version-log entry).
 
 Never edit past lines. Append a new line (or block) per version when you
 update `docs/version-log.md`.
+2026-07-28 | docs (Codex GPT-5) | v0.4.61-plan Role Reversal experience refine: Ken's Play as Runner/Beta menu direction; one-minute arcade recommendation; AI/navigation and strict mode-isolation contract; roadmap Beta exit debt; no code
 2026-07-28 | v0.4.60 | Difficulty Selector (Noob-Noob / Casual / 4chan-st) added to cookie profile and menu; passed to GameEngine for future feature hooks
 2026-07-28 | docs (Cursor Grok 4.5) | v0.4.61-plan Role Reversal refine: Play as Chaser postmortem (const stepX RCA); keep+refine verdict; dedicated docs/role-reversal-design.md; no roadmap.md edit; no code
 2026-07-28 | v0.4.59 | Upgraded Neon Jump-Scare Filter: after scare, players with filter and 50+ sheebs get 0.5s headstart where chasers are stunned (magenta/cyan tint) and deduct 50 sheebs; broke refusal gag; e2e tests

@@ -139,12 +139,32 @@ for the full session write-up and
 1. **Finish the grand arc — Level 10 finale.** **Resolved:** CEO of Drains
    stays **Level 7 mid-arc boss**; **Level 10 = new finale** (Ken developing);
    **endless play after L10**. Levels 8–9 TBD.
-2. **Role Reversal v1 — partially resolved:** menu mode, human chaser vs. AI
-   runner, **no economy**. Kit + win condition still open —
-   [roadmap-handoff-v0.4.53-plan.md](handoffs/roadmap-handoff-v0.4.53-plan.md).
+2. **Role Reversal Beta — recovery planned:** the menu-mode scaffold
+   shipped in `v0.4.53`, but the human chaser cannot move and campaign
+   systems leak into the side mode. Keep it as a visibly experimental
+   human-chaser-vs-AI-runner mode, with no economy or multiplayer. The
+   recovery plan, two-mode contract, and go/no-go gate are in
+   [role-reversal-design.md](role-reversal-design.md) and
+   [roadmap-handoff-v0.4.61-plan.md](handoffs/roadmap-handoff-v0.4.61-plan.md).
+   - [ ] **Beta-removal debt (Ken, 2026-07-28):** recolor and label the
+     `PLAY AS CHASER` entry as experimental/Beta now. Remove that
+     treatment only after the documented Beta exit criteria pass and Ken
+     says the play is no longer rough. If two bounded recovery slices
+     cannot make the chase fun, soft-hide the public entry instead.
 3. **MOBA/PvP** — still parked (format + infra open).
 
 Sequencing: **Level 10 arc → Role Reversal → MOBA**.
+
+### Two-mode planning convention (2026-07-28)
+
+Every new gameplay backlog item and handoff must declare a **Mode impact**:
+`Runner only`, `Chaser Beta only`, `Both — shared`, `Both — role-specific`,
+or `TBD — blocked`. When a feature applies to Chaser Beta, also state who
+receives input/AI, whether the objective or HUD changes, whether
+pickups/abilities apply, whether profile/economy state may change, and
+which regression protects the other role. The canonical checklist and
+present-system matrix live in
+[role-reversal-design.md](role-reversal-design.md#12-documentation-contract-for-two-modes).
 
 ## Plan: handling levels and new maps (plan only — not implemented)
 

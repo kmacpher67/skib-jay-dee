@@ -1,7 +1,7 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Cursor Grok 4.5 — 2026-07-28 (v0.4.61-plan Role Reversal)
+**Last updated by:** Codex (GPT-5) — 2026-07-28 (v0.4.61 experience refinement)
 
 Check `frontend/src/version.js` for live `GAME_ITERATION`.
 
@@ -14,6 +14,11 @@ Check `frontend/src/version.js` for live `GAME_ITERATION`.
 - **Role Reversal deep kit / 2v2 / multiplayer** — design only; see
   `docs/role-reversal-design.md`. Do not expand past the v1.5 hotfix
   scope without Ken.
+- **Full Role Reversal v1.5 recovery** — wait for Ken to confirm or
+  change the proposed 60-second capture/timeout and Rematch/Menu result
+  shape. The menu rename/Beta treatment and technical isolation are
+  decided, but do not ship a movement-only debug toggle as a recovered
+  mode.
 
 ## Session focus (next unblocked slices)
 
@@ -21,7 +26,6 @@ Pick the oldest unfinished *unblocked* handoff. Candidates:
 
 | Handoff | Slice | Notes |
 |---|---|---|
-| `v0.4.61-plan.md` | Role Reversal v1.5 hotfix | **Broken live menu mode** — prioritize when Ken wants Play as Chaser fixed; see `docs/role-reversal-design.md` |
 | `v0.4.41-plan.md` | Slice B shop labels | Code-ready per Ken 2026-07-27 |
 | `v0.4.41-plan.md` addendum | Play Recap + pickup tracking | Code-ready |
 | `v0.4.55-plan.md` | Micro-Skib | Code-ready |
@@ -30,7 +34,8 @@ Pick the oldest unfinished *unblocked* handoff. Candidates:
 | `v0.4.60-plan.md` | Difficulty selector (minimal) | Cookie + menu only; no Debt Lock math |
 
 `v0.4.53` Role Reversal **shipped broken** — do not "add features" on it;
-use `v0.4.61-plan` hotfix only. `v0.4.54` / `v0.4.57` / `v0.4.58` are
+use `v0.4.61-plan` recovery only after its remaining outcome decisions.
+`v0.4.54` / `v0.4.57` / `v0.4.58` are
 already shipped — do not re-implement.
 
 ## Verification

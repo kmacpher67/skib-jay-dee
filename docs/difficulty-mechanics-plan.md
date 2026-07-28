@@ -1,7 +1,13 @@
 # Difficulty Mechanics Plan
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Claude Sonnet 5 — 2026-07-27
+**Last updated by:** Codex (GPT-5) — 2026-07-28
+
+**Mode impact:** `Runner only` for the current plan. In Play as Chaser
+Beta, difficulty would mean AI-runner competence, not debt pressure,
+pickup odds, or faster AI chasers. Pin a documented Beta baseline until
+that separate behavior is designed; see
+[role-reversal-design.md](role-reversal-design.md#11-strict-mode-boundary-for-present-systems).
 
 ## Overview
 The difficulty system should stay funny, readable, and economy-driven.

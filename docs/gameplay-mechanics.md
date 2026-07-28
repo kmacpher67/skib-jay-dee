@@ -1,8 +1,17 @@
 # Gameplay Mechanics Reference
 
+**Last updated by:** Codex (GPT-5) — 2026-07-28 (mode-scope note)
+
 Answers to "how does X actually work" questions about the live build,
 written against the code as of `v0.4.22`. This is a reference doc, not a
 plan — see `docs/roadmap.md` for open work.
+
+Unless a section says otherwise, the mechanics below describe **Play as
+Runner**. The `v0.4.53` Play as Chaser scaffold is a broken experimental
+Beta and must not inherit campaign economy, progression, pickups, or
+death history. The cross-mode behavior matrix and required `Mode impact`
+tag for future mechanics live in
+[role-reversal-design.md](role-reversal-design.md#12-documentation-contract-for-two-modes).
 
 ## Profile & currency (sheebs)
 

@@ -1,7 +1,7 @@
 # Player's Guide — Skib-Jay-Dee-Toilet
 
 **Created by:** Composer — 2026-07-27
-**Last updated by:** Composer — 2026-07-27 (Rod of Poopdom section)
+**Last updated by:** Codex (GPT-5) — 2026-07-28 (Role Reversal Beta status)
 
 Single source of truth for game mechanics. The in-game footer links here
 directly (see `roadmap-handoff-v0.4.45-plan.md` — the earlier in-game
@@ -20,6 +20,22 @@ and we'll fold it into this guide.
   have a gun, plunger, Rod of Poopdom, or Shart charge).
 - **Teleport (Rod only):** `T` key or the FIRE button when the rod is held
   (reads **WARP**).
+
+## Game modes
+
+- The normal campaign is the **runner** game: survive, collect items,
+  advance levels, and use the profile economy described below.
+- A **Play as Chaser** menu scaffold exists, but it is currently a broken
+  experimental Beta: directional control for the human chaser is not
+  reliable and the side-mode rules are not yet isolated from the
+  campaign. Do not expect normal campaign rewards or progression from it.
+- The planned recovery will label the menu choices **PLAY AS RUNNER** and
+  **PLAY AS CHASER — BETA**, then give the chaser mode its own clear
+  objective and result loop. This guide must be updated again only after
+  that behavior actually ships.
+
+Design/status source:
+[Role Reversal Design](role-reversal-design.md).
 
 ## Weapons & ammo (Jayden Gun)
 

@@ -1,5 +1,11 @@
 # Profiles & Identity
 
+**Mode impact:** `Runner only` for gameplay progression. Play as Chaser
+Beta may read the selected runner/chaser faces and mute preference, but
+v1 must not change sheebs, owned items, highest level, deaths,
+`deathsHistory`, best run, badges, or rewards. See the isolation matrix in
+[role-reversal-design.md](role-reversal-design.md#11-strict-mode-boundary-for-present-systems).
+
 What a "user" is in this game today, how identity/profile switching works
 as of `v0.4.29`, every gameplay attribute currently riding on a profile,
 and what has to change before any of it can move server-side. Written

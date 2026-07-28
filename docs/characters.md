@@ -1,6 +1,6 @@
 # Characters
 
-**Last updated by:** Composer — 2026-07-27
+**Last updated by:** Codex (GPT-5) — 2026-07-28
 
 The in-game roster, as it exists today plus what's planned next. This doc
 is the human-readable companion to `frontend/src/gameContent.js`
@@ -20,10 +20,14 @@ it's a candidate for the pool, not yet wired.
 
 ## Runner — Jayden
 
-Jayden is the one player-controlled role: the kid getting chased through
-the Porcelain Palace and beyond. `RUNNER_FACE_POOL` currently holds five
-poses of the same person, randomized as the default face each time Quick
-Play starts (unless the player uploads a custom face):
+Jayden is the human-controlled role in the runner campaign: the kid
+getting chased through the Porcelain Palace and beyond.
+`RUNNER_FACE_POOL` currently holds five poses of the same person,
+randomized as the default face each time the runner game starts (unless
+the player uploads a custom face). In Play as Chaser Beta, the selected
+runner face instead belongs to the AI opponent; the selected chaser face
+belongs to the human. Keep face ownership role-aware when adding
+characters; see [role-reversal-design.md](role-reversal-design.md#11-strict-mode-boundary-for-present-systems).
 
 | id | label | vibe |
 |---|---|---|

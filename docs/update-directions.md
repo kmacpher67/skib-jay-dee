@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Cursor Grok 4.5 — 2026-07-28 (v0.4.61-plan Role Reversal refine)
+**Last updated by:** Codex (GPT-5) — 2026-07-28 (v0.4.61 experience refinement)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,19 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.61-plan follow-up refinement (docs only — 2026-07-28):** Ken
+  chose to keep the broken Chaser entry visible but give it a distinct
+  experimental/Beta color and float-over, and rename `QUICK PLAY` to
+  `PLAY AS RUNNER`. The dedicated design now treats Role Reversal as a
+  separate one-arena arcade ruleset, not campaign state with actors
+  swapped. Recommended fun loop: 60-second `FLUSH CLOCK`, wall-aware
+  runner AI, target locator, funny win/loss card, Rematch/Menu, then an
+  optional universal `BOWL RUSH` lunge in a later slice. Ken has **not
+  yet confirmed** the timer/rematch/lunge recommendations. Added a strict
+  system-isolation matrix, `Mode impact` documentation convention,
+  roadmap Beta-removal debt, and two-slice salvage gate. No code, build,
+  version bump, or deploy.
+
 - **v0.4.61-plan (docs-only refine — 2026-07-28):** Mode A — Role Reversal /
   Play as Chaser postmortem. Shipped `v0.4.53` too soon; human chaser
   movement broken (`const stepX` reassignment), AI runner stub, unclear
@@ -441,9 +454,11 @@ manually:
 
 - **Play as Chaser is broken in live builds that include v0.4.53+.** See
   `docs/role-reversal-design.md` + `roadmap-handoff-v0.4.61-plan.md`.
-  Prefer a Mode B hotfix (or soft-hide the menu button) when Ken
-  prioritizes fixing the broken surface; otherwise leave parked behind
-  other unblocked coding slices.
+  Ken wants the entry kept visible with experimental/Beta treatment and
+  wants `QUICK PLAY` renamed `PLAY AS RUNNER`. Do not dispatch the full
+  recovery until Ken confirms or changes the proposed 60-second outcome
+  and Rematch/Menu shape. If two bounded recovery slices still do not
+  make it fun, soft-hide it.
 - **The uncommitted working tree from earlier this session is resolved** —
   finished and shipped as `v0.4.36.1`. No longer on this list.
 - **Level 6 ("Jayden's Nightmare House") has already landed** —

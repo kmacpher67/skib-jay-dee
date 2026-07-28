@@ -13,8 +13,11 @@ cookie-backed user persistence, a lifetime death counter with a skreem
 penalty on capture, a multi-chaser mechanic that adds more toilets if a
 level runs long, and a first real audio pass (chase ambience, capture
 sting, chaser barks, boost/tired stingers, a mute toggle, and an
-experimental level-2 video transition). Multiplayer, role-swapping, and
-the full intro cinematic remain future work — see
+experimental level-2 video transition). A Play as Chaser / Role Reversal
+scaffold also exists, but it is currently a broken experimental Beta and
+must not be treated as shipped-quality play; its recovery plan is in
+[docs/role-reversal-design.md](docs/role-reversal-design.md). Multiplayer
+and the full intro cinematic remain future work — see
 [docs/roadmap.md](docs/roadmap.md) and
 [docs/future-versions.md](docs/future-versions.md).
 
@@ -123,7 +126,7 @@ the backend actually gets wired up in a later phase.
 | 1.5 | 5 levels, Shleeb shop, cookie profile, death/skreem economy, multi-chaser pressure | **Done** |
 | 2 | Audio pass | **First pass done (v0.4.0)** — polish tracked in [docs/future-versions.md](docs/future-versions.md) |
 | 2.5 | World Star intro cinematic | Not started (experimental lvl2 video transition landed as a rough proof of concept) |
-| 3 | More characters, abilities, map variants, role-swapping | Not started |
+| 3 | More characters, abilities, map variants, role-swapping | Characters/abilities in progress; Role Reversal scaffold shipped broken and is in Beta recovery planning |
 | 4 | Oval face-crop on upload | Not started |
 | 5 | FastAPI WebSocket multiplayer, lobby, server-authoritative roles | Backend scaffolded, not wired up |
 

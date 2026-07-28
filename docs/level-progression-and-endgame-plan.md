@@ -1,5 +1,11 @@
 # Level Progression & Endgame Arc — Plan
 
+**Mode impact:** `Runner only`. Play as Chaser Beta is a separate,
+single-arena arcade ruleset with no level advancement. Deep Role Reversal
+still follows the Level 10 arc in Ken's long-term sequence; the broken
+public Beta recovery is a separate quality fix. See
+[role-reversal-design.md](role-reversal-design.md#14-existing-and-future-roadmap-impact-audit).
+
 **Created by:** Claude (Sonnet 5) — 2026-07-26
 **Last updated by:** Composer — 2026-07-27
 

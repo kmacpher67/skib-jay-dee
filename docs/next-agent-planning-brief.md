@@ -1,7 +1,7 @@
 # Next Agent Planning Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
-**Last updated by:** Cursor Grok 4.5 — 2026-07-28 (v0.4.61-plan Role Reversal)
+**Last updated by:** Codex (GPT-5) — 2026-07-28 (v0.4.61 experience refinement)
 
 Use this when Ken opens a **Mode A** session. For coding, use
 `docs/next-agent-coding-brief.md`.
@@ -13,9 +13,9 @@ Use this when Ken opens a **Mode A** session. For coding, use
 
 ## Coding queue (unblocked)
 
-See `docs/next-agent-coding-brief.md`. Also unblocked when Ken prioritizes
-the broken menu surface: **Role Reversal v1.5 hotfix**
-(`roadmap-handoff-v0.4.61-plan.md`).
+See `docs/next-agent-coding-brief.md`. Role Reversal v1.5 recovery is
+high-priority quality debt but is not fully code-ready until its remaining
+outcome questions below are answered.
 
 ## Still blocked on Ken
 
@@ -23,17 +23,19 @@ the broken menu surface: **Role Reversal v1.5 hotfix**
 - **Yoodeling Unc-2** — drop `images/yoodelling-unc-alex-2.png`
 - Optional objections to v0.4.59 theater copy / broke gag before Mode B
   (otherwise treat as locked)
-- Role Reversal Flag-for-Ken (soft-hide vs leave button; menu vs rematch;
-  optional later Plunger-on-FIRE) — see `docs/role-reversal-design.md`
+- Role Reversal Flag-for-Ken: confirm/change the proposed 60-second
+  capture/timeout and Rematch/Menu result; optional later universal
+  `BOWL RUSH`. Visibility is resolved: leave it visible, recolor it, and
+  add experimental/Beta explanation. See `docs/role-reversal-design.md`.
 
 ## Useful Mode A follow-ups (optional)
 
 - Full Difficulty Function Method C debt-lock TBDs still open in
   `difficulty-mechanics-plan.md` (selector slice is already scoped in
   `v0.4.60-plan`).
-- Role Reversal: **refine done for now** in `docs/role-reversal-design.md`
-  + `v0.4.61-plan`. Further Mode A only if Ken answers Flag-for-Ken or
-  wants a deeper kit slice *after* the hotfix.
+- Role Reversal: record Ken's timer/rematch answer in
+  `docs/role-reversal-design.md` + `v0.4.61-plan`, then the bounded
+  recovery can move to Mode B. Deeper kit remains after recovery.
 
 ## LT arc (decided)
 
