@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Codex (GPT-5) — 2026-07-28 (v0.4.61 experience refinement)
+**Last updated by:** Cursor Composer — 2026-07-28 (v0.4.62-plan iteration bundle)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,15 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **v0.4.62-plan (docs only — 2026-07-28):** Mode A backlog triage at
+  `GAME_ITERATION` v0.4.60. Corrected stale `docs/roadmap.md` checkboxes
+  (Cool Play, Broth Slip, Rod hotfix, Desktop FOW, Turdstone, Difficulty
+  selector). Bundled the four next unblocked frontend slices into
+  `roadmap-handoff-v0.4.62-plan.md`: Rewards shop labels → Play Recap +
+  pickup tracking → runner pose collapse → Micro-Skib. Role Reversal stays
+  parallel in `v0.4.61-plan`. Refreshed `next-agent-coding-brief.md` and
+  `next-agent-planning-brief.md`. No code, build, version bump, or deploy.
+
 - **v0.4.61-plan follow-up refinement (docs only — 2026-07-28):** Ken
   chose to keep the broken Chaser entry visible but give it a distinct
   experimental/Beta color and float-over, and rename `QUICK PLAY` to
@@ -388,8 +397,10 @@ entry heading so the change trail stays obvious at a glance.
 - `docs/handoffs/roadmap-handoff-v0.4.39-plan.md`
 - `docs/handoffs/roadmap-handoff-v0.4.40-plan.md`
 - `docs/next-agent-planning-brief.md`
+- `docs/next-agent-coding-brief.md`
 - `docs/role-reversal-design.md`
 - `docs/handoffs/roadmap-handoff-v0.4.61-plan.md`
+- `docs/handoffs/roadmap-handoff-v0.4.62-plan.md`
 - `docs/handoffs/roadmap-handoff-v0.4.53.md`
 - `docs/difficulty-mechanics-plan.md`
 - `docs/level-progression-and-endgame-plan.md`
@@ -452,6 +463,8 @@ manually:
 
 ## Natural follow-up work
 
+- **Next coding bundle:** `roadmap-handoff-v0.4.62-plan.md` — Rewards shop
+  labels → Play Recap → pose collapse → Micro-Skib (one slice per session).
 - **Play as Chaser is broken in live builds that include v0.4.53+.** See
   `docs/role-reversal-design.md` + `roadmap-handoff-v0.4.61-plan.md`.
   Ken wants the entry kept visible with experimental/Beta treatment and
@@ -474,11 +487,10 @@ manually:
   `v0.4.39.1`, and `v0.4.40` — confirmed against `frontend/src/version.js`
   and corrected two stale unchecked boxes in `docs/roadmap.md` this pass).
   Neither is "the current open handoff" anymore.
-- **Coding queue:** see `docs/next-agent-coding-brief.md` (near-miss
-  `v0.4.54` already shipped). **Blocked — do not code:** Desktop Screen
-  Support until Ken picks A or C
-  (`roadmap-handoff-v0.4.58-plan.md`). Also blocked: Audio 2 recordings,
-  Yoodeling Unc-2. Planning: `next-agent-planning-brief.md`.
+- **Coding queue:** see `docs/next-agent-coding-brief.md` and
+  `roadmap-handoff-v0.4.62-plan.md`. **Blocked — do not code:** Audio 2
+  recordings, Yoodeling Unc-2, Role Reversal outcome UX until Ken confirms
+  timer/rematch. Planning: `next-agent-planning-brief.md`.
 - Do **not** start Audio 2 until Ken records **capture-line** clips (phase 1
   scope only — see `dialog_content_chasing.md`).
 - The version page is now shipped in v0.4.18 — don't spend another

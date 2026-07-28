@@ -1,42 +1,39 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Codex (GPT-5) — 2026-07-28 (v0.4.61 experience refinement)
+**Last updated by:** Cursor Composer — 2026-07-28 (v0.4.62 iteration bundle)
 
-Check `frontend/src/version.js` for live `GAME_ITERATION`.
+Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.60**).
+
+## Primary queue — `roadmap-handoff-v0.4.62-plan.md`
+
+Pick the **oldest unfinished slice** in this order (one slice per session):
+
+| Order | Slice | Handoff detail |
+|---|---|---|
+| 1 | Rewards HUD shop labels | `v0.4.41-plan.md` Slice B |
+| 2 | Pickup tracking + Play Recap | `v0.4.41-plan.md` addendum |
+| 3 | Runner pose collapse (3 unique) | `v0.4.56-plan.md` |
+| 4 | Micro-Skib chaser | `v0.4.55-plan.md` |
 
 ## Do not pick up yet
 
-- **Full Difficulty Function / Debt Lock** — still design-heavy; only the
-  minimal selector slice in `v0.4.60-plan.md` is code-ready.
+- **Full Difficulty Function / Debt Lock** — selector shipped v0.4.60; math
+  still design-only in `difficulty-mechanics-plan.md`.
 - **Audio 2 phase 1** — blocked on Ken recording `CAPTURE_LINES` clips.
 - **Yoodeling Unc-2** — blocked on asset drop.
-- **Role Reversal deep kit / 2v2 / multiplayer** — design only; see
-  `docs/role-reversal-design.md`. Do not expand past the v1.5 hotfix
-  scope without Ken.
-- **Full Role Reversal v1.5 recovery** — wait for Ken to confirm or
-  change the proposed 60-second capture/timeout and Rematch/Menu result
-  shape. The menu rename/Beta treatment and technical isolation are
-  decided, but do not ship a movement-only debug toggle as a recovered
-  mode.
+- **Role Reversal full v1.5 recovery** — menu Beta treatment is decided, but
+  outcome UX (60s timer, Rematch/Menu) needs Ken's answer. See
+  `v0.4.61-plan.md`. Do not ship a movement-only debug toggle as "recovered."
+- **Neon Jump-Scare Upgrade, near-miss burst, Rod hotfix, Desktop FOW,
+  Difficulty selector** — already shipped (v0.4.54–v0.4.60). Do not
+  re-implement.
 
-## Session focus (next unblocked slices)
+## Parallel track (Ken priority override)
 
-Pick the oldest unfinished *unblocked* handoff. Candidates:
-
-| Handoff | Slice | Notes |
-|---|---|---|
-| `v0.4.41-plan.md` | Slice B shop labels | Code-ready per Ken 2026-07-27 |
-| `v0.4.41-plan.md` addendum | Play Recap + pickup tracking | Code-ready |
-| `v0.4.55-plan.md` | Micro-Skib | Code-ready |
-| `v0.4.56-plan.md` | Runner pose collapse (3 unique) | Code-ready |
-| `v0.4.59-plan.md` | Neon Jump-Scare Upgrade | Code-ready — **PX refine 2026-07-28**; stun-chasers headstart + neon theater |
-| `v0.4.60-plan.md` | Difficulty selector (minimal) | Cookie + menu only; no Debt Lock math |
-
-`v0.4.53` Role Reversal **shipped broken** — do not "add features" on it;
-use `v0.4.61-plan` recovery only after its remaining outcome decisions.
-`v0.4.54` / `v0.4.57` / `v0.4.58` are
-already shipped — do not re-implement.
+If Ken says "fix Play as Chaser first," use `v0.4.61-plan.md` instead of
+the v0.4.62 bundle — but still wait for timer/rematch confirmation before
+outcome UX.
 
 ## Verification
 
@@ -48,4 +45,5 @@ already shipped — do not re-implement.
 
 1. `docs/skib-sdlc.md`
 2. `docs/update-directions.md`
-3. The specific handoff you are implementing
+3. `docs/handoffs/roadmap-handoff-v0.4.62-plan.md`
+4. The specific slice handoff you are implementing

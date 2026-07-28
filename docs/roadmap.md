@@ -56,29 +56,30 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 `frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js`. Shipped as
 `v0.4.36.1`. See `docs/handoffs/roadmap-handoff-v0.4.36.1.md`.
 
-## Frontend open backlog snapshot (2026-07-27, Mode A pass — revised)
+## Frontend open backlog snapshot (2026-07-28, Mode A pass — revised)
 
-**16** unchecked items remain in the incremental backlog below (revised
-2026-07-27: checked off Player's Guide link, Menu brag stat, Rewards &
-History Slice A, Rod of Poopdom; added v0.4.48–v0.4.52 planning handoffs).
+**12** unchecked items remain in the incremental backlog below (revised
+2026-07-28: checked off Cool Play, Broth Slip, Rod hotfix, Desktop Screen
+Support Option A, Turdstone, Neon Jump-Scare Upgrade, Difficulty Selector
+minimal slice; consolidated queue in `roadmap-handoff-v0.4.62-plan.md`).
 All are front-end–scoped or front-end–first unless noted. LT roadmap items
 (Level 10 arc, Role Reversal, MOBA/PvP) stay in
 `roadmap-handoff-v0.4.43-plan.md`.
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next** | 8+ | See updated queue below |
-| **Specced — shipped** | 1 | Turdstone Token (v0.4.52) |
-| **Design-only / TBD** | 4 | Difficulty Function, Level 7+ Mosaic, Interactive content pack, Role Reversal kit (partial) |
-| **Blocked on Ken** | 3 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo, Desktop Screen Support (A vs C — `v0.4.58-plan`) |
+| **Unblocked — code next** | 4 | v0.4.41 Slice B + Play Recap → v0.4.56 poses → v0.4.55 Micro-Skib (`v0.4.62-plan`) |
+| **Parallel quality debt** | 1 | Role Reversal Beta recovery (`v0.4.61-plan`; outcome UX blocked on Ken) |
+| **Design-only / TBD** | 3 | Debt Lock math, Level 7+ Mosaic, Interactive content pack |
+| **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 
-**Coding queue after v0.4.54 (near-miss burst shipped):** v0.4.41 Slice B
-(shop labels) → v0.4.41 Play Recap → v0.4.55 Micro-Skib → v0.4.56 runner pose
-collapse → v0.4.59 Neon Jump-Scare Upgrade. **Blocked:** Desktop Screen
-Support (`v0.4.58-plan`) until Ken picks A or C.
+**Coding queue (bundled in `roadmap-handoff-v0.4.62-plan.md`):** v0.4.41
+Slice B (shop labels) → v0.4.41 Play Recap + pickup tracking → v0.4.56
+runner pose collapse → v0.4.55 Micro-Skib. **Parallel:** Role Reversal
+v1.5 hotfix (`v0.4.61-plan`) when Ken confirms timer/rematch.
 
-`GAME_ITERATION` is **v0.4.54** (`frontend/src/version.js`).
+`GAME_ITERATION` is **v0.4.60** (`frontend/src/version.js`).
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.
@@ -504,17 +505,20 @@ and chaser-bark voice clips, 1:1 with text.
 - [ ] **Menu HUD: make the Speed/Stamina/Rewards pills reflect real live
   data.** **Slice B code-ready (Ken chose (a), 2026-07-27):** shop label
   only — add "from Shleeb Shop" caption/tooltip; no difficulty modifiers.
-  See [`roadmap-handoff-v0.4.41-plan.md`](handoffs/roadmap-handoff-v0.4.41-plan.md).
-- [ ] **Feature: Rewards & History panel (player-facing "how did I get
+  Queued as **v0.4.62 Slice 1**. See
+  [`roadmap-handoff-v0.4.62-plan.md`](handoffs/roadmap-handoff-v0.4.62-plan.md)
+  and [`roadmap-handoff-v0.4.41-plan.md`](handoffs/roadmap-handoff-v0.4.41-plan.md).
+- [x] **Feature: Rewards & History panel (player-facing "how did I get
   this" log).** **Slice A shipped v0.4.41** — clickable Rewards pill +
   `RewardsHistoryModal.jsx` + `rewardsHistory` log for badges and purchases.
-  **Slice B still open:** HUD live-data pills → now **code-ready** (shop label
-  only, Ken 2026-07-27). Pickup tracking + Play Recap → **code-ready** (same
-  date). See [`roadmap-handoff-v0.4.41-plan.md`](handoffs/roadmap-handoff-v0.4.41-plan.md).
+  **Slice B still open** (shop labels). Pickup tracking + Play Recap →
+  **code-ready**, queued as **v0.4.62 Slice 2**. See
+  [`roadmap-handoff-v0.4.62-plan.md`](handoffs/roadmap-handoff-v0.4.62-plan.md).
 - [ ] **Feature: Pickup-consumption tracking + "Play Recap" screen.** **Code-ready**
   (Ken 2026-07-27): level-clear/menu return only; Stats tab in Rewards modal;
-  comedic bad-pickup tone. See
-  [`roadmap-handoff-v0.4.41-plan.md`](handoffs/roadmap-handoff-v0.4.41-plan.md)
+  comedic bad-pickup tone. Queued as **v0.4.62 Slice 2**. See
+  [`roadmap-handoff-v0.4.62-plan.md`](handoffs/roadmap-handoff-v0.4.62-plan.md)
+  and [`roadmap-handoff-v0.4.41-plan.md`](handoffs/roadmap-handoff-v0.4.41-plan.md)
   addendum.
 - [x] **Level expansion.** Added The Ramen Aisle and World Star Parking Lot
   (5 levels total) — landed this session.
@@ -566,6 +570,19 @@ and chaser-bark voice clips, 1:1 with text.
 - [ ] **Follow-up (runner poses): collapse to 3 unique.** **Code-ready**
   (Ken 2026-07-27) — remove duplicate pool entries; distinct photos optional
   later. See [`roadmap-handoff-v0.4.56-plan.md`](handoffs/roadmap-handoff-v0.4.56-plan.md).
+- [ ] **App tracking / instrumentation (analytics + error monitoring).**
+  **Design-only / TBD** — Ken asked for a features refinement pass on
+  [`docs/notes-snippets/app-tracking-instrumentation.md`](../notes-snippets/app-tracking-instrumentation.md).
+  Recommended: Sentry (crash/perf) + PostHog (usage/funnels/session
+  replay), both cloud, both front-end-only (no server-side needed — CORS
+  is the *vendor's* problem, not ours, since the browser POSTs to their
+  domain). Feeds the existing Pickup-tracking/Play Recap item below with
+  real funnel data, and enables a cheap "Report a Bug" button. Does not
+  block or get blocked by the Multiplayer spike. Blocked on Ken: tool
+  tier (Sentry+PostHog vs. all-in-one vs. self-hosted) and
+  privacy/consent posture for session replay (must mask the face-upload
+  input at minimum). See
+  [`roadmap-handoff-v0.4.62-plan.md`](handoffs/roadmap-handoff-v0.4.62-plan.md).
 - [ ] **Multiplayer spike (Phase 5).** Only after everything above feels
   solid. Make the frontend actually connect to `/ws/match`, sync two
   browser tabs, server decides who's Chaser. This is the biggest single
@@ -630,51 +647,33 @@ and chaser-bark voice clips, 1:1 with text.
   death logs (checkbox corrected same pass as above). `MainMenu` in
   `App.jsx` now shows a "Fair Use / Parody Warning" line linking to
   `https://github.com/kmacpher67/skib-jay-dee/issues`.
-- [ ] **Difficulty Function (separate design track):** Preferred direction is Method C (`The Debt Lock`) plus a lightweight starting selector (`Noob-Noob` / `Casual` / `4chan-st`). **Shipped v0.4.60:** Difficulty Selector UI + cookie persistence. Debt Lock math remains TBD/design-only in `docs/difficulty-mechanics-plan.md`.
-- [ ] **Cool Play (Chaser Evasion):** **Near-miss burst — code-ready**
-  (Ken 2026-07-27). See [`roadmap-handoff-v0.4.54-plan.md`](handoffs/roadmap-handoff-v0.4.54-plan.md).
-  Corner-slide visuals deferred.
-- [ ] **New chaser ability: Raman-Aunt-Toilet Lady's "Broth Slip."**
-  **Code-ready** (Ken approved defaults 2026-07-27). Level 5+ extra-chaser
-  rotation only. See [`roadmap-handoff-v0.4.49-plan.md`](handoffs/roadmap-handoff-v0.4.49-plan.md).
+- [ ] **Difficulty Function (separate design track):** Preferred direction is Method C (`The Debt Lock`) plus a lightweight starting selector (`Noob-Noob` / `Casual` / `4chan-st`). **Selector shipped v0.4.60** — UI + cookie persistence. **Debt Lock math remains TBD/design-only** in `docs/difficulty-mechanics-plan.md`.
+- [x] **Cool Play (Chaser Evasion):** Near-miss particle burst + vignette
+  pulse shipped **v0.4.54**. Corner-slide visuals deferred. See
+  [`roadmap-handoff-v0.4.54.md`](handoffs/roadmap-handoff-v0.4.54.md).
+- [x] **New chaser ability: Raman-Aunt-Toilet Lady's "Broth Slip."**
+  Shipped **v0.4.49** — `raman-aunt` chaserType, hot-ramen trail on Level 5+.
+  See [`roadmap-handoff-v0.4.49.md`](handoffs/roadmap-handoff-v0.4.49.md).
 - [ ] **Level 7+ and Beyond: The Mosaic Map of Madness (TBD).** (To be determined - needs refinement & extra data specs). Introduce a mutable puzzle map (Multiverse of Madness parody with Rick and Morty style comedic dialogue).
   - *Features:* Mosaic layouts driven by time functions (e.g. Fibonacci sequence) so it doesn't punish night-time players. Layer-Sync Mirroring, Dimensional Rift Anchors, Mutual Mutation puzzles, Temporal Echoes.
   - *Design Goal:* Keep it fun and interesting, not impossible. See `docs/level-progression-and-endgame-plan.md` for vibe process pre-planning notes.
   - **Reviewed 2026-07-27:** re-evaluated against the "no code-cowboy" rule; one open question was never actually answered (floor trap vs. held item to trigger a dimension shift — see "Flag for Ken" item 7 in `docs/level-progression-and-endgame-plan.md`). Still TBD, still not a ready-to-code handoff.
-- [ ] **New pickup: The Turdstone Token (Resurrection Ward).** **Specced
-  2026-07-27, named 2026-07-27, art landed 2026-07-27** — rare passive
-  map pickup, CoD Tombstone-perk homage (in-chat shorthand: "TurdPOOP
-  Perk"; sprite concept "The Holy Crap" — a gray CoD-style gravestone
-  redrawn as a toilet; naming brainstorm in
-  [docs/perk-naming-notebook.md](perk-naming-notebook.md)). Sprite art
-  is in the repo at `frontend/src/assets/turdstone-toilet-token-perk.png`
-  — first pickup in the engine to use a raster image rather than an
-  emoji-in-box, so it needs a center-crop + scale at draw time (via the
-  9-arg `ctx.drawImage` form) to fit the small map pickup footprint
-  without stretching; full approach in the plan doc's "Sprite
-  rendering" section. Held until death, then intercepts that one death:
-  skips the sheebs/skreems penalty and, notably, skips the engine's
-  existing "death always advances `levelIndex`" behavior
-  (`GameEngine.js:1948`) so the player respawns on the *same* level
-  instead of the next one — the one real behavior change here, since
-  loadout retention (gun/plunger/Rod of Poopdom) is already the status
-  quo on death. Single-use. Full engine analysis, proposed
-  `'turdstone-token'` pickup type, sprite crop/scale plan, and five open
-  tuning/UX questions for Ken (spawn rarity, whether
-  `deaths`/`chaserSpeedMod` still advance on a save, save-moment UX, HUD
-  visibility) in
-  [roadmap-handoff-v0.4.52-plan.md](handoffs/roadmap-handoff-v0.4.52-plan.md).
-  Not code-ready until Ken answers.
+- [x] **New pickup: The Turdstone Token (Resurrection Ward).** Shipped
+  **v0.4.52** — rare passive map pickup; level-indexed spawn chance; saves
+  one death (no level advance, no currency loss, no chaserSpeedMod ramp;
+  deaths counter still increments). See
+  [roadmap-handoff-v0.4.52.md](handoffs/roadmap-handoff-v0.4.52.md).
 - [x] **Feature: Rod of Poopdom (Teleport Mechanic).** Shipped v0.4.47 —
   5% map spawn, 300px facing-direction warp, wall-block at destination,
   3s Stinky cooldown, `T` + FIRE/WARP button. See
   [roadmap-handoff-v0.4.47.md](handoffs/roadmap-handoff-v0.4.47.md) and
   [docs/players-guide.md](players-guide.md).
-- [ ] **Bugfix: Rod of Poopdom second teleport dead.** Ken: first warp
-  works, second does not. Root cause (Mode A 2026-07-27): `stinkyTimer`
-  set on warp but never decremented in the chase update loop — cooldown
-  gate blocks forever. Hotfix plan:
-  [roadmap-handoff-v0.4.57-plan.md](handoffs/roadmap-handoff-v0.4.57-plan.md).
-  **Next code slice** (ahead of Slice B).
-- [ ] **Feature: Desktop Screen Support.** Users want a bigger desktop play surface; currently locked to 9:16 `.portrait-frame` + 360×640 canvas. Mode A refined: [roadmap-handoff-v0.4.58-plan.md](handoffs/roadmap-handoff-v0.4.58-plan.md). Live choice **A (fog-of-war wider shell) vs C (scale 9:16 + side art)**; Option B (full FOV expand) soft-parked. **Blocked on Ken** — do not Mode B until A or C is picked.
+- [x] **Bugfix: Rod of Poopdom second teleport dead.** Hotfix shipped
+  **v0.4.57** — `stinkyTimer` now decrements in the chase loop. See
+  [roadmap-handoff-v0.4.57.md](handoffs/roadmap-handoff-v0.4.57.md).
+- [x] **Feature: Desktop Screen Support.** Shipped **v0.4.58** — Option A
+  (fog-of-war wider shell) with difficulty-based radial masks. Original
+  decision brief: [roadmap-handoff-v0.4.58-plan.md](handoffs/roadmap-handoff-v0.4.58-plan.md).
+  Option C (scale 9:16 + side art) remains a future alternative if Ken wants
+  a different desktop feel.
 - [ ] **Feature: Debug State Dump.** Add a debug function (e.g., triggered by `Triple Q` or `ctrl+alt+del`) that performs a debug dump and allows copying game position data, relative position level, and all debug info for problem-solving.

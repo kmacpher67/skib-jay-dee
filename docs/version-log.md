@@ -6,6 +6,31 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## v0.4.62-plan — Frontend iteration bundle (Cursor Composer, 2026-07-28)
+
+Mode A — docs only, no code/build/version bump/deploy.
+
+Reviewed open roadmap at `GAME_ITERATION` v0.4.60 and consolidated the
+next natural frontend slices into one sequenced bundle:
+
+1. Rewards HUD shop labels (`v0.4.41` Slice B)
+2. Pickup tracking + Play Recap (`v0.4.41` addendum)
+3. Runner pose pool collapse (`v0.4.56`)
+4. Micro-Skib (`v0.4.55`)
+
+**Rationale:** Finish Ken's "how did I get this / what did I pick up"
+transparency thread before adding chase counterpressure or asset cleanup.
+Role Reversal recovery stays parallel in `v0.4.61-plan` (outcome UX still
+blocked on Ken).
+
+**Roadmap corrections:** marked shipped — Cool Play v0.4.54, Broth Slip
+v0.4.49, Rod hotfix v0.4.57, Desktop FOW v0.4.58, Turdstone v0.4.52,
+Neon Jump-Scare v0.4.59, Difficulty selector v0.4.60.
+
+Artifacts: `docs/handoffs/roadmap-handoff-v0.4.62-plan.md`,
+`docs/roadmap.md`, `docs/next-agent-coding-brief.md`,
+`docs/next-agent-planning-brief.md`, `docs/update-directions.md`.
+
 ## v0.4.61-plan refinement — Role Reversal experience and two-mode contract (Codex GPT-5, 2026-07-28)
 
 Mode A — docs only, no code/build/version bump/deploy.

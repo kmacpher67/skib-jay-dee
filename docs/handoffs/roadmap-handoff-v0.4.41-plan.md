@@ -259,6 +259,10 @@ data with) the `RewardsHistoryModal` from Slice A:
 **Play Recap addendum is now code-ready** (build per-run recap first; lifetime
 Stats tab as fast-follow once `type: 'pickup'` data exists).
 
+**Sequencing (2026-07-28):** bundled into
+`docs/handoffs/roadmap-handoff-v0.4.62-plan.md` as Slices 1–2 after
+roadmap triage at `GAME_ITERATION` v0.4.60.
+
 ### Open questions flagged for Ken — RESOLVED 2026-07-27
 
 <details>
