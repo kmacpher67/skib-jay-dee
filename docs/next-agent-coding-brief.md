@@ -1,9 +1,16 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Last updated by:** Cursor Composer — 2026-07-28 (v0.4.62 iteration bundle)
+**Last updated by:** Cursor Composer — 2026-07-28 (v0.4.64 debug-dump priority)
 
-Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.60**).
+Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.63**).
+
+## Ken priority override (2026-07-28)
+
+If Ken says "ship debug dump" or "fix Raman RCA tooling," implement the
+**Debug State Dump slice only** from `roadmap-handoff-v0.4.64-plan.md`
+(copy-paste block at bottom). Bump to **v0.4.64**. Do **not** install
+Sentry/PostHog — SDK slice is still blocked on Ken.
 
 ## Primary queue — `roadmap-handoff-v0.4.62-plan.md`
 
@@ -28,12 +35,18 @@ Pick the **oldest unfinished slice** in this order (one slice per session):
 - **Neon Jump-Scare Upgrade, near-miss burst, Rod hotfix, Desktop FOW,
   Difficulty selector** — already shipped (v0.4.54–v0.4.60). Do not
   re-implement.
+- **Sentry + PostHog SDK slice** (`v0.4.64-plan.md` § SDK) — blocked on
+  Ken (tool tier + privacy/consent). Debug State Dump from same handoff
+  is unblocked and may ship standalone.
 
 ## Parallel track (Ken priority override)
 
 If Ken says "fix Play as Chaser first," use `v0.4.61-plan.md` instead of
 the v0.4.62 bundle — but still wait for timer/rematch confirmation before
 outcome UX.
+
+If Ken says "ship debug dump," use `v0.4.64-plan.md` Debug State Dump
+slice only (see Ken priority override above).
 
 ## Verification
 

@@ -3,7 +3,7 @@
 Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
-**Last updated by:** Codex (GPT-5) — 2026-07-28 (v0.4.63-plan menu refinement)
+**Last updated by:** Cursor Composer — 2026-07-28 (Raman Rows recurrence verification)
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -12,6 +12,15 @@ append-only logs and handoffs, put the author/date on each new section or
 entry heading so the change trail stays obvious at a glance.
 
 ## Current state
+- **Raman Rows recurrence check (docs only — 2026-07-28):** Ken still
+  reports hanging on Level 4 (Ramen Aisle) on prod v0.4.60. Verified the
+  v0.4.52.1 `mapGrids.js` seal is still in the tree (commit `2d61ed0`, no
+  later edits to that file). `audit-map-widths.py` passes. Treat as open
+  RCA — likely a non-map hang or an un-audited pinch. Interim browser
+  dump instructions added to `roadmap-handoff-v0.4.64-plan.md`; recommend
+  shipping Debug State Dump next (unblocked). See
+  `roadmap-handoff-hotfix-raman-rows-plan.md` § Recurrence check.
+
 - **v0.4.63-plan refinement (docs only — 2026-07-28):** Folded the
   compact mute-control request into the existing Main Menu UI cleanup.
   The code-ready slice keeps the five profile stats in one mobile row,

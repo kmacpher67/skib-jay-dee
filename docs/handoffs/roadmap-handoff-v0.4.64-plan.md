@@ -1,10 +1,11 @@
 # Roadmap Handoff Plan v0.4.64 — App Tracking / Instrumentation (Analytics + Error Monitoring)
 
 **Created by:** Claude Sonnet 5 — 2026-07-28
-**Last updated by:** Claude Sonnet 5 — 2026-07-28
+**Last updated by:** Cursor Composer — 2026-07-28 (readiness split + interim dump)
 **Session mode:** Mode A (Planning / features refinement — docs only, no code)
-**Status:** Design-only / TBD. Not code-ready — two open decisions block a
-coding session (see "Blocked on Ken" below).
+**Status:** **Split readiness.** The **Debug State Dump** slice is
+code-ready (no blockers). The **Sentry + PostHog SDK** slice is still
+design-only — two open decisions block it (see "Blocked on Ken" below).
 
 **Note on file history:** this content was originally written to
 `roadmap-handoff-v0.4.62-plan.md` in this same session, but a concurrent
@@ -116,6 +117,88 @@ locking into LogRocket's pricing.
    site. Same init snippet + masking pattern drops into any other app on
    the same domain with near-zero marginal setup cost.
 
+## Interim browser dump (today — no shipped feature yet)
+
+There is **no** Triple-Q / clipboard dump in prod yet. During an active
+run (after Quick Play starts and the canvas is visible), Ken can capture
+state from DevTools.
+
+### If Chrome blocks paste in the Console
+
+Chrome (and Edge) intentionally block pasting into the Console until you
+type the unlock phrase first:
+
+1. Open DevTools → **Console**
+2. Click inside the console input
+3. Type exactly: `allow pasting` (no quotes) and press **Enter**
+4. Now paste the script below and press **Enter**
+
+**Alternative — DevTools Snippets (recommended, paste once, reuse forever):**
+
+1. DevTools → **Sources** tab → left sidebar → **Snippets** (under `>>` if hidden)
+2. **+ New snippet**, name it `skib-dump`
+3. Paste the script below, **Ctrl+S** to save
+4. While stuck in a run: right-click the snippet → **Run**, or **Ctrl+Enter**
+5. Output appears in Console; clipboard copy runs if permitted
+
+**Alternative — shortest typed one-liner** (if paste still fails, type this
+by hand — no `vx`/`vy`, runner uses `driftVel`):
+
+```javascript
+copy(JSON.stringify({p:__skibEngine?.phase,r:__skibEngine?.runner,b:__skibEngine?.brothFrictionTimer,l:__skibEngine?.level?.name},null,2))
+```
+
+Then paste the clipboard contents into chat or a GitHub issue.
+
+### Full dump script
+
+Uses the existing `window.__skibEngine` hook (e2e-only today, but exposed
+in all builds). Note: runner has `driftVel`, not `vx`/`vy`.
+
+```javascript
+(() => {
+  const e = window.__skibEngine
+  if (!e) return console.warn('No active run — start Quick Play first.')
+  const dump = {
+    version: document.querySelector('.version-pill, .hud-version, [class*="version"]')?.textContent?.trim() ?? 'unknown',
+    capturedAt: new Date().toISOString(),
+    phase: e.phase,
+    phaseTimer: e.phaseTimer,
+    levelIndex: e.levelIndex,
+    levelName: e.level?.name,
+    levelSeconds: e.levelSeconds,
+    runner: { x: e.runner.x, y: e.runner.y, w: e.runner.w, h: e.runner.h, facing: e.runner.facing, driftVel: e.runner.driftVel },
+    chasers: e.chasers.map((c, i) => ({
+      i, x: c.x, y: c.y, chaserType: c.chaserType, face: c.face?.src?.split('/').pop(),
+    })),
+    brothFrictionTimer: e.brothFrictionTimer,
+    brothTrailCount: e.brothTrails?.length ?? 0,
+    sheebs: e.sheebs,
+    deaths: e.deaths,
+    difficulty: e.difficulty,
+    rafActive: e._raf != null,
+  }
+  const text = JSON.stringify(dump, null, 2)
+  console.log(text)
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).then(() => console.log('Copied to clipboard.'))
+  }
+  return dump
+})()
+```
+
+**When stuck:** run the snippet, paste the JSON into a GitHub issue or
+chat. Key fields for the Raman Rows RCA:
+
+- `runner.x` / `runner.y` — tile ≈ `floor(x/10)`, `floor(y/10)`
+- `phase` — if not `'chase'`, the hang may be a phase freeze, not a wall pinch
+- `chaserType: 'raman-aunt'` + high `brothFrictionTimer` — Broth Slip debuff, not a map bug
+- Quest-room seam band: runner near **x ≈ 720–760, y ≈ 200–400**
+- Shelf pinch band: runner near **x ≈ 350–380, y ≈ 1300–1360**
+
+This dump is exactly what the shipped Debug State Dump feature will
+formalize (Triple-Q → clipboard, no DevTools required).
+
 ## Relationship to Debug State Dump
 
 `docs/roadmap.md` already carries: *"Feature: Debug State Dump. Add a
@@ -153,28 +236,76 @@ cluster, not as separate unrelated backlog lines.
   by default (face-upload input, at minimum)? This is a product decision,
   not something a coding agent should default on its own.
 
-Neither blocker requires code to resolve — once Ken answers both, this
-becomes code-ready as a small, single-session slice (SDK install + init +
-event tagging on key funnels + the bug-report button). Debug State Dump
-itself is **not** blocked and could ship independently first.
+Neither blocker requires code to resolve — once Ken answers both, the SDK
+slice becomes code-ready as a small, single-session increment (SDK install
++ init + event tagging on key funnels + the bug-report button).
+
+**Will v0.4.64 help with the Raman Rows hang?**
+
+| Piece | Helps with Raman hang? | Ready? |
+|---|---|---|
+| **Debug State Dump** (clipboard JSON) | **Yes, immediately** — gives position, phase, chaser type for RCA | Code-ready, unblocked |
+| **Sentry crash capture** | Only if the hang throws a JS error (wall soft-lock usually does not) | Blocked on Ken (tool tier + privacy) |
+| **PostHog session replay** | **Yes, retrospectively** — watch what happened if replay was recording | Blocked on Ken (same) |
+| **"Report a Bug" button** | Yes, once SDK + dump ship together | Blocked until SDK slice |
+
+**Recommendation for the Raman recurrence:** ship Debug State Dump first
+(one small Mode B session). It does not need Sentry/PostHog accounts.
+The SDK slice can follow once Ken picks vendors and consent posture.
 
 ## Copy-paste: next natural steps
 
+```text
+SCOPE: Debug State Dump slice ONLY from this handoff. Do NOT install
+Sentry, PostHog, or any SDK — that slice stays blocked until Ken answers
+"Blocked on Ken" below.
+
+Implement per bounded block below. Bump GAME_ITERATION to v0.4.64.
+Ship as one Mode B session.
+
+```yaml
+code_monkey_backend: default
+code_monkey_model: default
 ```
-Mode A still open on the SDK piece — do not start that slice until Ken
-answers both "Blocked on Ken" questions above (tool tier, privacy/consent
-posture). Debug State Dump has no such blocker and can go first/standalone.
 
-Debug State Dump slice (small, unblocked):
-1. Bind a debug-dump trigger (e.g. Triple-Q or a dev-only key combo) in
-   `GameEngine.js` / `App.jsx` that serializes current run state
-   (position, level index, phase, chaser count, key timers) to an object.
-2. Copy it to clipboard (`navigator.clipboard.writeText`) as formatted
-   JSON; no network call, no third-party dependency.
-3. Verify: `npm run build`, manual check the dump contains enough to
-   reproduce a reported bug.
+1. Add `buildDebugDump()` on `GameEngine` (or `frontend/src/lib/debugDump.js`
+   imported by the engine) returning JSON-serializable object:
+   - version (import GAME_ITERATION from version.js)
+   - capturedAt (ISO string)
+   - phase, phaseTimer, levelIndex, levelName, levelSeconds
+   - runner: x, y, w, h, tile [floor(x/10), floor(y/10)], facing, driftVel
+   - chasers: [{ i, x, y, chaserType, face filename }]
+   - brothFrictionTimer, brothTrailCount, sheebs, deaths, difficulty
+   - rafActive: this._raf != null
+   Match the interim dump schema in § "Full dump script" above.
 
-SDK slice (after Ken answers the two blockers):
+2. Triple-Q trigger in `GameEngine._onKeyDown`: three `q`/`Q` keydowns
+   within 600ms while a run is active → call buildDebugDump(), copy JSON
+   to clipboard via navigator.clipboard.writeText (fallback: console.log
+   only). Show a brief non-blocking HUD toast or console line:
+   "Debug dump copied." Do not pause the game.
+
+3. Optional: expose `engine.buildDebugDump()` so e2e and __skibEngine
+   callers can reuse the same serializer (do not duplicate logic).
+
+4. E2E: `frontend/e2e/debug-dump.spec.js` — start run, dispatch three
+   quick `q` keydowns, assert clipboard text (or evaluate
+   engine.buildDebugDump()) contains phase and levelName.
+
+5. Verify: `cd frontend && npm run build && npx playwright test`.
+
+6. Closeout: roadmap-handoff-v0.4.64.md (shipped slice), version-log,
+   ledger, check Debug State Dump in roadmap.md, update-directions.md.
+
+Out of scope this session: Sentry, PostHog, Report a Bug button,
+interplayer chat, real-time match telemetry.
+```
+
+### SDK slice (blocked — do not code yet)
+
+Mode A still open on the SDK piece — do not start until Ken answers both
+"Blocked on Ken" questions (tool tier, privacy/consent posture).
+
 1. `npm install @sentry/react posthog-js` in `frontend/`.
 2. Init both early in `frontend/src/main.jsx`, gated behind env-based
    DSN/API-key config (no secrets committed).
@@ -189,7 +320,4 @@ SDK slice (after Ken answers the two blockers):
    disabled (dev without DSN set) and enabled (dev with a real DSN).
 7. Update `docs/roadmap.md`, `docs/version-log.md`,
    `docs/handoffs/ledger.md` per normal Mode B closeout.
-
-Do not scope interplayer chat or real-time match telemetry into either
-slice — those stay parked under Phase 5 multiplayer.
 ```

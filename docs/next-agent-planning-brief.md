@@ -1,7 +1,7 @@
 # Next Agent Planning Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
-**Last updated by:** Cursor Composer — 2026-07-28 (v0.4.65 deploy-push refine)
+**Last updated by:** Cursor Composer — 2026-07-28 (Raman recurrence + debug dump)
 
 Use this when Ken opens a **Mode A** session. For coding, use
 `docs/next-agent-coding-brief.md`.
@@ -39,8 +39,12 @@ is a parallel track, not part of the bundle.
 
 ## Useful Mode A follow-ups (optional)
 
+- **Raman Rows recurrence RCA** — v0.4.52.1 fix verified still in tree;
+  Ken still stuck on v0.4.60. Collect interim browser dump from
+  `roadmap-handoff-v0.4.64-plan.md` or prioritize Debug State Dump Mode B.
 - Debt Lock Method C TBDs in `difficulty-mechanics-plan.md` (selector done).
-- Scope **Debug State Dump** into a dedicated `-plan` if Ken wants it coded.
+- Scope **Debug State Dump** into Mode B — handoff copy-paste is in
+  `roadmap-handoff-v0.4.64-plan.md` (code-ready, unblocked).
 - Record Ken's Role Reversal answers → `role-reversal-design.md` + `v0.4.61-plan`.
 
 ## LT arc (decided)
