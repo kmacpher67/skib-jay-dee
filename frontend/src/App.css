@@ -5,8 +5,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 24px 18px 60px;
+  gap: 8px;
+  padding: 16px 12px 40px;
   text-align: center;
   overflow-y: auto;
   overflow-x: hidden;
@@ -71,7 +71,15 @@
   font-size: 13px;
 }
 
-.status-row,
+.status-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 4px;
+  width: min(100%, 350px);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
 .perk-strip {
   position: relative;
   z-index: 1;
@@ -82,7 +90,23 @@
 }
 
 .status-row span,
-.status-row button,
+.status-row button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 4px 4px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #eef7f4;
+  font-size: clamp(8px, 2.3vw, 11px);
+  line-height: 1.1;
+  backdrop-filter: blur(6px);
+  text-align: center;
+  word-wrap: break-word;
+}
+
 .perk-strip span {
   display: inline-flex;
   align-items: center;
@@ -105,7 +129,6 @@
 }
 
 @media (max-width: 360px) {
-  .status-row,
   .perk-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -115,10 +138,10 @@
   position: relative;
   z-index: 1;
   display: flex;
-  flex-wrap: wrap;
   gap: 14px;
   justify-content: center;
-  margin: 6px 0 2px;
+  margin: 6px auto 2px;
+  width: min(100%, 300px);
 }
 
 .face-upload {
@@ -671,8 +694,12 @@
 
 .mute-btn-menu {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  left: 0;
+  top: 44px;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  margin: 0;
 }
 
 .lvl2-transition {

@@ -83,10 +83,35 @@ test('mute toggle switches icon on menu and in game', async ({ page }) => {
   const menuMute = page.locator('.mute-btn-menu')
   await expect(menuMute).toBeVisible()
   await expect(menuMute).toHaveText('🔊')
+
+  // Check top stats remain one row
+  const diffPillBox = await page.locator('.diff-pill').boundingBox()
+  const deathsPillBox = await page.locator('.deaths-pill').boundingBox()
+  expect(diffPillBox.y).toBe(deathsPillBox.y)
+
+  // Check previews retain size/gap
+  const runnerBox = await page.locator('.face-preview').first().boundingBox()
+  const chaserBox = await page.locator('.face-preview').last().boundingBox()
+  expect(runnerBox.width).toBe(88)
+  expect(runnerBox.height).toBe(88)
+  expect(Math.round(chaserBox.x - (runnerBox.x + runnerBox.width))).toBeGreaterThanOrEqual(14)
+
+  // Check menu mute control is left of portraits and vertically aligned
+  const muteBox = await menuMute.boundingBox()
+  expect(muteBox.x + muteBox.width).toBeLessThanOrEqual(runnerBox.x)
+  const runnerCenterY = runnerBox.y + runnerBox.height / 2
+  const muteCenterY = muteBox.y + muteBox.height / 2
+  expect(Math.abs(muteCenterY - runnerCenterY)).toBeLessThan(5)
+
   await menuMute.click()
   await expect(menuMute).toHaveText('🔇')
 
   await page.locator('.play-btn').first().click()
   const inGameMute = page.locator('.mute-btn').last()
   await expect(inGameMute).toHaveText('🔇')
+
+  // Check in-game mute remains in its corner
+  const inGameMuteBox = await inGameMute.boundingBox()
+  expect(inGameMuteBox.x).toBeLessThan(20)
+  expect(inGameMuteBox.y).toBeLessThan(20)
 })

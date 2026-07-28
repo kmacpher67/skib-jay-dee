@@ -733,16 +733,7 @@ function MainMenu({
   return (
     <div className="menu" onPointerDown={onPrimeAudio}>
       <div className="menu-sheen" />
-      <button
-        className="mute-btn mute-btn-menu"
-        onClick={(e) => {
-          e.stopPropagation()
-          onToggleMuted()
-        }}
-        aria-label={muted ? 'Unmute audio' : 'Mute audio'}
-      >
-        {muted ? '🔇' : '🔊'}
-      </button>
+
       <div className="menu-worldstar">● WORLD STAR!!! ●</div>
       <h1>SKIB-JAY-DEE-TOILET</h1>
       <p className="tagline">"Run like hell." — Screeeeming Kid</p>
@@ -798,6 +789,16 @@ function MainMenu({
       )}
 
       <div className="face-row">
+        <button
+          className="mute-btn mute-btn-menu"
+          onClick={(e) => {
+            e.stopPropagation()
+            onToggleMuted()
+          }}
+          aria-label={muted ? 'Unmute audio' : 'Mute audio'}
+        >
+          {muted ? '🔇' : '🔊'}
+        </button>
         <FaceUpload label="Your Face (Runner)" previewSrc={runnerFace} onFace={onRunnerFace} />
         <FaceUpload label="Skib (Chaser)" previewSrc={chaserFace} onFace={onChaserFace} />
       </div>
