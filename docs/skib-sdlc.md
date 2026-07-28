@@ -176,12 +176,8 @@ Every session that lands a meaningful change updates:
   first," and "Natural follow-up work" accurate for the next agent.
 - **`docs/roadmap.md`** — check off or annotate the backlog item(s) you
   completed, and add anything new that surfaced while working.
-- **`docs/handoffs/roadmap-handoff-vX.Y.Z.md`** — one file per version
-  that lands, matching the `GAME_ITERATION` you bump to. Longer-form than
-  `update-directions.md`: what the session did, how it was verified, what
-  was explicitly skipped, and a copy-paste "what to do next" block for
-  the next agent. See `docs/handoffs/roadmap-handoff-v0.4.0.md` for the
-  template — copy its structure for new versions.
+- **`docs/handoffs/roadmap-handoff-vX.Y.Z-plan.md`** — A planning file created during Mode A (Planning / refine) detailing the design, decisions, and exact scope for the upcoming version implementation. This file is kept as the original blueprint.
+- **`docs/handoffs/roadmap-handoff-vX.Y.Z.md`** — A memorialization file created after Mode B (Execution) lands the version. This file should contain a summary of the coding notes, implementation details, issues encountered, unfinished items, new questions or comments, and next steps/programming notes for future memorialization. Do not overwrite the `-plan.md` file; both files are kept.
 - **`docs/handoffs/ledger.md`** — append a short bullet list under a new
   `## vX.Y.Z — <date>` heading, one line per change. This is the
   fast-scan flat index; `version-log.md` has the *why*, the handoff file
