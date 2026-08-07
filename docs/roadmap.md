@@ -582,9 +582,10 @@ chaser-bark voice clips, 1:1 with text.
   ambient layer tied to HUD or game state, with trigger cues for level
   start, near-miss, and low health. Needs an asset list, a mix pass, and
   a clear mute-toggle placement decision before it can be treated as
-  code-ready. **Refinement-gated; see `v0.4.75-plan` and
-  `future-versions.md`.** `Both — shared`.
-- [ ] **Shleeb Shop side-by-side layout + item glossary.** Reflow the
+  code-ready. **Refinement-gated; see `v0.4.75-plan`,
+  [audio-recording-brief-for-alex.md](audio-recording-brief-for-alex.md),
+  and `future-versions.md`.** `Both — shared`.
+- [x] **Shleeb Shop side-by-side layout + item glossary.** Reflow the
   shop cards into a responsive side-by-side presentation so newer items
   are easier to scan, while keeping the panel scrollable for future
   growth. In the same slice, expand

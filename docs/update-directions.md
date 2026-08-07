@@ -15,12 +15,14 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.74 (real code — 2026-08-07):** Implemented Shleeb Shop presentation pass and item glossary. Reflowed shop cards into a responsive side-by-side grid in `App.css`, verified distinct styling for warp-pass card, and confirmed `players-guide.md` item glossary alignment with `gameContent.js`. No `GAME_ITERATION` bump or deploy per handoff instructions. See `roadmap-handoff-v0.4.74.md`.
 - **v0.4.75-plan (docs only — 2026-08-07):** refined the latest HUD
   screenshot complaint into a code-ready top-bar cleanup plus a
   refinement-gated audio overlay follow-up. The top strip now has a
   dedicated handoff (`roadmap-handoff-v0.4.75-plan.md`) and the audio
   piece is parked until the asset list / trigger / mix decisions are
-  settled.
+  settled. The asset brief for Alex lives in
+  `audio-recording-brief-for-alex.md`.
 - **v0.4.71-plan (docs only — 2026-07-28):** Ken asked whether everything
   from `v0.4.66-plan.md` actually landed. Audit
   (`roadmap-handoff-v0.4.71-plan.md`) verified every v0.4.60–v0.4.69 item

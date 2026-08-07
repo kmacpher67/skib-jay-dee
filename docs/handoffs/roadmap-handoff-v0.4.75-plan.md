@@ -77,6 +77,8 @@ mix decision before anyone should wire it in.
   triggers / hooks, not the layout fix.
 - `frontend/src/assets/audio/` — only if the audio pass lands with
   concrete clips.
+- `docs/audio-recording-brief-for-alex.md` — source-audio recording brief
+  for the human/voice pass.
 - `docs/roadmap.md` / `docs/future-versions.md` / `docs/update-directions.md`
   / `docs/version-log.md` / `docs/handoffs/ledger.md` — keep the plan
   and backlog trail current.
@@ -128,4 +130,3 @@ use the same session to:
 Do not bump GAME_ITERATION or deploy.
 Do not invent audio assets or settings behavior that Ken has not confirmed.
 ```
-

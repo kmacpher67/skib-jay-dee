@@ -22,6 +22,9 @@ focused on *why*, those two are the *what* and *when*.
 - Split the audio overlay idea into a separate refinement-gated follow-up
   that needs a concrete asset list, trigger list, and mix decision
   before it should be coded.
+- Added `audio-recording-brief-for-alex.md` so the source audio files
+  can be recorded with explicit naming, tone, and canonical-dialog
+  guidance.
 - Added `roadmap-handoff-v0.4.75-plan.md` and updated the roadmap,
   future-versions, update-directions, and agent briefs so the next agent
   has a clear handoff trail.
@@ -2367,3 +2370,12 @@ Mode A — docs only; no code, build, version bump, or deploy.
 - Final boundary correction: the player profile's shop loadout currently
   reaches the AI runner. Slice A now zeros it in Chaser Beta so speed,
   stamina, reward, and luck bonuses stay Runner-only.
+
+## v0.4.74 — Shleeb Shop Layout + Item Glossary (2026-08-07)
+
+- Implemented the Shleeb Shop layout cleanup: reflowed the perk cards into a side-by-side responsive grid using `App.css` (`.shop-grid` and `.shop-card`).
+- Kept the progression unlock (Warp Pass) card visually distinct via existing inline styling.
+- Confirmed that `docs/players-guide.md` was correctly expanded with a full item glossary during the planning phase.
+- Maintained exact canonical wording from `frontend/src/gameContent.js`.
+- Kept `GAME_ITERATION` unchanged and did not deploy, following explicit instructions in the v0.4.74 plan.
+- See `docs/handoffs/roadmap-handoff-v0.4.74.md`.

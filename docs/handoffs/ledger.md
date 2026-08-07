@@ -11,8 +11,10 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you add
 a new shipped version or docs-only planning note.
 
+2026-08-07 | v0.4.74 | Shleeb Shop side-by-side layout + item glossary implemented; no version bump or deploy.
 2026-08-07 | docs (Codex GPT-5) | v0.4.74-plan: scoped Shleeb Shop side-by-side layout + full item glossary pass; docs and briefs synced; no code
 2026-08-07 | docs (Codex GPT-5) | v0.4.75-plan: refined the top HUD bar complaint into a code-ready layout fix; parked the audio overlay subtask behind asset/trigger/mix decisions; no code
+2026-08-07 | docs (Codex GPT-5) | audio-recording brief: added Alex-facing source-audio guide with naming, tone, and canonical-dialog pointers; no code
 2026-07-28 | v0.4.73 | Level Warp Passes: Added shop-purchasable warp passes to skip to later levels, unlocking them as new starting levels via the main menu.
 2026-07-28 | docs (Codex GPT-5) | v0.4.73-plan: refines the level-jump request into a shop-gated warp-pass system (clear-count gate + permanent start-level cap); roadmap/profile/update docs updated; no code
 2026-07-28 | v0.4.70 | Level 5 Tuning, difficulty wiring fix, and Ramen Aisle positive pickup rebalance (Turdstone relocated behind Schleimy gap).
