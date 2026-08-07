@@ -2,13 +2,16 @@
 
 **Created by:** Codex (GPT-5) — 2026-07-27
 **Created on:** 2026-07-27
-**Last updated by:** Codex GPT-5 — 2026-07-28 (level-warp pass refinement)
-**Last updated on:** 2026-07-28
+**Last updated by:** Codex GPT-5 — 2026-08-07 (shop layout + item glossary planning)
+**Last updated on:** 2026-08-07
 
-Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.70** —
-Level 5 speed rebalance + difficulty wiring fix + Ramen Aisle reward
-pass, shipped by a concurrent session partway through the v0.4.71 audit,
-see `roadmap-handoff-v0.4.70.md`).
+Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.73** —
+level warp passes / shop-gated direct select, see `roadmap-handoff-v0.4.73.md`
+and the `v0.4.73` section in `docs/version-log.md`).
+
+If you're following the direct store/menu cleanup request from this
+session, start with `docs/handoffs/roadmap-handoff-v0.4.74-plan.md`
+instead of the default queue.
 
 Full audit and ranked candidate queue:
 `docs/handoffs/roadmap-handoff-v0.4.71-plan.md` (supersedes the earlier
@@ -22,6 +25,18 @@ hitbox, 0.85x speed. Note: `VersionModal.jsx` already has a changelog
 entry claiming this shipped as v0.4.55 — it didn't (verified: no
 `micro-skib` string anywhere in `GameEngine.js`). Shipping this for real
 makes that entry true instead of false; see `v0.4.71-plan.md` Finding #1.
+
+## If you are working the shop/guide cleanup from this session
+
+Use `roadmap-handoff-v0.4.74-plan.md`.
+
+- Reflow the Shleeb Shop into a side-by-side card layout that still
+  scrolls cleanly on portrait screens.
+- Expand `docs/players-guide.md` into a full item glossary for the
+  shipped shop perks and pickups, with clear "when / why / benefit"
+  notes.
+- Keep the canonical names in `frontend/src/gameContent.js` as the
+  source of truth.
 
 ## After that — pick from the ranked queue in `v0.4.71-plan.md`
 

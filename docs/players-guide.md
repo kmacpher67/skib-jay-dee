@@ -1,7 +1,7 @@
 # Player's Guide — Skib-Jay-Dee-Toilet
 
 **Created by:** Composer — 2026-07-27
-**Last updated by:** Codex (GPT-5) — 2026-07-28 (Role Reversal Beta status)
+**Last updated by:** Codex (GPT-5) — 2026-08-07 (item glossary pass)
 
 Single source of truth for game mechanics. The in-game footer links here
 directly (see `roadmap-handoff-v0.4.45-plan.md` — the earlier in-game
@@ -91,14 +91,67 @@ Design/status source:
   countdown) before you can warp again.
 - Brown smoke appears at your departure point. Comedic, not protective.
 
-## Other pickups (quick reference)
+## Item glossary
 
-- **Heavy Plunger:** swing with FIRE for a knockback arc (replaces gun while held).
-- **Soggy Toilet Paper:** leaves a slippery trail that slows chasers who step in it.
-- **Schleimy Potion:** shrinks your hitbox so you can squeeze through tight gaps
-  (you move slower while shrunk).
-- **Decoy:** pulls chaser attention to a spot on the map for a few seconds.
-- **Rolling pickups:** Mario-style items that bounce around — some help, some hurt.
+### Shleeb Shop perks
+
+- **Turbo Clogs:** Buy this when you want the runner to feel snappier
+  before and between chases. It boosts raw movement speed, which helps
+  you recover from bad turns and stay ahead in long hallways.
+- **Deep Breath Tank:** Buy this when you keep running out of stamina
+  too early. It increases max stamina, so sprinting stays available
+  longer and you can spend more of a chase in boost mode.
+- **Sheeb Magnet:** Buy this if your goal is to earn back more value
+  from successful clears. It raises level payouts, which helps fund
+  other shop buys faster.
+- **Lucky Charm:** Buy this when you want more map help from the random
+  pickup pool. It increases positive pickup odds, making helpful items
+  appear more often.
+- **Golden Lucky Charm:** Buy this when you already like Lucky Charm and
+  want the stronger version. It stacks with the regular charm for even
+  better positive pickup odds.
+- **Neon Jump-Scare Filter:** Buy this if you want a small escape window
+  after getting caught. After a scare, it can give a brief neon
+  headstart, but each use costs sheebs.
+- **Warp Pass:** Buy this only after you’ve earned the required clears
+  and want to start later in the campaign. It does not improve stats; it
+  just unlocks a higher starting level for runner runs.
+
+### Core map pickups and abilities
+
+- **Jayden Gun:** Use this when a chaser is closing in and you need a
+  stun window. It is a temporary pickup, not a permanent weapon, and it
+  is best used to break pressure or open a route through a crowded map.
+- **Taco Bell Grande / Shart Knocker:** Eat Taco Bell on Level 4+ when
+  you want a short-range panic blast. It gives you a charge that can
+  stun the nearest chaser, which is useful when the runner is boxed in
+  or needs a forceful reset.
+- **Rod of Poopdom:** Use this when a short reposition is safer than
+  trying to weave through a chase. It teleports you forward a limited
+  distance, but it cannot go through walls and has a Stinky cooldown.
+- **Heavy Plunger:** Use this when a chaser gets too close and you want
+  a knockback rather than a ranged stun. It is a close-range, timing-
+  heavy escape tool.
+- **Soggy Toilet Paper:** Use this when you want to leave a slow zone
+  behind you. It is strongest in a chase path, because chasers who step
+  in the trail lose speed.
+- **Schleimy Potion:** Use this when a tight wall gap or pinch point is
+  the best escape line. It shrinks your hitbox so you can slip through
+  tighter spaces, but you pay for that with slower movement.
+- **Decoy:** Use this when you want to redirect chaser attention away
+  from your path. It buys breathing room by pulling nearby chasers toward
+  a fake target spot.
+- **Gawd Particle:** Use this on Level 5+ when the map is crowded and
+  you need the strongest short-term escape tool. It lets you run through
+  walls for a few seconds and punishes chaser contact instead of
+  capturing you.
+- **Turdstone Token:** Hold this when you want a safety net against one
+  bad mistake. If you get caught while holding it, it saves the run once
+  instead of letting the death fully land.
+- **Rolling pickups:** Treat the wandering mushroom/bomb-style items as
+  moving wildcard pickups. Some are helpful and some are harmful, so
+  they’re best approached as a decision point rather than a guaranteed
+  reward.
 
 ## Economy & risk (Level 4+)
 

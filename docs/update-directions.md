@@ -4,8 +4,8 @@ Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
 **Created on:** 2026-07-26
-**Last updated by:** Codex GPT-5 — 2026-07-28 (level-warp pass refinement)
-**Last updated on:** 2026-07-28
+**Last updated by:** Codex GPT-5 — 2026-08-07 (shop layout + item glossary planning)
+**Last updated on:** 2026-08-07
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -43,6 +43,12 @@ entry heading so the change trail stays obvious at a glance.
   and stat perks remain isolated. See
   `roadmap-handoff-v0.4.73-plan.md`. Next code queue is unchanged:
   `roadmap-handoff-v0.4.55-plan.md` (Micro-Skib).
+- **v0.4.74-plan (docs only — 2026-08-07):** scoped a Shleeb Shop
+  presentation pass plus a full item glossary for `docs/players-guide.md`.
+  Recommended shape: side-by-side shop cards with scroll preserved, a
+  distinct warp-pass card, and guide text that explains each shipped
+  item's use case, benefit, and tradeoff. See
+  `roadmap-handoff-v0.4.74-plan.md`.
 - **v0.4.69 (real code, shipped — 2026-07-28):** Implemented Chaser Beta Mode changes. AI runner now seeks guns and fires back. Profile is isolated from Chaser Beta stats. Includes dedicated Chaser Beta dialogues. Verified with Playwright tests. `GAME_ITERATION` = v0.4.69. See `roadmap-handoff-v0.4.69.md`.
 
 - **v0.4.69-plan final review (docs only — 2026-07-28):** **IMPLEMENTED** as two intentionally small slices. The initial AI interaction is now

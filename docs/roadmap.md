@@ -543,6 +543,14 @@ chaser-bark voice clips, 1:1 with text.
   88×88 portraits and their gap, and leave the in-game mute control
   untouched. **Code-ready as v0.4.63.** See
   [`roadmap-handoff-v0.4.63-plan.md`](handoffs/roadmap-handoff-v0.4.63-plan.md).
+- [ ] **Shleeb Shop side-by-side layout + item glossary.** Reflow the
+  shop cards into a responsive side-by-side presentation so newer items
+  are easier to scan, while keeping the panel scrollable for future
+  growth. In the same slice, expand
+  [`docs/players-guide.md`](players-guide.md) into a full item glossary
+  that explains what each shipped shop perk and pickup does, when to use
+  it, why it exists, and the benefit or tradeoff. **Code-ready as
+  `v0.4.74-plan`.** `Runner only`.
 - [x] **Menu HUD: make the Speed/Stamina/Rewards pills reflect real live
   data.** **Slice B code-ready (Ken chose (a), 2026-07-27):** shop label
   only — add "from Shleeb Shop" caption/tooltip; no difficulty modifiers.

@@ -6,6 +6,15 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## [docs, 2026-08-07] - Shleeb Shop layout + item glossary planning
+- Scoped a follow-up pass to reflow the Shleeb Shop into side-by-side
+  cards so newer items are easier to scan on portrait screens.
+- Expanded the documentation scope to a full Player's Guide item
+  glossary that explains the shipped shop perks and pickups by use case,
+  benefit, and tradeoff.
+- Added `roadmap-handoff-v0.4.74-plan.md` and synced the roadmap,
+  update-directions, agent briefs, and ledger pointers.
+
 ## [v0.4.73] - Level Warp Passes
 - **Warp Passes**: Added a new progression unlock feature to the Shop.
 - **Profile Updates**: Added tracking of level clear counts to player profiles (`levelClearCounts`) and a permanent unlocked start level (`highestUnlockedStartLevel`).

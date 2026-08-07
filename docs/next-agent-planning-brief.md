@@ -2,8 +2,8 @@
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
 **Created on:** 2026-07-27
-**Last updated by:** Codex GPT-5 — 2026-07-28 (level-warp pass refinement)
-**Last updated on:** 2026-07-28
+**Last updated by:** Codex GPT-5 — 2026-08-07 (shop layout + item glossary planning)
+**Last updated on:** 2026-08-07
 
 Use this when Ken opens a **Mode A** session. For coding, use
 `docs/next-agent-coding-brief.md`.
@@ -20,6 +20,10 @@ scratch — it verifies every v0.4.60–v0.4.69 item against `git log` and
 the actual code, not just doc claims, and surfaces two real bugs (a
 version-number collision and two false in-game changelog entries).
 
+If today's direct request is the one you're following, use
+`docs/handoffs/roadmap-handoff-v0.4.74-plan.md` next: it scopes the shop
+side-by-side layout and the full player-guide item glossary.
+
 ## Ken deploy note
 
 Game repo `git push` is intentionally **after** prod shows the new
@@ -29,10 +33,9 @@ until the v0.4.71 audit corrected it. No further action needed here.
 
 ## Current production state
 
-- `GAME_ITERATION`: **v0.4.70** (Level 5 speed rebalance + difficulty
-  selector wiring fix + Ramen Aisle reward pass, shipped 2026-07-28 —
-  landed mid-audit by a concurrent Mode B session, see
-  `roadmap-handoff-v0.4.70.md`).
+- `GAME_ITERATION`: **v0.4.73** (Level Warp Passes; shipped 2026-07-28,
+  see `roadmap-handoff-v0.4.73.md` and the `v0.4.73` section in
+  `docs/version-log.md`).
 - Next unblocked Mode B pick is **Micro-Skib chaser** (`v0.4.55-plan.md`),
   not a planning task.
 - Role Reversal menu mode (`v0.4.53`→`v0.4.61` recovery) is **live and
@@ -60,6 +63,10 @@ until the v0.4.71 audit corrected it. No further action needed here.
 - Level-start warp passes — `roadmap-handoff-v0.4.73-plan.md` now scopes
   the requested level-jump idea as a shop-gated progression unlock
   instead of a free selector or stat item.
+- Shleeb Shop side-by-side layout + item glossary —
+  `roadmap-handoff-v0.4.74-plan.md` turns the shop into a more
+  scan-friendly card grid and expands `docs/players-guide.md` to explain
+  the current item catalog.
 - Interactive content pack slicing — still concept-only, needs a bounded
   first slice cut from `interactive-content-pack.md`.
 - Record Ken's Role Reversal answers → `role-reversal-design.md` + `v0.4.61-plan`.
