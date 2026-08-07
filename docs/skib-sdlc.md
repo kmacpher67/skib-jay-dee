@@ -51,6 +51,18 @@ settled by the user, not assumed.
    `docs/future-versions.md` and look for where roadmap items can be
    incorporated together, sequenced sensibly, or merged instead of
    spawning parallel one-offs.
+3a. **Check GitHub Issues for new public feedback.** Roadmap items with
+   an issue link (`roadmap` label, see
+   `docs/roadmap-tracking-process-experiment.md`) can pick up comments
+   from Ken or players between sessions. Run `gh issue list --label
+   roadmap --state open` and skim comments (`gh issue view <N>
+   --comments`) on any item you're about to plan or touch. If a
+   comment adds real scope (new mechanic, changed numbers, a design
+   ask), fold it into the roadmap.md entry and the issue body/
+   acceptance criteria (`gh issue edit <N> --body "..."`) as part of
+   this session — don't leave it sitting unread in the comment thread.
+   There is no automated bot/webhook doing this; it's a manual check
+   every Mode A (and Mode B, when picking work) session performs.
 4. **Update or create a handoff.** Find the newest or open/unfinished
    handoff (`docs/handoffs/roadmap-handoff-vX.Y.Z-plan.md`, using the
    `-plan` suffix and *not* bumping `GAME_ITERATION` — that only happens
@@ -96,6 +108,12 @@ settled by the user, not assumed.
    `GAME_ITERATION`, run `./scripts/deploy-static.sh <short-name>`) once
    the version is verified working locally — don't batch an entire
    session's work into a single uncommitted pile.
+5a. **Close the linked GitHub issue on ship.** If the shipped item has a
+   `roadmap`-labeled issue, close it referencing the version and
+   handoff: `gh issue close <N> --comment "Shipped vX.Y.Z — see
+   docs/handoffs/roadmap-handoff-vX.Y.Z.md"`. Do this in the same
+   session as the ship, not as a follow-up — it's what keeps the
+   issue tracker from drifting out of sync with roadmap.md/the ledger.
 6. **Create copy-paste instructions for the natural next steps**, same
    requirement as Mode A's handoff — leave the next agent (planning or
    coding) able to start cold.

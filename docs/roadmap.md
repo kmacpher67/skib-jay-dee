@@ -31,13 +31,17 @@ the flow end-to-end:
 
 - [ ] **HUD top bar too wide / covers elements.** [#1](https://github.com/kmacpher67/skib-jay-dee/issues/1) — includes 1.1 audio-overlay sub-item.
 - [ ] **Toilet plunger swing rebalance (rarer, AoE, stain slow-zone).** [#2](https://github.com/kmacpher67/skib-jay-dee/issues/2)
-- [ ] **Gun rebalance (ammo table, longer stun/knockback, chaser HP tiers, body count, Splat).** [#3](https://github.com/kmacpher67/skib-jay-dee/issues/3) — needs a numbers pass before code-ready.
+- [ ] **Gun rebalance (ammo table, longer stun/knockback, chaser HP tiers, body count, Splat) + "Poop Popper" shotgun + per-difficulty kill dialog/audio.** [#3](https://github.com/kmacpher67/skib-jay-dee/issues/3) — needs a numbers pass before code-ready. Updated 2026-08-07 from an issue comment: new high-rarity single-shot "Poop Popper" shotgun that stuns/kills a group of chasers at once (vs. handgun's single target), plus difficulty-scaled kill dialog/audio (4chan-st = most edgy, Noob-noob = kid-friendly "grandson" voice, Casual = mix of the two). Incorporated into the issue body/acceptance criteria; see issue for full text.
 - [ ] **Taco fart attack rework (funnier, omni-directional, difficulty-scaled, new trophy).** [#4](https://github.com/kmacpher67/skib-jay-dee/issues/4) — blocked on confirming current implementation first.
 
-**Experimental — no decision made yet.** roadmap.md remains the
-skib-sdlc source of truth agents read first; nothing here changes
-that unless Ken picks an option in the experiment doc's open
-question.
+**Decision (2026-08-07):** going with the hybrid from the experiment
+doc — roadmap.md stays skib-sdlc source of truth, GitHub Issues used
+per item for player/contributor comments, and skib-sdlc.md now has an
+explicit sync step (Mode A checks issues for new feedback before
+planning; Mode B closes the issue with the shipped version/handoff
+link when the item lands). See
+[docs/roadmap-tracking-process-experiment.md](roadmap-tracking-process-experiment.md)
+for the full writeup.
 
 ## ✅ Level 6 landed as v0.4.38 (2026-07-27)
 

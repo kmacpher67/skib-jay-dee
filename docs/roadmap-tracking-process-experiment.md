@@ -121,11 +121,20 @@ rather than build more automation around it.
   — see the new entry there.
 - No code touched (Mode A only).
 
-## Open question for Ken
+## Decision (2026-08-07)
 
-Pick one:
-- [ ] Go with the hybrid (roadmap.md stays primary, Issues added per
-      item, skib-sdlc.md gets the one-line sync step)
-- [ ] Issues-only for new items going forward
-- [ ] Drop Issues, close the 4 example issues, roadmap.md-only stays
-      as-is
+Ken picked the hybrid. `docs/skib-sdlc.md` now has the sync steps
+(Mode A step 3a: check open `roadmap` issues for new comments before
+planning and fold real feedback into roadmap.md + the issue itself;
+Mode B step 5a: close the linked issue with the shipped version/
+handoff link). Validated end-to-end same day: Ken added a comment to
+issue #3 (new "Poop Popper" shotgun + per-difficulty kill dialog ask)
+and the next session picked it up per step 3a, updating both
+`docs/roadmap.md` and the issue body/acceptance criteria without
+further direction.
+
+No automated trigger/bot watches for issue comments — this is a
+manual per-session check (step 3a), by design, to keep this the
+smallest version of the hybrid until there's a signal it needs more
+automation (e.g. a GitHub Action that pings on new `roadmap`-labeled
+issue comments).
