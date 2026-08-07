@@ -15,6 +15,30 @@ fallback to `OLLAMA_HOST` or switch to `desktop-gaming` /
 OpenRouter when needed. The handoff's own bounded copy-paste block is
 the prompt body.
 
+## 🧪 Process experiment: roadmap tracking (2026-08-07, Mode A)
+
+Ken asked whether roadmap items should also live as GitHub Issues
+(so players/contributors can comment/annotate) vs. a dedicated
+in-repo roadmap summary page synced through skib-sdlc. Full
+comparison, feasibility check, and recommendation:
+[docs/roadmap-tracking-process-experiment.md](roadmap-tracking-process-experiment.md).
+
+Feasibility confirmed this session: repo is public, `gh` CLI
+authenticated, `MainMenu` already links to the Issues page. Added a
+`roadmap` label and `.github/ISSUE_TEMPLATE/roadmap-item.md`, then
+filed 4 example issues from Ken's 2026-08-07 playtest notes to prove
+the flow end-to-end:
+
+- [ ] **HUD top bar too wide / covers elements.** [#1](https://github.com/kmacpher67/skib-jay-dee/issues/1) — includes 1.1 audio-overlay sub-item.
+- [ ] **Toilet plunger swing rebalance (rarer, AoE, stain slow-zone).** [#2](https://github.com/kmacpher67/skib-jay-dee/issues/2)
+- [ ] **Gun rebalance (ammo table, longer stun/knockback, chaser HP tiers, body count, Splat).** [#3](https://github.com/kmacpher67/skib-jay-dee/issues/3) — needs a numbers pass before code-ready.
+- [ ] **Taco fart attack rework (funnier, omni-directional, difficulty-scaled, new trophy).** [#4](https://github.com/kmacpher67/skib-jay-dee/issues/4) — blocked on confirming current implementation first.
+
+**Experimental — no decision made yet.** roadmap.md remains the
+skib-sdlc source of truth agents read first; nothing here changes
+that unless Ken picks an option in the experiment doc's open
+question.
+
 ## ✅ Level 6 landed as v0.4.38 (2026-07-27)
 
 Jayden's Nightmare House shipped cleanly as `v0.4.38`. The live
