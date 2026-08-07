@@ -2,7 +2,7 @@
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
 **Created on:** 2026-07-27
-**Last updated by:** Codex GPT-5 — 2026-08-07 (shop layout + item glossary planning)
+**Last updated by:** Codex GPT-5 — 2026-08-07 (HUD top-bar fix + audio refinement planning)
 **Last updated on:** 2026-08-07
 
 Use this when Ken opens a **Mode A** session. For coding, use
@@ -21,8 +21,11 @@ the actual code, not just doc claims, and surfaces two real bugs (a
 version-number collision and two false in-game changelog entries).
 
 If today's direct request is the one you're following, use
-`docs/handoffs/roadmap-handoff-v0.4.74-plan.md` next: it scopes the shop
-side-by-side layout and the full player-guide item glossary.
+`docs/handoffs/roadmap-handoff-v0.4.75-plan.md` next: it scopes the top
+HUD bar cleanup and the audio overlay refinement split.
+
+If you're following the store/menu cleanup request from the previous
+session, use `docs/handoffs/roadmap-handoff-v0.4.74-plan.md` instead.
 
 ## Ken deploy note
 
@@ -45,6 +48,10 @@ until the v0.4.71 audit corrected it. No further action needed here.
 ## Still blocked on Ken
 
 - **Audio 2 phase 1** — record `CAPTURE_LINES` clips (`dialog_content_chasing.md`)
+- **HUD top bar layout / audio overlay** — the latest playtest complaint
+  is already split into `v0.4.75-plan`; use that for the layout fix, and
+  do not start the audio follow-up until the asset list / trigger plan is
+  confirmed.
 - **Yoodeling Unc-2** — drop `images/yoodelling-unc-alex-2.png`
 - **Role Reversal outcome UX** — confirm/change 60s capture/timeout +
   Rematch/Menu (`v0.4.61-plan` "Flag for Ken"). The menu Beta pill is
@@ -67,6 +74,8 @@ until the v0.4.71 audit corrected it. No further action needed here.
   `roadmap-handoff-v0.4.74-plan.md` turns the shop into a more
   scan-friendly card grid and expands `docs/players-guide.md` to explain
   the current item catalog.
+- Top HUD bar cleanup + audio overlay refinement —
+  `roadmap-handoff-v0.4.75-plan.md`.
 - Interactive content pack slicing — still concept-only, needs a bounded
   first slice cut from `interactive-content-pack.md`.
 - Record Ken's Role Reversal answers → `role-reversal-design.md` + `v0.4.61-plan`.

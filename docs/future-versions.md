@@ -8,6 +8,13 @@ is a parking lot, not an archive).
 
 ## Audio polish (follow-up to v0.4.0)
 
+- **HUD-tied ambient overlay / state-reactive layer.** The latest HUD
+  refinement pass wants a background bed that reacts to level start,
+  near-miss, and low-health moments. It still needs a concrete asset list,
+  a mix pass, and a final call on whether the existing mute toggle is
+  enough or should also be mirrored in a future settings screen. The
+  layout fix is scoped in `roadmap-handoff-v0.4.75-plan.md`; park the
+  audio part here until the asset plan is settled.
 - **Volume balance / ducking.** The ambient chase loop, chaser barks, and
   the capture sting currently just layer on top of each other at fixed
   volumes (`frontend/src/App.jsx`). A real pass would duck the ambient

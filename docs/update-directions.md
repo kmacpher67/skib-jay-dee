@@ -4,7 +4,7 @@ Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
 **Created on:** 2026-07-26
-**Last updated by:** Codex GPT-5 — 2026-08-07 (shop layout + item glossary planning)
+**Last updated by:** Codex GPT-5 — 2026-08-07 (HUD top-bar fix + audio refinement planning)
 **Last updated on:** 2026-08-07
 
 **Doc provenance note:** when you create or materially edit a `docs/`
@@ -15,6 +15,12 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.75-plan (docs only — 2026-08-07):** refined the latest HUD
+  screenshot complaint into a code-ready top-bar cleanup plus a
+  refinement-gated audio overlay follow-up. The top strip now has a
+  dedicated handoff (`roadmap-handoff-v0.4.75-plan.md`) and the audio
+  piece is parked until the asset list / trigger / mix decisions are
+  settled.
 - **v0.4.71-plan (docs only — 2026-07-28):** Ken asked whether everything
   from `v0.4.66-plan.md` actually landed. Audit
   (`roadmap-handoff-v0.4.71-plan.md`) verified every v0.4.60–v0.4.69 item

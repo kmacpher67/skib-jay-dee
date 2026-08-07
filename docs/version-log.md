@@ -15,6 +15,17 @@ focused on *why*, those two are the *what* and *when*.
 - Added `roadmap-handoff-v0.4.74-plan.md` and synced the roadmap,
   update-directions, agent briefs, and ledger pointers.
 
+## [docs, 2026-08-07] - Top HUD bar cleanup + audio overlay refinement planning
+- Refined the latest playtest complaint into a code-ready top HUD bar
+  layout fix so the live status labels stop fighting the empty white
+  strip at the top of the screen.
+- Split the audio overlay idea into a separate refinement-gated follow-up
+  that needs a concrete asset list, trigger list, and mix decision
+  before it should be coded.
+- Added `roadmap-handoff-v0.4.75-plan.md` and updated the roadmap,
+  future-versions, update-directions, and agent briefs so the next agent
+  has a clear handoff trail.
+
 ## [v0.4.73] - Level Warp Passes
 - **Warp Passes**: Added a new progression unlock feature to the Shop.
 - **Profile Updates**: Added tracking of level clear counts to player profiles (`levelClearCounts`) and a permanent unlocked start level (`highestUnlockedStartLevel`).

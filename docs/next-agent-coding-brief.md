@@ -2,7 +2,7 @@
 
 **Created by:** Codex (GPT-5) — 2026-07-27
 **Created on:** 2026-07-27
-**Last updated by:** Codex GPT-5 — 2026-08-07 (shop layout + item glossary planning)
+**Last updated by:** Codex GPT-5 — 2026-08-07 (HUD top-bar fix + audio refinement planning)
 **Last updated on:** 2026-08-07
 
 Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.73** —
@@ -12,6 +12,9 @@ and the `v0.4.73` section in `docs/version-log.md`).
 If you're following the direct store/menu cleanup request from this
 session, start with `docs/handoffs/roadmap-handoff-v0.4.74-plan.md`
 instead of the default queue.
+
+If you're following the newer HUD top-bar complaint from this session,
+start with `docs/handoffs/roadmap-handoff-v0.4.75-plan.md` instead.
 
 Full audit and ranked candidate queue:
 `docs/handoffs/roadmap-handoff-v0.4.71-plan.md` (supersedes the earlier
@@ -70,6 +73,10 @@ already cover it once the code catches up.
   already shipped standalone (v0.4.64).
 - **Interactive content pack** — not code-ready, needs a Mode A slicing
   pass first.
+- **HUD top bar layout / audio overlay** — if you are following the
+  latest playtest note, use `roadmap-handoff-v0.4.75-plan.md`. The layout
+  fix is code-ready; the audio overlay follow-up stays parked until the
+  asset and trigger decisions are confirmed.
 - **Level-start warp passes** — a separate future Mode B candidate now
   exists as `roadmap-handoff-v0.4.73-plan.md`, but it is not the next
   code slice; the queue still starts with Micro-Skib.

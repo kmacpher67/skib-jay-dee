@@ -567,6 +567,19 @@ chaser-bark voice clips, 1:1 with text.
   88×88 portraits and their gap, and leave the in-game mute control
   untouched. **Code-ready as v0.4.63.** See
   [`roadmap-handoff-v0.4.63-plan.md`](handoffs/roadmap-handoff-v0.4.63-plan.md).
+- [ ] **HUD top bar layout fix.** The white/empty top bar wastes portrait
+  space and can cover live HUD elements (`CREEMS`, `SHEEBS`, `LEVEL`,
+  `WARD`). Audit the top HUD container width/padding, collapse the dead
+  strip, and confirm the bar stays readable at both phone and fullscreen
+  widths. GitHub issue [#1](https://github.com/kmacpher67/skib-jay-dee/issues/1)
+  tracks this live; its audio sub-item is split below as a refinement gate.
+  **Code-ready as `v0.4.75-plan`.** `Both — shared`.
+- [ ] **Audio overlay enhancement (sub-task 1.1).** Add a background /
+  ambient layer tied to HUD or game state, with trigger cues for level
+  start, near-miss, and low health. Needs an asset list, a mix pass, and
+  a clear mute-toggle placement decision before it can be treated as
+  code-ready. **Refinement-gated; see `v0.4.75-plan` and
+  `future-versions.md`.** `Both — shared`.
 - [ ] **Shleeb Shop side-by-side layout + item glossary.** Reflow the
   shop cards into a responsive side-by-side presentation so newer items
   are easier to scan, while keeping the panel scrollable for future
