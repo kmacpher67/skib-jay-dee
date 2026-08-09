@@ -2950,7 +2950,7 @@ export class GameEngine {
     ctx.textBaseline = 'middle'
 
     ctx.textAlign = 'left'
-    ctx.fillText(`SKREEMS: ${Math.floor(this.skreems)}`, 10, 17)
+    ctx.fillText(`SKREEMS: ${Math.floor(this.skreems)}`, 50, 17)
 
     ctx.textAlign = 'center'
     if (this.sheebs < 0) {
@@ -2963,7 +2963,7 @@ export class GameEngine {
     }
 
     ctx.textAlign = 'right'
-    ctx.fillText(`LEVEL ${this.levelIndex + 1}/${LEVELS.length}`, VIEW_W - 10, 17)
+    ctx.fillText(`LEVEL ${this.levelIndex + 1}/${LEVELS.length}`, VIEW_W - 50, 17)
     ctx.restore()
 
     ctx.save()
