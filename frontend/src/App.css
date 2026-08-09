@@ -372,11 +372,16 @@
   box-shadow: 0 24px 54px rgba(0, 0, 0, 0.48);
 }
 
-.shop-grid,
 .version-list,
 .deaths-list {
   display: grid;
   gap: 10px;
+}
+
+.shop-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 
 .shop-card,
@@ -386,6 +391,11 @@
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.shop-card {
+  display: flex;
+  flex-direction: column;
 }
 
 .shop-card.owned {
@@ -633,7 +643,7 @@
 
 .shop-buy-btn {
   width: 100%;
-  margin-top: 10px;
+  margin-top: auto;
   padding: 11px 12px;
   border-radius: 12px;
   background: linear-gradient(180deg, #60ff72 0%, #23c94b 100%);
