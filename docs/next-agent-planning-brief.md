@@ -2,8 +2,8 @@
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
 **Created on:** 2026-07-27
-**Last updated by:** Codex GPT-5 — 2026-08-07 (HUD top-bar fix + audio refinement planning)
-**Last updated on:** 2026-08-07
+**Last updated by:** Codex GPT-5 — 2026-08-11 (ready-queue refresh after v0.4.75 ship)
+**Last updated on:** 2026-08-11
 
 Use this when Ken opens a **Mode A** session. For coding, use
 `docs/next-agent-coding-brief.md`.
@@ -21,8 +21,11 @@ the actual code, not just doc claims, and surfaces two real bugs (a
 version-number collision and two false in-game changelog entries).
 
 If today's direct request is the one you're following, use
-`docs/handoffs/roadmap-handoff-v0.4.75-plan.md` next: it scopes the top
-HUD bar cleanup and the audio overlay refinement split.
+`docs/handoffs/roadmap-handoff-v0.4.76-plan.md` next: it ranks the ready
+queue after the v0.4.75 ship.
+
+If you're only revisiting the older HUD top-bar complaint / audio split,
+use `docs/handoffs/roadmap-handoff-v0.4.75-plan.md` instead.
 
 If you're following the store/menu cleanup request from the previous
 session, use `docs/handoffs/roadmap-handoff-v0.4.74-plan.md` instead.
@@ -36,9 +39,9 @@ until the v0.4.71 audit corrected it. No further action needed here.
 
 ## Current production state
 
-- `GAME_ITERATION`: **v0.4.73** (Level Warp Passes; shipped 2026-07-28,
-  see `roadmap-handoff-v0.4.73.md` and the `v0.4.73` section in
-  `docs/version-log.md`).
+- `GAME_ITERATION`: **v0.4.75** (top HUD bar layout fix; shipped
+  2026-08-09, see `roadmap-handoff-v0.4.75.md` and the `v0.4.75`
+  section in `docs/version-log.md`).
 - Next unblocked Mode B pick is **Micro-Skib chaser** (`v0.4.55-plan.md`),
   not a planning task.
 - Role Reversal menu mode (`v0.4.53`→`v0.4.61` recovery) is **live and
@@ -48,10 +51,9 @@ until the v0.4.71 audit corrected it. No further action needed here.
 ## Still blocked on Ken
 
 - **Audio 2 phase 1** — record `CAPTURE_LINES` clips (`dialog_content_chasing.md`)
-- **HUD top bar layout / audio overlay** — the latest playtest complaint
-  is already split into `v0.4.75-plan`; use that for the layout fix, and
-  do not start the audio follow-up until the asset list / trigger plan is
-  confirmed.
+- **HUD top bar layout / audio overlay** — the layout fix is already
+  shipped in `v0.4.75`; the audio follow-up stays parked until the asset
+  list / trigger plan is confirmed.
 - **Yoodeling Unc-2** — drop `images/yoodelling-unc-alex-2.png`
 - **Role Reversal outcome UX** — confirm/change 60s capture/timeout +
   Rematch/Menu (`v0.4.61-plan` "Flag for Ken"). The menu Beta pill is
@@ -84,6 +86,9 @@ until the v0.4.71 audit corrected it. No further action needed here.
   `v0.4.71-plan.md` Finding #1. Nothing to plan here, just don't let a
   future Mode A session re-derive this as "already done" from the
   in-game changelog.
+- **New this pass:** `roadmap-handoff-v0.4.76-plan.md` ranks the ready
+  queue after the HUD ship, so the next planning pass does not need to
+  reconstruct the order from scratch.
 
 ## LT arc (decided)
 

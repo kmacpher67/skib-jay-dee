@@ -29,8 +29,16 @@ authenticated, `MainMenu` already links to the Issues page. Added a
 filed 4 example issues from Ken's 2026-08-07 playtest notes to prove
 the flow end-to-end:
 
-- [ ] **HUD top bar too wide / covers elements.** [#1](https://github.com/kmacpher67/skib-jay-dee/issues/1) — includes 1.1 audio-overlay sub-item.
-- [ ] **Toilet plunger swing rebalance (rarer, AoE, stain slow-zone).** [#2](https://github.com/kmacpher67/skib-jay-dee/issues/2)
+- [x] **HUD top bar too wide / covers elements.** Layout fix landed
+  v0.4.75. [#1](https://github.com/kmacpher67/skib-jay-dee/issues/1) —
+  still open on GitHub pending the 1.1 audio-overlay sub-item (see
+  incremental backlog below); close the issue once that ships.
+- [x] **Toilet plunger swing rebalance (rarer, AoE, stain slow-zone).**
+  Landed v0.4.76 — spawn chance cut from 0.08 to 0.045, and a new
+  `plungerStains` slow zone added (swing was already AoE in code).
+  [#2](https://github.com/kmacpher67/skib-jay-dee/issues/2) — close once
+  Ken confirms the feel in a live playtest. See
+  [`roadmap-handoff-v0.4.76.md`](handoffs/roadmap-handoff-v0.4.76.md).
 - [ ] **Gun rebalance (ammo table, longer stun/knockback, chaser HP tiers, body count, Splat) + "Poop Popper" shotgun + per-difficulty kill dialog/audio.** [#3](https://github.com/kmacpher67/skib-jay-dee/issues/3) — needs a numbers pass before code-ready. Updated 2026-08-07 from an issue comment: new high-rarity single-shot "Poop Popper" shotgun that stuns/kills a group of chasers at once (vs. handgun's single target), plus difficulty-scaled kill dialog/audio (4chan-st = most edgy, Noob-noob = kid-friendly "grandson" voice, Casual = mix of the two). Incorporated into the issue body/acceptance criteria; see issue for full text.
 - [ ] **Taco fart attack rework (funnier, omni-directional, difficulty-scaled, new trophy).** [#4](https://github.com/kmacpher67/skib-jay-dee/issues/4) — blocked on confirming current implementation first.
 
@@ -84,28 +92,27 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 `frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js`. Shipped as
 `v0.4.36.1`. See `docs/handoffs/roadmap-handoff-v0.4.36.1.md`.
 
-## Frontend open backlog snapshot (2026-07-28, Mode A pass — v0.4.71 completeness audit)
+## Frontend open backlog snapshot (2026-08-11, Mode A refresh)
 
-Consolidated ranked candidate queue + refinement briefs now live in
-[`roadmap-handoff-v0.4.71-plan.md`](handoffs/roadmap-handoff-v0.4.71-plan.md) —
-this supersedes the earlier `v0.4.66-plan.md` triage (v0.4.65,
-v0.4.67-v0.4.69 have all since shipped for real; read v0.4.71 first
-before picking work from this section. Summary:
+`GAME_ITERATION` is **v0.4.75** (`frontend/src/version.js`). Since the
+last snapshot (v0.4.71 completeness audit), v0.4.73 (Level warp passes),
+v0.4.74 (Shleeb Shop layout + item glossary), and v0.4.75 (HUD top bar
+fix) have all landed. `v0.4.72` (Badge award counts) remains open and is
+now queued after Micro-Skib / pose collapse. The `VersionModal.jsx`
+false-changelog issue (Finding #1) is still open until Micro-Skib and
+pose collapse ship for real. Updated summary:
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next (ranked)** | 3 | ~~Level 5 speed rebalance + difficulty wiring fix~~ (shipped v0.4.70, mid-audit) → Micro-Skib → pose collapse → Badge award counts (`v0.4.72-plan`, renumbered) |
-| **Parallel quality debt** | 1 | Role Reversal Beta full recovery (`v0.4.61-plan`; outcome UX blocked on Ken) |
-| **Design-only / TBD** | 3 | Debt Lock math, Level 7+ Mosaic (blocked on Ken's trigger-mechanism answer), Interactive content pack |
+| **Unblocked — code next (ranked)** | 4 | Micro-Skib → runner pose collapse → Badge award counts → Pickup-consumption tracking + Play Recap |
+| **Parallel quality debt** | 1 | Role Reversal Beta full recovery (`v0.4.61-plan`; outcome UX blocked on Ken); runner AI item-use slice (`v0.4.69-plan`) still open |
+| **Design-only / TBD** | 3 | Debt Lock math (`difficulty-mechanics-plan.md`), Level 7+ Mosaic (blocked on Ken's trigger-mechanism answer), Interactive content pack |
+| **Refinement-gated** | 1 | Audio overlay enhancement (issue #1.1) — blocked on asset list + mix/trigger decisions, see `audio-recording-brief-for-alex.md` |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
-| **Needs a Mode B decision** | 1 | `VersionModal.jsx` has two false changelog entries (v0.4.55/v0.4.56) for features never actually shipped — see `v0.4.71-plan.md` Finding #1 |
+| **Open GitHub issues** | 2 | Gun rebalance + Poop Popper shotgun ([#3](https://github.com/kmacpher67/skib-jay-dee/issues/3), needs numbers pass before code-ready), Taco fart attack rework ([#4](https://github.com/kmacpher67/skib-jay-dee/issues/4), blocked on confirming current implementation) |
 
-`GAME_ITERATION` is **v0.4.70** (`frontend/src/version.js`, Level 5 speed
-rebalance + difficulty selector wiring fix + Ramen Aisle reward pass —
-shipped by a concurrent Mode B session partway through this audit, see
-`roadmap-handoff-v0.4.70.md`). Next unblocked pick is **Micro-Skib**
-(`v0.4.55-plan.md`).
+Next unblocked pick is **Micro-Skib** (`v0.4.55-plan.md`).
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.
@@ -563,21 +570,17 @@ chaser-bark voice clips, 1:1 with text.
   truth in [docs/players-guide.md](players-guide.md) (includes Rod of
   Poopdom as of v0.4.47 doc update). See
   [roadmap-handoff-v0.4.45.md](handoffs/roadmap-handoff-v0.4.45.md).
-- [ ] **Main Menu UI Clean Up:** Keep the top profile stats (User ID,
-  difficulty, sheebs, best level, deaths) in one responsive mobile row
-  and tighten vertical spacing while retaining short-screen scrolling.
-  In the same slice, move the compact menu mute/unmute glyph into the
-  unused space left of the Runner/Chaser portrait pair; preserve both
-  88×88 portraits and their gap, and leave the in-game mute control
-  untouched. **Code-ready as v0.4.63.** See
+- [x] **Main Menu UI Clean Up:** Landed v0.4.63 — top profile stats row
+  tightened for mobile, mute glyph moved into the unused space left of
+  the Runner/Chaser portrait pair. See
   [`roadmap-handoff-v0.4.63-plan.md`](handoffs/roadmap-handoff-v0.4.63-plan.md).
-- [ ] **HUD top bar layout fix.** The white/empty top bar wastes portrait
-  space and can cover live HUD elements (`CREEMS`, `SHEEBS`, `LEVEL`,
-  `WARD`). Audit the top HUD container width/padding, collapse the dead
-  strip, and confirm the bar stays readable at both phone and fullscreen
-  widths. GitHub issue [#1](https://github.com/kmacpher67/skib-jay-dee/issues/1)
-  tracks this live; its audio sub-item is split below as a refinement gate.
-  **Code-ready as `v0.4.75-plan`.** `Both — shared`.
+- [x] **HUD top bar layout fix.** Landed v0.4.75 — `_drawHud()` in
+  `GameEngine.js` shifted the `SKREEMS`/`LEVEL` labels inward (10→50 /
+  `VIEW_W-10`→`VIEW_W-50`) so they no longer overlap the menu/mute
+  buttons on portrait screens. GitHub issue
+  [#1](https://github.com/kmacpher67/skib-jay-dee/issues/1) tracks this
+  live; its audio sub-item is still open, split below. See
+  [`roadmap-handoff-v0.4.75.md`](handoffs/roadmap-handoff-v0.4.75.md).
 - [ ] **Audio overlay enhancement (sub-task 1.1).** Add a background /
   ambient layer tied to HUD or game state, with trigger cues for level
   start, near-miss, and low health. Needs an asset list, a mix pass, and
@@ -787,7 +790,7 @@ chaser-bark voice clips, 1:1 with text.
   background wait (Option E). Checkbox corrected 2026-07-28 in the
   `v0.4.71-plan.md` completeness audit; this had shipped but the box was
   never checked. See [`roadmap-handoff-v0.4.65-plan.md`](handoffs/roadmap-handoff-v0.4.65-plan.md).
-- [ ] **Level 5 attack slowdown + Level 4 reward pass.** **Code-ready** —
+- [x] **Level 5 attack slowdown + Level 4 reward pass.** Landed v0.4.70 —
   Ken's 2026-07-28 playtest: World Star Parking Lot (Level 5) is way too
   difficult and needs its chaser pressure slowed; The Ramen Aisle
   (Level 4) needs more relics/rewards as a gearing-up level. Root cause

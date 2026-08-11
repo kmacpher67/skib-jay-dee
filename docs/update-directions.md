@@ -4,8 +4,8 @@ Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
 **Created on:** 2026-07-26
-**Last updated by:** Codex GPT-5 — 2026-08-07 (HUD top-bar fix + audio refinement planning)
-**Last updated on:** 2026-08-07
+**Last updated by:** Claude Sonnet 5 — 2026-08-11 (v0.4.76 Heavy Plunger rebalance + stale ready-queue correction)
+**Last updated on:** 2026-08-11
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -15,6 +15,25 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.76 (real code — 2026-08-11):** Heavy Plunger rebalance for
+  GitHub issue #2 — rarer spawn (`HEAVY_PLUNGER_SPAWN_CHANCE` 0.08 →
+  0.045) and a new AoE "shit-stain" slow zone dropped on every swing
+  (the issue assumed the stain already existed; it didn't, built for
+  real). The swing itself was already AoE in code. See
+  `roadmap-handoff-v0.4.76.md`.
+- **Correction (2026-08-11):** `roadmap-handoff-v0.4.76-plan.md` (a
+  concurrent docs-only session, same day) ranked Micro-Skib → runner
+  pose collapse → badge award counts as the next-ready queue — but all
+  three were **already shipped in `v0.4.71`/`v0.4.72`**, verified
+  against real code, not just doc claims. `docs/roadmap.md` had stale
+  unchecked boxes for all three plus the HUD fix and Level 5 rebalance;
+  corrected in this pass. See the correction note at the top of
+  `roadmap-handoff-v0.4.76-plan.md`.
+- **v0.4.75 (real code — 2026-08-09):** Implemented the top HUD bar
+  cleanup and bumped `GAME_ITERATION` to `v0.4.75`. The live status
+  pills now sit inside the usable portrait strip instead of fighting the
+  empty white band at the top of the screen. See
+  `roadmap-handoff-v0.4.75.md`.
 - **v0.4.74 (real code — 2026-08-07):** Implemented Shleeb Shop presentation pass and item glossary. Reflowed shop cards into a responsive side-by-side grid in `App.css`, verified distinct styling for warp-pass card, and confirmed `players-guide.md` item glossary alignment with `gameContent.js`. No `GAME_ITERATION` bump or deploy per handoff instructions. See `roadmap-handoff-v0.4.74.md`.
 - **v0.4.75-plan (docs only — 2026-08-07):** refined the latest HUD
   screenshot complaint into a code-ready top-bar cleanup plus a
@@ -594,8 +613,12 @@ manually:
   code-ready as one bounded responsive pass, including the compact
   portrait-row mute control. Do not route this UI work through the
   unrelated v0.4.65 deploy/push tooling handoff.
-- **Next coding bundle:** `roadmap-handoff-v0.4.62-plan.md` — Rewards shop
-  labels → Play Recap → pose collapse → Micro-Skib (one slice per session).
+- **Ready-queue (corrected 2026-08-11):** Micro-Skib, runner pose
+  collapse, and badge award counts are all shipped (`v0.4.71`/`v0.4.72`);
+  Heavy Plunger rebalance shipped `v0.4.76`. Next ready slice is
+  Pickup-consumption tracking + Play Recap (`roadmap-handoff-v0.4.62-plan.md`
+  Slice 2), then Debug State Dump (`roadmap-handoff-v0.4.64-plan.md`).
+  Keep each as a separate Mode B session.
 - **Play as Chaser Beta:** movement/steering recovered in `v0.4.61`; next
   coding slice is `roadmap-handoff-v0.4.69-plan.md` (AI runner item use +
   light dialog + `handleCaught` gate). Prefer a Mode A refine-before-
@@ -619,7 +642,7 @@ manually:
   and corrected two stale unchecked boxes in `docs/roadmap.md` this pass).
   Neither is "the current open handoff" anymore.
 - **Coding queue:** see `docs/next-agent-coding-brief.md` and
-  `roadmap-handoff-v0.4.62-plan.md`. **Blocked — do not code:** Audio 2
+  `roadmap-handoff-v0.4.62-plan.md` Slice 2 (Play Recap). **Blocked — do not code:** Audio 2
   recordings, Yoodeling Unc-2, Role Reversal outcome UX until Ken confirms
   timer/rematch. Planning: `next-agent-planning-brief.md`.
 - Do **not** start Audio 2 until Ken records **capture-line** clips (phase 1

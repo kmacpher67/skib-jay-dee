@@ -2,26 +2,27 @@
 
 **Created by:** Codex (GPT-5) — 2026-07-27
 **Created on:** 2026-07-27
-**Last updated by:** Codex GPT-5 — 2026-08-07 (HUD top-bar fix + audio refinement planning)
-**Last updated on:** 2026-08-07
+**Last updated by:** Codex GPT-5 — 2026-08-11 (ready-queue refresh after v0.4.75 ship)
+**Last updated on:** 2026-08-11
 
-Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.73** —
-level warp passes / shop-gated direct select, see `roadmap-handoff-v0.4.73.md`
-and the `v0.4.73` section in `docs/version-log.md`).
+Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.75** —
+top HUD bar layout fix, see `roadmap-handoff-v0.4.75.md` and the
+`v0.4.75` section in `docs/version-log.md`).
 
-If you're following the direct store/menu cleanup request from this
-session, start with `docs/handoffs/roadmap-handoff-v0.4.74-plan.md`
-instead of the default queue.
+If you're following the ready-queue refresh from this session, start
+with `docs/handoffs/roadmap-handoff-v0.4.76-plan.md` before any slice
+handoff.
 
-If you're following the newer HUD top-bar complaint from this session,
-start with `docs/handoffs/roadmap-handoff-v0.4.75-plan.md` instead.
+If you're following the older HUD top-bar complaint or audio refinement
+split from this session, start with
+`docs/handoffs/roadmap-handoff-v0.4.75-plan.md` instead.
 
 Full audit and ranked candidate queue:
 `docs/handoffs/roadmap-handoff-v0.4.71-plan.md` (supersedes the earlier
 `v0.4.66-plan.md` — v0.4.65/v0.4.67/v0.4.68/v0.4.69/v0.4.70 all shipped
 since then). Next unblocked pick: **Micro-Skib** (`v0.4.55-plan.md`).
 
-## Do this next — `roadmap-handoff-v0.4.55-plan.md` (Micro-Skib chaser)
+## Do this next - `roadmap-handoff-v0.4.55-plan.md` (Micro-Skib chaser)
 
 Code-ready per Ken 2026-07-27: replace-extra-spawn chaser, Level 3+, 65%
 hitbox, 0.85x speed. Note: `VersionModal.jsx` already has a changelog
@@ -48,6 +49,7 @@ Use `roadmap-handoff-v0.4.74-plan.md`.
 | 1 | Micro-Skib chaser | `v0.4.55-plan.md` — do first |
 | 2 | Runner pose collapse (3 unique) | `v0.4.56-plan.md` |
 | 3 | Badge award counts | `v0.4.72-plan.md` (renumbered from `v0.4.67-plan.md` — that slot was consumed by a different shipped feature, see `v0.4.71-plan.md` Finding #2) |
+| 4 | Pickup tracking + Play Recap | `v0.4.62-plan.md` addendum |
 
 **Note on #1 and #2:** `frontend/src/components/VersionModal.jsx` already
 has changelog entries claiming Micro-Skib (v0.4.55) and pose collapse
@@ -73,13 +75,15 @@ already cover it once the code catches up.
   already shipped standalone (v0.4.64).
 - **Interactive content pack** — not code-ready, needs a Mode A slicing
   pass first.
-- **HUD top bar layout / audio overlay** — if you are following the
-  latest playtest note, use `roadmap-handoff-v0.4.75-plan.md`. The layout
-  fix is code-ready; the audio overlay follow-up stays parked until the
-  asset and trigger decisions are confirmed.
+- **HUD top bar layout / audio overlay** — the layout fix shipped in
+  `v0.4.75`; the audio overlay follow-up stays parked until the asset
+  and trigger decisions are confirmed.
 - **Level-start warp passes** — a separate future Mode B candidate now
   exists as `roadmap-handoff-v0.4.73-plan.md`, but it is not the next
   code slice; the queue still starts with Micro-Skib.
+- **Ready-queue refresh** — `roadmap-handoff-v0.4.76-plan.md` ranks the
+  ready slices for the next few sessions so the next coding pass does
+  not need to reconstruct the order.
 - Everything through v0.4.70 listed as shipped in
   `roadmap-handoff-v0.4.71-plan.md`'s status table (and its "Update"
   note) — do not re-implement.
