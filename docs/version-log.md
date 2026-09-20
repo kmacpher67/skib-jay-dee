@@ -8,7 +8,9 @@ focused on *why*, those two are the *what* and *when*.
 
 ## [v0.4.77, 2026-09-20] - Boom Stick Implementation (Slice C1)
 - Implemented Slice C1 (Boom Stick spawn events, normalized ammo/reserve management, pickup logic).
-- Slices C2, D, E, F are not yet implemented. Playwright tests deferred to next session.
+- Follow-up patch completed the event roll contract: level-start rolls, extra-chaser rolls, correct `noob`/`casual`/`4chan-st` difficulty table, Lucky assist trimming under the 90% cap, duplicate event-pickup refresh, separate loaded Boom Stick versus loose-shell pickups, five-shell reserve cap, and 0.85s reload state.
+- Added `frontend/e2e/boom-stick-c1.spec.js` coverage for the C1 table, Lucky cap, pickup selection, duplicate prevention, reserve cap, and reload transition.
+- Slices C2, D, E, and F are not yet implemented.
 
 ## [v0.4.76, 2026-08-11] - Heavy Plunger rebalance (GitHub issue #2)
 - Spawn chance cut from 0.08 to 0.045 (rarer, per Ken's ask).

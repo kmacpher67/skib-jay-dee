@@ -12,6 +12,7 @@ Never edit past lines. Append a new line (or block) per version when you add
 a new shipped version or docs-only planning note.
 
 2026-09-20 | v0.4.77 | Implemented Boom Stick Slice C1 (Spawn and ammo state logic)
+2026-09-20 | v0.4.77 follow-up | Completed Boom Stick C1 event-roll hooks, difficulty/Lucky cap helpers, duplicate pickup refresh, loaded-weapon vs shell pickup split, reserve/reload coverage, and `frontend/e2e/boom-stick-c1.spec.js`.
 2026-08-09 | v0.4.75 | Top HUD bar layout fix implemented; bumped GAME_ITERATION to v0.4.75.
 2026-08-11 | docs (Codex GPT-5) | v0.4.76-plan: refreshed the ready queue after the v0.4.75 ship; ranked Micro-Skib, runner pose collapse, badge counts, and Play Recap; no code
 2026-08-07 | v0.4.74 | Shleeb Shop side-by-side layout + item glossary implemented; no version bump or deploy.

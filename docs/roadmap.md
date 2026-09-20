@@ -39,7 +39,7 @@ the flow end-to-end:
   [#2](https://github.com/kmacpher67/skib-jay-dee/issues/2) — close once
   Ken confirms the feel in a live playtest. See
   [`roadmap-handoff-v0.4.76.md`](handoffs/roadmap-handoff-v0.4.76.md).
-- [ ] **Gun rebalance (ammo table, longer stun/knockback, chaser HP tiers, body count, Splat) + escalating "Boom Stick" shotgun + per-difficulty kill dialog/audio.** [#3](https://github.com/kmacpher67/skib-jay-dee/issues/3) — fully refined 2026-09-20 in [`roadmap-handoff-v0.4.77-plan.md`](handoffs/roadmap-handoff-v0.4.77-plan.md). Boom Stick event rolls occur at level start and every extra-chaser spawn: Level 1 is 6% for all modes, then each level adds 3/6/9 points for Noob-noob/Casual/4chan-st (Level 2 = 9%/12%/15%), capped at 90%; a separate Lucky assist roll is capped at 4% without exceeding the overall cap. Success spawns a loaded Boom Stick if unowned or one loose shell if owned (one-shell chamber, five-shell reserve, 0.85s reload). Its wall-blocked 230px/70-degree cone independently gives each target a 1-in-3 explosion chance, otherwise a 7s stun + 90px knockback. Explosions leave a capped stylized splotch, use one 1.75s portrait Voronoi-shatter cutaway per blast, increment session body count, and respawn after 12s. Mechanics are split into C1 spawn/ammo and C2 blast slices; VFX/text follow; final voice waits for approved recordings. Broader handgun/HP/persistent-body-count work remains separate.
+- [ ] **Gun rebalance (ammo table, longer stun/knockback, chaser HP tiers, body count, Splat) + escalating "Boom Stick" shotgun + per-difficulty kill dialog/audio.** [#3](https://github.com/kmacpher67/skib-jay-dee/issues/3) — fully refined 2026-09-20 in [`roadmap-handoff-v0.4.77-plan.md`](handoffs/roadmap-handoff-v0.4.77-plan.md). **C1 shipped in v0.4.77**: Boom Stick event rolls occur at level start and every extra-chaser spawn, Level 1 is 6% for all modes, each level adds 3/6/9 points for Noob-noob/Casual/4chan-st, the combined chance is capped at 90%, Lucky assist is trimmed under that cap, and success spawns a loaded Boom Stick if unowned or one loose shell if owned (one-shell chamber, five-shell reserve, 0.85s reload state). **Still open:** C2 cone blast/explosion mechanics; D splotch + cutaway; E subtitles/browser-safe SFX; F final voice assets; and the broader handgun/HP/persistent-body-count work.
 - [ ] **Taco fart attack rework (funnier, omni-directional, difficulty-scaled, new trophy).** [#4](https://github.com/kmacpher67/skib-jay-dee/issues/4) — blocked on confirming current implementation first.
 
 **Decision (2026-08-07):** going with the hybrid from the experiment
@@ -102,11 +102,12 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 > `gameContent.js`, `cookies.js`), in `v0.4.71` and `v0.4.72`. See the
 > correction note at the top of `roadmap-handoff-v0.4.76-plan.md`.
 
-`GAME_ITERATION` is **v0.4.76** (`frontend/src/version.js`). Since the
+`GAME_ITERATION` is **v0.4.77** (`frontend/src/version.js`). Since the
 last completeness audit (v0.4.71), the following have all landed for
 real: v0.4.71 (Micro-Skib + runner pose collapse), v0.4.72 (Badge award
 counts), v0.4.73 (Level warp passes), v0.4.74 (Shleeb Shop layout + item
-glossary), v0.4.75 (HUD top bar fix), v0.4.76 (Heavy Plunger rebalance).
+glossary), v0.4.75 (HUD top bar fix), v0.4.76 (Heavy Plunger rebalance),
+and v0.4.77 (Boom Stick C1 spawn/ammo).
 The `VersionModal.jsx` false-changelog issue (Finding #1) is resolved.
 Updated summary:
 
@@ -118,7 +119,7 @@ Updated summary:
 | **Refinement-gated** | 1 | Audio overlay enhancement (issue #1.1) — blocked on asset list + mix/trigger decisions, see `audio-recording-brief-for-alex.md` |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
-| **Open GitHub issues** | 2 | Gun rebalance + Boom Stick shotgun ([#3](https://github.com/kmacpher67/skib-jay-dee/issues/3): Boom Stick mechanics/VFX/text refined into code-ready slices; final voice assets blocked; broader handgun/HP work remains separate), Taco fart attack rework ([#4](https://github.com/kmacpher67/skib-jay-dee/issues/4), blocked on confirming current implementation) |
+| **Open GitHub issues** | 2 | Gun rebalance + Boom Stick shotgun ([#3](https://github.com/kmacpher67/skib-jay-dee/issues/3): C1 spawn/ammo shipped; C2 blast, VFX/text, final voice assets, and broader handgun/HP work remain separate), Taco fart attack rework ([#4](https://github.com/kmacpher67/skib-jay-dee/issues/4), blocked on confirming current implementation) |
 
 Next unblocked pick is **Pickup-consumption tracking + Play Recap**
 (`roadmap-handoff-v0.4.62-plan.md` Slice 2).

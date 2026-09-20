@@ -373,6 +373,17 @@ const GUN_STUN_MIN = 3
 const GUN_STUN_MAX = 5
 const GUN_PICKUP_SIZE = 28
 const FRIENDLY_FIRE_GRACE_SECONDS = 2 // window after a gun-stun wears off for the "Friendly Fire" badge
+const BOOM_STICK_BASE_CHANCE = 0.06
+const BOOM_STICK_MAX_EVENT_CHANCE = 0.9
+const BOOM_STICK_LUCKY_MAX_CHANCE = 0.04
+const BOOM_STICK_RESERVE_MAX = 5
+const BOOM_STICK_RELOAD_SECONDS = 0.85
+const BOOM_STICK_PICKUP_LIFETIME = 12
+const BOOM_STICK_DIFFICULTY_STEPS = {
+  noob: 0.03,
+  casual: 0.06,
+  '4chan-st': 0.09,
+}
 
 const SOGGY_TP_SPAWN_CHANCE = 0.08
 const SOGGY_TP_PICKUP_SIZE = 24
@@ -1121,6 +1132,7 @@ export class GameEngine {
     this._maybeSpawnHeavyPlunger()
     this._maybeSpawnSchleimyPotion()
     this._spawnRollingPickups()
+    this._tryBoomStickEvent()
 
     if (this.levelIndex >= 3) {
       this.chaserLine = HARD_CHASER_LINES[Math.floor(Math.random() * HARD_CHASER_LINES.length)]
@@ -1138,7 +1150,6 @@ export class GameEngine {
   }
 
   _startLevelAdvance() {
-    this._tryBoomStickSpawn();
     if (this.phase !== 'chase' || this.levelIndex >= LEVELS.length - 1) return
 
     this.phase = 'level-up'
@@ -1254,6 +1265,18 @@ export class GameEngine {
         }
       }
       const wasExhausted = this.stamina <= 0
+
+      if (this.runner.gun && this.runner.gun.kind === 'boom_stick' && this.runner.gun.reloadTimer !== undefined) {
+        if (this.runner.gun.reloadTimer > 0) {
+          this.runner.gun.reloadTimer = Math.max(0, this.runner.gun.reloadTimer - dt);
+          if (this.runner.gun.reloadTimer <= 0 && this.runner.gun.ammo === 0 && this.runner.gun.reserve > 0) {
+            this.runner.gun.ammo = 1;
+            this.runner.gun.reserve -= 1;
+          }
+        } else if (this.runner.gun.ammo === 0 && this.runner.gun.reserve > 0) {
+          this.runner.gun.reloadTimer = BOOM_STICK_RELOAD_SECONDS;
+        }
+      }
 
       if (this.gawdParticleActive) {
         this.gawdParticleTimer = Math.max(0, this.gawdParticleTimer - dt)
@@ -1626,6 +1649,69 @@ export class GameEngine {
     }
   }
 
+  _getBoomStickBaseChance(displayedLevel = this.levelIndex + 1) {
+    const step = BOOM_STICK_DIFFICULTY_STEPS[this.difficulty] ?? BOOM_STICK_DIFFICULTY_STEPS.casual
+    return Math.min(
+      BOOM_STICK_MAX_EVENT_CHANCE,
+      BOOM_STICK_BASE_CHANCE + (displayedLevel - 1) * step,
+    )
+  }
+
+  _getBoomStickLuckyChance(baseChance = this._getBoomStickBaseChance()) {
+    const luckBonus = Math.max(0, this.loadout.luckBonus || 0)
+    const rawLuckyChance = Math.min(BOOM_STICK_LUCKY_MAX_CHANCE, luckBonus / 10)
+    return Math.max(0, Math.min(rawLuckyChance, BOOM_STICK_MAX_EVENT_CHANCE - baseChance))
+  }
+
+  _tryBoomStickEvent() {
+    const baseChance = this._getBoomStickBaseChance()
+    const baseRoll = Math.random() < baseChance
+    let luckyRoll = false
+
+    if (!baseRoll) {
+      const luckyChance = this._getBoomStickLuckyChance(baseChance)
+      luckyRoll = luckyChance > 0 && Math.random() < luckyChance
+    }
+
+    if (!baseRoll && !luckyRoll) return false
+    return this._spawnBoomStickEventPickup()
+  }
+
+  _spawnBoomStickEventPickup() {
+    const existing = this.pickups.find((pickup) =>
+      pickup.type === 'boom-stick' || pickup.type === 'boom-stick-shell'
+    )
+    if (existing) {
+      existing.lifetime = BOOM_STICK_PICKUP_LIFETIME
+      return true
+    }
+
+    const hasBoomStick = this.runner.gun?.kind === 'boom_stick'
+    const fullAmmo =
+      hasBoomStick &&
+      this.runner.gun.ammo >= 1 &&
+      (this.runner.gun.reserve || 0) >= BOOM_STICK_RESERVE_MAX
+    if (fullAmmo) {
+      this.runnerLine = 'BOOM STICK AMMO FULL'
+      this.runnerLineTimer = 1.4
+      return true
+    }
+
+    const spawn = this._findRandomWalkableSpawn()
+    if (!spawn) return false
+
+    this.pickups.push({
+      type: hasBoomStick ? 'boom-stick-shell' : 'boom-stick',
+      x: spawn.x,
+      y: spawn.y,
+      w: GUN_PICKUP_SIZE,
+      h: GUN_PICKUP_SIZE,
+      lifetime: BOOM_STICK_PICKUP_LIFETIME,
+      sprite: hasBoomStick ? '💥' : '🔫',
+    })
+    return true
+  }
+
   _maybeSpawnExtraChaser(dt) {
     if (this.isChaserMode) return
     if (this.chasers.length >= MAX_CHASERS) return
@@ -1705,6 +1791,7 @@ export class GameEngine {
       faceId: extraFaceId,
       chaserType: extraChaserType,
     })
+    this._tryBoomStickEvent()
   }
 
   _checkPickups() {
@@ -1722,15 +1809,22 @@ export class GameEngine {
         const ammo = Math.random() < GUN_AMMO_ONE_CHANCE ? 1 : 2
         this.runner.gun = { kind: 'handgun', ammo, reserve: 0 }
       }
-      if (pickup.type === 'boom_stick_shell') {
+      if (pickup.type === 'boom-stick') {
+        this.runner.plunger = null
+        this.runner.rod = false
+        this.runner.gun = { kind: 'boom_stick', ammo: 1, reserve: 0, reloadTimer: 0 }
+        this.runnerLine = 'BOOM STICK!'
+        this.runnerLineTimer = 1.5
+      } else if (pickup.type === 'boom-stick-shell' || pickup.type === 'boom_stick_shell') {
         if (!this.runner.gun || this.runner.gun.kind !== 'boom_stick') {
+          this.runner.plunger = null
+          this.runner.rod = false
           this.runner.gun = { kind: 'boom_stick', ammo: 1, reserve: 0, reloadTimer: 0 }
+        } else if (this.runner.gun.ammo <= 0) {
+          this.runner.gun.ammo = 1
+          this.runner.gun.reloadTimer = 0
         } else {
-          this.runner.gun.reserve = Math.min(5, this.runner.gun.reserve + 1)
-          if (this.runner.gun.ammo === 0) {
-            this.runner.gun.ammo = 1
-            this.runner.gun.reserve -= 1
-          }
+          this.runner.gun.reserve = Math.min(BOOM_STICK_RESERVE_MAX, this.runner.gun.reserve + 1)
         }
       } else if (pickup.type === 'badge') {
         this.levelBadgeCollected = true
@@ -2248,6 +2342,11 @@ export class GameEngine {
 
     if (this.runner.gun) {
       this.gunFiredThisLevel = true
+      if (this.runner.gun.kind === 'boom_stick') {
+        this.runnerLine = 'BOOM STICK blast comes next.'
+        this.runnerLineTimer = 1.4
+        return
+      }
       if (this.runner.gun.ammo <= 0 || this.fireCooldown > 0) return
     }
     this.fireCooldown = GUN_FIRE_COOLDOWN

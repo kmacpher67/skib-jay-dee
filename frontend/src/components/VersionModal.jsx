@@ -2,7 +2,7 @@ const PAST_VERSION_NOTES = [
   {
     version: 'v0.4.77',
     title: 'Boom Stick Pickups',
-    description: 'Added the Boom Stick shell pickups and spawn logic. The shotgun mechanics will be enabled in the next update.',
+    description: 'Added rare Boom Stick event rolls, loaded weapon pickups, loose shells, reserve ammo, and reload state. The actual shotgun blast lands in the next update.',
   },
   {
     version: 'v0.4.76',
