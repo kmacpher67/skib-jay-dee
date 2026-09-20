@@ -1138,6 +1138,7 @@ export class GameEngine {
   }
 
   _startLevelAdvance() {
+    this._tryBoomStickSpawn();
     if (this.phase !== 'chase' || this.levelIndex >= LEVELS.length - 1) return
 
     this.phase = 'level-up'
@@ -1359,10 +1360,16 @@ export class GameEngine {
        speed = this.runner.baseSpeed
        
        if (this.runner.gun && this.chasers.length > 0) {
-         const dx = this.chasers[0].x - this.runner.x
-         const dy = this.chasers[0].y - this.runner.y
+         const runnerCenter = { x: this.runner.x + this.runner.w / 2, y: this.runner.y + this.runner.h / 2 }
+         const nearest = [...this.chasers].sort((a, b) => {
+           const distA = Math.hypot((a.x + a.w / 2) - runnerCenter.x, (a.y + a.h / 2) - runnerCenter.y)
+           const distB = Math.hypot((b.x + b.w / 2) - runnerCenter.x, (b.y + b.h / 2) - runnerCenter.y)
+           return distA - distB
+         })[0]
+         const dx = (nearest.x + nearest.w / 2) - runnerCenter.x
+         const dy = (nearest.y + nearest.h / 2) - runnerCenter.y
          const dist = Math.hypot(dx, dy)
-         if (dist < 400 && this.fireCooldown <= 0 && this.runner.gun.chambers > 0) {
+         if (dist < 400 && this.fireCooldown <= 0 && this.runner.gun.ammo > 0) {
            const mag = dist || 1
            this.runner.facing = { x: dx / mag, y: dy / mag }
            const bulletCount = this.bullets.length
@@ -1713,7 +1720,18 @@ export class GameEngine {
 
       if (pickup.type === 'gun') {
         const ammo = Math.random() < GUN_AMMO_ONE_CHANCE ? 1 : 2
-        this.runner.gun = { ammo }
+        this.runner.gun = { kind: 'handgun', ammo, reserve: 0 }
+      }
+      if (pickup.type === 'boom_stick_shell') {
+        if (!this.runner.gun || this.runner.gun.kind !== 'boom_stick') {
+          this.runner.gun = { kind: 'boom_stick', ammo: 1, reserve: 0, reloadTimer: 0 }
+        } else {
+          this.runner.gun.reserve = Math.min(5, this.runner.gun.reserve + 1)
+          if (this.runner.gun.ammo === 0) {
+            this.runner.gun.ammo = 1
+            this.runner.gun.reserve -= 1
+          }
+        }
       } else if (pickup.type === 'badge') {
         this.levelBadgeCollected = true
         this.onBadgeEarned(pickup.badgeId)
@@ -2230,7 +2248,7 @@ export class GameEngine {
 
     if (this.runner.gun) {
       this.gunFiredThisLevel = true
-      if (this.runner.gun.chambers <= 0 || this.fireCooldown > 0) return
+      if (this.runner.gun.ammo <= 0 || this.fireCooldown > 0) return
     }
     this.fireCooldown = GUN_FIRE_COOLDOWN
 
@@ -3020,13 +3038,17 @@ export class GameEngine {
 
     if (this.runner.gun) {
       ctx.save()
-      ctx.fillStyle = 'rgba(0,0,0,0.4)'
-      ctx.fillRect(0, 54, 110, 20)
-      ctx.fillStyle = '#ffd27a'
-      ctx.font = 'bold 11px sans-serif'
+      ctx.fillStyle = '#ff6'
+      ctx.font = '24px "Press Start 2P"'
       ctx.textAlign = 'left'
-      ctx.textBaseline = 'middle'
-      ctx.fillText(`🔫 AMMO: ${this.runner.gun.ammo}`, 10, 64)
+      ctx.textBaseline = 'top'
+      ctx.shadowColor = '#000'
+      ctx.shadowBlur = 4
+      ctx.shadowOffsetX = 2
+      ctx.shadowOffsetY = 2
+      const label = this.runner.gun.kind === 'boom_stick' ? 'BOOM STICK' : 'AMMO'
+      const reserve = this.runner.gun.kind === 'boom_stick' ? ` (${this.runner.gun.reserve})` : ''
+      ctx.fillText(`🔫 ${label}: ${this.runner.gun.ammo}${reserve}`, 10, 64)
       ctx.restore()
     }
 
