@@ -6,6 +6,10 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## [v0.4.77, 2026-09-20] - Boom Stick Implementation (Slice C1)
+- Implemented Slice C1 (Boom Stick spawn events, normalized ammo/reserve management, pickup logic).
+- Slices C2, D, E, F are not yet implemented. Playwright tests deferred to next session.
+
 ## [v0.4.76, 2026-08-11] - Heavy Plunger rebalance (GitHub issue #2)
 - Spawn chance cut from 0.08 to 0.045 (rarer, per Ken's ask).
 - The swing was already AoE in code (hits every chaser in range); the

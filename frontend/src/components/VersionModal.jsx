@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.77',
+    title: 'Boom Stick Pickups',
+    description: 'Added the Boom Stick shell pickups and spawn logic. The shotgun mechanics will be enabled in the next update.',
+  },
+  {
     version: 'v0.4.76',
     title: 'Heavy Plunger Rebalance',
     description: 'Heavy Plunger is now a rarer pickup, and each swing leaves a shit-stain circle that slows chasers who step in it for a few seconds.',
