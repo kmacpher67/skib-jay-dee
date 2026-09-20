@@ -4,8 +4,8 @@ Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
 **Created on:** 2026-07-26
-**Last updated by:** Claude Sonnet 5 — 2026-08-11 (v0.4.76 Heavy Plunger rebalance + stale ready-queue correction)
-**Last updated on:** 2026-08-11
+**Last updated by:** Codex GPT-5 — 2026-09-20 (Boom Stick shotgun refinement)
+**Last updated on:** 2026-09-20
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -15,6 +15,18 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.77-plan (docs only — 2026-09-20):** Refined GitHub issue #3's
+  proposed shotgun into the **Boom Stick**: Level-1 6% event chance,
+  rising per level by 3/6/9 points for Noob-noob/Casual/4chan-st up to
+  90%, rolled at level start and every extra-chaser spawn. Success gives
+  the weapon or loose ammo (one-shell chamber, five-shell reserve), then
+  its AoE blast has a 1-in-3 explosion roll per cone-hit chaser, survivor
+  stun/knockback, capped stylized splotches, and a single short
+  portrait Voronoi/glass-shatter cutaway per blast. Script, delivery,
+  timing, difficulty flavor, tests, and five bounded build slices are in
+  `roadmap-handoff-v0.4.77-plan.md`. Mechanics/VFX/text are code-ready;
+  final spoken audio waits for Ken's recordings or asset approval. The
+  broader handgun ammo/HP rebalance in issue #3 remains separate.
 - **v0.4.76 (real code — 2026-08-11):** Heavy Plunger rebalance for
   GitHub issue #2 — rarer spawn (`HEAVY_PLUNGER_SPAWN_CHANCE` 0.08 →
   0.045) and a new AoE "shit-stain" slow zone dropped on every swing

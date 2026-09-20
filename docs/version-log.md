@@ -2387,3 +2387,31 @@ Mode A — docs only; no code, build, version bump, or deploy.
 - Maintained exact canonical wording from `frontend/src/gameContent.js`.
 - Kept `GAME_ITERATION` unchanged and did not deploy, following explicit instructions in the v0.4.74 plan.
 - See `docs/handoffs/roadmap-handoff-v0.4.74.md`.
+
+## v0.4.77-plan — Boom Stick Shotgun Theater (Codex GPT-5, 2026-09-20)
+
+Mode A planning only; no code, build, `GAME_ITERATION` bump, or deploy.
+
+- Renamed issue #3's planned `Poop Popper` shotgun to the **Boom Stick**
+  and made it a distinct one-shell-capacity, forward-cone weapon.
+- Fixed the spawn curve: 6% on Level 1; add 3/6/9 percentage points per
+  level for Noob-noob/Casual/4chan-st; reroll at each extra-chaser spawn;
+  cap combined odds at 90%. A successful event gives the weapon or
+  loose ammo (one-shell chamber, five-shell reserve, 0.85s reload).
+- Fixed the blast numbers: 230px/70-degree
+  wall-blocked cone, independent 1-in-3 explosion chance per target,
+  7s/90px stun-knockback fallback, and 12s chaser respawn.
+- Scoped the requested stylized blood splotch plus one 1.75s combined
+  portrait Voronoi/glass-shatter cutaway per blast, including a
+  reduced-motion version and multi-kill behavior.
+- Wrote the pickup, fire, stun-only, and explosion quote script with
+  performance and timing direction, difficulty-specific captions, an
+  old-school Mustang-and-Sally reference, and the close-call line
+  `Freekalops almost got me!` in a gravelly older-storyteller delivery.
+- Split the work into mechanics, VFX, text/placeholder audio, and final
+  voice integration. Only the final voice slice is blocked on Ken's
+  recordings or approval of the finished assets.
+- Left the broader existing-handgun ammo/HP/body-count rebalance as
+  separate issue #3 slices so the Boom Stick can ship incrementally.
+- Full implementation contract:
+  `docs/handoffs/roadmap-handoff-v0.4.77-plan.md`.

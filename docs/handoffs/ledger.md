@@ -756,3 +756,5 @@ a new shipped version or docs-only planning note.
 - Rewrote `docs/next-agent-planning-brief.md` and `docs/next-agent-coding-brief.md` to point at the new `v0.4.71-plan.md` triage.
 - Mid-session: a concurrent Mode B session shipped v0.4.70 for real (Level 5 rebalance + difficulty wiring fix) — updated `roadmap.md` and both next-agent briefs again; next unblocked pick is now Micro-Skib (`v0.4.55-plan.md`).
 - Added `docs/handoffs/roadmap-handoff-v0.4.71-plan.md` and `docs/handoffs/roadmap-handoff-v0.4.72-plan.md`.
+
+2026-09-20 | docs (Codex GPT-5) | v0.4.77-plan: renamed issue #3's proposed Poop Popper shotgun to the Boom Stick; refined escalating level/difficulty spawn events (6% Level 1, Level-2 9%/12%/15%, per-extra-chaser rerolls, 90% cap), one-shell chamber + reserve ammo, independent 1-in-3 chaser explosions, splotch/respawn rules, 1.75s portrait Voronoi-shatter cutaway, Mustang-and-Sally/Freekalops dialogue, tests, and small implementation slices. Mechanics/VFX/text are code-ready; final voice integration waits for recorded/approved assets. No code, build, version bump, or deploy.
