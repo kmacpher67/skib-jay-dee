@@ -2,32 +2,31 @@
 
 **Created by:** Claude Sonnet 5 — 2026-07-27
 **Created on:** 2026-07-27
-**Last updated by:** Codex GPT-5 — 2026-08-11 (ready-queue refresh after v0.4.75 ship)
-**Last updated on:** 2026-08-11
+**Last updated by:** Codex GPT-5 — 2026-09-20 (Boom Stick refinement pointer)
+**Last updated on:** 2026-09-20
 
 Use this when Ken opens a **Mode A** session. For coding, use
 `docs/next-agent-coding-brief.md`.
 
 ## Start here
 
-**`docs/handoffs/roadmap-handoff-v0.4.71-plan.md`** is the current
-consolidated triage — it supersedes `v0.4.66-plan.md` (v0.4.65,
-v0.4.67-v0.4.70 all shipped for real since that doc was written,
-including v0.4.70 shipping mid-audit by a concurrent Mode B session;
-this brief and `roadmap.md`'s summary table had gone stale pointing at
-it). Read the full v0.4.71 doc before re-deriving a backlog list from
-scratch — it verifies every v0.4.60–v0.4.69 item against `git log` and
-the actual code, not just doc claims, and surfaces two real bugs (a
-version-number collision and two false in-game changelog entries).
+For the current gun/shotgun refinement, read
+`docs/handoffs/roadmap-handoff-v0.4.77-plan.md`. It renames the proposed
+Poop Popper to the Boom Stick and settles the one-shell cone mechanics,
+1-in-3 explosion rule, splotch/respawn behavior, portrait-shatter
+cutaway, script/timing, and implementation slices. Mechanics/VFX/text
+are code-ready; final voice integration waits on approved recordings.
 
-If today's direct request is the one you're following, use
-`docs/handoffs/roadmap-handoff-v0.4.76-plan.md` next: it ranks the ready
-queue after the v0.4.75 ship.
+`docs/roadmap.md` is the corrected source of truth as of 2026-08-11 —
+read it directly rather than an older triage doc. Two same-day docs in
+`docs/handoffs/` (`roadmap-handoff-v0.4.71-plan.md`'s "ranked candidate
+queue" and `roadmap-handoff-v0.4.76-plan.md`) both claimed Micro-Skib,
+runner pose collapse, and Badge award counts were still open — that was
+stale even at the time; verified against real code, all three shipped
+in `v0.4.71`/`v0.4.72`. See the correction note at the top of
+`roadmap-handoff-v0.4.76-plan.md`.
 
-If you're only revisiting the older HUD top-bar complaint / audio split,
-use `docs/handoffs/roadmap-handoff-v0.4.75-plan.md` instead.
-
-If you're following the store/menu cleanup request from the previous
+If you're following the store/menu cleanup request from an earlier
 session, use `docs/handoffs/roadmap-handoff-v0.4.74-plan.md` instead.
 
 ## Ken deploy note
@@ -39,11 +38,12 @@ until the v0.4.71 audit corrected it. No further action needed here.
 
 ## Current production state
 
-- `GAME_ITERATION`: **v0.4.75** (top HUD bar layout fix; shipped
-  2026-08-09, see `roadmap-handoff-v0.4.75.md` and the `v0.4.75`
-  section in `docs/version-log.md`).
-- Next unblocked Mode B pick is **Micro-Skib chaser** (`v0.4.55-plan.md`),
-  not a planning task.
+- `GAME_ITERATION`: **v0.4.76** (Heavy Plunger rebalance — rarer spawn +
+  new AoE stain slow-zone; shipped 2026-08-11, see
+  `roadmap-handoff-v0.4.76.md`).
+- Next unblocked Mode B pick is **Pickup-consumption tracking + Play
+  Recap** (`roadmap-handoff-v0.4.62-plan.md` Slice 2), not a planning
+  task.
 - Role Reversal menu mode (`v0.4.53`→`v0.4.61` recovery) is **live and
   playable**, with its Beta pill shipped too. Outcome UX (60s
   capture/timeout + Rematch/Menu) is still unconfirmed — see below.
@@ -81,14 +81,9 @@ until the v0.4.71 audit corrected it. No further action needed here.
 - Interactive content pack slicing — still concept-only, needs a bounded
   first slice cut from `interactive-content-pack.md`.
 - Record Ken's Role Reversal answers → `role-reversal-design.md` + `v0.4.61-plan`.
-- **New this pass:** the `VersionModal.jsx` false-entry bug (v0.4.55/
-  v0.4.56 claimed shipped, aren't) is a Mode B fix, not Mode A — see
-  `v0.4.71-plan.md` Finding #1. Nothing to plan here, just don't let a
-  future Mode A session re-derive this as "already done" from the
-  in-game changelog.
-- **New this pass:** `roadmap-handoff-v0.4.76-plan.md` ranks the ready
-  queue after the HUD ship, so the next planning pass does not need to
-  reconstruct the order from scratch.
+- **Resolved:** the `VersionModal.jsx` false-entry bug (v0.4.55/v0.4.56)
+  is fixed — Micro-Skib and pose collapse shipped for real in `v0.4.71`.
+  No longer an open item.
 
 ## LT arc (decided)
 

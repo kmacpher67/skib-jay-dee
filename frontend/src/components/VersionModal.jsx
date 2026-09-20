@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.76',
+    title: 'Heavy Plunger Rebalance',
+    description: 'Heavy Plunger is now a rarer pickup, and each swing leaves a shit-stain circle that slows chasers who step in it for a few seconds.',
+  },
+  {
     version: 'v0.4.75',
     title: 'Top HUD Layout Fix',
     description: 'Fixed the top HUD bar layout to prevent live status labels (SKREEMS, LEVEL) from colliding with the mute and exit buttons on portrait screens.',

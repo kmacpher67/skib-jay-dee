@@ -1,63 +1,36 @@
 # Next Agent Coding Brief — Skib-Jay-Dee-Toilet
 
 **Created by:** Codex (GPT-5) — 2026-07-27
-**Created on:** 2026-07-27
-**Last updated by:** Codex GPT-5 — 2026-08-11 (ready-queue refresh after v0.4.75 ship)
-**Last updated on:** 2026-08-11
+**Last updated by:** Codex GPT-5 — 2026-09-20 (Boom Stick refinement pointer)
+**Last updated on:** 2026-09-20
 
-Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.75** —
-top HUD bar layout fix, see `roadmap-handoff-v0.4.75.md` and the
-`v0.4.75` section in `docs/version-log.md`).
+Check `frontend/src/version.js` for live `GAME_ITERATION` (**v0.4.76** —
+Heavy Plunger rebalance, see `roadmap-handoff-v0.4.76.md`).
 
-If you're following the ready-queue refresh from this session, start
-with `docs/handoffs/roadmap-handoff-v0.4.76-plan.md` before any slice
-handoff.
+> **Correction:** an earlier version of this brief (and a same-day
+> concurrent planning doc, `roadmap-handoff-v0.4.76-plan.md`) claimed
+> Micro-Skib, runner pose collapse, and Badge award counts were still
+> open, based on a grep that was run before those features actually
+> landed. All three are verified shipped in real code as of this
+> session: `chaserType === 'micro-skib'` in `GameEngine.js` (v0.4.71),
+> `RUNNER_FACE_POOL` collapsed to 3 entries in `gameContent.js` (v0.4.71),
+> and `profile.badgeAwardCounts` in `cookies.js` (v0.4.72). The
+> `VersionModal.jsx` changelog entries for v0.4.55/v0.4.56 are no longer
+> false. Do not re-implement any of these.
 
-If you're following the older HUD top-bar complaint or audio refinement
-split from this session, start with
-`docs/handoffs/roadmap-handoff-v0.4.75-plan.md` instead.
+## Do this next — `roadmap-handoff-v0.4.62-plan.md` Slice 2 (Play Recap)
 
-Full audit and ranked candidate queue:
-`docs/handoffs/roadmap-handoff-v0.4.71-plan.md` (supersedes the earlier
-`v0.4.66-plan.md` — v0.4.65/v0.4.67/v0.4.68/v0.4.69/v0.4.70 all shipped
-since then). Next unblocked pick: **Micro-Skib** (`v0.4.55-plan.md`).
+Code-ready per Ken 2026-07-27: pickup-consumption tracking + a "Play
+Recap" screen (level-clear/menu return only, Stats tab in the Rewards
+modal, comedic bad-pickup tone). See the addendum in
+`roadmap-handoff-v0.4.62-plan.md` for the full spec.
 
-## Do this next - `roadmap-handoff-v0.4.55-plan.md` (Micro-Skib chaser)
-
-Code-ready per Ken 2026-07-27: replace-extra-spawn chaser, Level 3+, 65%
-hitbox, 0.85x speed. Note: `VersionModal.jsx` already has a changelog
-entry claiming this shipped as v0.4.55 — it didn't (verified: no
-`micro-skib` string anywhere in `GameEngine.js`). Shipping this for real
-makes that entry true instead of false; see `v0.4.71-plan.md` Finding #1.
-
-## If you are working the shop/guide cleanup from this session
-
-Use `roadmap-handoff-v0.4.74-plan.md`.
-
-- Reflow the Shleeb Shop into a side-by-side card layout that still
-  scrolls cleanly on portrait screens.
-- Expand `docs/players-guide.md` into a full item glossary for the
-  shipped shop perks and pickups, with clear "when / why / benefit"
-  notes.
-- Keep the canonical names in `frontend/src/gameContent.js` as the
-  source of truth.
-
-## After that — pick from the ranked queue in `v0.4.71-plan.md`
+## After that — pick from the ranked queue
 
 | Order | Slice | Handoff detail |
 |---|---|---|
-| 1 | Micro-Skib chaser | `v0.4.55-plan.md` — do first |
-| 2 | Runner pose collapse (3 unique) | `v0.4.56-plan.md` |
-| 3 | Badge award counts | `v0.4.72-plan.md` (renumbered from `v0.4.67-plan.md` — that slot was consumed by a different shipped feature, see `v0.4.71-plan.md` Finding #2) |
-| 4 | Pickup tracking + Play Recap | `v0.4.62-plan.md` addendum |
-
-**Note on #1 and #2:** `frontend/src/components/VersionModal.jsx` already
-has changelog entries claiming Micro-Skib (v0.4.55) and pose collapse
-(v0.4.56) shipped — they didn't (verified: no `micro-skib` string
-anywhere in the engine, `RUNNER_FACE_POOL` still has 5 entries not 3).
-Shipping these two for real makes the existing entries true instead of
-false; don't add new duplicate changelog text for them, the old entries
-already cover it once the code catches up.
+| 1 | Pickup tracking + Play Recap | `v0.4.62-plan.md` addendum |
+| 2 | Debug State Dump | `v0.4.64-plan.md` |
 
 ## Do not pick up yet
 
@@ -78,15 +51,18 @@ already cover it once the code catches up.
 - **HUD top bar layout / audio overlay** — the layout fix shipped in
   `v0.4.75`; the audio overlay follow-up stays parked until the asset
   and trigger decisions are confirmed.
-- **Level-start warp passes** — a separate future Mode B candidate now
-  exists as `roadmap-handoff-v0.4.73-plan.md`, but it is not the next
-  code slice; the queue still starts with Micro-Skib.
-- **Ready-queue refresh** — `roadmap-handoff-v0.4.76-plan.md` ranks the
-  ready slices for the next few sessions so the next coding pass does
-  not need to reconstruct the order.
-- Everything through v0.4.70 listed as shipped in
-  `roadmap-handoff-v0.4.71-plan.md`'s status table (and its "Update"
-  note) — do not re-implement.
+- **GitHub issue #3 (Gun rebalance + Boom Stick shotgun)** — the Boom
+  Stick lane is now refined into small code-ready mechanics/VFX/text
+  slices in `roadmap-handoff-v0.4.77-plan.md`; the final voice slice
+  still waits for recorded/approved assets. Keep the broader handgun
+  ammo/HP/body-count work separate rather than attempting the whole
+  issue in one run.
+- **GitHub issue #4 (Taco fart attack rework)** — blocked on confirming
+  the current implementation first.
+- Everything through v0.4.76 listed as shipped in `docs/roadmap.md` —
+  do not re-implement. If a handoff/plan doc disagrees with the real
+  code, trust the code (grep `GameEngine.js`/`gameContent.js`/
+  `cookies.js`) over the doc.
 
 ## Parallel track (Ken priority override)
 
@@ -104,5 +80,5 @@ answer to an open design question on his behalf.
 
 1. `docs/skib-sdlc.md`
 2. `docs/update-directions.md`
-3. `docs/handoffs/roadmap-handoff-v0.4.71-plan.md`
-4. The specific slice handoff you are implementing (`v0.4.55-plan.md` first)
+3. `docs/roadmap.md` (source of truth for what's actually shipped)
+4. The specific slice handoff you are implementing (`v0.4.62-plan.md` first)

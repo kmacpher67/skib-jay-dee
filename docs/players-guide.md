@@ -129,9 +129,11 @@ Design/status source:
 - **Rod of Poopdom:** Use this when a short reposition is safer than
   trying to weave through a chase. It teleports you forward a limited
   distance, but it cannot go through walls and has a Stinky cooldown.
-- **Heavy Plunger:** Use this when a chaser gets too close and you want
-  a knockback rather than a ranged stun. It is a close-range, timing-
-  heavy escape tool.
+- **Heavy Plunger:** Use this when multiple chasers are closing in and
+  you want an AoE knockback rather than a ranged stun — one swing hits
+  every chaser in range, not just the nearest. It's a rarer pickup as of
+  v0.4.76, and each swing leaves a shit-stain circle on the ground that
+  slows any chaser who steps in it for a few seconds after you move on.
 - **Soggy Toilet Paper:** Use this when you want to leave a slow zone
   behind you. It is strongest in a chase path, because chasers who step
   in the trail lose speed.

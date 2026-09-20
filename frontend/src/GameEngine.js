@@ -385,12 +385,16 @@ const SOGGY_TP_CHASER_SLOW_SECONDS = 5
 
 const RAMAN_AUNT = CHASER_TYPES['raman-aunt']
 
-const HEAVY_PLUNGER_SPAWN_CHANCE = 0.08
+const HEAVY_PLUNGER_SPAWN_CHANCE = 0.045
 const HEAVY_PLUNGER_PICKUP_SIZE = 24
 const HEAVY_PLUNGER_SWINGS = 3
 const HEAVY_PLUNGER_SWING_COOLDOWN = 0.5
 const HEAVY_PLUNGER_SWING_RANGE = 120
 const HEAVY_PLUNGER_KNOCKBACK = 80
+const HEAVY_PLUNGER_STAIN_SIZE = 70
+const HEAVY_PLUNGER_STAIN_LIFETIME = 6
+const HEAVY_PLUNGER_STAIN_SLOW_MULT = 0.8
+const HEAVY_PLUNGER_STAIN_SLOW_SECONDS = 2.5
 
 const ROD_OF_POOPDOM_SPAWN_CHANCE = 0.05
 const ROD_OF_POOPDOM_PICKUP_SIZE = 24
@@ -559,6 +563,7 @@ export class GameEngine {
     this.soggyTpActive = false
     this.soggyTpTimer = 0
     this.soggyTpTrailTimer = 0
+    this.plungerStains = []
     this.soggyTrails = []
     this.brothTrails = []
     this.brothFrictionTimer = 0
@@ -1312,6 +1317,11 @@ export class GameEngine {
           .map((trail) => ({ ...trail, lifetime: trail.lifetime - dt }))
           .filter((trail) => trail.lifetime > 0)
       }
+      if (this.plungerStains.length > 0) {
+        this.plungerStains = this.plungerStains
+          .map((stain) => ({ ...stain, lifetime: stain.lifetime - dt }))
+          .filter((stain) => stain.lifetime > 0)
+      }
       if (this.brothFrictionTimer > 0) {
         this.brothFrictionTimer = Math.max(0, this.brothFrictionTimer - dt)
       }
@@ -1451,6 +1461,15 @@ export class GameEngine {
         if (chaser.soggySlowTimer > 0) {
           chaser.soggySlowTimer -= dt
           speedMult *= SOGGY_TP_CHASER_SLOW_MULT
+        }
+        for (const stain of this.plungerStains) {
+          if (rectsIntersect(chaser, stain)) {
+            chaser.plungerStainSlowTimer = HEAVY_PLUNGER_STAIN_SLOW_SECONDS
+          }
+        }
+        if (chaser.plungerStainSlowTimer > 0) {
+          chaser.plungerStainSlowTimer -= dt
+          speedMult *= HEAVY_PLUNGER_STAIN_SLOW_MULT
         }
         const chaserTypeSpeedMod =
           chaser.chaserType === 'skib-daddy'
@@ -2083,6 +2102,14 @@ export class GameEngine {
     this.plungerSwingActive = true
     this.plungerSwingTimer = 0.2
 
+    this.plungerStains.push({
+      x: this.runner.x + this.runner.w / 2 - HEAVY_PLUNGER_STAIN_SIZE / 2,
+      y: this.runner.y + this.runner.h / 2 - HEAVY_PLUNGER_STAIN_SIZE / 2,
+      w: HEAVY_PLUNGER_STAIN_SIZE,
+      h: HEAVY_PLUNGER_STAIN_SIZE,
+      lifetime: HEAVY_PLUNGER_STAIN_LIFETIME,
+    })
+
     for (const chaser of this.chasers) {
       const dist = Math.hypot(
         (chaser.x + chaser.w / 2) - (this.runner.x + this.runner.w / 2),
@@ -2641,6 +2668,12 @@ export class GameEngine {
     this.brothTrails.forEach((t) => {
       ctx.beginPath()
       ctx.arc(t.x + t.w / 2, t.y + t.h / 2, t.w / 2, 0, Math.PI * 2)
+      ctx.fill()
+    })
+    this.plungerStains.forEach((s) => {
+      ctx.fillStyle = `rgba(90, 60, 30, ${0.45 * Math.min(1, s.lifetime / HEAVY_PLUNGER_STAIN_LIFETIME)})`
+      ctx.beginPath()
+      ctx.arc(s.x + s.w / 2, s.y + s.h / 2, s.w / 2, 0, Math.PI * 2)
       ctx.fill()
     })
     this._drawPickups(ctx)

@@ -6,6 +6,18 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## [v0.4.76, 2026-08-11] - Heavy Plunger rebalance (GitHub issue #2)
+- Spawn chance cut from 0.08 to 0.045 (rarer, per Ken's ask).
+- The swing was already AoE in code (hits every chaser in range); the
+  "stain slow-zone" the issue described did not exist at all — built it
+  for real as `plungerStains` (reuses the Soggy Toilet Paper touch/timer
+  pattern), 6s lifetime, 2.5s/0.8x chaser slow on touch.
+- **Correction to the entry below:** the "Ready queue refresh" claimed
+  Micro-Skib, runner pose collapse, and badge award counts were still
+  open — verified against real code this session, all three shipped for
+  real in v0.4.71/v0.4.72. See the correction note at the top of
+  `roadmap-handoff-v0.4.76-plan.md`.
+
 ## [docs, 2026-08-11] - Ready queue refresh after v0.4.75 ship
 - Ranked the already-scoped, code-ready slices after the top HUD bar
   fix landed: Micro-Skib → runner pose collapse → badge award counts →

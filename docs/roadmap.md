@@ -92,27 +92,36 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 `frontend/e2e/soggy-tp-plunger-friendly-fire.spec.js`. Shipped as
 `v0.4.36.1`. See `docs/handoffs/roadmap-handoff-v0.4.36.1.md`.
 
-## Frontend open backlog snapshot (2026-08-11, Mode A refresh)
+## Frontend open backlog snapshot (2026-08-11, corrected — see note)
 
-`GAME_ITERATION` is **v0.4.75** (`frontend/src/version.js`). Since the
-last snapshot (v0.4.71 completeness audit), v0.4.73 (Level warp passes),
-v0.4.74 (Shleeb Shop layout + item glossary), and v0.4.75 (HUD top bar
-fix) have all landed. `v0.4.72` (Badge award counts) remains open and is
-now queued after Micro-Skib / pose collapse. The `VersionModal.jsx`
-false-changelog issue (Finding #1) is still open until Micro-Skib and
-pose collapse ship for real. Updated summary:
+> **Note (2026-08-11, Claude Sonnet 5):** an earlier version of this
+> section (and a concurrent same-day planning doc,
+> `roadmap-handoff-v0.4.76-plan.md`) claimed Micro-Skib, runner pose
+> collapse, and Badge award counts were still open. That was stale —
+> all three are verified shipped in real code (`GameEngine.js`,
+> `gameContent.js`, `cookies.js`), in `v0.4.71` and `v0.4.72`. See the
+> correction note at the top of `roadmap-handoff-v0.4.76-plan.md`.
+
+`GAME_ITERATION` is **v0.4.76** (`frontend/src/version.js`). Since the
+last completeness audit (v0.4.71), the following have all landed for
+real: v0.4.71 (Micro-Skib + runner pose collapse), v0.4.72 (Badge award
+counts), v0.4.73 (Level warp passes), v0.4.74 (Shleeb Shop layout + item
+glossary), v0.4.75 (HUD top bar fix), v0.4.76 (Heavy Plunger rebalance).
+The `VersionModal.jsx` false-changelog issue (Finding #1) is resolved.
+Updated summary:
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next (ranked)** | 4 | Micro-Skib → runner pose collapse → Badge award counts → Pickup-consumption tracking + Play Recap |
+| **Unblocked — code next (ranked)** | 2 | Pickup-consumption tracking + Play Recap (`v0.4.62-plan` Slice 2) → Debug State Dump (`v0.4.64-plan`) |
 | **Parallel quality debt** | 1 | Role Reversal Beta full recovery (`v0.4.61-plan`; outcome UX blocked on Ken); runner AI item-use slice (`v0.4.69-plan`) still open |
 | **Design-only / TBD** | 3 | Debt Lock math (`difficulty-mechanics-plan.md`), Level 7+ Mosaic (blocked on Ken's trigger-mechanism answer), Interactive content pack |
 | **Refinement-gated** | 1 | Audio overlay enhancement (issue #1.1) — blocked on asset list + mix/trigger decisions, see `audio-recording-brief-for-alex.md` |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
-| **Open GitHub issues** | 2 | Gun rebalance + Poop Popper shotgun ([#3](https://github.com/kmacpher67/skib-jay-dee/issues/3), needs numbers pass before code-ready), Taco fart attack rework ([#4](https://github.com/kmacpher67/skib-jay-dee/issues/4), blocked on confirming current implementation) |
+| **Open GitHub issues** | 2 | Gun rebalance + Boom Stick shotgun ([#3](https://github.com/kmacpher67/skib-jay-dee/issues/3): Boom Stick mechanics/VFX/text refined into code-ready slices; final voice assets blocked; broader handgun/HP work remains separate), Taco fart attack rework ([#4](https://github.com/kmacpher67/skib-jay-dee/issues/4), blocked on confirming current implementation) |
 
-Next unblocked pick is **Micro-Skib** (`v0.4.55-plan.md`).
+Next unblocked pick is **Pickup-consumption tracking + Play Recap**
+(`roadmap-handoff-v0.4.62-plan.md` Slice 2).
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.
@@ -438,13 +447,12 @@ chaser-bark voice clips, 1:1 with text.
   Shleeb Shop item — recommending map pickup) and the exact percentages
   before coding. See
   [roadmap-handoff-v0.4.29-plan.md](handoffs/roadmap-handoff-v0.4.29-plan.md).
-- [ ] **Micro-Skib chaser (challenge counterweight to the potion).** **Code-ready**
-  per Ken 2026-07-27 — replace extra spawn, L3+, 65% hitbox, 0.85× speed.
-  **Not yet shipped** despite an existing `VersionModal.jsx` changelog
-  entry claiming otherwise (that entry is false — flagged as Finding #1
-  in [`roadmap-handoff-v0.4.71-plan.md`](handoffs/roadmap-handoff-v0.4.71-plan.md);
-  shipping this for real resolves it). See
-  [`roadmap-handoff-v0.4.55-plan.md`](handoffs/roadmap-handoff-v0.4.55-plan.md).
+- [x] **Micro-Skib chaser (challenge counterweight to the potion).** Landed
+  v0.4.71 for real — `chaserType === 'micro-skib'` in `GameEngine.js`
+  (extra spawn, L3+, shrunk hitbox, slower speed), resolving the false
+  `VersionModal.jsx` changelog entry flagged as Finding #1 in
+  [`roadmap-handoff-v0.4.71-plan.md`](handoffs/roadmap-handoff-v0.4.71-plan.md).
+  See [`roadmap-handoff-v0.4.71.md`](handoffs/roadmap-handoff-v0.4.71.md).
 - [x] **Level 4+ Difficulty Constraints.** Landed in v0.4.33 — Level 4 and higher now requires at least 90 seconds (scaling up with higher levels) of running and evasion of 5 chasers before the level can clear.
 - [x] **Skib-Chaser Evolution (Level 5+).** Landed in v0.4.34 — chasers turned out to have no wall collision at all pre-v0.4.34 (only the runner did), so this gave them real wall-aware movement on Levels 1-4 and kept the always-pass-through behavior plus a `1.15x` speed multiplier for Level 5+ (`levelIndex >= 4`). See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
 - [x] **The "Gawd Particle" (Level 5+).** Landed in v0.4.34 — an 8%-per-level Level 5+ pickup grants the runner a 10s wall-hack buff; touching a chaser while it's active despawns the chaser (15s respawn timer) instead of capturing the runner. See `docs/handoffs/roadmap-handoff-v0.4.34.md`.
@@ -608,14 +616,11 @@ chaser-bark voice clips, 1:1 with text.
   **Slice B still open** (shop labels). Pickup tracking + Play Recap →
   **code-ready**, queued as **v0.4.62 Slice 2**. See
   [`roadmap-handoff-v0.4.62-plan.md`](handoffs/roadmap-handoff-v0.4.62-plan.md).
-- [ ] **Badge award counts / repeat-award history.** `earnedBadges` only
-  records unique badge ids today, so repeat badge/token grants collapse
-  to one entry. Add a separate count or award-history structure if we
-  want the profile or Rewards modal to show "earned N times" without
-  changing badge gating. Exact surface still TBD; code-ready, queued as
-  `roadmap-handoff-v0.4.72-plan.md` (renumbered from `v0.4.67-plan.md`
-  2026-07-28 — that version slot was consumed by a different shipped
-  feature, see `v0.4.71-plan.md` Finding #2).
+- [x] **Badge award counts / repeat-award history.** Landed v0.4.72 —
+  `profile.badgeAwardCounts` (per-badge counter, `cookies.js`) increments
+  on every repeat grant, `RewardsHistoryModal.jsx` now shows the count
+  alongside each badge; unique-id `earnedBadges` gating is unchanged. See
+  [`roadmap-handoff-v0.4.72.md`](handoffs/roadmap-handoff-v0.4.72.md).
 - [ ] **Feature: Pickup-consumption tracking + "Play Recap" screen.** **Code-ready**
   (Ken 2026-07-27): level-clear/menu return only; Stats tab in Rewards modal;
   comedic bad-pickup tone. Queued as **v0.4.62 Slice 2**. See
@@ -669,13 +674,12 @@ chaser-bark voice clips, 1:1 with text.
   default, or the player's custom upload untouched) once the chase
   resumes. See `setFaces()` / `_triggerCaught()` / `_updateCaught()` in
   `frontend/src/GameEngine.js`, and `docs/characters.md`.
-- [ ] **Follow-up (runner poses): collapse to 3 unique.** **Code-ready**
-  (Ken 2026-07-27) — remove duplicate pool entries; distinct photos optional
-  later. **Not yet shipped** despite an existing `VersionModal.jsx`
-  changelog entry claiming otherwise (that entry is false — flagged as
-  Finding #1 in [`roadmap-handoff-v0.4.71-plan.md`](handoffs/roadmap-handoff-v0.4.71-plan.md);
-  shipping this for real resolves it). See
-  [`roadmap-handoff-v0.4.56-plan.md`](handoffs/roadmap-handoff-v0.4.56-plan.md).
+- [x] **Follow-up (runner poses): collapse to 3 unique.** Landed v0.4.71
+  for real (bundled with Micro-Skib) — duplicate `RUNNER_FACE_POOL`
+  entries removed in `gameContent.js`, resolving the false
+  `VersionModal.jsx` changelog entry (Finding #1 in
+  [`roadmap-handoff-v0.4.71-plan.md`](handoffs/roadmap-handoff-v0.4.71-plan.md)).
+  See [`roadmap-handoff-v0.4.71.md`](handoffs/roadmap-handoff-v0.4.71.md).
 - [ ] **App tracking / instrumentation (analytics + error monitoring).**
   **Design-only / TBD** — Ken asked for a features refinement pass on
   [`docs/notes-snippets/app-tracking-instrumentation.md`](../notes-snippets/app-tracking-instrumentation.md).
