@@ -4,7 +4,7 @@ Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
 **Created on:** 2026-07-26
-**Last updated by:** Claude Sonnet 5.5 — 2026-10-22 (v0.4.87 physical tunnels)
+**Last updated by:** Claude Sonnet 5.5 — 2026-10-22 (v0.4.88 tunnel Level 6 wall fix)
 **Last updated on:** 2026-10-22
 
 **Doc provenance note:** when you create or materially edit a `docs/`
@@ -15,6 +15,11 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.88 (real code — 2026-10-22):** Ken: tunnel did not teleport.
+  `_buildTunnelWalls` assumed 24px border walls; Level 6 uses 20px walls inset
+  20px. Side-wall detection generalized. New all-levels real-movement test.
+  If Ken still sees the old dashed-lane tunnel, the browser is on a cached
+  pre-v0.4.87 build (hard refresh).
 - **v0.4.87 (real code — 2026-10-22):** Ken playtest: tunnel must physically
   change the map. Egg activation now cuts a gap in the side border walls
   (`_buildTunnelWalls`, cached in `_tunnelWalls`) at each tunnel row and opens a

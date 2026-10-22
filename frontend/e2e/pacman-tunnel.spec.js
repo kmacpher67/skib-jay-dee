@@ -162,6 +162,43 @@ test.describe('Pac-Man tunnel egg (issue #8, slice 1)', () => {
     expect(r.wall).toBe(false)
   })
 
+  test('real movement teleports through the tunnel on every level, both directions', async ({ page }) => {
+    await startRunnerGame(page)
+    const res = await page.evaluate(() => {
+      const e = window.__skibEngine
+      const out = []
+      for (const side of ['right', 'left']) {
+        for (let l = 0; l < 6; l++) {
+          e.levelIndex = l
+          e._syncLevelState({ resetPositions: true, notify: false })
+          e.pacmanEgg = { x: e.runner.x, y: e.runner.y, w: 30, h: 30 }
+          e._checkPacmanEgg()
+          const row = e.level.tunnelRows[0]
+          const cy = row.y + row.h / 2
+          e.pacmanLockout = 0
+          e.runner.y = cy - 20
+          e.runner.x = side === 'right' ? 900 - 24 - 40 - 50 : 24 + 50
+          e.keys.left = side === 'left'
+          e.keys.right = side === 'right'
+          let wrapped = false
+          for (let i = 0; i < 300 && !wrapped; i++) {
+            e.chasers.length = 0
+            const before = e.pacmanLockout
+            e.update(1 / 60)
+            if (e.pacmanLockout > before) wrapped = true
+          }
+          e.keys.left = e.keys.right = false
+          out.push({ side, l, wrapped, x: e.runner.x, wall: e._hitsWall(e.runner) })
+        }
+      }
+      return out
+    })
+    for (const r of res) {
+      expect(r.wrapped, `${r.side} level ${r.l + 1}`).toBe(true)
+      expect(r.side === 'right' ? r.x > 700 === false : r.x > 700).toBe(true)
+    }
+  })
+
   test('new game resets pacmanDiscovered', async ({ page }) => {
     await startRunnerGame(page)
     await page.evaluate(() => { window.__skibEngine.pacmanDiscovered = true })

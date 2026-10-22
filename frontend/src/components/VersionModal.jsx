@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.88',
+    title: 'Tunnel Fix (Level 6)',
+    description: 'Fixed the Pac-Man tunnel not opening in the walls on Level 6, which uses thinner walls than the other levels. Tunnels now open and teleport on all six levels, in both directions.',
+  },
+  {
     version: 'v0.4.87',
     title: 'Real Tunnels',
     description: 'Grabbing the chomper egg now physically changes the map: openings are cut into the left and right walls. Walk into one and you pop out of the matching opening on the other side. Tunnels still only exist on levels where you collected the egg.',

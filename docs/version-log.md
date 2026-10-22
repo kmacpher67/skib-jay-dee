@@ -2557,3 +2557,12 @@ Mode B. Ken playtest with a mockup: activation should cut a real opening in the 
 - Alcove drawn as a dark recess with chevrons, portal glow and yellow frame; TUNNEL guide arrow kept; dashed lane removed.
 - Tests: wall-free check now covers the full 60x72 mouth; new alcove walk/teleport test. Full suite 90 passed, 1 skipped.
 - Future idea from Ken: randomly placed portal tunnels that teleport the player to another part of the map.
+
+## v0.4.88 — Pac-Man tunnel fix for Level 6 walls (Claude Sonnet 5.5, 2026-10-22)
+
+Mode B. Ken reported the tunnel not teleporting after activation.
+
+- Cause found by simulating real `update()` movement on all six levels: Level 6's border walls are 20px wide and inset 20px (`x:0,y:20,w:20,h:1480`), so `_buildTunnelWalls` (which matched `w===24, y===0, h===1500`) never cut a gap there and the runner could not enter.
+- Fix: side walls are now any wall at either world edge, at most 30px wide and over 80% of map height; the gap split respects each wall's own y range.
+- New test drives `update()` through the tunnel on all 6 levels in both directions. Full suite 91 passed, 1 skipped.
+- Ken's screenshot showed the dashed lane from v0.4.86, so that session may also have been a cached older build; a hard refresh loads the current one.

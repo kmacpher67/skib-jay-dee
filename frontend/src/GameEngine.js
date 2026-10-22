@@ -3015,17 +3015,20 @@ export class GameEngine {
       .sort((a, b) => a[0] - b[0])
     const out = []
     this.map.walls.forEach((wall) => {
-      const isSide = wall.w === 24 && wall.y === 0 && wall.h === WORLD.height && (wall.x === 0 || wall.x === WORLD.width - 24)
+      // Border walls differ per level (Level 6 uses 20px walls inset 20px top/bottom).
+      const isSide =
+        wall.w <= 30 && wall.h > WORLD.height * 0.8 && (wall.x === 0 || wall.x + wall.w === WORLD.width)
       if (!isSide) {
         out.push(wall)
         return
       }
-      let y = 0
+      let y = wall.y
+      const end = wall.y + wall.h
       gaps.forEach(([top, bottom]) => {
         if (top > y) out.push({ x: wall.x, y, w: wall.w, h: top - y })
-        y = bottom
+        y = Math.max(y, bottom)
       })
-      if (y < wall.h) out.push({ x: wall.x, y, w: wall.w, h: wall.h - y })
+      if (y < end) out.push({ x: wall.x, y, w: wall.w, h: end - y })
     })
     return out
   }
