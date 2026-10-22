@@ -19,6 +19,13 @@ entry heading so the change trail stays obvious at a glance.
   the egg. Cause: 1.35x camera shows ~267 of 900 world px, so edge openings were
   off screen, and the 20px lane was hard to hit. Fix: dashed lane, bigger
   openings, screen-edge TUNNEL arrow (`_drawTunnelGuide`), lane band +-20px.
+- **v0.4.87-plan (docs only — 2026-10-22):** Issue #10 was refined for the
+  post-Pac-Man queue. The next weapon slice stacks handgun ammo to six, keeps
+  handgun and Boom Stick together, and falls back to the other weapon when the
+  selected one empties. Level 4–6 helpful-pickup tuning is included. The level
+  countdown, generalized respawn cooldown, and Fart Blocker award remain
+  separate and are not code-ready. See
+  `docs/handoffs/roadmap-handoff-v0.4.87-plan.md`.
 - **v0.4.85 (real code — 2026-10-22):** Issue #8 stub art and audio: generated
   egg and tunnel PNGs in `frontend/src/assets/pacman/`, synthesized
   `pacman-chime.mp3` / `pacman-tunnel-whoosh.mp3` in `assets/audio/`. Alex

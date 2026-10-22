@@ -85,6 +85,11 @@ These were already tracked before this version and remain open — see
 `docs/roadmap.md` for full detail, this is just a pointer so they don't
 get lost:
 
+- Issue #10 follow-ups after the weapon/ammo slice: visible time-left countdown
+  tied to the real level threshold, generalized chaser respawn cooldowns, and
+  the still-undecided Fart Blocker award/effect. The weapon carry/ammo portion
+  is planned in [`roadmap-handoff-v0.4.87-plan.md`](handoffs/roadmap-handoff-v0.4.87-plan.md).
+
 - Intro cinematic (the PDF's "World Star" open).
 - Oval/masked face-crop on upload instead of stretch.
 - Level data extraction out of hardcoded `buildXxx()` map functions.

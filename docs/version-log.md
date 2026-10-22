@@ -6,6 +6,16 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## [docs, 2026-10-22] - GitHub issue #10 weapon/ammo planning
+- Refined Ken's post-Pac-Man request into a bounded weapon slice: handgun
+  ammo stacks to six, handgun and Boom Stick coexist, and the selected weapon
+  falls back to the other weapon when empty.
+- Kept the visible level timer, generalized chaser respawn cooldown, and
+  Fart Blocker easter egg as separate follow-ups because their product rules
+  are not settled by the weapon request.
+- Created `docs/handoffs/roadmap-handoff-v0.4.87-plan.md`; no code, build,
+  version bump, deploy, or issue closure happened in this Mode A session.
+
 ## [docs, 2026-10-22] - GitHub issue #9 chaser wall-spawn RCA
 - Confirmed the Level 4 lead chaser coordinate `{x: 80, y: 190}` overlaps
   the Ramen Aisle shelf when the `44×44` chaser body is placed there.

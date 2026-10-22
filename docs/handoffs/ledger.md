@@ -11,6 +11,8 @@ v0.4.0 — earlier versions only have a version-log entry).
 Never edit past lines. Append a new line (or block) per version when you add
 a new shipped version or docs-only planning note.
 
+2026-10-22 | docs (Codex GPT-5) | v0.4.87-plan: refined GitHub issue #10 into a post-Pac-Man two-weapon inventory/ammo slice; handgun caps at 6, Boom Stick coexists, empty selected weapons fall back; timer/respawn/Fart Blocker remain separate; no code
+
 2026-10-22 | docs (Codex GPT-5) | v0.4.80-plan: RCA and bounded handoff for GitHub issue #9 chaser wall spawn; Level 4 lead, extra, and respawn paths require entity-sized walkable spawn validation; no code
 
 2026-09-20 | v0.4.77 | Implemented Boom Stick Slice C1 (Spawn and ammo state logic)
