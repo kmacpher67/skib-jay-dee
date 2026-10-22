@@ -398,6 +398,9 @@ const PACMAN_BOOST_MAX_CHANCE = 0.85
 const PACMAN_EXTRA_LEVEL_SECONDS = 20
 const PACMAN_WRAP_LOCKOUT_SECONDS = 0.3
 const PACMAN_EGG_SIZE = 30
+// Physical tunnel alcoves carved into the left/right map walls once active.
+const PACMAN_TUNNEL_DEPTH = 56
+const PACMAN_TUNNEL_HALF = 36
 // Placeholder copy (PG-13 noob / casual / 4chan-st); Ken + creative to rewrite.
 const PACMAN_CAPTIONS = {
   noob: ['WAKA WAKA FLUSH!', 'SECRET TUNNELS OPEN!', 'WHEEE, SIDE DOORS!'],
@@ -701,6 +704,7 @@ export class GameEngine {
     this.chaserRespawnQueue = []
     this.pacmanDiscovered = false
     this.pacmanActive = false
+    this._tunnelWalls = null
     this.pacmanEgg = null
     this.pacmanLockout = 0
     this.levelTimeBonus = 0
@@ -1214,6 +1218,7 @@ export class GameEngine {
     this.levelElapsed = 0
     this.levelTimeBonus = 0
     this.pacmanActive = false
+    this._tunnelWalls = null
     this.pacmanEgg = null
     this.pacmanLockout = 0
     this.pipeworksSkreems = 0
@@ -1910,6 +1915,7 @@ export class GameEngine {
     if (!this.pacmanEgg || !rectsIntersect(this.runner, this.pacmanEgg)) return
     this.pacmanEgg = null
     this.pacmanActive = true
+    this._tunnelWalls = this._buildTunnelWalls()
     this.pacmanDiscovered = true
     this.levelTimeBonus += PACMAN_EXTRA_LEVEL_SECONDS
     const firstEver = !this.earnedBadges.includes(PACMAN_BADGE_ID)
@@ -1927,25 +1933,37 @@ export class GameEngine {
     this.onPickupConsumed('pacman-egg', 'good')
   }
 
-  _isOnTunnelRow(entity) {
+  // Center y of the active tunnel band the entity is lined up with, else null.
+  // Aligned means the whole body fits inside the alcove opening (or, with
+  // `loose`, merely overlaps it, used once already inside an alcove).
+  _tunnelCenterFor(entity, loose = false) {
+    if (!this.pacmanActive || this.isChaserMode || this.gawdParticleActive) return null
     const rows = this.level.tunnelRows
-    if (!rows) return false
-    const cy = entity.y + entity.h / 2
-    // Forgiving band: the 40px runner can't realistically center in a 20px lane.
-    return rows.some((row) => cy >= row.y - 20 && cy <= row.y + row.h + 20)
+    if (!rows) return null
+    for (const row of rows) {
+      const cy = row.y + row.h / 2
+      const top = cy - PACMAN_TUNNEL_HALF
+      const bottom = cy + PACMAN_TUNNEL_HALF
+      if (loose ? entity.y < bottom && entity.y + entity.h > top : entity.y >= top && entity.y + entity.h <= bottom) {
+        return cy
+      }
+    }
+    return null
   }
 
-  // Runner-only horizontal wrap, called right after the runner's normal move.
+  // Runner-only teleport, called right after the runner's normal move: walk to
+  // the end of one alcove and come out the end of the opposite one.
   _applyPacmanWrap(stepX) {
     if (!this.pacmanActive || this.isChaserMode || this.gawdParticleActive) return
     const r = this.runner
-    if (this.pacmanLockout > 0 || !stepX || !this._isOnTunnelRow(r)) return
-    const minX = 24
-    const maxX = WORLD.width - 24 - r.w
+    if (this.pacmanLockout > 0 || !stepX) return
+    if (this._tunnelCenterFor(r, true) === null) return
+    const leftEnd = 24 - PACMAN_TUNNEL_DEPTH
+    const rightEnd = WORLD.width - 24 - r.w + PACMAN_TUNNEL_DEPTH
     let destX = null
-    if (stepX < 0 && r.x <= minX) destX = maxX - 2
-    else if (stepX > 0 && r.x >= maxX) destX = minX + 2
-    if (destX === null || this._hitsWall({ ...r, x: destX })) return
+    if (stepX < 0 && r.x <= leftEnd + 1) destX = rightEnd - 6
+    else if (stepX > 0 && r.x >= rightEnd - 1) destX = leftEnd + 6
+    if (destX === null) return
     r.x = destX
     this.pacmanLockout = PACMAN_WRAP_LOCKOUT_SECONDS
     this.onPacmanSfx('whoosh')
@@ -2960,15 +2978,56 @@ export class GameEngine {
   }
 
   _moveWithCollision(entity, dx, dy) {
+    const tunnelY = entity === this.runner ? this._tunnelCenterFor(entity) : null
     const tryX = { ...entity, x: entity.x + dx }
-    if (!this._hitsWall(tryX)) entity.x = clamp(tryX.x, 24, WORLD.width - 24 - entity.w)
+    if (!this._hitsWall(tryX)) {
+      // An active tunnel alcove lets a band-aligned runner push past the wall line.
+      const reach = tunnelY !== null ? PACMAN_TUNNEL_DEPTH : 0
+      entity.x = clamp(tryX.x, 24 - reach, WORLD.width - 24 - entity.w + reach)
+    }
 
     const tryY = { ...entity, y: entity.y + dy }
-    if (!this._hitsWall(tryY)) entity.y = clamp(tryY.y, 24, WORLD.height - 24 - entity.h)
+    if (!this._hitsWall(tryY)) {
+      entity.y = clamp(tryY.y, 24, WORLD.height - 24 - entity.h)
+      // Inside an alcove the walls are the alcove's own top and bottom.
+      if (entity === this.runner && (entity.x < 24 || entity.x + entity.w > WORLD.width - 24)) {
+        const cy = this._tunnelCenterFor({ ...entity, x: 24 }, true)
+        if (cy !== null) {
+          entity.y = clamp(entity.y, cy - PACMAN_TUNNEL_HALF, cy + PACMAN_TUNNEL_HALF - entity.h)
+        }
+      }
+    }
   }
 
   _hitsWall(entity) {
-    return this.map.walls.some((wall) => rectsIntersect(entity, wall))
+    return (this._tunnelWalls || this.map.walls).some((wall) => rectsIntersect(entity, wall))
+  }
+
+  // Active tunnels physically change the map: the 24px side border walls get a
+  // gap at each tunnel row so the alcove is open to walk into.
+  _buildTunnelWalls() {
+    const rows = this.level.tunnelRows || []
+    const gaps = rows
+      .map((row) => {
+        const cy = row.y + row.h / 2
+        return [cy - PACMAN_TUNNEL_HALF, cy + PACMAN_TUNNEL_HALF]
+      })
+      .sort((a, b) => a[0] - b[0])
+    const out = []
+    this.map.walls.forEach((wall) => {
+      const isSide = wall.w === 24 && wall.y === 0 && wall.h === WORLD.height && (wall.x === 0 || wall.x === WORLD.width - 24)
+      if (!isSide) {
+        out.push(wall)
+        return
+      }
+      let y = 0
+      gaps.forEach(([top, bottom]) => {
+        if (top > y) out.push({ x: wall.x, y, w: wall.w, h: top - y })
+        y = bottom
+      })
+      if (y < wall.h) out.push({ x: wall.x, y, w: wall.w, h: wall.h - y })
+    })
+    return out
   }
 
   _moveIgnoringWalls(entity, dx, dy) {
@@ -3481,36 +3540,50 @@ export class GameEngine {
       ctx.restore()
     }
     if (this.pacmanActive && this.level.tunnelRows) {
-      ctx.save()
-      const pulse = 0.5 + 0.3 * Math.sin(this.sessionSeconds * 6)
       const imgs = GameEngine._pacmanImgs
-      const ready = (i) => i && i.complete && i.naturalWidth > 0
+      const ready = (img) => img && img.complete && img.naturalWidth > 0
+      const pulse = 0.5 + 0.3 * Math.sin(this.sessionSeconds * 6)
+      const D = PACMAN_TUNNEL_DEPTH
+      const H = PACMAN_TUNNEL_HALF
       this.level.tunnelRows.forEach((row) => {
-        // Dashed lane across the whole map so the route to the tunnel is visible.
-        ctx.strokeStyle = `rgba(255, 230, 0, ${0.25 + (pulse - 0.5) * 0.4})`
-        ctx.lineWidth = 4
-        ctx.setLineDash([18, 14])
-        ctx.beginPath()
-        ctx.moveTo(24, row.y + row.h / 2)
-        ctx.lineTo(WORLD.width - 24, row.y + row.h / 2)
-        ctx.stroke()
-        ctx.setLineDash([])
-        if (ready(imgs?.left) && ready(imgs?.right)) {
-          ctx.globalAlpha = 0.75 + (pulse - 0.5) * 0.5
-          ctx.drawImage(imgs.left, 0, row.y - 20, 36, row.h + 40)
-          ctx.drawImage(imgs.right, WORLD.width - 36, row.y - 20, 36, row.h + 40)
-          ctx.globalAlpha = 1
-          return
-        }
-        ctx.fillStyle = `rgba(80, 160, 255, ${pulse})`
-        ctx.fillRect(0, row.y, 24, row.h)
-        ctx.fillRect(WORLD.width - 24, row.y, 24, row.h)
-        ctx.strokeStyle = '#ffe600'
-        ctx.lineWidth = 3
-        ctx.strokeRect(0, row.y, 24, row.h)
-        ctx.strokeRect(WORLD.width - 24, row.y, 24, row.h)
+        const cy = row.y + row.h / 2
+        ;[-1, 1].forEach((side) => {
+          // Alcove rect carved into the wall: x from the wall line outward.
+          const x0 = side < 0 ? 24 - D : WORLD.width - 24
+          ctx.save()
+          // Wipe the wall line so the opening reads as a hole in the map.
+          ctx.fillStyle = '#05060f'
+          ctx.fillRect(x0, cy - H, D, H * 2)
+          // Lane floor guide lines running into the dark.
+          ctx.fillStyle = `rgba(80, 160, 255, ${0.25 + pulse * 0.3})`
+          ctx.fillRect(x0, cy - H, D, 4)
+          ctx.fillRect(x0, cy + H - 4, D, 4)
+          // Chevrons pointing into the tunnel.
+          ctx.fillStyle = `rgba(255, 230, 0, ${0.5 + pulse * 0.4})`
+          for (let i = 0; i < 3; i++) {
+            const cx = side < 0 ? 24 - 10 - i * 14 : WORLD.width - 24 + 10 + i * 14
+            ctx.beginPath()
+            ctx.moveTo(cx, cy)
+            ctx.lineTo(cx - side * 9, cy - 12)
+            ctx.lineTo(cx - side * 9, cy + 12)
+            ctx.closePath()
+            ctx.fill()
+          }
+          // Far-end portal glow (stub art when decoded).
+          const portal = side < 0 ? imgs?.left : imgs?.right
+          const px = side < 0 ? x0 : x0 + D - 14
+          if (ready(portal)) ctx.drawImage(portal, px, cy - H, 14, H * 2)
+          else {
+            ctx.fillStyle = 'rgba(120, 200, 255, 0.8)'
+            ctx.fillRect(px, cy - H, 14, H * 2)
+          }
+          // Yellow frame around the opening.
+          ctx.strokeStyle = '#ffe600'
+          ctx.lineWidth = 4
+          ctx.strokeRect(x0, cy - H, D, H * 2)
+          ctx.restore()
+        })
       })
-      ctx.restore()
     }
   }
 

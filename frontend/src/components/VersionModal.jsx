@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.87',
+    title: 'Real Tunnels',
+    description: 'Grabbing the chomper egg now physically changes the map: openings are cut into the left and right walls. Walk into one and you pop out of the matching opening on the other side. Tunnels still only exist on levels where you collected the egg.',
+  },
+  {
     version: 'v0.4.86',
     title: 'Find the Tunnel',
     description: 'After grabbing the chomper egg you can now see where the tunnel is: a yellow dashed lane runs across the map, bigger openings sit at both edges, and a TUNNEL arrow points to the nearest one when it is off screen. The tunnel lane is also more forgiving, so you no longer have to line up exactly to wrap.',

@@ -2548,3 +2548,12 @@ Mode B. Ken playtest: egg collected but no tunnel seen.
 - Cause: the camera zooms 1.35x, so only about 267 of 900 world px are visible and the edge openings were never on screen unless the runner stood at the wall. The 20px lane was also too narrow for the 40px runner to center in.
 - `GameEngine.js`: dashed yellow lane across the map once active, openings widened to 36px, `_drawTunnelGuide()` screen-space TUNNEL arrow when the nearest opening is off screen, `_isOnTunnelRow` tolerance +-20px (destination wall check unchanged).
 - Verified with screenshots; full suite 90 passed, 1 skipped.
+
+## v0.4.87 — Pac-Man tunnels physically change the map (Claude Sonnet 5.5, 2026-10-22)
+
+Mode B. Ken playtest with a mockup: activation should cut a real opening in the left and right walls; enter one, exit the other.
+
+- `GameEngine.js`: `_buildTunnelWalls()` splits the 24px side border walls around each tunnel row (72px gap) and is used by `_hitsWall` via `_tunnelWalls` while the egg is active (cleared on level reset). The runner may walk up to 56px past the wall line into a drawn alcove when lined up with the gap, is held inside the alcove band, and `_applyPacmanWrap` teleports at the alcove end to the opposite alcove (0.3s lockout). Chaser movement unchanged.
+- Alcove drawn as a dark recess with chevrons, portal glow and yellow frame; TUNNEL guide arrow kept; dashed lane removed.
+- Tests: wall-free check now covers the full 60x72 mouth; new alcove walk/teleport test. Full suite 90 passed, 1 skipped.
+- Future idea from Ken: randomly placed portal tunnels that teleport the player to another part of the map.

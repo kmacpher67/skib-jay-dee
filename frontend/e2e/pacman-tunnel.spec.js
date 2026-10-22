@@ -63,10 +63,9 @@ test.describe('Pac-Man tunnel egg (issue #8, slice 1)', () => {
         e.levelIndex = l
         e._syncLevelState({ resetPositions: true, notify: false })
         for (const row of e.level.tunnelRows) {
-          for (const cy of [row.y, row.y + row.h]) {
-            for (const x of [24, 900 - 24 - 40]) {
-              if (e._hitsWall({ x, y: cy - 20, w: 40, h: 40 })) fails.push({ l, cy, x })
-            }
+          const cy = row.y + row.h / 2
+          for (const x of [24, 900 - 24 - 60]) {
+            if (e._hitsWall({ x, y: cy - 36, w: 60, h: 72 })) fails.push({ l, cy, x })
           }
         }
       }
@@ -119,37 +118,48 @@ test.describe('Pac-Man tunnel egg (issue #8, slice 1)', () => {
     expect(r.boosted).toBeCloseTo(0.04 * 4 + 0.25)
   })
 
-  test('wrap: left<->right on tunnel row only, with lockout', async ({ page }) => {
+  test('alcove: runner walks into the wall opening and teleports out the other side', async ({ page }) => {
     await startRunnerGame(page)
     const r = await page.evaluate(() => {
       const e = window.__skibEngine
       e.pacmanEgg = null
+      e.pacmanActive = true
+      e._tunnelWalls = e._buildTunnelWalls()
+      e.pacmanLockout = 0
       const row = e.level.tunnelRows[0]
       const cy = row.y + row.h / 2
-      const run = (x, y, step, active) => {
-        e.pacmanActive = active
-        e.pacmanLockout = 0
-        e.runner.x = x
-        e.runner.y = y - e.runner.h / 2
-        e.runner.x = step < 0 ? 24 : 900 - 24 - e.runner.w
-        e._applyPacmanWrap(step)
-        return { x: e.runner.x, lock: e.pacmanLockout, wall: e._hitsWall(e.runner) }
-      }
-      const left = run(0, cy, -5, true)
-      const afterLeftAgain = (() => { e._applyPacmanWrap(5); return e.runner.x })()
-      const right = run(0, cy, 5, true)
-      const inactive = run(0, cy, -5, false)
-      const offRow = run(0, cy + 300, -5, true)
-      return { left, afterLeftAgain, right, inactive, offRow, w: e.runner.w }
+      const w = e.runner.w
+      e.runner.y = cy - w / 2
+      e.runner.x = 40
+      // Walk left into the alcove past the wall line.
+      for (let i = 0; i < 60; i++) { e._moveWithCollision(e.runner, -3, 0); e._applyPacmanWrap(-3) }
+      const afterWalk = { x: e.runner.x, lock: e.pacmanLockout }
+      const intoAlcove = (() => {
+        e.pacmanLockout = 0; e.runner.x = 24; e.runner.y = cy - w / 2
+        e._moveWithCollision(e.runner, -20, 0)
+        return e.runner.x
+      })()
+      // Not lined up: blocked at the wall line.
+      e.pacmanLockout = 0; e.runner.x = 30; e.runner.y = cy + 200
+      e._moveWithCollision(e.runner, -50, 0)
+      const offBand = e.runner.x
+      // Inactive: blocked even when lined up.
+      e.pacmanActive = false; e._tunnelWalls = null; e.runner.x = 30; e.runner.y = cy - w / 2
+      e._moveWithCollision(e.runner, -50, 0)
+      const inactive = e.runner.x
+      // Right side back to left.
+      e.pacmanActive = true; e._tunnelWalls = e._buildTunnelWalls(); e.pacmanLockout = 0
+      e.runner.y = cy - w / 2; e.runner.x = 900 - 24 - w - 10
+      for (let i = 0; i < 60; i++) { e._moveWithCollision(e.runner, 3, 0); e._applyPacmanWrap(3) }
+      return { afterWalk, intoAlcove, offBand, inactive, backX: e.runner.x, w, wall: e._hitsWall(e.runner) }
     })
-    expect(r.left.x).toBeGreaterThan(800)
-    expect(r.left.wall).toBe(false)
-    expect(r.left.lock).toBeGreaterThan(0)
-    expect(r.afterLeftAgain).toBe(r.left.x)
-    expect(r.right.x).toBeLessThan(40)
-    expect(r.right.wall).toBe(false)
-    expect(r.inactive.x).toBe(24)
-    expect(r.offRow.x).toBe(24)
+    expect(r.intoAlcove).toBeLessThan(24)
+    expect(r.afterWalk.lock).toBeGreaterThan(0)
+    expect(r.afterWalk.x).toBeGreaterThan(700)
+    expect(r.offBand).toBeGreaterThanOrEqual(24)
+    expect(r.inactive).toBeGreaterThanOrEqual(24)
+    expect(r.backX).toBeLessThan(150)
+    expect(r.wall).toBe(false)
   })
 
   test('new game resets pacmanDiscovered', async ({ page }) => {
