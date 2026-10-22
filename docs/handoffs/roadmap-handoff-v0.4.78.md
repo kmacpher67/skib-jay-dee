@@ -22,6 +22,8 @@
 - Handgun ammo table, chaser HP tiers, persistent body count, `Splat` death gag.
 - Empty-shell fire currently does nothing silently (no click line) — minor polish.
 
+Brief for the effects creator: `docs/splat-effects-brief-for-alex.md`.
+
 ## Copy-Paste: Next Natural Steps
 
 ```text

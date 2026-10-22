@@ -777,3 +777,4 @@ a new shipped version or docs-only planning note.
 - One 25-sheeb reward per blast; temporary `SPLAT!` text + smoke fallback only.
 - Issue #5 pickup wall-spawn fix shipped in the same version (see v0.4.78-pending entries above).
 - Added `frontend/e2e/boom-stick-c2.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.78.
+2026-10-22 | docs (Claude Sonnet 5.5) | Added `docs/splat-effects-brief-for-alex.md`: what remains to finish the Boom Stick splat (Slices D/E/F), art/SFX asset list with suggested filenames and timings. Docs only, no code.
