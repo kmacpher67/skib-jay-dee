@@ -813,3 +813,7 @@ a new shipped version or docs-only planning note.
 ## v0.4.85 — 2026-10-22 (Claude Sonnet 5.5)
 - Issue #8: stub art (egg, tunnel left/right PNG) and audio (chime, whoosh MP3) added and wired; Alex replaces by filename.
 - Version Log modal updated; `GAME_ITERATION` -> v0.4.85. Full suite 90 passed, 1 skipped.
+
+## v0.4.86 — 2026-10-22 (Claude Sonnet 5.5)
+- Issue #8 fix: tunnel visibility (dashed lane, larger openings, TUNNEL guide arrow) and a more forgiving tunnel row band after Ken's playtest.
+- Version Log modal updated; `GAME_ITERATION` -> v0.4.86. Full suite 90 passed, 1 skipped.

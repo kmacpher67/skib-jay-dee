@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.86',
+    title: 'Find the Tunnel',
+    description: 'After grabbing the chomper egg you can now see where the tunnel is: a yellow dashed lane runs across the map, bigger openings sit at both edges, and a TUNNEL arrow points to the nearest one when it is off screen. The tunnel lane is also more forgiving, so you no longer have to line up exactly to wrap.',
+  },
+  {
     version: 'v0.4.85',
     title: 'Waka Waka Flush Art + Sound Stubs',
     description: 'The yellow chomper egg and side tunnels now have simple stand-in artwork, and the pickup chime and tunnel whoosh are real (if basic) sound files instead of borrowed clips. All of it is placeholder until Alex\'s final art and audio drop in.',

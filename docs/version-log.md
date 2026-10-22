@@ -2530,3 +2530,11 @@ Mode B. Replaces the borrowed placeholder clips and pure canvas shapes with stub
 - Audio: `frontend/src/assets/audio/pacman-chime.mp3` (square-wave waka arpeggio) and `pacman-tunnel-whoosh.mp3` (noise plus sweep), synthesized with numpy and encoded with ffmpeg. `App.handlePacmanSfx` now plays these.
 - Version Log modal updated. Full suite 90 passed, 1 skipped.
 - To replace: overwrite those five files, same names, same formats.
+
+## v0.4.86 — Pac-Man tunnel visibility fix (Claude Sonnet 5.5, 2026-10-22)
+
+Mode B. Ken playtest: egg collected but no tunnel seen.
+
+- Cause: the camera zooms 1.35x, so only about 267 of 900 world px are visible and the edge openings were never on screen unless the runner stood at the wall. The 20px lane was also too narrow for the 40px runner to center in.
+- `GameEngine.js`: dashed yellow lane across the map once active, openings widened to 36px, `_drawTunnelGuide()` screen-space TUNNEL arrow when the nearest opening is off screen, `_isOnTunnelRow` tolerance +-20px (destination wall check unchanged).
+- Verified with screenshots; full suite 90 passed, 1 skipped.

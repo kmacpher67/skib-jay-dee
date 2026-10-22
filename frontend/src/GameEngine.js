@@ -1931,7 +1931,8 @@ export class GameEngine {
     const rows = this.level.tunnelRows
     if (!rows) return false
     const cy = entity.y + entity.h / 2
-    return rows.some((row) => cy >= row.y && cy <= row.y + row.h)
+    // Forgiving band: the 40px runner can't realistically center in a 20px lane.
+    return rows.some((row) => cy >= row.y - 20 && cy <= row.y + row.h + 20)
   }
 
   // Runner-only horizontal wrap, called right after the runner's normal move.
@@ -3369,6 +3370,7 @@ export class GameEngine {
 
     this._drawCutaway(ctx)
     this._drawHud(ctx)
+    this._drawTunnelGuide(ctx)
 
     if (this.phase === 'intro') this._drawBanner(ctx, 'RUN LIKE HELL')
     if (this.phase === 'level-up') this._drawBanner(ctx, this.bannerText)
@@ -3484,10 +3486,19 @@ export class GameEngine {
       const imgs = GameEngine._pacmanImgs
       const ready = (i) => i && i.complete && i.naturalWidth > 0
       this.level.tunnelRows.forEach((row) => {
+        // Dashed lane across the whole map so the route to the tunnel is visible.
+        ctx.strokeStyle = `rgba(255, 230, 0, ${0.25 + (pulse - 0.5) * 0.4})`
+        ctx.lineWidth = 4
+        ctx.setLineDash([18, 14])
+        ctx.beginPath()
+        ctx.moveTo(24, row.y + row.h / 2)
+        ctx.lineTo(WORLD.width - 24, row.y + row.h / 2)
+        ctx.stroke()
+        ctx.setLineDash([])
         if (ready(imgs?.left) && ready(imgs?.right)) {
           ctx.globalAlpha = 0.75 + (pulse - 0.5) * 0.5
-          ctx.drawImage(imgs.left, 0, row.y - 20, 24, row.h + 40)
-          ctx.drawImage(imgs.right, WORLD.width - 24, row.y - 20, 24, row.h + 40)
+          ctx.drawImage(imgs.left, 0, row.y - 20, 36, row.h + 40)
+          ctx.drawImage(imgs.right, WORLD.width - 36, row.y - 20, 36, row.h + 40)
           ctx.globalAlpha = 1
           return
         }
@@ -3501,6 +3512,52 @@ export class GameEngine {
       })
       ctx.restore()
     }
+  }
+
+  // Screen-space arrow to the nearest tunnel opening; the 1.35x camera only
+  // shows ~267 of 900 world px, so the edge openings are otherwise off-screen.
+  _drawTunnelGuide(ctx) {
+    if (!this.pacmanActive || !this.level.tunnelRows?.length || this.isChaserMode) return
+    const r = this.runner
+    const rx = r.x + r.w / 2
+    const ry = r.y + r.h / 2
+    let best = null
+    this.level.tunnelRows.forEach((row) => {
+      ;[24, WORLD.width - 24].forEach((tx) => {
+        const ty = row.y + row.h / 2
+        const d = Math.hypot(tx - rx, ty - ry)
+        if (!best || d < best.d) best = { tx, ty, d }
+      })
+    })
+    const zoom = 1.35
+    const sx = VIEW_W / 2 + (best.tx - rx) * zoom
+    const sy = VIEW_H / 2 + (best.ty - ry) * zoom
+    const margin = 26
+    if (sx > margin && sx < VIEW_W - margin && sy > 44 && sy < VIEW_H - margin) return
+    const ang = Math.atan2(best.ty - ry, best.tx - rx)
+    const ax = Math.min(VIEW_W - margin, Math.max(margin, sx))
+    const ay = Math.min(VIEW_H - margin, Math.max(44, sy))
+    ctx.save()
+    ctx.translate(ax, ay)
+    ctx.globalAlpha = 0.7 + 0.3 * Math.sin(this.sessionSeconds * 6)
+    ctx.rotate(ang)
+    ctx.fillStyle = '#ffe600'
+    ctx.strokeStyle = '#000'
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.moveTo(14, 0)
+    ctx.lineTo(-8, -11)
+    ctx.lineTo(-8, 11)
+    ctx.closePath()
+    ctx.fill()
+    ctx.stroke()
+    ctx.rotate(-ang)
+    ctx.fillStyle = '#ffe600'
+    ctx.font = 'bold 10px sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText('TUNNEL', 0, ay > VIEW_H / 2 ? -18 : 18)
+    ctx.restore()
   }
 
   _drawPickups(ctx) {
