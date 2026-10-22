@@ -5,7 +5,7 @@ Use this as the handoff doc for the next agent working in the repo.
 **Created by:** Codex (GPT-5) — 2026-07-26
 **Created on:** 2026-07-26
 **Last updated by:** Codex GPT-5 — 2026-09-20 (Boom Stick C1 completion)
-**Last updated on:** 2026-09-20
+**Last updated on:** 2026-10-22
 
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
@@ -15,6 +15,14 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.80-plan (docs only — 2026-10-22):** GitHub issue #9 RCA is
+  complete. The Level 4 lead chaser spawn `{x: 80, y: 190}` overlaps the
+  Ramen Aisle shelf, and extra/respawn paths also lack entity-sized spawn
+  validation. The code-ready fix is in
+  `docs/handoffs/roadmap-handoff-v0.4.80-plan.md`, with the detailed RCA in
+  `docs/rca-issue-9-chaser-spawns-in-wall.md`. No code, build, version bump,
+  deploy, or issue closure happened in this planning session. **Next code
+  slice: issue #9 before Boom Stick Slice E.**
 - **v0.4.79 (real code — 2026-10-22):** Boom Stick Slice D: splotch decals
   (cap 12, goop on Noob-noob) and one combined portrait-shatter cutaway per
   blast (seeded 25-shard polygon set clipped from the real portrait, 1.75s

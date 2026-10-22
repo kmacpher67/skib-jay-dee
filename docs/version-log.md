@@ -6,6 +6,16 @@ session write-up in `docs/handoffs/roadmap-handoff-vX.Y.Z.md` and a
 one-line-per-change entry in `docs/handoffs/ledger.md` — this file stays
 focused on *why*, those two are the *what* and *when*.
 
+## [docs, 2026-10-22] - GitHub issue #9 chaser wall-spawn RCA
+- Confirmed the Level 4 lead chaser coordinate `{x: 80, y: 190}` overlaps
+  the Ramen Aisle shelf when the `44×44` chaser body is placed there.
+- Found the same unvalidated placement pattern in extra-chaser corners and
+  delayed respawns, so the fix is scoped as one entity-sized resolver used
+  by all three paths.
+- Created `roadmap-handoff-v0.4.80-plan.md` and
+  `rca-issue-9-chaser-spawns-in-wall.md`. No code, build, version bump,
+  deploy, or issue closure in this Mode A session.
+
 ## [v0.4.77, 2026-09-20] - Boom Stick Implementation (Slice C1)
 - Implemented Slice C1 (Boom Stick spawn events, normalized ammo/reserve management, pickup logic).
 - Follow-up patch completed the event roll contract: level-start rolls, extra-chaser rolls, correct `noob`/`casual`/`4chan-st` difficulty table, Lucky assist trimming under the 90% cap, duplicate event-pickup refresh, separate loaded Boom Stick versus loose-shell pickups, five-shell reserve cap, and 0.85s reload state.

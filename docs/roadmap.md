@@ -41,6 +41,7 @@ the flow end-to-end:
   [`roadmap-handoff-v0.4.76.md`](handoffs/roadmap-handoff-v0.4.76.md).
 - [ ] **Gun rebalance (ammo table, longer stun/knockback, chaser HP tiers, body count, Splat) + escalating "Boom Stick" shotgun + per-difficulty kill dialog/audio.** [#3](https://github.com/kmacpher67/skib-jay-dee/issues/3) — fully refined 2026-09-20 in [`roadmap-handoff-v0.4.77-plan.md`](handoffs/roadmap-handoff-v0.4.77-plan.md). **C1 shipped in v0.4.77**: Boom Stick event rolls occur at level start and every extra-chaser spawn, Level 1 is 6% for all modes, each level adds 3/6/9 points for Noob-noob/Casual/4chan-st, the combined chance is capped at 90%, Lucky assist is trimmed under that cap, and success spawns a loaded Boom Stick if unowned or one loose shell if owned (one-shell chamber, five-shell reserve, 0.85s reload state). **C2 shipped in v0.4.78** (cone blast, 1-in-3 explosions, stun/knockback, 12s respawn, body count). **D shipped in v0.4.79** (splotch + shatter cutaway, placeholder art). **Still open:** E subtitles/browser-safe SFX; F final voice assets; and the broader handgun/HP/persistent-body-count work.
 - [ ] **Taco fart attack rework (funnier, omni-directional, difficulty-scaled, new trophy).** [#4](https://github.com/kmacpher67/skib-jay-dee/issues/4) — blocked on confirming current implementation first.
+- [ ] **BUG — chaser spawns in wall and cannot chase.** [#9](https://github.com/kmacpher67/skib-jay-dee/issues/9) — RCA complete 2026-10-22: the Level 4 lead spawn `{x:80,y:190}` overlaps the Ramen Aisle shelf, and extra/respawn paths also skip full-body wall validation. Code-ready fix is [`roadmap-handoff-v0.4.80-plan.md`](handoffs/roadmap-handoff-v0.4.80-plan.md), with details in [`rca-issue-9-chaser-spawns-in-wall.md`](rca-issue-9-chaser-spawns-in-wall.md). Prioritize before Boom Stick Slice E.
 
 **Decision (2026-08-07):** going with the hybrid from the experiment
 doc — roadmap.md stays skib-sdlc source of truth, GitHub Issues used
@@ -102,26 +103,27 @@ Verified with `npm run build` and the full Playwright suite (29 active,
 > `gameContent.js`, `cookies.js`), in `v0.4.71` and `v0.4.72`. See the
 > correction note at the top of `roadmap-handoff-v0.4.76-plan.md`.
 
-`GAME_ITERATION` is **v0.4.78** (`frontend/src/version.js`). Since the
+`GAME_ITERATION` is **v0.4.79** (`frontend/src/version.js`). Since the
 last completeness audit (v0.4.71), the following have all landed for
 real: v0.4.71 (Micro-Skib + runner pose collapse), v0.4.72 (Badge award
 counts), v0.4.73 (Level warp passes), v0.4.74 (Shleeb Shop layout + item
 glossary), v0.4.75 (HUD top bar fix), v0.4.76 (Heavy Plunger rebalance),
-v0.4.77 (Boom Stick C1 spawn/ammo), and v0.4.78 (Boom Stick C2 blast + issue #5 fix).
+v0.4.77 (Boom Stick C1 spawn/ammo), v0.4.78 (Boom Stick C2 blast + issue #5 fix), and v0.4.79 (Boom Stick D splotch/shatter cutaway).
 The `VersionModal.jsx` false-changelog issue (Finding #1) is resolved.
 Updated summary:
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next (ranked)** | 1 | Boom Stick Slice E (subtitles + SFX wiring + mute), copy-paste in `roadmap-handoff-v0.4.79.md`. D shipped in v0.4.79. Pickup-consumption tracking + Play Recap and Debug State Dump already shipped (v0.4.67, v0.4.64). |
+| **Unblocked — code next (ranked)** | 2 | GitHub issue #9 chaser wall-spawn fix, then Boom Stick Slice E (subtitles + SFX wiring + mute). See `roadmap-handoff-v0.4.80-plan.md` and `roadmap-handoff-v0.4.79.md`. Pickup-consumption tracking + Play Recap and Debug State Dump already shipped (v0.4.67, v0.4.64). |
 | **Parallel quality debt** | 1 | Role Reversal Beta full recovery (`v0.4.61-plan`; outcome UX blocked on Ken); runner AI item-use slice (`v0.4.69-plan`) still open |
 | **Design-only / TBD** | 3 | Debt Lock math (`difficulty-mechanics-plan.md`), Level 7+ Mosaic (blocked on Ken's trigger-mechanism answer), Interactive content pack |
 | **Refinement-gated** | 1 | Audio overlay enhancement (issue #1.1) — blocked on asset list + mix/trigger decisions, see `audio-recording-brief-for-alex.md` |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
-| **Open GitHub issues** | 2 (+#5 fix landed unshipped, see `rca-issue-5-pickups-in-walls.md`) | Gun rebalance + Boom Stick shotgun ([#3](https://github.com/kmacpher67/skib-jay-dee/issues/3): C1 spawn/ammo and C2 blast shipped; VFX/text, final voice assets, and broader handgun/HP work remain separate), Taco fart attack rework ([#4](https://github.com/kmacpher67/skib-jay-dee/issues/4), blocked on confirming current implementation) |
+| **Open GitHub issues** | 3 (+#5 fix landed) | Chaser wall-spawn bug ([#9](https://github.com/kmacpher67/skib-jay-dee/issues/9), RCA complete; code next), Gun rebalance + Boom Stick shotgun ([#3](https://github.com/kmacpher67/skib-jay-dee/issues/3): C1/D shipped; Slice E/F and broader handgun/HP work remain separate), Taco fart attack rework ([#4](https://github.com/kmacpher67/skib-jay-dee/issues/4), blocked on confirming current implementation) |
 
-Next unblocked pick is **Boom Stick Slice E** (issue #3 stays open;
+Next unblocked pick is **GitHub issue #9 chaser wall-spawn fix**, followed by
+**Boom Stick Slice E** (issue #3 stays open;
 Boom Stick is not done until E subtitles/SFX and
 F final voice assets land). See `roadmap-handoff-v0.4.79.md`. The
 Version Log modal shows a COMING NEXT entry for this.
