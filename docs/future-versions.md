@@ -176,3 +176,12 @@ tradeoff items, not just bigger numbers.
 - Add at least one focused Playwright check for the new dialog, badge,
   or menu surface when the code lands; the current suite does not cover
   these content surfaces yet.
+
+## Chase-cam / raycast view mode (Mode A, 2026-10-22)
+
+Parking-lot entry for a Duke-3D-style pseudo-3D view where the chaser is
+behind Noob-Noob (Jayden). Opt-in second renderer over the existing grid
+simulation; memory is not the risk, mobile frame rate, portrait controls
+and parody/IP content are. Needs Ken's answers to decisions D1-D7 before
+a code-ready handoff. Full evaluation, slices S0-S6 and a draft GitHub
+issue body: [`chase-cam-raycast-view-plan.md`](chase-cam-raycast-view-plan.md).
