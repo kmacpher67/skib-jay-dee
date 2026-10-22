@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.81',
+    title: 'Chaser Wall-Spawn Fix',
+    description: 'Fixed a chaser spawning inside a wall and getting stuck (Level 4 Ramen Aisle). Lead, extra and respawning chasers now all check that their whole body fits before appearing and slide to the nearest open spot if not (issue #9).',
+  },
+  {
     version: 'v0.4.80',
     title: 'Boom Stick Sound + Captions',
     description: 'The Boom Stick now has sound: blast on fire, glass shatter during the cutaway, a pump during reload, and a sting when you grab it or a loose shell (all respect mute). Kill captions are now picked per difficulty (Noob-noob, Casual, 4chan-st pools), and an empty Boom Stick says click instead of failing silently. Sounds are placeholders until final audio arrives.',

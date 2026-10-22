@@ -791,3 +791,7 @@ a new shipped version or docs-only planning note.
 - Boom Stick Slice E: blast / shatter / reload / pickup SFX wired through `onBoomStickSfx` (mute respected); splat clip left to the next slice.
 - Kill captions routed by difficulty (Noob-noob / Casual / 4chan-st pools); empty-chamber click line.
 - Added `frontend/e2e/boom-stick-e-sfx.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.80.
+
+## v0.4.81 — 2026-10-22 (Claude Sonnet 5.5)
+- Issue #9: entity-sized `_findClearBodySpawn` routes lead, post-capture reset, extra and respawned chasers; resolved point stored in `chaser.spawn`.
+- Added `frontend/e2e/issue-9-chaser-spawn.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.81.

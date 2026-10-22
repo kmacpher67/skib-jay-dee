@@ -2481,3 +2481,13 @@ Mode B. Ken asked to clear all open v0.4.77-.79 handoff items, then ship the v0.
 - Empty Boom Stick now shows a click/reloading line (spends nothing) instead of silence.
 - Version numbering: the issue #9 fix and splat wiring plans said "use the next patch at ship time", so they ship as v0.4.81 and v0.4.82.
 - Not done (needs Ken, or separate design): Slice F voice (`bs-*.mp3`, recordings); real art/SFX from Alex; subtitle display for voice lines (no voice exists yet); on-device 9:16 check of the cutaway; handgun ammo table, chaser HP tiers, persistent body count, `Splat` death gag (issue #3 stays open).
+
+## v0.4.81 — Chaser wall-spawn fix, issue #9 (Claude Sonnet 5.5, 2026-10-22)
+
+Mode B. Implements `roadmap-handoff-v0.4.80-plan.md` (shipped as v0.4.81 because Slice E took v0.4.80).
+
+- Added `_findClearBodySpawn(px, py, w, h)` in `GameEngine.js`: keeps the preferred point if the full body rect is wall-free, else a deterministic widening ring search (10px steps, clamped to the 24px movement bounds).
+- Routed the lead chaser (`_syncLevelState`), the post-capture retry reset, extra chasers (`_maybeSpawnExtraChaser`, after final size is known) and delayed respawns (`_updateChaserRespawns`) through it. The resolved point is stored in `chaser.spawn`.
+- Runner spawns, map geometry, pathfinding and Level 5+ wall-phasing untouched.
+- Added `frontend/e2e/issue-9-chaser-spawn.spec.js`; full suite 80 passed, 1 skipped.
+- Not done: no general pathfinding or stuck-chaser recovery for chasers that get wedged mid-chase.

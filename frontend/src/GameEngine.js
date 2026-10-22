@@ -1160,7 +1160,13 @@ export class GameEngine {
     this.chaser.chaserType = this.levelIndex === 5 ? 'skib-daddy' : null
     this.chaser.plungerCooldown = 2
     this.chasers = [this.chaser]
-    this.chaser.spawn = this.level.chaserSpawn
+    // Issue #9: validate the full body rect so no lead chaser spawns inside a wall.
+    this.chaser.spawn = this._findClearBodySpawn(
+      this.level.chaserSpawn.x,
+      this.level.chaserSpawn.y,
+      this.chaser.w,
+      this.chaser.h,
+    )
     this.chaserRespawnQueue = []
     this.chaserProjectiles = []
     this.gawdParticleActive = false
@@ -1191,8 +1197,8 @@ export class GameEngine {
     if (resetPositions) {
       this.runner.x = this.level.runnerSpawn.x
       this.runner.y = this.level.runnerSpawn.y
-      this.chaser.x = this.level.chaserSpawn.x
-      this.chaser.y = this.level.chaserSpawn.y
+      this.chaser.x = this.chaser.spawn.x
+      this.chaser.y = this.chaser.spawn.y
       this.stamina = this.maxStamina
     }
 
@@ -1829,7 +1835,7 @@ export class GameEngine {
       { x: 40, y: WORLD.height - 84 },
       { x: WORLD.width - 84, y: WORLD.height - 84 },
     ]
-    const spawn = corners[Math.floor(Math.random() * corners.length)]
+    const cornerSpawn = corners[Math.floor(Math.random() * corners.length)]
     let extraFace = this.chaser.face
     let extraFaceId = null
     let extraChaserType = null
@@ -1864,6 +1870,7 @@ export class GameEngine {
       }
     }
 
+    const spawn = this._findClearBodySpawn(cornerSpawn.x, cornerSpawn.y, extraW, extraH)
     this.chasers.push({
       x: spawn.x,
       y: spawn.y,
@@ -2319,6 +2326,28 @@ export class GameEngine {
       }
     }
     return this._findRandomWalkableSpawn()
+  }
+
+  // Issue #9: entity-sized spawn resolver for chasers. Keeps the preferred
+  // point when the whole w x h body is wall-free; otherwise a deterministic
+  // widening ring search (nearest first), clamped to the movement bounds.
+  _findClearBodySpawn(px, py, w, h) {
+    const minX = 24
+    const minY = 24
+    const maxX = WORLD.width - 24 - w
+    const maxY = WORLD.height - 24 - h
+    const clear = (x, y) => !this._hitsWall({ x, y, w, h })
+    if (clear(px, py)) return { x: px, y: py }
+    for (let r = 10; r <= 600; r += 10) {
+      const steps = Math.max(16, Math.round(r / 5))
+      for (let a = 0; a < steps; a++) {
+        const ang = (a / steps) * Math.PI * 2
+        const x = clamp(px + Math.cos(ang) * r, minX, maxX)
+        const y = clamp(py + Math.sin(ang) * r, minY, maxY)
+        if (clear(x, y)) return { x, y }
+      }
+    }
+    return { x: px, y: py }
   }
 
   _findRandomWalkableSpawn() {
@@ -2823,8 +2852,11 @@ export class GameEngine {
       if (entry.timer > 0) return true
 
       const chaser = entry.chaser
-      chaser.x = chaser.spawn?.x ?? chaser.x
-      chaser.y = chaser.spawn?.y ?? chaser.y
+      if (chaser.spawn) {
+        chaser.spawn = this._findClearBodySpawn(chaser.spawn.x, chaser.spawn.y, chaser.w, chaser.h)
+        chaser.x = chaser.spawn.x
+        chaser.y = chaser.spawn.y
+      }
       chaser.stunnedUntil = 0
       chaser.joinRamp = CHASER_JOIN_RAMP_START
       this.chasers.push(chaser)
@@ -2972,8 +3004,8 @@ export class GameEngine {
     if (this.phaseTimer <= 0) {
       this.runner.x = this.level.runnerSpawn.x
       this.runner.y = this.level.runnerSpawn.y
-      this.chaser.x = this.level.chaserSpawn.x
-      this.chaser.y = this.level.chaserSpawn.y
+      this.chaser.x = this.chaser.spawn.x
+      this.chaser.y = this.chaser.spawn.y
       this.chaser.stunnedUntil = 0
       this.chasers = [this.chaser]
       this.chaserRespawnQueue = []

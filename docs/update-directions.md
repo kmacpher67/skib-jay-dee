@@ -15,6 +15,16 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.81 (real code — 2026-10-22):** Issue #9 chaser wall-spawn fix via
+  `_findClearBodySpawn` (lead, post-capture reset, extra, respawn). See
+  `roadmap-handoff-v0.4.81.md`. Next: splat sound wiring
+  (`roadmap-handoff-v0.4.81-plan.md`, ships as v0.4.82).
+- **v0.4.80 (real code — 2026-10-22):** Boom Stick Slice E: blast / shatter /
+  reload / pickup SFX via `onBoomStickSfx` (mute respected), difficulty
+  caption pools, empty-chamber click line. Splat clip NOT wired yet. See
+  `roadmap-handoff-v0.4.80.md`. Remaining Boom Stick: Slice F voice (needs
+  Ken's recordings), real art from Alex, handgun/HP/body-count work.
+
 - **v0.4.80-plan (docs only — 2026-10-22):** GitHub issue #9 RCA is
   complete. The Level 4 lead chaser spawn `{x: 80, y: 190}` overlaps the
   Ramen Aisle shelf, and extra/respawn paths also lack entity-sized spawn
