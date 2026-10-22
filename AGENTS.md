@@ -20,8 +20,7 @@ or launching an automated coding run.
 - Use the handoff docs as the execution contract. If a task is meant for the
   code-monkey lane, the handoff should include the bounded copy-paste block
   and a `code_monkey_backend` / `code_monkey_model` hint.
-- Do not bump `GAME_ITERATION` or deploy unless the user explicitly asks to
-  publish.
+- Bump `GAME_ITERATION` and version page and deploy when completing a handoff, UNLESS the handoff build failed badly to land or complete correctly (partial slice is ok, have the sub-version reflect the partial).  
 - NEVER use the built-in `implementation_plan.md` artifact system for planning. ALWAYS use the `skib-sdlc.md` process and write handoff documents to `docs/handoffs/`.
 
 ## Code Monkey lane
