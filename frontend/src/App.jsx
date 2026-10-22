@@ -17,6 +17,7 @@ import tiredUrl from './assets/audio/runner-tired-run.mp3'
 import shartKnockerStubUrl from './assets/audio/shart-knocker-stub.mp3'
 import boomStickBlastUrl from './assets/audio/boom-stick-blast.mp3'
 import boomStickShatterUrl from './assets/audio/boom-stick-shatter.mp3'
+import boomStickSplatUrl from './assets/audio/boom-stick-splat.mp3'
 import boomStickReloadUrl from './assets/audio/boom-stick-reload.mp3'
 import boomStickPickupUrl from './assets/audio/boom-stick-pickup.mp3'
 import chaseAmbientUrl from './assets/audio/chase-ambient-bopbop.mp3'
@@ -164,6 +165,7 @@ export default function App() {
     reload: [boomStickReloadUrl, 0.45],
     pickup: [boomStickPickupUrl, 0.5],
   }
+  const handleSplat = () => playOneShot(boomStickSplatUrl, 0.6)
   const handleBoomStickSfx = (name) => {
     const entry = BOOM_STICK_SFX[name]
     if (entry) playOneShot(entry[0], entry[1])
@@ -770,6 +772,7 @@ export default function App() {
               onBadgeEarned={handleBadgeEarned}
               onShart={handleShart}
               onBoomStickSfx={handleBoomStickSfx}
+              onSplat={handleSplat}
               onPickupConsumed={handlePickupConsumed}
               onEngineReady={(engine) => {
                 engineRef.current = engine

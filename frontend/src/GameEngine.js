@@ -516,6 +516,7 @@ export class GameEngine {
       onBadgeEarned,
       onShart,
       onBoomStickSfx,
+      onSplat,
       onPickupConsumed,
       initialSheebs,
       initialDeaths = 0,
@@ -556,6 +557,7 @@ export class GameEngine {
     this.onShart = onShart || (() => {})
     // Boom Stick SFX hook: 'blast' | 'shatter' | 'reload' | 'pickup'.
     this.onBoomStickSfx = onBoomStickSfx || (() => {})
+    this.onSplat = onSplat || (() => {})
     this.onPickupConsumed = onPickupConsumed || (() => {})
 
     this.runner = {
@@ -2702,6 +2704,7 @@ export class GameEngine {
     const c = this.cutaway
     if (!c || c.stamped) return
     c.stamped = true
+    this.onSplat()
     for (const v of c.allVictims) this._stampSplotch(v.x, v.y)
   }
 

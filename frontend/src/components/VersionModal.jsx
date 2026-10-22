@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.82',
+    title: 'Boom Stick Splat Sound',
+    description: 'Ken\'s splat sound now plays when the splotches land at the end of a Boom Stick cutaway (once per blast, respects mute).',
+  },
+  {
     version: 'v0.4.81',
     title: 'Chaser Wall-Spawn Fix',
     description: 'Fixed a chaser spawning inside a wall and getting stuck (Level 4 Ramen Aisle). Lead, extra and respawning chasers now all check that their whole body fits before appearing and slide to the nearest open spot if not (issue #9).',
@@ -291,7 +296,7 @@ const UPCOMING_NOTES = [
   {
     status: 'COMING NEXT',
     title: 'Boom Stick Polish (Issue #3)',
-    description: 'Still to come: the splat sound, final art for the splotches and shards, and final voice lines. The blast, splotches, shatter cutaway, captions and most sound effects are live now with placeholder art and audio.',
+    description: 'Still to come: final art for the splotches and shards, and final voice lines. The blast, splotches, shatter cutaway, captions and most sound effects are live now with placeholder art and audio.',
   },
 ]
 

@@ -795,3 +795,7 @@ a new shipped version or docs-only planning note.
 ## v0.4.81 — 2026-10-22 (Claude Sonnet 5.5)
 - Issue #9: entity-sized `_findClearBodySpawn` routes lead, post-capture reset, extra and respawned chasers; resolved point stored in `chaser.spawn`.
 - Added `frontend/e2e/issue-9-chaser-spawn.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.81.
+
+## v0.4.82 — 2026-10-22 (Claude Sonnet 5.5)
+- Boom Stick splat clip wired via `onSplat`, once per blast (normal and reduced motion); mute respected.
+- Added `frontend/e2e/boom-stick-splat-sfx.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.82.

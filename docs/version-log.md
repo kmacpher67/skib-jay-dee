@@ -2491,3 +2491,13 @@ Mode B. Implements `roadmap-handoff-v0.4.80-plan.md` (shipped as v0.4.81 because
 - Runner spawns, map geometry, pathfinding and Level 5+ wall-phasing untouched.
 - Added `frontend/e2e/issue-9-chaser-spawn.spec.js`; full suite 80 passed, 1 skipped.
 - Not done: no general pathfinding or stuck-chaser recovery for chasers that get wedged mid-chase.
+
+## v0.4.82 — Boom Stick splat sound (Claude Sonnet 5.5, 2026-10-22)
+
+Mode B. Implements `roadmap-handoff-v0.4.81-plan.md` (shipped as v0.4.82 per its own ship-time numbering note).
+
+- `onSplat` engine option (no-op default); called once in `_stampAllSplotches()` after `c.stamped = true`, so one sound per blast, not per victim. Wired in `GameCanvas.jsx` and `App.jsx` (`playOneShot(boomStickSplatUrl, 0.6)`, mute respected).
+- Confirmed `boom-stick-splat-*.mp3` is bundled in `dist/assets`.
+- Added `frontend/e2e/boom-stick-splat-sfx.spec.js` (normal and reduced motion); full suite 82 passed, 1 skipped.
+- Known: the clip is 1.32s vs the brief's 0.5s; a rapid second blast restarts it. Ken can trim the file with no code change.
+- Not done: Slice F voice, real art/SFX from Alex, on-device 9:16 check, handgun/HP/persistent body count/`Splat` death gag.

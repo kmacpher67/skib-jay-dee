@@ -1,1 +1,1 @@
-export const GAME_ITERATION = 'v0.4.81'
+export const GAME_ITERATION = 'v0.4.82'

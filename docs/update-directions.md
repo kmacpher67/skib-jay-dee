@@ -15,6 +15,10 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.82 (real code — 2026-10-22):** Splat clip wired via `onSplat`; Boom
+  Stick Slice E complete. See `roadmap-handoff-v0.4.82.md`. Remaining: Slice F
+  voice (Ken), Alex's real assets, handgun/HP/body-count work.
+
 - **v0.4.81 (real code — 2026-10-22):** Issue #9 chaser wall-spawn fix via
   `_findClearBodySpawn` (lead, post-capture reset, extra, respawn). See
   `roadmap-handoff-v0.4.81.md`. Next: splat sound wiring
