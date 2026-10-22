@@ -7,6 +7,12 @@ Use this as the handoff doc for the next agent working in the repo.
 **Last updated by:** Claude Sonnet 5.5 — 2026-10-22 (v0.4.88 tunnel Level 6 wall fix)
 **Last updated on:** 2026-10-22
 
+- **v0.4.89 (real code — 2026-10-22):** Weapon/ammo fun pass landed. Handgun
+  shots stack to six, handgun and Boom Stick coexist with automatic fallback,
+  gun rolls are higher on all levels, Level 1 is longer, and new chasers can
+  bring a gun plus a random helpful mushroom charge-up. Issue #10 remains
+  open for the countdown, generalized respawn, Fart Blocker, and final tuning.
+
 **Doc provenance note:** when you create or materially edit a `docs/`
 artifact, keep or add a small metadata block near the top with `Created
 by`, `Created on`, `Last updated by`, and `Last updated on`. For

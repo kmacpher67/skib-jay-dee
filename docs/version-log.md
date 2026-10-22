@@ -16,6 +16,18 @@ focused on *why*, those two are the *what* and *when*.
 - Created `docs/handoffs/roadmap-handoff-v0.4.87-plan.md`; no code, build,
   version bump, deploy, or issue closure happened in this Mode A session.
 
+## [v0.4.89, 2026-10-22] - More guns, mushrooms, and longer Level 1
+- Handgun pickups now add 1–2 shots up to a six-shot cap instead of replacing
+  the handgun; the handgun and Boom Stick occupy separate inventory slots.
+- The selected weapon remains active until empty, then automatically falls
+  back to the other loaded weapon. Existing Boom Stick reload behavior and
+  Chaser Beta handgun behavior remain compatible.
+- Gun opportunities are higher on every level. Level 1 now requires a higher
+  skreem threshold and 45 seconds before advancing.
+- Extra-chaser arrivals can add a wall-safe gun pickup and a random helpful
+  mushroom charge-up. The visible timer, generalized respawn cooldown, and
+  Fart Blocker remain separate Issue #10 follow-ups.
+
 ## [docs, 2026-10-22] - GitHub issue #9 chaser wall-spawn RCA
 - Confirmed the Level 4 lead chaser coordinate `{x: 80, y: 190}` overlaps
   the Ramen Aisle shelf when the `44×44` chaser body is placed there.

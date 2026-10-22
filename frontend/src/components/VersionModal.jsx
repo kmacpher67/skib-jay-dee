@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.89',
+    title: 'More Guns, More Mushrooms',
+    description: 'Handgun ammo now stacks up to six shots and handgun plus Boom Stick can coexist, with automatic fallback when the selected weapon runs dry. Gun rolls are more generous on every level, Level 1 lasts longer, and new chasers can bring a wall-safe gun and mushroom charge-up into the chase.',
+  },
+  {
     version: 'v0.4.88',
     title: 'Tunnel Fix (Level 6)',
     description: 'Fixed the Pac-Man tunnel not opening in the walls on Level 6, which uses thinner walls than the other levels. Tunnels now open and teleport on all six levels, in both directions.',

@@ -71,3 +71,74 @@ test('gun pickup grants ammo, firing stuns the chaser, and the gun disappears at
   const runnerLine = await page.evaluate(() => window.__skibEngine.runnerLine)
   expect(runnerLine.length).toBeGreaterThan(0)
 })
+
+test('handgun ammo stacks to six and coexists with Boom Stick fallback', async ({ page }) => {
+  await page.goto('./')
+  await page.locator('.play-btn').first().click()
+  await expect(page.locator('canvas')).toBeVisible()
+  await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
+
+  const state = await page.evaluate(() => {
+    const engine = window.__skibEngine
+    engine.runner.weapons.handgun = { kind: 'handgun', ammo: 5, reserve: 0 }
+    engine.runner.selectedWeapon = 'handgun'
+    engine.runner.gun = engine.runner.weapons.handgun
+    engine.pickups = [{ type: 'gun', x: engine.runner.x, y: engine.runner.y, w: 28, h: 28 }]
+    Math.random = () => 0.99
+    engine._checkPickups()
+    const cappedAmmo = engine.runner.weapons.handgun.ammo
+    engine.runner.weapons.boom_stick = { kind: 'boom_stick', ammo: 1, reserve: 0, reloadTimer: 0 }
+    engine._selectUsableWeapon('handgun')
+    engine.runner.facing = { x: 0, y: -1 }
+    engine.fireCooldown = 0
+    engine._tryFire()
+    const afterHandgun = {
+      selected: engine.runner.selectedWeapon,
+      handgunAmmo: engine.runner.weapons.handgun?.ammo ?? 0,
+      boomAmmo: engine.runner.weapons.boom_stick.ammo,
+    }
+    for (let i = 0; i < 5; i++) {
+      engine.fireCooldown = 0
+      engine._tryFire()
+    }
+    return {
+      cappedAmmo,
+      handgunAmmo: engine.runner.weapons.handgun?.ammo ?? 0,
+      afterHandgun,
+      selectedAfterEmpty: engine.runner.selectedWeapon,
+      boomAmmoAfterFallback: engine.runner.weapons.boom_stick?.ammo ?? 0,
+    }
+  })
+
+  expect(state.cappedAmmo).toBe(6)
+  expect(state.afterHandgun).toMatchObject({ selected: 'handgun', handgunAmmo: 5, boomAmmo: 1 })
+  expect(state.selectedAfterEmpty).toBe('boom_stick')
+  expect(state.boomAmmoAfterFallback).toBe(1)
+})
+
+test('Level 1 lasts longer and chaser arrivals can seed guns plus mushrooms', async ({ page }) => {
+  await page.goto('./')
+  await page.locator('.play-btn').first().click()
+  await expect(page.locator('canvas')).toBeVisible()
+  await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
+
+  const result = await page.evaluate(() => {
+    const engine = window.__skibEngine
+    engine.pickups = []
+    engine.rollingPickups = []
+    engine._findRandomWalkableSpawn = () => ({ x: 320, y: 320 })
+    const originalRandom = Math.random
+    Math.random = () => 0
+    engine._spawnChaserArrivalPickups()
+    Math.random = originalRandom
+    return {
+      advanceAt: engine.level.advanceAt,
+      pickups: engine.pickups.map((pickup) => pickup.type),
+      rolling: engine.rollingPickups.map((pickup) => ({ isGood: pickup.isGood, effect: pickup.effect })),
+    }
+  })
+
+  expect(result.advanceAt).toBe(36)
+  expect(result.pickups).toContain('gun')
+  expect(result.rolling).toEqual([{ isGood: true, effect: 'speed' }])
+})

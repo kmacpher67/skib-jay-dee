@@ -234,7 +234,7 @@ const LEVELS = [
     name: 'Porcelain Palace',
     banner: 'LEVEL 1: PORCELAIN PALACE',
     reward: 50,
-    advanceAt: 26,
+    advanceAt: 36,
     chaserSpeed: 130,
     runnerSpawn: { x: WORLD.width / 2 - 20, y: WORLD.height - 200 },
     chaserSpawn: { x: WORLD.width / 2 - 20, y: 150 },
@@ -314,6 +314,7 @@ const LEVELS = [
 const MAX_CHASERS = 5
 const EXTRA_CHASER_INTERVAL = 20 // seconds of uninterrupted chase before another toilet joins
 const MIN_LEVEL_SECONDS_BEFORE_ADVANCE = 30
+const LEVEL_MIN_SECONDS_BEFORE_ADVANCE = [45, 30, 30, 30, 30, 30]
 
 // Level 4+ difficulty floor (docs/handoffs/roadmap-handoff-v0.4.33-plan.md):
 // advancing past Level 4 (levelIndex 3) and any level beyond it also
@@ -373,10 +374,13 @@ const CHASER_SPEED_MOD_LEVEL_STEP = 0.06
 const CHASER_JOIN_RAMP_START = 0.7
 const CHASER_JOIN_RAMP_SECONDS = 5
 
-// The Jayden Gun: a rare map pickup, not a power fantasy. Only 1-2 of the
-// 6 chambers are ever usable, it never permanently removes a chaser, and
-// it vanishes the moment it's out of ammo.
-const GUN_BASE_SPAWN_CHANCE = 0.5
+// The Jayden Gun: a common pressure-release pickup, capped at six usable
+// shots. It never permanently removes a chaser, and its inventory record is
+// retained while the Boom Stick is selected.
+const GUN_BASE_SPAWN_CHANCES = [0.9, 0.82, 0.8, 0.78, 0.76, 0.74]
+const HANDGUN_MAX_AMMO = 6
+const GUN_ARRIVAL_SPAWN_CHANCE = 0.62
+const MUSHROOM_ARRIVAL_SPAWN_CHANCE = 0.78
 const GUN_AMMO_ONE_CHANCE = 0.7 // otherwise rolls 2
 const GUN_FIRE_COOLDOWN = 0.6
 const GUN_BULLET_SPEED = 480
@@ -613,6 +617,8 @@ export class GameEngine {
       facing: { x: 0, y: 1 },
       driftVel: { x: 0, y: 0 },
       gun: null,
+      weapons: { handgun: null, boom_stick: null },
+      selectedWeapon: null,
       rod: false,
       hasTurdstoneToken: false,
     }
@@ -778,6 +784,54 @@ export class GameEngine {
     this.runner.isCustom = !!runnerIsCustom
     if (runnerGettingCapturedFace) this.runner.gettingCapturedFace = runnerGettingCapturedFace
     if (runnerCapturedFace) this.runner.capturedFace = runnerCapturedFace
+  }
+
+  _ensureWeaponInventory() {
+    if (!this.runner.weapons) this.runner.weapons = { handgun: null, boom_stick: null }
+    const selected = this.runner.selectedWeapon
+    const selectedRecord = selected ? this.runner.weapons[selected] : null
+    // Keep the legacy alias usable for tests and Chaser Beta while migrating
+    // gameplay state to the two-slot inventory.
+    if (this.runner.gun && this.runner.gun !== selectedRecord) {
+      const kind = this.runner.gun.kind === 'boom_stick' ? 'boom_stick' : 'handgun'
+      this.runner.weapons[kind] = this.runner.gun
+      this.runner.selectedWeapon = kind
+    } else if (!this.runner.gun && selected && selectedRecord) {
+      this.runner.selectedWeapon = null
+    }
+    if (!this.runner.selectedWeapon && this.runner.gun) {
+      const kind = this.runner.gun.kind === 'boom_stick' ? 'boom_stick' : 'handgun'
+      this.runner.weapons[kind] = this.runner.gun
+      this.runner.selectedWeapon = kind
+    }
+    if (this.runner.selectedWeapon && !this._isWeaponUsable(this.runner.selectedWeapon)) {
+      const fallback = ['handgun', 'boom_stick'].find((kind) => this._isWeaponUsable(kind))
+      if (fallback) this._selectUsableWeapon(fallback)
+      else this.runner.gun = this.runner.weapons[this.runner.selectedWeapon]
+    } else if (this.runner.selectedWeapon) {
+      this.runner.gun = this.runner.weapons[this.runner.selectedWeapon]
+    }
+  }
+
+  _isWeaponUsable(kind) {
+    const weapon = this.runner.weapons?.[kind]
+    if (!weapon || weapon.ammo <= 0) return false
+    return kind !== 'boom_stick' || weapon.reloadTimer <= 0
+  }
+
+  _selectUsableWeapon(preferred = null) {
+    const order = [preferred, 'handgun', 'boom_stick'].filter(Boolean)
+    const kind = order.find((candidate, index) => order.indexOf(candidate) === index && this._isWeaponUsable(candidate)) || null
+    this.runner.selectedWeapon = kind
+    this.runner.gun = kind ? this.runner.weapons[kind] : null
+    return kind
+  }
+
+  _clearWeapon(kind) {
+    if (!this.runner.weapons) return
+    this.runner.weapons[kind] = null
+    if (this.runner.selectedWeapon === kind) this._selectUsableWeapon()
+    else this.runner.gun = this.runner.selectedWeapon ? this.runner.weapons[this.runner.selectedWeapon] : null
   }
 
   setSheebs(sheebs) {
@@ -1432,15 +1486,18 @@ export class GameEngine {
       }
       const wasExhausted = this.stamina <= 0
 
-      if (this.runner.gun && this.runner.gun.kind === 'boom_stick' && this.runner.gun.reloadTimer !== undefined) {
-        if (this.runner.gun.reloadTimer > 0) {
-          this.runner.gun.reloadTimer = Math.max(0, this.runner.gun.reloadTimer - dt);
-          if (this.runner.gun.reloadTimer <= 0 && this.runner.gun.ammo === 0 && this.runner.gun.reserve > 0) {
-            this.runner.gun.ammo = 1;
-            this.runner.gun.reserve -= 1;
+      this._ensureWeaponInventory()
+      const boomStick = this.runner.weapons?.boom_stick
+      if (boomStick && boomStick.reloadTimer !== undefined) {
+        if (boomStick.reloadTimer > 0) {
+          boomStick.reloadTimer = Math.max(0, boomStick.reloadTimer - dt);
+          if (boomStick.reloadTimer <= 0 && boomStick.ammo === 0 && boomStick.reserve > 0) {
+            boomStick.ammo = 1;
+            boomStick.reserve -= 1;
+            if (!this.runner.selectedWeapon) this._selectUsableWeapon('boom_stick')
           }
-        } else if (this.runner.gun.ammo === 0 && this.runner.gun.reserve > 0) {
-          this._beginBoomStickReload();
+        } else if (boomStick.ammo === 0 && boomStick.reserve > 0) {
+          this._beginBoomStickReload(boomStick)
         }
       }
 
@@ -1559,7 +1616,7 @@ export class GameEngine {
        // We don't boost the AI runner for now to keep v1 simple
        speed = this.runner.baseSpeed
        
-       if (this.runner.gun && this.chasers.length > 0) {
+       if (this.runner.weapons?.handgun && this.chasers.length > 0) {
          const runnerCenter = { x: this.runner.x + this.runner.w / 2, y: this.runner.y + this.runner.h / 2 }
          const nearest = [...this.chasers].sort((a, b) => {
            const distA = Math.hypot((a.x + a.w / 2) - runnerCenter.x, (a.y + a.h / 2) - runnerCenter.y)
@@ -1569,9 +1626,10 @@ export class GameEngine {
          const dx = (nearest.x + nearest.w / 2) - runnerCenter.x
          const dy = (nearest.y + nearest.h / 2) - runnerCenter.y
          const dist = Math.hypot(dx, dy)
-         if (dist < 400 && this.fireCooldown <= 0 && this.runner.gun.ammo > 0) {
+         if (dist < 400 && this.fireCooldown <= 0 && this.runner.weapons.handgun.ammo > 0) {
            const mag = dist || 1
            this.runner.facing = { x: dx / mag, y: dy / mag }
+           this._selectUsableWeapon('handgun')
            const bulletCount = this.bullets.length
            this._tryFire()
            if (this.bullets.length > bulletCount) {
@@ -1787,7 +1845,7 @@ export class GameEngine {
     } else if (
       this.level.advanceAt &&
       this.levelSkreems >= this.level.advanceAt &&
-      this.levelElapsed >= MIN_LEVEL_SECONDS_BEFORE_ADVANCE + this.levelTimeBonus &&
+      this.levelElapsed >= (LEVEL_MIN_SECONDS_BEFORE_ADVANCE[this.levelIndex] ?? MIN_LEVEL_SECONDS_BEFORE_ADVANCE) + this.levelTimeBonus &&
       this.chasers.length >= 2 &&
       this._hasRequiredLevelBadge() &&
       this._meetsLevel4PlusFloor()
@@ -1857,6 +1915,7 @@ export class GameEngine {
   }
 
   _spawnBoomStickEventPickup() {
+    this._ensureWeaponInventory()
     const existing = this.pickups.find((pickup) =>
       pickup.type === 'boom-stick' || pickup.type === 'boom-stick-shell'
     )
@@ -1865,11 +1924,11 @@ export class GameEngine {
       return true
     }
 
-    const hasBoomStick = this.runner.gun?.kind === 'boom_stick'
+    const hasBoomStick = !!this.runner.weapons?.boom_stick
     const fullAmmo =
       hasBoomStick &&
-      this.runner.gun.ammo >= 1 &&
-      (this.runner.gun.reserve || 0) >= BOOM_STICK_RESERVE_MAX
+      this.runner.weapons.boom_stick.ammo >= 1 &&
+      (this.runner.weapons.boom_stick.reserve || 0) >= BOOM_STICK_RESERVE_MAX
     if (fullAmmo) {
       this.runnerLine = 'BOOM STICK AMMO FULL'
       this.runnerLineTimer = 1.4
@@ -2049,11 +2108,38 @@ export class GameEngine {
       faceId: extraFaceId,
       chaserType: extraChaserType,
     })
+    this._spawnChaserArrivalPickups()
     this._tryBoomStickEvent()
+  }
+
+  _spawnChaserArrivalPickups() {
+    if (this.isChaserMode) return
+    if (Math.random() < GUN_ARRIVAL_SPAWN_CHANCE) {
+      const gunSpawn = this._findRandomWalkableSpawn()
+      if (gunSpawn) this.pickups.push({ type: 'gun', x: gunSpawn.x, y: gunSpawn.y, w: GUN_PICKUP_SIZE, h: GUN_PICKUP_SIZE })
+    }
+    if (Math.random() < MUSHROOM_ARRIVAL_SPAWN_CHANCE) {
+      const mushroomSpawn = this._findRandomWalkableSpawn()
+      if (mushroomSpawn) {
+        const effects = ['speed', 'stamina', 'sheebs']
+        const angle = Math.random() * Math.PI * 2
+        this.rollingPickups.push({
+          x: mushroomSpawn.x,
+          y: mushroomSpawn.y,
+          w: 24,
+          h: 24,
+          vx: Math.cos(angle) * 110,
+          vy: Math.sin(angle) * 110,
+          isGood: true,
+          effect: effects[Math.floor(Math.random() * effects.length)],
+        })
+      }
+    }
   }
 
   _checkPickups() {
     if (this.pickups.length === 0) return
+    this._ensureWeaponInventory()
 
     this.pickups = this.pickups.filter((pickup) => {
       if (!rectsIntersect(this.runner, pickup)) return true
@@ -2065,26 +2151,39 @@ export class GameEngine {
 
       if (pickup.type === 'gun') {
         const ammo = Math.random() < GUN_AMMO_ONE_CHANCE ? 1 : 2
-        this.runner.gun = { kind: 'handgun', ammo, reserve: 0 }
+        const handgun = this.runner.weapons.handgun || { kind: 'handgun', ammo: 0, reserve: 0 }
+        if (handgun.ammo >= HANDGUN_MAX_AMMO) {
+          this.runnerLine = 'HANDGUN AMMO FULL'
+          this.runnerLineTimer = 1.4
+        } else {
+          handgun.ammo = Math.min(HANDGUN_MAX_AMMO, handgun.ammo + ammo)
+          this.runner.weapons.handgun = handgun
+          this._selectUsableWeapon('handgun')
+        }
       }
       if (pickup.type === 'boom-stick') {
         this.runner.plunger = null
         this.runner.rod = false
-        this.runner.gun = { kind: 'boom_stick', ammo: 1, reserve: 0, reloadTimer: 0 }
+        const boomStick = this.runner.weapons.boom_stick || { kind: 'boom_stick', ammo: 0, reserve: 0, reloadTimer: 0 }
+        if (boomStick.ammo <= 0) boomStick.ammo = 1
+        this.runner.weapons.boom_stick = boomStick
+        this._selectUsableWeapon('boom_stick')
         this.onBoomStickSfx('pickup')
         this.runnerLine = 'BOOM STICK!'
         this.runnerLineTimer = 1.5
       } else if (pickup.type === 'boom-stick-shell' || pickup.type === 'boom_stick_shell') {
         this.onBoomStickSfx('pickup')
-        if (!this.runner.gun || this.runner.gun.kind !== 'boom_stick') {
+        if (!this.runner.weapons.boom_stick) {
           this.runner.plunger = null
           this.runner.rod = false
-          this.runner.gun = { kind: 'boom_stick', ammo: 1, reserve: 0, reloadTimer: 0 }
-        } else if (this.runner.gun.ammo <= 0) {
-          this.runner.gun.ammo = 1
-          this.runner.gun.reloadTimer = 0
+          this.runner.weapons.boom_stick = { kind: 'boom_stick', ammo: 1, reserve: 0, reloadTimer: 0 }
+          this._selectUsableWeapon('boom_stick')
+        } else if (this.runner.weapons.boom_stick.ammo <= 0) {
+          this.runner.weapons.boom_stick.ammo = 1
+          this.runner.weapons.boom_stick.reloadTimer = 0
+          this._selectUsableWeapon('boom_stick')
         } else {
-          this.runner.gun.reserve = Math.min(BOOM_STICK_RESERVE_MAX, this.runner.gun.reserve + 1)
+          this.runner.weapons.boom_stick.reserve = Math.min(BOOM_STICK_RESERVE_MAX, this.runner.weapons.boom_stick.reserve + 1)
         }
       } else if (pickup.type === 'badge') {
         this.levelBadgeCollected = true
@@ -2269,8 +2368,9 @@ export class GameEngine {
   }
 
   _maybeSpawnGunPickup() {
+    this._ensureWeaponInventory()
     const luckBonus = this.loadout.luckBonus || 0
-    const baseChance = this.levelIndex === 3 ? 0.3 : GUN_BASE_SPAWN_CHANCE
+    const baseChance = GUN_BASE_SPAWN_CHANCES[this.levelIndex] ?? GUN_BASE_SPAWN_CHANCES[GUN_BASE_SPAWN_CHANCES.length - 1]
     const baseRoll = Math.random() < baseChance
     let luckProced = false
 
@@ -2645,13 +2745,18 @@ export class GameEngine {
       return
     }
 
-    if (this.runner.gun) {
+    this._ensureWeaponInventory()
+    if (this.runner.selectedWeapon) {
       this.gunFiredThisLevel = true
-      if (this.runner.gun.kind === 'boom_stick') {
+      if (this.runner.selectedWeapon === 'boom_stick') {
         this._fireBoomStick()
         return
       }
-      if (this.runner.gun.ammo <= 0 || this.fireCooldown > 0) return
+      if (this.runner.gun.ammo <= 0 || this.fireCooldown > 0) {
+        this._selectUsableWeapon()
+        if (this.runner.selectedWeapon === 'boom_stick') this._fireBoomStick()
+        return
+      }
     }
     this.fireCooldown = GUN_FIRE_COOLDOWN
 
@@ -2672,7 +2777,7 @@ export class GameEngine {
       vy: dir.y * GUN_BULLET_SPEED,
     })
 
-    if (this.runner.gun.ammo <= 0) this.runner.gun = null
+    if (this.runner.gun.ammo <= 0) this._selectUsableWeapon()
   }
 
 
@@ -2707,12 +2812,22 @@ export class GameEngine {
     })
   }
 
-  _beginBoomStickReload() {
-    this.runner.gun.reloadTimer = BOOM_STICK_RELOAD_SECONDS
+  _beginBoomStickReload(gun = this.runner.gun) {
+    if (!gun) return
+    gun.reloadTimer = BOOM_STICK_RELOAD_SECONDS
+    if (!this.runner.selectedWeapon) this.runner.gun = gun
     this.onBoomStickSfx('reload')
   }
 
   _fireBoomStick() {
+    this._ensureWeaponInventory()
+    const boomStick = this.runner.weapons?.boom_stick
+    if (!boomStick) return
+    if (this.runner.selectedWeapon !== 'boom_stick') {
+      if (this.runner.selectedWeapon) return
+      this.runner.selectedWeapon = 'boom_stick'
+      this.runner.gun = boomStick
+    }
     const gun = this.runner.gun
     if (this.fireCooldown > 0) return
     if (gun.ammo <= 0) {
@@ -2784,7 +2899,7 @@ export class GameEngine {
       this.onSheebsChange(this.sheebs)
     }
 
-    if (gun.ammo <= 0 && gun.reserve <= 0) this.runner.gun = null
+    if (gun.ammo <= 0 && gun.reserve <= 0) this._selectUsableWeapon()
   }
 
   _pickCutawayQuote() {

@@ -161,6 +161,13 @@ Design/status source:
   moving wildcard pickups. Some are helpful and some are harmful, so
   they’re best approached as a decision point rather than a guaranteed
   reward.
+- **Mushroom charge-ups:** Extra chasers can trigger an additional moving
+  mushroom drop. Helpful mushrooms refill stamina, boost speed, or award
+  sheebs; the effect is random.
+- **Gun ammo:** Handgun pickups add 1–2 shots to the handgun, up to 6, rather
+  than replacing your existing shots. You can carry the handgun and Boom
+  Stick together. Your selected weapon fires first, then the other weapon is
+  selected automatically when it runs dry.
 
 ## Economy & risk (Level 4+)
 
