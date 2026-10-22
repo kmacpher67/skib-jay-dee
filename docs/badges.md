@@ -63,3 +63,5 @@ token-style achievements, that will need a separate count/history field;
 `earnedBadges` should stay the unique unlock set. The planned follow-up
 for this is `roadmap-handoff-v0.4.67-plan.md`, which introduces a
 separate award-count surface.
+
+- **Waka Waka Flush:** Earned the first time the player touches the yellow Pac-Man egg (issue #8). Pays the standard +50 sheebs once, and makes the egg far more likely to appear in later games.

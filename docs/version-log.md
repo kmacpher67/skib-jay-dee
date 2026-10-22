@@ -2501,3 +2501,13 @@ Mode B. Implements `roadmap-handoff-v0.4.81-plan.md` (shipped as v0.4.82 per its
 - Added `frontend/e2e/boom-stick-splat-sfx.spec.js` (normal and reduced motion); full suite 82 passed, 1 skipped.
 - Known: the clip is 1.32s vs the brief's 0.5s; a rapid second blast restarts it. Ken can trim the file with no code change.
 - Not done: Slice F voice, real art/SFX from Alex, on-device 9:16 check, handgun/HP/persistent body count/`Splat` death gag.
+
+## v0.4.83 — Pac-Man tunnel Easter egg, issue #8 Slice 1 (Claude Sonnet 5.5, 2026-10-22)
+
+Mode B. Implements Slice 1 of `roadmap-handoff-v0.4.83-plan.md` with Ken's recorded answers.
+
+- `GameEngine.js`: `pacmanDiscovered` (per game), `pacmanActive` / `pacmanEgg` (per level). `_tryPacmanEgg()` runs at the end of `_syncLevelState()`: always places the egg once discovered this game, else rolls `0.04 + (level-1) * step` (steps noob 0.015 / casual 0.03 / 4chan-st 0.045, cap 0.6). Profile holding badge `waka-waka-flush` uses `min(0.85, base*4 + 0.25)`. Placement reuses `_findRandomWalkableSpawn()` (issue #5 wall margin).
+- Touching the egg: tunnels activate, level threshold extended by `PACMAN_EXTRA_LEVEL_SECONDS` (20) via `levelTimeBonus` (applied in the main advance check and the Level 4+ floor). The badge fires only when not yet earned; the +50 sheebs is the standard first-time badge payout in `App.handleBadgeEarned`, so there is no double pay and re-activation pays nothing.
+- Runner-only wrap in `_applyPacmanWrap()` using per-level `tunnelRows` (scanned so both edge columns are wall-free for the 40px runner), 0.3s lockout. Chaser movement untouched. Tunnel openings and egg drawn on canvas only after activation / while pending.
+- Added badge to `BADGES` and `docs/badges.md`; `frontend/e2e/pacman-tunnel.spec.js`.
+- Not done: Slice 2 (captions, SFX, Play Recap line, players-guide), Slice 3 (Alex art/audio), chaser tunnel use, up/down portal. Issue #8 stays open.

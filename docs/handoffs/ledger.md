@@ -799,3 +799,9 @@ a new shipped version or docs-only planning note.
 ## v0.4.82 — 2026-10-22 (Claude Sonnet 5.5)
 - Boom Stick splat clip wired via `onSplat`, once per blast (normal and reduced motion); mute respected.
 - Added `frontend/e2e/boom-stick-splat-sfx.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.82.
+
+## v0.4.83 — 2026-10-22 (Claude Sonnet 5.5)
+- Issue #8 Slice 1: Pac-Man tunnel egg ("Waka Waka Flush"). Per-game `pacmanDiscovered`, level-start roll (boosted when badge owned), always-place after discovery, wall-safe placement.
+- Touch egg: first-ever badge `waka-waka-flush` (+50 sheebs via the badge flow), tunnels activate, level advance threshold +20s (`levelTimeBonus`).
+- Runner-only edge wrap on per-level `tunnelRows` with 0.3s lockout; canvas-drawn placeholders; chasers untouched.
+- Added `frontend/e2e/pacman-tunnel.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.83.

@@ -239,6 +239,8 @@ const LEVELS = [
     runnerSpawn: { x: WORLD.width / 2 - 20, y: WORLD.height - 200 },
     chaserSpawn: { x: WORLD.width / 2 - 20, y: 150 },
     buildMap: buildPorcelainPalace,
+    // Issue #8: runner-center band where both side edges are wall-free.
+    tunnelRows: [{ y: 720, h: 20 }],
     progressionBadgeId: 'porcelain-prowler',
   },
   {
@@ -250,6 +252,8 @@ const LEVELS = [
     runnerSpawn: { x: 440, y: WORLD.height - 132 },
     chaserSpawn: { x: 60, y: 170 },
     buildMap: buildPipeworks,
+    // Issue #8: runner-center band where both side edges are wall-free.
+    tunnelRows: [{ y: 820, h: 20 }],
     progressionBadgeId: 'pipe-dreamer',
   },
   {
@@ -261,6 +265,8 @@ const LEVELS = [
     runnerSpawn: { x: 400, y: WORLD.height - 120 },
     chaserSpawn: { x: WORLD.width - 140, y: 260 },
     buildMap: buildFloodedAnnex,
+    // Issue #8: runner-center band where both side edges are wall-free.
+    tunnelRows: [{ y: 720, h: 20 }],
     progressionBadgeId: 'annex-relic-hunter',
   },
   {
@@ -272,6 +278,8 @@ const LEVELS = [
     runnerSpawn: { x: 225, y: WORLD.height - 140 },
     chaserSpawn: { x: 80, y: 190 },
     buildMap: buildRamenAisle,
+    // Issue #8: runner-center band where both side edges are wall-free.
+    tunnelRows: [{ y: 120, h: 20 }],
     questBadgeId: 'ramen-vault-keeper',
   },
   {
@@ -283,6 +291,8 @@ const LEVELS = [
     runnerSpawn: { x: 295, y: WORLD.height - 140 },
     chaserSpawn: { x: WORLD.width - 150, y: 230 },
     buildMap: buildWorldStarParkingLot,
+    // Issue #8: runner-center band where both side edges are wall-free.
+    tunnelRows: [{ y: 790, h: 20 }],
     questBadgeId: 'world-star-witness',
   },
   {
@@ -294,6 +304,8 @@ const LEVELS = [
     runnerSpawn: { x: 200, y: 1300 },
     chaserSpawn: { x: WORLD.width - 200, y: 200 },
     buildMap: buildJaydensNightmareHouse,
+    // Issue #8: runner-center band where both side edges are wall-free.
+    tunnelRows: [{ y: 820, h: 20 }],
     questBadgeId: 'garage-survivor',
   },
 
@@ -375,6 +387,17 @@ const GUN_PICKUP_SIZE = 28
 // Issue #5: open space required around any spawned pickup (wall-stuck fix).
 const PICKUP_WALL_MARGIN = 8
 const FRIENDLY_FIRE_GRACE_SECONDS = 2 // window after a gun-stun wears off for the "Friendly Fire" badge
+// Issue #8: Pac-Man tunnel Easter egg ("Waka Waka Flush").
+const PACMAN_BADGE_ID = 'waka-waka-flush'
+const PACMAN_BASE_CHANCE = 0.04
+const PACMAN_MAX_CHANCE = 0.6
+const PACMAN_DIFFICULTY_STEPS = { noob: 0.015, casual: 0.03, '4chan-st': 0.045 }
+const PACMAN_BOOST_MULT = 4
+const PACMAN_BOOST_ADD = 0.25
+const PACMAN_BOOST_MAX_CHANCE = 0.85
+const PACMAN_EXTRA_LEVEL_SECONDS = 20
+const PACMAN_WRAP_LOCKOUT_SECONDS = 0.3
+const PACMAN_EGG_SIZE = 30
 const BOOM_STICK_BASE_CHANCE = 0.06
 const BOOM_STICK_MAX_EVENT_CHANCE = 0.9
 const BOOM_STICK_LUCKY_MAX_CHANCE = 0.04
@@ -663,6 +686,11 @@ export class GameEngine {
     this.plungerSwingTimer = 0
     this.shartCharge = 0
     this.chaserRespawnQueue = []
+    this.pacmanDiscovered = false
+    this.pacmanActive = false
+    this.pacmanEgg = null
+    this.pacmanLockout = 0
+    this.levelTimeBonus = 0
 
     // Turdstone Token sprite (loaded once at construction, reused per draw).
     // Using an HTMLImageElement keyed off the src URL so multiple engine
@@ -1157,6 +1185,10 @@ export class GameEngine {
     this.runnerLineTimer = 0
     this.levelSkreems = 0
     this.levelElapsed = 0
+    this.levelTimeBonus = 0
+    this.pacmanActive = false
+    this.pacmanEgg = null
+    this.pacmanLockout = 0
     this.pipeworksSkreems = 0
     this.flushClock = 60
     this.chaser.chaserType = this.levelIndex === 5 ? 'skib-daddy' : null
@@ -1227,6 +1259,7 @@ export class GameEngine {
     this._maybeSpawnSchleimyPotion()
     this._spawnRollingPickups()
     this._tryBoomStickEvent()
+    this._tryPacmanEgg()
 
     if (this.levelIndex >= 3) {
       this.chaserLine = HARD_CHASER_LINES[Math.floor(Math.random() * HARD_CHASER_LINES.length)]
@@ -1480,6 +1513,7 @@ export class GameEngine {
     this.runnerLineTimer = Math.max(0, this.runnerLineTimer - dt)
     this.nearCaptureCooldown = Math.max(0, this.nearCaptureCooldown - dt)
     this.levelElapsed += dt
+    this.pacmanLockout = Math.max(0, this.pacmanLockout - dt)
     this.fireCooldown = Math.max(0, this.fireCooldown - dt)
 
     let speed = this.runner.baseSpeed * (this.tacoBellActive ? 1.5 : 1) * (sprinting ? 1.8 : 1)
@@ -1551,6 +1585,7 @@ export class GameEngine {
     } else {
       this._moveWithCollision(this.runner, stepX, stepY)
     }
+    this._applyPacmanWrap(stepX)
 
     const fireHeld = this.keys.fire || this.fireBtn.active
     if (fireHeld && !this._firePrevHeld) this._tryFire()
@@ -1560,6 +1595,7 @@ export class GameEngine {
     this._updateChaserProjectiles(dt)
     this._updateRollingPickups(dt)
     this._checkPickups()
+    this._checkPacmanEgg()
 
     this._maybeSpawnExtraChaser(dt)
     this._updateChaserRespawns(dt)
@@ -1719,7 +1755,7 @@ export class GameEngine {
     } else if (
       this.level.advanceAt &&
       this.levelSkreems >= this.level.advanceAt &&
-      this.levelElapsed >= MIN_LEVEL_SECONDS_BEFORE_ADVANCE &&
+      this.levelElapsed >= MIN_LEVEL_SECONDS_BEFORE_ADVANCE + this.levelTimeBonus &&
       this.chasers.length >= 2 &&
       this._hasRequiredLevelBadge() &&
       this._meetsLevel4PlusFloor()
@@ -1821,6 +1857,64 @@ export class GameEngine {
       sprite: hasBoomStick ? '💥' : '🔫',
     })
     return true
+  }
+
+  _getPacmanChance(displayedLevel = this.levelIndex + 1) {
+    const step = PACMAN_DIFFICULTY_STEPS[this.difficulty] ?? PACMAN_DIFFICULTY_STEPS.casual
+    const base = Math.min(PACMAN_MAX_CHANCE, PACMAN_BASE_CHANCE + (displayedLevel - 1) * step)
+    if (this.earnedBadges.includes(PACMAN_BADGE_ID)) {
+      return Math.min(PACMAN_BOOST_MAX_CHANCE, base * PACMAN_BOOST_MULT + PACMAN_BOOST_ADD)
+    }
+    return base
+  }
+
+  // Level start: always place once discovered this game, otherwise roll.
+  _tryPacmanEgg() {
+    this.pacmanEgg = null
+    if (this.isChaserMode) return false
+    if (!this.pacmanDiscovered && !(Math.random() < this._getPacmanChance())) return false
+    const spawn = this._findRandomWalkableSpawn()
+    if (!spawn) return false
+    this.pacmanEgg = { x: spawn.x, y: spawn.y, w: PACMAN_EGG_SIZE, h: PACMAN_EGG_SIZE }
+    return true
+  }
+
+  _checkPacmanEgg() {
+    if (!this.pacmanEgg || !rectsIntersect(this.runner, this.pacmanEgg)) return
+    this.pacmanEgg = null
+    this.pacmanActive = true
+    this.pacmanDiscovered = true
+    this.levelTimeBonus += PACMAN_EXTRA_LEVEL_SECONDS
+    this.runnerLine = 'WAKA WAKA FLUSH!'
+    this.runnerLineTimer = 2
+    // The +50 sheebs ride on the first-time badge award (App.handleBadgeEarned).
+    if (!this.earnedBadges.includes(PACMAN_BADGE_ID)) {
+      this.earnedBadges.push(PACMAN_BADGE_ID)
+      this.onBadgeEarned(PACMAN_BADGE_ID)
+    }
+    this.onPickupConsumed('pacman-egg', 'good')
+  }
+
+  _isOnTunnelRow(entity) {
+    const rows = this.level.tunnelRows
+    if (!rows) return false
+    const cy = entity.y + entity.h / 2
+    return rows.some((row) => cy >= row.y && cy <= row.y + row.h)
+  }
+
+  // Runner-only horizontal wrap, called right after the runner's normal move.
+  _applyPacmanWrap(stepX) {
+    if (!this.pacmanActive || this.isChaserMode || this.gawdParticleActive) return
+    const r = this.runner
+    if (this.pacmanLockout > 0 || !stepX || !this._isOnTunnelRow(r)) return
+    const minX = 24
+    const maxX = WORLD.width - 24 - r.w
+    let destX = null
+    if (stepX < 0 && r.x <= minX) destX = maxX - 2
+    else if (stepX > 0 && r.x >= maxX) destX = minX + 2
+    if (destX === null || this._hitsWall({ ...r, x: destX })) return
+    r.x = destX
+    this.pacmanLockout = PACMAN_WRAP_LOCKOUT_SECONDS
   }
 
   _maybeSpawnExtraChaser(dt) {
@@ -2060,7 +2154,7 @@ export class GameEngine {
     const requiredSeconds =
       LEVEL4_PLUS_BASE_SURVIVAL_SECONDS +
       (this.levelIndex - LEVEL4_PLUS_START_INDEX) * LEVEL4_PLUS_SURVIVAL_STEP_SECONDS
-    return this.levelElapsed >= requiredSeconds && this.chasers.length >= LEVEL4_PLUS_REQUIRED_CHASERS
+    return this.levelElapsed >= requiredSeconds + this.levelTimeBonus && this.chasers.length >= LEVEL4_PLUS_REQUIRED_CHASERS
   }
 
   _spawnProgressionBadge() {
@@ -3149,6 +3243,7 @@ export class GameEngine {
       ctx.fill()
     })
     this._drawPickups(ctx)
+    this._drawPacman(ctx)
     if (this.plungerSwingTimer > 0) {
        ctx.save()
        ctx.strokeStyle = "rgba(139, 69, 19, 0.7)"
@@ -3326,6 +3421,38 @@ export class GameEngine {
       return { bg: '#2b5c19', border: '#5cff33', emoji: '🧪' }
     }
     return { bg: '#3a3a3a', border: '#ffd27a', emoji: '🔫' }
+  }
+
+  // Issue #8 placeholders: yellow chomper egg + glowing side openings.
+  _drawPacman(ctx) {
+    if (this.pacmanEgg) {
+      const e = this.pacmanEgg
+      const cx = e.x + e.w / 2
+      const cy = e.y + e.h / 2
+      const mouth = 0.25 + 0.2 * Math.abs(Math.sin(this.sessionSeconds * 8))
+      ctx.save()
+      ctx.fillStyle = '#ffe600'
+      ctx.beginPath()
+      ctx.moveTo(cx, cy)
+      ctx.arc(cx, cy, e.w / 2, mouth, Math.PI * 2 - mouth)
+      ctx.closePath()
+      ctx.fill()
+      ctx.restore()
+    }
+    if (this.pacmanActive && this.level.tunnelRows) {
+      ctx.save()
+      const pulse = 0.5 + 0.3 * Math.sin(this.sessionSeconds * 6)
+      this.level.tunnelRows.forEach((row) => {
+        ctx.fillStyle = `rgba(80, 160, 255, ${pulse})`
+        ctx.fillRect(0, row.y, 24, row.h)
+        ctx.fillRect(WORLD.width - 24, row.y, 24, row.h)
+        ctx.strokeStyle = '#ffe600'
+        ctx.lineWidth = 3
+        ctx.strokeRect(0, row.y, 24, row.h)
+        ctx.strokeRect(WORLD.width - 24, row.y, 24, row.h)
+      })
+      ctx.restore()
+    }
   }
 
   _drawPickups(ctx) {

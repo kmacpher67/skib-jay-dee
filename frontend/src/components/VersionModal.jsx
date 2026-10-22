@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.83',
+    title: 'Waka Waka Flush',
+    description: 'A rare yellow chomper egg can appear. Grab it to open side tunnels for that level (and a little extra time). Find it once and it keeps showing up all game.',
+  },
+  {
     version: 'v0.4.82',
     title: 'Boom Stick Splat Sound',
     description: 'Ken\'s splat sound now plays when the splotches land at the end of a Boom Stick cutaway (once per blast, respects mute).',

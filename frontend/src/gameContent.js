@@ -172,6 +172,12 @@ export const BADGES = {
     lore: "You squeezed through those cracks like a greased pig at a summer fair. It wasn't elegant, but it worked.",
     emoji: '💧',
   },
+  'waka-waka-flush': {
+    id: 'waka-waka-flush',
+    name: 'Waka Waka Flush',
+    lore: "You chomped a mysterious yellow thing and the walls forgot they were walls. Waka waka.",
+    emoji: '🟡',
+  },
   'devs-owe-me-five-bucks': {
     id: 'devs-owe-me-five-bucks',
     name: 'Devs Owe Me Five Bucks',
