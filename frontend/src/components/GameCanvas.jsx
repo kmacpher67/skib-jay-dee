@@ -41,6 +41,7 @@ export default function GameCanvas({
   onCaughtProfileReady,
   onBadgeEarned,
   onShart,
+  onBoomStickSfx,
   onEngineReady,
   startLevelIndex,
 }) {
@@ -64,6 +65,7 @@ export default function GameCanvas({
       onCaughtProfileReady,
       onBadgeEarned,
       onShart,
+      onBoomStickSfx,
       isChaserMode,
       initialSheebs,
       initialDeaths,

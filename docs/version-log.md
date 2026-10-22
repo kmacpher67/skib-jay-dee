@@ -2470,3 +2470,14 @@ Mode B. Ken asked to finish Boom Stick, update the version files, and deploy.
 - Placeholder assets with Alex's proposed filenames: 8 splotch PNGs (procedural) and 5 `boom-stick-*.mp3` stubs (not wired).
 - Decision: quotes are the two signature lines (75/25) for Casual and 4chan-st; Noob-noob uses its caption pool. Supplemental captions/difficulty routing deferred to Slice E.
 - Not done: SFX wiring/mute (E), subtitles pools (E), final voice (F), real art swap, handgun/HP/persistent body count.
+
+## v0.4.80 — Boom Stick Slice E: SFX wiring + caption pools (Claude Sonnet 5.5, 2026-10-22)
+
+Mode B. Ken asked to clear all open v0.4.77-.79 handoff items, then ship the v0.4.80-plan and v0.4.81-plan slices in order.
+
+- Wired `boom-stick-blast` (on fire), `-shatter` (cutaway 0.28s, up front under reduced motion), `-reload` (whenever a reload timer starts), `-pickup` (Boom Stick or loose shell). New engine option `onBoomStickSfx(name)`, mapped in `App.jsx` through `playOneShot`, so mute suppresses them.
+- `boom-stick-splat` deliberately NOT wired here: it is the whole of `roadmap-handoff-v0.4.81-plan.md` and ships separately.
+- `_pickCutawayQuote()` is now difficulty routed: Noob-noob keeps its pool; Casual and 4chan-st use the signature quote (about 67%) or a per-difficulty supplemental caption (about 33%). One caption per cutaway.
+- Empty Boom Stick now shows a click/reloading line (spends nothing) instead of silence.
+- Version numbering: the issue #9 fix and splat wiring plans said "use the next patch at ship time", so they ship as v0.4.81 and v0.4.82.
+- Not done (needs Ken, or separate design): Slice F voice (`bs-*.mp3`, recordings); real art/SFX from Alex; subtitle display for voice lines (no voice exists yet); on-device 9:16 check of the cutaway; handgun ammo table, chaser HP tiers, persistent body count, `Splat` death gag (issue #3 stays open).

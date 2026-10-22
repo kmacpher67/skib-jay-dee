@@ -398,6 +398,18 @@ const CUTAWAY_QUOTES = [
   { weight: 0.25, text: 'HAIL TO THE KING, BABY.' },
 ]
 const CUTAWAY_NOOB_QUOTES = ['BOOM GOES THE POTTY!', 'NIGHT-NIGHT, TOILET FACE!', 'YOU GOT EXTRA UGLY!']
+// Supplemental captions: one caption per cutaway, picked from the difficulty
+// pool, never stacked on top of the signature quote.
+const CUTAWAY_CASUAL_EXTRAS = ['PRIMITIVE MEATHEAD: POPPED.', 'SHOP SMART. RUN FASTER.']
+const CUTAWAY_HARDCORE_EXTRAS = ['PRIMITIVE MEATHEAD DELETED.', '250 YEARS OF MURICA. STILL LOUD.']
+const CUTAWAY_SHATTER_AT = 0.28
+function playCutawayShatter(engine) {
+  const c = engine.cutaway
+  if (!c || c.shattered) return
+  c.shattered = true
+  engine.onBoomStickSfx('shatter')
+}
+const BOOM_STICK_CLICK_LINES = ['*click* Out of shells.', '*click* Empty chamber.']
 
 // Fixed, seeded irregular shard polygons in unit-square space (6x6 jittered
 // lattice -> 25 quads). Deterministic so tests and replays match.
@@ -503,6 +515,7 @@ export class GameEngine {
       onCaughtProfileReady,
       onBadgeEarned,
       onShart,
+      onBoomStickSfx,
       onPickupConsumed,
       initialSheebs,
       initialDeaths = 0,
@@ -541,6 +554,8 @@ export class GameEngine {
     this.onCaughtProfileReady = onCaughtProfileReady || (() => {})
     this.onBadgeEarned = onBadgeEarned || (() => {})
     this.onShart = onShart || (() => {})
+    // Boom Stick SFX hook: 'blast' | 'shatter' | 'reload' | 'pickup'.
+    this.onBoomStickSfx = onBoomStickSfx || (() => {})
     this.onPickupConsumed = onPickupConsumed || (() => {})
 
     this.runner = {
@@ -1352,7 +1367,7 @@ export class GameEngine {
             this.runner.gun.reserve -= 1;
           }
         } else if (this.runner.gun.ammo === 0 && this.runner.gun.reserve > 0) {
-          this.runner.gun.reloadTimer = BOOM_STICK_RELOAD_SECONDS;
+          this._beginBoomStickReload();
         }
       }
 
@@ -1901,9 +1916,11 @@ export class GameEngine {
         this.runner.plunger = null
         this.runner.rod = false
         this.runner.gun = { kind: 'boom_stick', ammo: 1, reserve: 0, reloadTimer: 0 }
+        this.onBoomStickSfx('pickup')
         this.runnerLine = 'BOOM STICK!'
         this.runnerLineTimer = 1.5
       } else if (pickup.type === 'boom-stick-shell' || pickup.type === 'boom_stick_shell') {
+        this.onBoomStickSfx('pickup')
         if (!this.runner.gun || this.runner.gun.kind !== 'boom_stick') {
           this.runner.plunger = null
           this.runner.rod = false
@@ -2513,12 +2530,25 @@ export class GameEngine {
     })
   }
 
+  _beginBoomStickReload() {
+    this.runner.gun.reloadTimer = BOOM_STICK_RELOAD_SECONDS
+    this.onBoomStickSfx('reload')
+  }
+
   _fireBoomStick() {
     const gun = this.runner.gun
-    if (this.fireCooldown > 0 || gun.ammo <= 0) return
+    if (this.fireCooldown > 0) return
+    if (gun.ammo <= 0) {
+      // Empty chamber: say so instead of failing silently. No ammo spent.
+      this.fireCooldown = BOOM_STICK_FIRE_COOLDOWN
+      this.runnerLine = gun.reloadTimer > 0 ? '*pump* Reloading...' : BOOM_STICK_CLICK_LINES[Math.floor(Math.random() * BOOM_STICK_CLICK_LINES.length)]
+      this.runnerLineTimer = 1.0
+      return
+    }
     this.fireCooldown = BOOM_STICK_FIRE_COOLDOWN
     gun.ammo -= 1
-    if (gun.ammo <= 0 && gun.reserve > 0) gun.reloadTimer = BOOM_STICK_RELOAD_SECONDS
+    this.onBoomStickSfx('blast')
+    if (gun.ammo <= 0 && gun.reserve > 0) this._beginBoomStickReload()
 
     const ox = this.runner.x + this.runner.w / 2
     const oy = this.runner.y + this.runner.h / 2
@@ -2581,10 +2611,12 @@ export class GameEngine {
   }
 
   _pickCutawayQuote() {
-    if (this.difficulty === 'noob') {
-      return CUTAWAY_NOOB_QUOTES[Math.floor(Math.random() * CUTAWAY_NOOB_QUOTES.length)]
-    }
-    return Math.random() < CUTAWAY_QUOTES[0].weight ? CUTAWAY_QUOTES[0].text : CUTAWAY_QUOTES[1].text
+    const pick = (list) => list[Math.floor(Math.random() * list.length)]
+    if (this.difficulty === 'noob') return pick(CUTAWAY_NOOB_QUOTES)
+    const signature = Math.random() < CUTAWAY_QUOTES[0].weight ? CUTAWAY_QUOTES[0].text : CUTAWAY_QUOTES[1].text
+    const extras = this.difficulty === '4chan-st' ? CUTAWAY_HARDCORE_EXTRAS : CUTAWAY_CASUAL_EXTRAS
+    // Roughly a third of cutaways swap the signature quote for a pool caption.
+    return Math.random() < 0.33 ? pick(extras) : signature
   }
 
   _stampSplotch(x, y) {
@@ -2627,10 +2659,14 @@ export class GameEngine {
       extra: Math.max(0, victims.length - shown.length),
       quote: this._pickCutawayQuote(),
       stamped: false,
+      shattered: false,
     }
     // Reduced motion has no shard flight: stamp up front so the world
     // already shows the splotch when the card ends.
-    if (reduced) this._stampAllSplotches()
+    if (reduced) {
+      this._stampAllSplotches()
+      playCutawayShatter(this)
+    }
   }
 
   _stampAllSplotches() {
@@ -2643,6 +2679,7 @@ export class GameEngine {
   _updateCutaway(dt) {
     const c = this.cutaway
     c.t += dt
+    if (!c.reduced && c.t >= CUTAWAY_SHATTER_AT) playCutawayShatter(this)
     if (!c.reduced && c.t >= 0.62) this._stampAllSplotches()
     if (c.t >= c.duration) {
       this._stampAllSplotches()

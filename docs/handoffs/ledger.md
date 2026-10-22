@@ -786,3 +786,8 @@ a new shipped version or docs-only planning note.
 - Floor splotch decals (cap 12, crimson / Noob-noob goop), muzzle flash, 6px camera kick; temporary `SPLAT!` text removed.
 - Placeholder splotch PNGs and `boom-stick-*.mp3` stubs added under Alex's proposed filenames (SFX not wired).
 - Added `frontend/e2e/boom-stick-d-cutaway.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.79.
+
+## v0.4.80 — 2026-10-22 (Claude Sonnet 5.5)
+- Boom Stick Slice E: blast / shatter / reload / pickup SFX wired through `onBoomStickSfx` (mute respected); splat clip left to the next slice.
+- Kill captions routed by difficulty (Noob-noob / Casual / 4chan-st pools); empty-chamber click line.
+- Added `frontend/e2e/boom-stick-e-sfx.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.80.

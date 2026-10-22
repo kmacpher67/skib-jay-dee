@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.80',
+    title: 'Boom Stick Sound + Captions',
+    description: 'The Boom Stick now has sound: blast on fire, glass shatter during the cutaway, a pump during reload, and a sting when you grab it or a loose shell (all respect mute). Kill captions are now picked per difficulty (Noob-noob, Casual, 4chan-st pools), and an empty Boom Stick says click instead of failing silently. Sounds are placeholders until final audio arrives.',
+  },
+  {
     version: 'v0.4.79',
     title: 'Boom Stick Splat + Shatter Cutaway',
     description: 'When a Boom Stick blast explodes a chaser, the game now cuts away to their portrait breaking into glass-like shards with a quote card (one cutaway per blast, up to 3 faces, 1.75s max, shorter with reduced-motion). A comic splotch stays on the floor (crimson, or purple goop on Noob-noob; max 12). The splotch art is placeholder until final art arrives.',
@@ -281,7 +286,7 @@ const UPCOMING_NOTES = [
   {
     status: 'COMING NEXT',
     title: 'Boom Stick Polish (Issue #3)',
-    description: 'Still to come: subtitles and sound effects, final art for the splotches and shards, and final voice lines. The blast, splotches, and shatter cutaway are live now with placeholder art.',
+    description: 'Still to come: the splat sound, final art for the splotches and shards, and final voice lines. The blast, splotches, shatter cutaway, captions and most sound effects are live now with placeholder art and audio.',
   },
 ]
 
