@@ -150,6 +150,13 @@ Design/status source:
 - **Turdstone Token:** Hold this when you want a safety net against one
   bad mistake. If you get caught while holding it, it saves the run once
   instead of letting the death fully land.
+- **Waka Waka Flush (yellow Pac-Man egg):** A rare secret pickup. Touch it
+  and side tunnels open for the rest of that level: run into the left or
+  right edge on the marked lane and you pop out the other side. It also
+  adds 20 seconds to the level. The first time you ever find it you earn
+  +50 sheebs and the Waka Waka Flush badge; after that it shows up far
+  more often, and once found in a game it appears on every later level of
+  that game. Tunnels are optional and only the runner can use them.
 - **Rolling pickups:** Treat the wandering mushroom/bomb-style items as
   moving wildcard pickups. Some are helpful and some are harmful, so
   they’re best approached as a decision point rather than a guaranteed

@@ -27,6 +27,15 @@ export default function PlayRecapModal({ stats, onClose }) {
             </div>
           </div>
 
+          {(stats.pickups?.['pacman-egg'] || stats.tunnelTrips > 0) && (
+            <div className="recap-section">
+              <p style={{ margin: 0, color: '#ffd54a' }}>
+                Waka Waka Flush: tunnels opened
+                {stats.tunnelTrips > 0 ? `, ${stats.tunnelTrips} trip${stats.tunnelTrips === 1 ? '' : 's'} through` : ''}.
+              </p>
+            </div>
+          )}
+
           {hasBadges && (
             <div className="recap-section">
               <h3 style={{ fontSize: '1.2rem', marginBottom: '8px', color: '#ffd54a' }}>Badges Earned</h3>

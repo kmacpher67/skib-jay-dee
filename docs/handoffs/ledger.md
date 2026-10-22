@@ -805,3 +805,7 @@ a new shipped version or docs-only planning note.
 - Touch egg: first-ever badge `waka-waka-flush` (+50 sheebs via the badge flow), tunnels activate, level advance threshold +20s (`levelTimeBonus`).
 - Runner-only edge wrap on per-level `tunnelRows` with 0.3s lockout; canvas-drawn placeholders; chasers untouched.
 - Added `frontend/e2e/pacman-tunnel.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.83.
+
+## v0.4.84 — 2026-10-22 (Claude Sonnet 5.5)
+- Issue #8 Slice 2: three-pool Waka Waka Flush captions, chime/whoosh via `onPacmanSfx` (reused placeholder clips, mute respected), Play Recap tunnel line, players-guide entry.
+- Extended `frontend/e2e/pacman-tunnel.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.84. Full suite 90 passed, 1 skipped.

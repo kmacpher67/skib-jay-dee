@@ -398,6 +398,17 @@ const PACMAN_BOOST_MAX_CHANCE = 0.85
 const PACMAN_EXTRA_LEVEL_SECONDS = 20
 const PACMAN_WRAP_LOCKOUT_SECONDS = 0.3
 const PACMAN_EGG_SIZE = 30
+// Placeholder copy (PG-13 noob / casual / 4chan-st); Ken + creative to rewrite.
+const PACMAN_CAPTIONS = {
+  noob: ['WAKA WAKA FLUSH!', 'SECRET TUNNELS OPEN!', 'WHEEE, SIDE DOORS!'],
+  casual: ['WAKA WAKA FLUSH!', 'TUNNELS UNLOCKED. GO WRAP.', 'SIDE EXITS ONLINE.'],
+  '4chan-st': ['WAKA WAKA FLUSH. NERD.', 'TUNNELS OPEN. DON\'T GET LOST.', 'EDGE CASE: EXPLOITED.'],
+}
+const PACMAN_FIRST_CAPTIONS = {
+  noob: 'YOU FOUND A SECRET! WAKA WAKA FLUSH!',
+  casual: 'FIRST WAKA WAKA FLUSH! +50 SHEEBS.',
+  '4chan-st': 'FIRST-EVER WAKA WAKA FLUSH. TOUCH GRASS. +50.',
+}
 const BOOM_STICK_BASE_CHANCE = 0.06
 const BOOM_STICK_MAX_EVENT_CHANCE = 0.9
 const BOOM_STICK_LUCKY_MAX_CHANCE = 0.04
@@ -540,6 +551,7 @@ export class GameEngine {
       onShart,
       onBoomStickSfx,
       onSplat,
+      onPacmanSfx,
       onPickupConsumed,
       initialSheebs,
       initialDeaths = 0,
@@ -581,6 +593,7 @@ export class GameEngine {
     // Boom Stick SFX hook: 'blast' | 'shatter' | 'reload' | 'pickup'.
     this.onBoomStickSfx = onBoomStickSfx || (() => {})
     this.onSplat = onSplat || (() => {})
+    this.onPacmanSfx = onPacmanSfx || (() => {})
     this.onPickupConsumed = onPickupConsumed || (() => {})
 
     this.runner = {
@@ -1885,8 +1898,13 @@ export class GameEngine {
     this.pacmanActive = true
     this.pacmanDiscovered = true
     this.levelTimeBonus += PACMAN_EXTRA_LEVEL_SECONDS
-    this.runnerLine = 'WAKA WAKA FLUSH!'
+    const firstEver = !this.earnedBadges.includes(PACMAN_BADGE_ID)
+    const pool = PACMAN_CAPTIONS[this.difficulty] ?? PACMAN_CAPTIONS.casual
+    this.runnerLine = firstEver
+      ? PACMAN_FIRST_CAPTIONS[this.difficulty] ?? PACMAN_FIRST_CAPTIONS.casual
+      : pool[Math.floor(Math.random() * pool.length)]
     this.runnerLineTimer = 2
+    this.onPacmanSfx('chime')
     // The +50 sheebs ride on the first-time badge award (App.handleBadgeEarned).
     if (!this.earnedBadges.includes(PACMAN_BADGE_ID)) {
       this.earnedBadges.push(PACMAN_BADGE_ID)
@@ -1915,6 +1933,7 @@ export class GameEngine {
     if (destX === null || this._hitsWall({ ...r, x: destX })) return
     r.x = destX
     this.pacmanLockout = PACMAN_WRAP_LOCKOUT_SECONDS
+    this.onPacmanSfx('whoosh')
   }
 
   _maybeSpawnExtraChaser(dt) {

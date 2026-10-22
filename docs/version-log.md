@@ -2511,3 +2511,13 @@ Mode B. Implements Slice 1 of `roadmap-handoff-v0.4.83-plan.md` with Ken's recor
 - Runner-only wrap in `_applyPacmanWrap()` using per-level `tunnelRows` (scanned so both edge columns are wall-free for the 40px runner), 0.3s lockout. Chaser movement untouched. Tunnel openings and egg drawn on canvas only after activation / while pending.
 - Added badge to `BADGES` and `docs/badges.md`; `frontend/e2e/pacman-tunnel.spec.js`.
 - Not done: Slice 2 (captions, SFX, Play Recap line, players-guide), Slice 3 (Alex art/audio), chaser tunnel use, up/down portal. Issue #8 stays open.
+
+## v0.4.84 — Pac-Man tunnel Easter egg, issue #8 Slice 2 (Claude Sonnet 5.5, 2026-10-22)
+
+Mode B. Presentation slice.
+
+- `GameEngine.js`: `PACMAN_CAPTIONS` (random pick per difficulty) and `PACMAN_FIRST_CAPTIONS` (first-ever discovery); new `onPacmanSfx('chime'|'whoosh')` callback fired on egg pickup and tunnel wrap.
+- `App.jsx`: `handlePacmanSfx` plays reused placeholder clips through `playOneShot` (mute respected) and counts `tunnelTrips` for the recap.
+- `PlayRecapModal.jsx`: Waka Waka Flush line with tunnel trip count.
+- `docs/players-guide.md` entry; new Playwright test for captions and SFX callbacks.
+- Caption copy is placeholder written by the agent; Ken + creative to rewrite. Not done: Slice 3 art/audio, chaser tunnel use, up/down portal. Issue #8 stays open.

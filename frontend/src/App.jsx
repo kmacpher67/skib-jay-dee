@@ -165,6 +165,14 @@ export default function App() {
     reload: [boomStickReloadUrl, 0.45],
     pickup: [boomStickPickupUrl, 0.5],
   }
+  // Placeholder clips reused until Alex's chime/whoosh land (issue #8 slice 3).
+  const handlePacmanSfx = (name) => {
+    if (name === 'chime') playOneShot(boomStickPickupUrl, 0.5)
+    else if (name === 'whoosh') {
+      playOneShot(boostStartUrl, 0.35)
+      runStatsRef.current.tunnelTrips = (runStatsRef.current.tunnelTrips || 0) + 1
+    }
+  }
   const handleSplat = () => playOneShot(boomStickSplatUrl, 0.6)
   const handleBoomStickSfx = (name) => {
     const entry = BOOM_STICK_SFX[name]
@@ -773,6 +781,7 @@ export default function App() {
               onShart={handleShart}
               onBoomStickSfx={handleBoomStickSfx}
               onSplat={handleSplat}
+              onPacmanSfx={handlePacmanSfx}
               onPickupConsumed={handlePickupConsumed}
               onEngineReady={(engine) => {
                 engineRef.current = engine

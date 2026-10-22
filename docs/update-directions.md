@@ -4,7 +4,7 @@ Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
 **Created on:** 2026-07-26
-**Last updated by:** Claude Sonnet 5.5 — 2026-10-22 (v0.4.83 Pac-Man Slice 1)
+**Last updated by:** Claude Sonnet 5.5 — 2026-10-22 (v0.4.84 Pac-Man Slice 2)
 **Last updated on:** 2026-10-22
 
 **Doc provenance note:** when you create or materially edit a `docs/`
@@ -15,6 +15,10 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.84 (real code — 2026-10-22):** Issue #8 Slice 2: per-difficulty
+  captions (placeholder copy, Ken to rewrite), chime/whoosh via `onPacmanSfx`
+  (reused clips), Play Recap tunnel line, players-guide entry. See
+  `roadmap-handoff-v0.4.84.md`. Next: Slice 3 (Alex's assets). #8 stays open.
 - **v0.4.83 (real code — 2026-10-22):** Issue #8 Slice 1: Pac-Man tunnel egg
   ("Waka Waka Flush"), runner-only side-wrap tunnels, +20s level length. See
   `roadmap-handoff-v0.4.83.md`. Next: Slice 2 (captions/SFX/recap/guide);

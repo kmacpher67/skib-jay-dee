@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.84',
+    title: 'Waka Waka Flush Sounds + Captions',
+    description: 'Grabbing the yellow chomper egg now plays a chime and shows a caption that matches your difficulty (Noob-noob, Casual, 4chan-st). Running through a tunnel whooshes, and the Play Recap lists your tunnel trips. Sounds are placeholders until final audio arrives.',
+  },
+  {
     version: 'v0.4.83',
     title: 'Waka Waka Flush',
     description: 'A rare yellow chomper egg can appear. Grab it to open side tunnels for that level (and a little extra time). Find it once and it keeps showing up all game.',

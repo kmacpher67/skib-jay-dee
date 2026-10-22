@@ -160,4 +160,30 @@ test.describe('Pac-Man tunnel egg (issue #8, slice 1)', () => {
     await page.waitForFunction(() => window.__skibEngine?.phase === 'chase')
     expect(await page.evaluate(() => window.__skibEngine.pacmanDiscovered)).toBe(false)
   })
+
+  test('slice 2: captions per difficulty, sfx callbacks, first-ever caption', async ({ page }) => {
+    await startRunnerGame(page)
+    const r = await page.evaluate(() => {
+      const e = window.__skibEngine
+      const sfx = []
+      e.onPacmanSfx = (n) => sfx.push(n)
+      const lines = {}
+      for (const d of ['noob', 'casual', '4chan-st']) {
+        e.difficulty = d
+        e.earnedBadges = e.earnedBadges.filter((b) => b !== 'waka-waka-flush')
+        e.pacmanEgg = { x: e.runner.x, y: e.runner.y, w: 30, h: 30 }
+        e._checkPacmanEgg()
+        const first = e.runnerLine
+        e.pacmanEgg = { x: e.runner.x, y: e.runner.y, w: 30, h: 30 }
+        e._checkPacmanEgg()
+        lines[d] = { first, repeat: e.runnerLine }
+      }
+      return { lines, sfx }
+    })
+    for (const d of ['noob', 'casual', '4chan-st']) {
+      expect(r.lines[d].first).toMatch(/WAKA WAKA FLUSH/)
+      expect(r.lines[d].repeat).not.toBe(r.lines[d].first)
+    }
+    expect(r.sfx.filter((n) => n === 'chime')).toHaveLength(6)
+  })
 })
