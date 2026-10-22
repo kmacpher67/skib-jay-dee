@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.78',
+    title: 'Boom Stick Blast + Pickup Wall Fix',
+    description: 'The Boom Stick now fires. A 230px forward cone (blocked by walls) hits every chaser: each has a 1-in-3 chance to explode, the survivors get stunned for 7s and knocked back. Exploded chasers respawn after 12s and add to your body count. You get one sheeb reward per blast. Also fixed pickups spawning inside walls (issue #5).',
+  },
+  {
     version: 'v0.4.77',
     title: 'Boom Stick Pickups',
     description: 'Added rare Boom Stick event rolls, loaded weapon pickups, loose shells, reserve ammo, and reload state. The actual shotgun blast lands in the next update.',
@@ -269,9 +274,9 @@ const PAST_VERSION_NOTES = [
 
 const UPCOMING_NOTES = [
   {
-    status: 'IN PROGRESS',
-    title: 'Boom Stick (Issue #3)',
-    description: 'Pickups, shells, and reload are in. Still coming: the cone blast, 1-in-3 explosions, survivor stun and knockback, respawns, splotches, the portrait-shatter cutaway, and final audio. Next slice: Boom Stick C2.',
+    status: 'COMING NEXT',
+    title: 'Boom Stick Polish (Issue #3)',
+    description: 'Still to come: blood splotches, the portrait-shatter cutaway, subtitles and sound effects, and final voice lines. The blast itself is live now; the splat and smoke are temporary placeholders.',
   },
 ]
 

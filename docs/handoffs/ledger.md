@@ -770,3 +770,10 @@ a new shipped version or docs-only planning note.
 - Issue #5: pickups (potion, decoy, taco, turdstone) no longer spawn inside walls; random spawns keep 8px wall margin.
 - Issue #5: held input cleared on level sync (defensive fix for latched direction).
 - Added `docs/rca-issue-5-pickups-in-walls.md` and `frontend/e2e/issue-5-pickup-wall-spawn.spec.js`.
+
+## v0.4.78 — 2026-10-22 (Claude Sonnet 5.5)
+- Boom Stick Slice C2: `_fireBoomStick()` consumes one shell, 0.9s cooldown, reserve reload kept; 230px / 70-degree forward cone with wall line-of-sight blocking.
+- Per-target independent 1-in-3 explosion: removed from roster, session `bodyCount`++, 12s respawn queue entry. Survivors: 7s stun + 90px collision-clamped knockback.
+- One 25-sheeb reward per blast; temporary `SPLAT!` text + smoke fallback only.
+- Issue #5 pickup wall-spawn fix shipped in the same version (see v0.4.78-pending entries above).
+- Added `frontend/e2e/boom-stick-c2.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.78.

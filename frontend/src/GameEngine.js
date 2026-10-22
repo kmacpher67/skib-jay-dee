@@ -381,6 +381,13 @@ const BOOM_STICK_LUCKY_MAX_CHANCE = 0.04
 const BOOM_STICK_RESERVE_MAX = 5
 const BOOM_STICK_RELOAD_SECONDS = 0.85
 const BOOM_STICK_PICKUP_LIFETIME = 12
+const BOOM_STICK_RANGE = 230
+const BOOM_STICK_HALF_CONE_RADIANS = (35 * Math.PI) / 180
+const BOOM_STICK_EXPLODE_CHANCE = 1 / 3
+const BOOM_STICK_STUN_SECONDS = 7
+const BOOM_STICK_KNOCKBACK = 90
+const BOOM_STICK_RESPAWN_SECONDS = 12
+const BOOM_STICK_FIRE_COOLDOWN = 0.9
 const BOOM_STICK_DIFFICULTY_STEPS = {
   noob: 0.03,
   casual: 0.06,
@@ -567,6 +574,8 @@ export class GameEngine {
     this.tacoBellTimer = 0
     this.stinkyTimer = 0
     this.smokeEffects = []
+    this.splatEffects = []
+    this.bodyCount = 0
     this.nearMissParticles = []
     this.nearMissVignetteTimer = 0
     this.pointerPos = { x: 0, y: 0 }
@@ -1094,6 +1103,7 @@ export class GameEngine {
     this.tacoBellTimer = 0
     this.stinkyTimer = 0
     this.smokeEffects = []
+    this.splatEffects = []
     this.brothTrails = []
     this.brothFrictionTimer = 0
     this.runner.driftVel = { x: 0, y: 0 }
@@ -1306,6 +1316,12 @@ export class GameEngine {
       
       if (this.smokeEffects.length > 0) {
         this.smokeEffects = this.smokeEffects.filter((s) => {
+          s.age += dt
+          return s.age < s.life
+        })
+      }
+      if (this.splatEffects.length > 0) {
+        this.splatEffects = this.splatEffects.filter((s) => {
           s.age += dt
           return s.age < s.life
         })
@@ -2372,8 +2388,7 @@ export class GameEngine {
     if (this.runner.gun) {
       this.gunFiredThisLevel = true
       if (this.runner.gun.kind === 'boom_stick') {
-        this.runnerLine = 'BOOM STICK blast comes next.'
-        this.runnerLineTimer = 1.4
+        this._fireBoomStick()
         return
       }
       if (this.runner.gun.ammo <= 0 || this.fireCooldown > 0) return
@@ -2400,7 +2415,96 @@ export class GameEngine {
     if (this.runner.gun.ammo <= 0) this.runner.gun = null
   }
 
-  
+
+  _lineOfSightClear(ax, ay, bx, by) {
+    const steps = Math.max(2, Math.ceil(Math.hypot(bx - ax, by - ay) / 8))
+    for (let i = 1; i < steps; i++) {
+      const t = i / steps
+      if (this._hitsWall({ x: ax + (bx - ax) * t, y: ay + (by - ay) * t, w: 1, h: 1 })) return false
+    }
+    return true
+  }
+
+  _getBoomStickTargets() {
+    const ox = this.runner.x + this.runner.w / 2
+    const oy = this.runner.y + this.runner.h / 2
+    const facing = this.runner.facing || { x: 0, y: 1 }
+    const facingLen = Math.hypot(facing.x, facing.y) || 1
+    const fx = facing.x / facingLen
+    const fy = facing.y / facingLen
+    return this.chasers.filter((chaser) => {
+      const cx = chaser.x + chaser.w / 2
+      const cy = chaser.y + chaser.h / 2
+      const dx = cx - ox
+      const dy = cy - oy
+      const dist = Math.hypot(dx, dy)
+      if (dist > BOOM_STICK_RANGE) return false
+      if (dist > 0) {
+        const cos = (dx * fx + dy * fy) / dist
+        if (Math.acos(Math.max(-1, Math.min(1, cos))) > BOOM_STICK_HALF_CONE_RADIANS) return false
+      }
+      return this._lineOfSightClear(ox, oy, cx, cy)
+    })
+  }
+
+  _fireBoomStick() {
+    const gun = this.runner.gun
+    if (this.fireCooldown > 0 || gun.ammo <= 0) return
+    this.fireCooldown = BOOM_STICK_FIRE_COOLDOWN
+    gun.ammo -= 1
+    if (gun.ammo <= 0 && gun.reserve > 0) gun.reloadTimer = BOOM_STICK_RELOAD_SECONDS
+
+    const ox = this.runner.x + this.runner.w / 2
+    const oy = this.runner.y + this.runner.h / 2
+    const facing = this.runner.facing || { x: 0, y: 1 }
+    const facingLen = Math.hypot(facing.x, facing.y) || 1
+    const fx = facing.x / facingLen
+    const fy = facing.y / facingLen
+
+    // Temporary smoke fallback until the Slice D blast VFX lands.
+    for (let i = 0; i < 6; i++) {
+      this.smokeEffects.push({
+        x: ox + fx * (30 + i * 28) + (i % 2 ? 8 : -8) * fy,
+        y: oy + fy * (30 + i * 28) - (i % 2 ? 8 : -8) * fx,
+        age: 0,
+        life: 0.4 + i * 0.05,
+        r: 10 + i * 2,
+      })
+    }
+
+    const targets = this._getBoomStickTargets()
+    if (targets.length === 0) {
+      this.runnerLine = 'BOOM! ...missed.'
+      this.runnerLineTimer = 1.2
+    } else {
+      let exploded = 0
+      for (const chaser of targets) {
+        if (Math.random() < BOOM_STICK_EXPLODE_CHANCE) {
+          exploded += 1
+          this.chasers = this.chasers.filter((c) => c !== chaser)
+          chaser.joinRamp = 0
+          chaser.stunnedUntil = 0
+          this.chaserRespawnQueue.push({ chaser, timer: BOOM_STICK_RESPAWN_SECONDS })
+          this.bodyCount += 1
+          this.splatEffects.push({ x: chaser.x + chaser.w / 2, y: chaser.y, age: 0, life: 1.2 })
+        } else {
+          chaser.stunnedUntil = BOOM_STICK_STUN_SECONDS
+          chaser.gunStunned = true
+          const dx = chaser.x + chaser.w / 2 - ox
+          const dy = chaser.y + chaser.h / 2 - oy
+          const d = Math.hypot(dx, dy) || 1
+          this._moveWithCollision(chaser, (dx / d) * BOOM_STICK_KNOCKBACK, (dy / d) * BOOM_STICK_KNOCKBACK)
+        }
+      }
+      this.runnerLine = exploded > 0 ? 'SPLAT!' : 'BOOM!'
+      this.runnerLineTimer = 1.4
+      this.sheebs += GUN_HIT_SHEEBS
+      this.onSheebsChange(this.sheebs)
+    }
+
+    if (gun.ammo <= 0 && gun.reserve <= 0) this.runner.gun = null
+  }
+
   _updateChaserProjectiles(dt) {
     if (this.chaserProjectiles.length === 0) return
 
@@ -2839,6 +2943,16 @@ export class GameEngine {
         ctx.arc(s.x, s.y, s.r * (1 + s.age / s.life), 0, Math.PI * 2)
         ctx.fill()
       }
+    }
+    if (this.splatEffects && this.splatEffects.length > 0) {
+      ctx.save()
+      ctx.textAlign = 'center'
+      ctx.font = 'bold 28px sans-serif'
+      for (const s of this.splatEffects) {
+        ctx.fillStyle = `rgba(200, 20, 20, ${1 - s.age / s.life})`
+        ctx.fillText('SPLAT!', s.x, s.y - s.age * 30)
+      }
+      ctx.restore()
     }
     if (this.nearMissParticles && this.nearMissParticles.length > 0) {
       for (const p of this.nearMissParticles) {

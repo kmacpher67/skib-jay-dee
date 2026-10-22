@@ -2442,3 +2442,12 @@ Mode B bug-fix slice. Code landed on `master`; `GAME_ITERATION` NOT bumped and N
 - Defensive fix for latched keyboard direction at level start: held input is cleared on level sync. Root cause of that symptom is a hypothesis, not reproduced.
 - Added `frontend/e2e/issue-5-pickup-wall-spawn.spec.js`.
 - Not done: potion shrink never restores runner size (parked in future-versions); GitHub issue #5 left open until ship.
+
+## v0.4.78 — Boom Stick C2 blast + issue #5 fix (Claude Sonnet 5.5, 2026-10-22)
+
+Mode B. Ken asked to finish Boom Stick, update the version files, and deploy.
+
+- Implemented Slice C2 from `roadmap-handoff-v0.4.77-plan.md`: forward cone (230px, 35-degree half-angle, wall line-of-sight sampled every 8px), independent 1-in-3 explosion per hit chaser, 7s stun + 90px knockback for survivors, 12s respawn for exploded chasers (own queue timer, separate from the 15s Gawd-particle respawn), session `bodyCount`, one gun-hit sheeb reward per blast.
+- Blast smoke is deterministic (no `Math.random`) so tests can script explosion rolls.
+- Shipped the pending issue #5 wall-spawn fix in the same version.
+- Not done: splotch decal, portrait-shatter cutaway (Slice D); subtitles / SFX (E); final voice (F, needs Ken's recordings); handgun ammo / chaser HP / persistent body count; `Splat` death gag. Issue #3 stays open for those.
