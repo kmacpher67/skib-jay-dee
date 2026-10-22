@@ -19,6 +19,10 @@ Executes Slice 2 of `roadmap-handoff-v0.4.83-plan.md` (GitHub issue #8).
 - Caption copy is agent-written placeholder; Ken asked for copy but none was provided. Edit `PACMAN_CAPTIONS` / `PACMAN_FIRST_CAPTIONS` in `GameEngine.js`.
 - Tunnel trips are counted in `App.handlePacmanSfx`, not the engine.
 
+## Follow-up v0.4.85
+
+Stub assets added: `frontend/src/assets/pacman/pacman-egg.png`, `pacman-tunnel-left.png`, `pacman-tunnel-right.png`, `frontend/src/assets/audio/pacman-chime.mp3`, `pacman-tunnel-whoosh.mp3`. Overwrite by filename for Alex's finals.
+
 ## Not Done
 
 - Slice 3: Alex's art/audio, dropped in by filename. Chaser tunnel use, up/down portal, #10 countdown.

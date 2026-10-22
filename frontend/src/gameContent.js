@@ -25,7 +25,10 @@ import splatGoop4 from './assets/splat/splat-goop-4.png'
 
 // The Turdstone Token sprite — loaded once here and re-exported so GameEngine
 // can pull it in without importing from assets directly inside the engine.
-export { turdstoneTokenSprite }
+import pacmanEggSprite from './assets/pacman/pacman-egg.png'
+import pacmanTunnelLeftSprite from './assets/pacman/pacman-tunnel-left.png'
+import pacmanTunnelRightSprite from './assets/pacman/pacman-tunnel-right.png'
+export { turdstoneTokenSprite, pacmanEggSprite, pacmanTunnelLeftSprite, pacmanTunnelRightSprite }
 
 // Boom Stick splotch decals. Placeholder art until Alex's finals land; swap
 // the PNGs in assets/splat/ keeping the same filenames.

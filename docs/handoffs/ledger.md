@@ -809,3 +809,7 @@ a new shipped version or docs-only planning note.
 ## v0.4.84 — 2026-10-22 (Claude Sonnet 5.5)
 - Issue #8 Slice 2: three-pool Waka Waka Flush captions, chime/whoosh via `onPacmanSfx` (reused placeholder clips, mute respected), Play Recap tunnel line, players-guide entry.
 - Extended `frontend/e2e/pacman-tunnel.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.84. Full suite 90 passed, 1 skipped.
+
+## v0.4.85 — 2026-10-22 (Claude Sonnet 5.5)
+- Issue #8: stub art (egg, tunnel left/right PNG) and audio (chime, whoosh MP3) added and wired; Alex replaces by filename.
+- Version Log modal updated; `GAME_ITERATION` -> v0.4.85. Full suite 90 passed, 1 skipped.

@@ -21,7 +21,7 @@ import {
   CHASER_BETA_RUNNER_GUN_TAUNTS,
   CHASER_BETA_WIN_LINES,
 } from './dialog.js'
-import { CHASER_FACE_POOL, CHASER_TYPES, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS, turdstoneTokenSprite, SPLAT_SPRITES } from './gameContent.js'
+import { CHASER_FACE_POOL, CHASER_TYPES, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS, turdstoneTokenSprite, pacmanEggSprite, pacmanTunnelLeftSprite, pacmanTunnelRightSprite, SPLAT_SPRITES } from './gameContent.js'
 import { PORCELAIN_GRID, PIPEWORKS_GRID, FLOODED_ANNEX_GRID, RAMEN_AISLE_GRID, WORLD_STAR_GRID, JAYDENS_NIGHTMARE_HOUSE_GRID } from './mapGrids.js'
 
 export const WORLD = {
@@ -712,6 +712,20 @@ export class GameEngine {
       const img = new Image()
       img.src = turdstoneTokenSprite
       GameEngine._turdstoneImg = img
+    }
+
+    // Issue #8 stub art; Alex's files replace the PNGs by filename.
+    if (!GameEngine._pacmanImgs) {
+      const load = (src) => {
+        const img = new Image()
+        img.src = src
+        return img
+      }
+      GameEngine._pacmanImgs = {
+        egg: load(pacmanEggSprite),
+        left: load(pacmanTunnelLeftSprite),
+        right: load(pacmanTunnelRightSprite),
+      }
     }
 
     this.loadout = { speedBonus: 0, staminaBonus: 0, rewardBonus: 0, luckBonus: 0 }
@@ -3449,19 +3463,34 @@ export class GameEngine {
       const cx = e.x + e.w / 2
       const cy = e.y + e.h / 2
       const mouth = 0.25 + 0.2 * Math.abs(Math.sin(this.sessionSeconds * 8))
+      const eggImg = GameEngine._pacmanImgs?.egg
       ctx.save()
-      ctx.fillStyle = '#ffe600'
-      ctx.beginPath()
-      ctx.moveTo(cx, cy)
-      ctx.arc(cx, cy, e.w / 2, mouth, Math.PI * 2 - mouth)
-      ctx.closePath()
-      ctx.fill()
+      if (eggImg && eggImg.complete && eggImg.naturalWidth > 0) {
+        const bob = Math.sin(this.sessionSeconds * 5) * 3
+        ctx.drawImage(eggImg, e.x - 4, e.y - 4 + bob, e.w + 8, e.h + 8)
+      } else {
+        ctx.fillStyle = '#ffe600'
+        ctx.beginPath()
+        ctx.moveTo(cx, cy)
+        ctx.arc(cx, cy, e.w / 2, mouth, Math.PI * 2 - mouth)
+        ctx.closePath()
+        ctx.fill()
+      }
       ctx.restore()
     }
     if (this.pacmanActive && this.level.tunnelRows) {
       ctx.save()
       const pulse = 0.5 + 0.3 * Math.sin(this.sessionSeconds * 6)
+      const imgs = GameEngine._pacmanImgs
+      const ready = (i) => i && i.complete && i.naturalWidth > 0
       this.level.tunnelRows.forEach((row) => {
+        if (ready(imgs?.left) && ready(imgs?.right)) {
+          ctx.globalAlpha = 0.75 + (pulse - 0.5) * 0.5
+          ctx.drawImage(imgs.left, 0, row.y - 20, 24, row.h + 40)
+          ctx.drawImage(imgs.right, WORLD.width - 24, row.y - 20, 24, row.h + 40)
+          ctx.globalAlpha = 1
+          return
+        }
         ctx.fillStyle = `rgba(80, 160, 255, ${pulse})`
         ctx.fillRect(0, row.y, 24, row.h)
         ctx.fillRect(WORLD.width - 24, row.y, 24, row.h)

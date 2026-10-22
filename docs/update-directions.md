@@ -4,7 +4,7 @@ Use this as the handoff doc for the next agent working in the repo.
 
 **Created by:** Codex (GPT-5) — 2026-07-26
 **Created on:** 2026-07-26
-**Last updated by:** Claude Sonnet 5.5 — 2026-10-22 (v0.4.84 Pac-Man Slice 2)
+**Last updated by:** Claude Sonnet 5.5 — 2026-10-22 (v0.4.85 Pac-Man art/audio stubs)
 **Last updated on:** 2026-10-22
 
 **Doc provenance note:** when you create or materially edit a `docs/`
@@ -15,6 +15,10 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.85 (real code — 2026-10-22):** Issue #8 stub art and audio: generated
+  egg and tunnel PNGs in `frontend/src/assets/pacman/`, synthesized
+  `pacman-chime.mp3` / `pacman-tunnel-whoosh.mp3` in `assets/audio/`. Alex
+  replaces them by filename; canvas fallback kept. #8 stays open for final assets.
 - **v0.4.84 (real code — 2026-10-22):** Issue #8 Slice 2: per-difficulty
   captions (placeholder copy, Ken to rewrite), chime/whoosh via `onPacmanSfx`
   (reused clips), Play Recap tunnel line, players-guide entry. See

@@ -2521,3 +2521,12 @@ Mode B. Presentation slice.
 - `PlayRecapModal.jsx`: Waka Waka Flush line with tunnel trip count.
 - `docs/players-guide.md` entry; new Playwright test for captions and SFX callbacks.
 - Caption copy is placeholder written by the agent; Ken + creative to rewrite. Not done: Slice 3 art/audio, chaser tunnel use, up/down portal. Issue #8 stays open.
+
+## v0.4.85 — Pac-Man tunnel Easter egg, stub art and audio (Claude Sonnet 5.5, 2026-10-22)
+
+Mode B. Replaces the borrowed placeholder clips and pure canvas shapes with stub asset files so Alex can drop in finals by filename.
+
+- Art: `frontend/src/assets/pacman/pacman-egg.png`, `pacman-tunnel-left.png`, `pacman-tunnel-right.png` (generated with PIL). `GameEngine` draws them, falling back to the old canvas shapes until decoded.
+- Audio: `frontend/src/assets/audio/pacman-chime.mp3` (square-wave waka arpeggio) and `pacman-tunnel-whoosh.mp3` (noise plus sweep), synthesized with numpy and encoded with ffmpeg. `App.handlePacmanSfx` now plays these.
+- Version Log modal updated. Full suite 90 passed, 1 skipped.
+- To replace: overwrite those five files, same names, same formats.

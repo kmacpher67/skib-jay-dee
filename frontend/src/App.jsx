@@ -19,6 +19,8 @@ import boomStickBlastUrl from './assets/audio/boom-stick-blast.mp3'
 import boomStickShatterUrl from './assets/audio/boom-stick-shatter.mp3'
 import boomStickSplatUrl from './assets/audio/boom-stick-splat.mp3'
 import boomStickReloadUrl from './assets/audio/boom-stick-reload.mp3'
+import pacmanChimeUrl from './assets/audio/pacman-chime.mp3'
+import pacmanWhooshUrl from './assets/audio/pacman-tunnel-whoosh.mp3'
 import boomStickPickupUrl from './assets/audio/boom-stick-pickup.mp3'
 import chaseAmbientUrl from './assets/audio/chase-ambient-bopbop.mp3'
 import chaserBarkCloseUrl from './assets/audio/chaser-bark-close-toiletking.mp3'
@@ -165,11 +167,11 @@ export default function App() {
     reload: [boomStickReloadUrl, 0.45],
     pickup: [boomStickPickupUrl, 0.5],
   }
-  // Placeholder clips reused until Alex's chime/whoosh land (issue #8 slice 3).
+  // Stub synthesized clips; Alex's files replace them by filename (issue #8 slice 3).
   const handlePacmanSfx = (name) => {
-    if (name === 'chime') playOneShot(boomStickPickupUrl, 0.5)
+    if (name === 'chime') playOneShot(pacmanChimeUrl, 0.5)
     else if (name === 'whoosh') {
-      playOneShot(boostStartUrl, 0.35)
+      playOneShot(pacmanWhooshUrl, 0.45)
       runStatsRef.current.tunnelTrips = (runStatsRef.current.tunnelTrips || 0) + 1
     }
   }
