@@ -21,7 +21,7 @@ import {
   CHASER_BETA_RUNNER_GUN_TAUNTS,
   CHASER_BETA_WIN_LINES,
 } from './dialog.js'
-import { CHASER_FACE_POOL, CHASER_TYPES, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS, turdstoneTokenSprite } from './gameContent.js'
+import { CHASER_FACE_POOL, CHASER_TYPES, getChaserProfile, randomFrom, BADGES, HUMOR_BADGE_IDS, POSITIVE_PICKUPS, turdstoneTokenSprite, SPLAT_SPRITES } from './gameContent.js'
 import { PORCELAIN_GRID, PIPEWORKS_GRID, FLOODED_ANNEX_GRID, RAMEN_AISLE_GRID, WORLD_STAR_GRID, JAYDENS_NIGHTMARE_HOUSE_GRID } from './mapGrids.js'
 
 export const WORLD = {
@@ -388,6 +388,55 @@ const BOOM_STICK_STUN_SECONDS = 7
 const BOOM_STICK_KNOCKBACK = 90
 const BOOM_STICK_RESPAWN_SECONDS = 12
 const BOOM_STICK_FIRE_COOLDOWN = 0.9
+const SPLOTCH_CAP = 12
+const SPLOTCH_SIZE = 72
+const CUTAWAY_SECONDS = 1.75
+const CUTAWAY_REDUCED_SECONDS = 0.9
+const CUTAWAY_MAX_PORTRAITS = 3
+const CUTAWAY_QUOTES = [
+  { weight: 0.75, text: "GOOD. BAD. I'M THE GUY WITH THE GUN." },
+  { weight: 0.25, text: 'HAIL TO THE KING, BABY.' },
+]
+const CUTAWAY_NOOB_QUOTES = ['BOOM GOES THE POTTY!', 'NIGHT-NIGHT, TOILET FACE!', 'YOU GOT EXTRA UGLY!']
+
+// Fixed, seeded irregular shard polygons in unit-square space (6x6 jittered
+// lattice -> 25 quads). Deterministic so tests and replays match.
+const SHARD_POLYS = (() => {
+  let seed = 7
+  const rnd = () => {
+    seed = (seed * 1664525 + 1013904223) % 4294967296
+    return seed / 4294967296
+  }
+  const N = 6
+  const grid = []
+  for (let j = 0; j < N; j++) {
+    const row = []
+    for (let i = 0; i < N; i++) {
+      const edge = i === 0 || j === 0 || i === N - 1 || j === N - 1
+      const jx = edge ? 0 : (rnd() - 0.5) * 0.14
+      const jy = edge ? 0 : (rnd() - 0.5) * 0.14
+      row.push({ x: i / (N - 1) + jx, y: j / (N - 1) + jy })
+    }
+    grid.push(row)
+  }
+  const polys = []
+  for (let j = 0; j < N - 1; j++) {
+    for (let i = 0; i < N - 1; i++) {
+      const pts = [grid[j][i], grid[j][i + 1], grid[j + 1][i + 1], grid[j + 1][i]]
+      const cx = pts.reduce((a, p) => a + p.x, 0) / 4
+      const cy = pts.reduce((a, p) => a + p.y, 0) / 4
+      polys.push({
+        pts,
+        cx,
+        cy,
+        speed: 0.5 + rnd() * 1.1,
+        spin: (rnd() - 0.5) * 9,
+        lag: rnd() * 0.06,
+      })
+    }
+  }
+  return polys
+})()
 const BOOM_STICK_DIFFICULTY_STEPS = {
   noob: 0.03,
   casual: 0.06,
@@ -575,6 +624,10 @@ export class GameEngine {
     this.stinkyTimer = 0
     this.smokeEffects = []
     this.splatEffects = []
+    this.splotches = []
+    this.cutaway = null
+    this.cameraKickTimer = 0
+    this.muzzleFlashTimer = 0
     this.bodyCount = 0
     this.nearMissParticles = []
     this.nearMissVignetteTimer = 0
@@ -1104,6 +1157,8 @@ export class GameEngine {
     this.stinkyTimer = 0
     this.smokeEffects = []
     this.splatEffects = []
+    this.splotches = []
+    this.cutaway = null
     this.brothTrails = []
     this.brothFrictionTimer = 0
     this.runner.driftVel = { x: 0, y: 0 }
@@ -1204,6 +1259,13 @@ export class GameEngine {
   }
 
   update(dt) {
+    if (this.cutaway) {
+      if (this.phase !== 'chase') this.cutaway = null
+      else {
+        this._updateCutaway(dt)
+        return
+      }
+    }
     if (this.phase === 'intro') {
       this.phaseTimer -= dt
       if (this.phaseTimer <= 0) {
@@ -1323,9 +1385,13 @@ export class GameEngine {
       if (this.splatEffects.length > 0) {
         this.splatEffects = this.splatEffects.filter((s) => {
           s.age += dt
+          s.x += s.vx * dt
+          s.y += s.vy * dt
           return s.age < s.life
         })
       }
+      if (this.cameraKickTimer > 0) this.cameraKickTimer = Math.max(0, this.cameraKickTimer - dt)
+      if (this.muzzleFlashTimer > 0) this.muzzleFlashTimer = Math.max(0, this.muzzleFlashTimer - dt)
       if (this.nearMissVignetteTimer > 0) {
         this.nearMissVignetteTimer = Math.max(0, this.nearMissVignetteTimer - dt)
       }
@@ -2461,7 +2527,9 @@ export class GameEngine {
     const fx = facing.x / facingLen
     const fy = facing.y / facingLen
 
-    // Temporary smoke fallback until the Slice D blast VFX lands.
+    this.cameraKickTimer = 0.12
+    this.muzzleFlashTimer = 0.1
+    this.muzzleFlash = { x: ox + fx * 34, y: oy + fy * 34 }
     for (let i = 0; i < 6; i++) {
       this.smokeEffects.push({
         x: ox + fx * (30 + i * 28) + (i % 2 ? 8 : -8) * fy,
@@ -2478,6 +2546,7 @@ export class GameEngine {
       this.runnerLineTimer = 1.2
     } else {
       let exploded = 0
+      const victims = []
       for (const chaser of targets) {
         if (Math.random() < BOOM_STICK_EXPLODE_CHANCE) {
           exploded += 1
@@ -2486,7 +2555,12 @@ export class GameEngine {
           chaser.stunnedUntil = 0
           this.chaserRespawnQueue.push({ chaser, timer: BOOM_STICK_RESPAWN_SECONDS })
           this.bodyCount += 1
-          this.splatEffects.push({ x: chaser.x + chaser.w / 2, y: chaser.y, age: 0, life: 1.2 })
+          victims.push({
+            face: chaser.face || null,
+            color: chaser.color,
+            x: chaser.x + chaser.w / 2,
+            y: chaser.y + chaser.h / 2,
+          })
         } else {
           chaser.stunnedUntil = BOOM_STICK_STUN_SECONDS
           chaser.gunStunned = true
@@ -2496,6 +2570,7 @@ export class GameEngine {
           this._moveWithCollision(chaser, (dx / d) * BOOM_STICK_KNOCKBACK, (dy / d) * BOOM_STICK_KNOCKBACK)
         }
       }
+      if (victims.length > 0) this._startCutaway(victims)
       this.runnerLine = exploded > 0 ? 'SPLAT!' : 'BOOM!'
       this.runnerLineTimer = 1.4
       this.sheebs += GUN_HIT_SHEEBS
@@ -2503,6 +2578,76 @@ export class GameEngine {
     }
 
     if (gun.ammo <= 0 && gun.reserve <= 0) this.runner.gun = null
+  }
+
+  _pickCutawayQuote() {
+    if (this.difficulty === 'noob') {
+      return CUTAWAY_NOOB_QUOTES[Math.floor(Math.random() * CUTAWAY_NOOB_QUOTES.length)]
+    }
+    return Math.random() < CUTAWAY_QUOTES[0].weight ? CUTAWAY_QUOTES[0].text : CUTAWAY_QUOTES[1].text
+  }
+
+  _stampSplotch(x, y) {
+    const palette = this.difficulty === 'noob' ? 'goop' : 'crimson'
+    this.splotches.push({
+      x,
+      y,
+      palette,
+      variant: this.bodyCount % 4,
+      rot: ((this.splotches.length * 97 + this.bodyCount * 53) % 360) * (Math.PI / 180),
+    })
+    while (this.splotches.length > SPLOTCH_CAP) this.splotches.shift()
+    const color = palette === 'goop' ? 'rgba(170, 50, 150, 0.9)' : 'rgba(160, 15, 30, 0.9)'
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2 + i * 0.3
+      this.splatEffects.push({
+        x,
+        y,
+        vx: Math.cos(a) * (60 + (i % 3) * 30),
+        vy: Math.sin(a) * (60 + (i % 3) * 30),
+        age: 0,
+        life: 0.5,
+        r: 3 + (i % 3),
+        color,
+      })
+    }
+  }
+
+  // One cutaway per blast. Victims beyond the third are summarized as +N MORE.
+  _startCutaway(victims) {
+    const reduced =
+      typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    const shown = victims.slice(0, CUTAWAY_MAX_PORTRAITS)
+    this.cutaway = {
+      t: 0,
+      duration: reduced ? CUTAWAY_REDUCED_SECONDS : CUTAWAY_SECONDS,
+      reduced,
+      victims: shown,
+      allVictims: victims,
+      extra: Math.max(0, victims.length - shown.length),
+      quote: this._pickCutawayQuote(),
+      stamped: false,
+    }
+    // Reduced motion has no shard flight: stamp up front so the world
+    // already shows the splotch when the card ends.
+    if (reduced) this._stampAllSplotches()
+  }
+
+  _stampAllSplotches() {
+    const c = this.cutaway
+    if (!c || c.stamped) return
+    c.stamped = true
+    for (const v of c.allVictims) this._stampSplotch(v.x, v.y)
+  }
+
+  _updateCutaway(dt) {
+    const c = this.cutaway
+    c.t += dt
+    if (!c.reduced && c.t >= 0.62) this._stampAllSplotches()
+    if (c.t >= c.duration) {
+      this._stampAllSplotches()
+      this.cutaway = null
+    }
   }
 
   _updateChaserProjectiles(dt) {
@@ -2906,8 +3051,13 @@ export class GameEngine {
     ctx.clearRect(0, 0, VIEW_W, VIEW_H)
 
     ctx.save()
+    if (this.cameraKickTimer > 0) {
+      const k = (this.cameraKickTimer / 0.12) * 6
+      ctx.translate(k, -k * 0.5)
+    }
     this._applyCamera(ctx)
     this._drawMap(ctx)
+    this._drawSplotches(ctx)
     ctx.fillStyle = "rgba(150, 200, 255, 0.4)"
     this.soggyTrails.forEach(t => {
        ctx.beginPath()
@@ -2945,14 +3095,20 @@ export class GameEngine {
       }
     }
     if (this.splatEffects && this.splatEffects.length > 0) {
-      ctx.save()
-      ctx.textAlign = 'center'
-      ctx.font = 'bold 28px sans-serif'
-      for (const s of this.splatEffects) {
-        ctx.fillStyle = `rgba(200, 20, 20, ${1 - s.age / s.life})`
-        ctx.fillText('SPLAT!', s.x, s.y - s.age * 30)
+      for (const p of this.splatEffects) {
+        ctx.globalAlpha = Math.max(0, 1 - p.age / p.life)
+        ctx.fillStyle = p.color
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fill()
       }
-      ctx.restore()
+      ctx.globalAlpha = 1
+    }
+    if (this.muzzleFlashTimer > 0 && this.muzzleFlash) {
+      ctx.fillStyle = `rgba(255, 220, 120, ${this.muzzleFlashTimer / 0.1})`
+      ctx.beginPath()
+      ctx.arc(this.muzzleFlash.x, this.muzzleFlash.y, 20, 0, Math.PI * 2)
+      ctx.fill()
     }
     if (this.nearMissParticles && this.nearMissParticles.length > 0) {
       for (const p of this.nearMissParticles) {
@@ -3011,6 +3167,7 @@ export class GameEngine {
       ctx.restore()
     }
 
+    this._drawCutaway(ctx)
     this._drawHud(ctx)
 
     if (this.phase === 'intro') this._drawBanner(ctx, 'RUN LIKE HELL')
@@ -3202,6 +3359,202 @@ export class GameEngine {
       this.runner.w + 8,
       this.runner.h + 8,
     )
+    ctx.restore()
+  }
+
+  _getSplatImage(palette, variant) {
+    GameEngine._splatImgs = GameEngine._splatImgs || {}
+    const key = `${palette}-${variant}`
+    if (!GameEngine._splatImgs[key]) {
+      const img = new Image()
+      img.src = SPLAT_SPRITES[palette][variant]
+      GameEngine._splatImgs[key] = img
+    }
+    return GameEngine._splatImgs[key]
+  }
+
+  _drawSplotches(ctx) {
+    for (const sp of this.splotches) {
+      const img = this._getSplatImage(sp.palette, sp.variant)
+      ctx.save()
+      ctx.translate(sp.x, sp.y)
+      ctx.rotate(sp.rot)
+      if (img.complete && img.naturalWidth > 0) {
+        ctx.drawImage(img, -SPLOTCH_SIZE / 2, -SPLOTCH_SIZE / 2, SPLOTCH_SIZE, SPLOTCH_SIZE)
+      } else {
+        ctx.fillStyle = sp.palette === 'goop' ? 'rgba(140, 30, 120, 0.85)' : 'rgba(122, 10, 24, 0.85)'
+        ctx.beginPath()
+        ctx.ellipse(0, 0, SPLOTCH_SIZE * 0.4, SPLOTCH_SIZE * 0.32, 0, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      ctx.restore()
+    }
+  }
+
+  _drawCutaway(ctx) {
+    const c = this.cutaway
+    if (!c) return
+    const t = c.t
+    const n = c.victims.length
+    const size = n === 1 ? 220 : n === 2 ? 168 : 120
+    const gap = 12
+    const totalW = n * size + (n - 1) * gap
+    const cy = VIEW_H / 2 - 40
+    const goop = this.difficulty === 'noob'
+    ctx.save()
+    ctx.setTransform(1, 0, 0, 1, 0, 0)
+
+    const dark = c.reduced ? 0.7 : Math.min(0.8, Math.max(0, (t - 0.1) / 0.18) * 0.8)
+    ctx.fillStyle = `rgba(0, 0, 0, ${dark})`
+    ctx.fillRect(0, 0, VIEW_W, VIEW_H)
+
+    const quoteStart = c.reduced ? 0.2 : 0.78
+    const quoteEnd = c.reduced ? c.duration : 1.55
+    const fade = c.reduced ? 1 : t > 1.55 ? Math.max(0, 1 - (t - 1.55) / 0.2) : 1
+
+    c.victims.forEach((v, idx) => {
+      const px = VIEW_W / 2 - totalW / 2 + idx * (size + gap) + size / 2
+      if (c.reduced) {
+        if (t < 0.2) this._drawCrackedPortrait(ctx, v, px, cy, size, goop)
+        return
+      }
+      if (t < 0.28) {
+        const p = Math.max(0, (t - 0.1) / 0.18)
+        this._drawIntactPortrait(ctx, v, px, cy, size * (0.6 + 0.4 * p), goop)
+      } else {
+        this._drawShards(ctx, v, px, cy, size, t - 0.28, goop, fade)
+      }
+    })
+
+    if (!c.reduced && t >= 0.28 && t < 0.36) {
+      ctx.fillStyle = `rgba(255, 255, 255, ${0.8 * (1 - (t - 0.28) / 0.08)})`
+      ctx.fillRect(0, 0, VIEW_W, VIEW_H)
+    }
+
+    if (t >= quoteStart && t < quoteEnd + (c.reduced ? 0 : 0.2)) {
+      ctx.globalAlpha = fade
+      const cardY = VIEW_H * 0.72
+      ctx.fillStyle = 'rgba(10, 10, 10, 0.88)'
+      ctx.fillRect(20, cardY - 40, VIEW_W - 40, 100)
+      ctx.strokeStyle = goop ? '#c050b0' : '#b0141e'
+      ctx.lineWidth = 3
+      ctx.strokeRect(20, cardY - 40, VIEW_W - 40, 100)
+      ctx.fillStyle = '#fff'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.font = 'bold 20px sans-serif'
+      this._wrapCutawayText(ctx, c.quote, VIEW_W / 2, cardY - 5, VIEW_W - 80, 26)
+      if (c.extra > 0) {
+        ctx.font = 'bold 14px sans-serif'
+        ctx.fillStyle = goop ? '#f2a0e4' : '#ff6a6a'
+        ctx.fillText(`+${c.extra} MORE`, VIEW_W / 2, cardY + 44)
+      }
+      ctx.globalAlpha = 1
+    }
+    ctx.restore()
+  }
+
+  _wrapCutawayText(ctx, text, x, y, maxW, lineH) {
+    const words = text.split(' ')
+    const lines = []
+    let line = ''
+    for (const w of words) {
+      const test = line ? `${line} ${w}` : w
+      if (ctx.measureText(test).width > maxW && line) {
+        lines.push(line)
+        line = w
+      } else line = test
+    }
+    if (line) lines.push(line)
+    const startY = y - ((lines.length - 1) * lineH) / 2
+    lines.forEach((l, i) => ctx.fillText(l, x, startY + i * lineH))
+  }
+
+  _drawPortraitFace(ctx, v, size) {
+    if (v.face && v.face.complete && v.face.naturalWidth > 0) {
+      ctx.drawImage(v.face, -size / 2, -size / 2, size, size)
+    } else {
+      ctx.fillStyle = v.color || '#888'
+      ctx.fillRect(-size / 2, -size / 2, size, size)
+    }
+  }
+
+  _drawIntactPortrait(ctx, v, px, cy, size, goop) {
+    ctx.save()
+    ctx.translate(px, cy)
+    this._drawPortraitFace(ctx, v, size)
+    ctx.strokeStyle = goop ? '#c050b0' : '#b0141e'
+    ctx.lineWidth = 4
+    ctx.strokeRect(-size / 2, -size / 2, size, size)
+    ctx.restore()
+  }
+
+  _drawCrackedPortrait(ctx, v, px, cy, size, goop) {
+    this._drawIntactPortrait(ctx, v, px, cy, size, goop)
+    ctx.save()
+    ctx.translate(px, cy)
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)'
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    for (const poly of SHARD_POLYS) {
+      poly.pts.forEach((p, i) => {
+        const x = (p.x - 0.5) * size
+        const y = (p.y - 0.5) * size
+        if (i === 0) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      })
+      ctx.closePath()
+    }
+    ctx.stroke()
+    ctx.restore()
+  }
+
+  // Shards are clipped from the chaser's real portrait and fly radially out.
+  _drawShards(ctx, v, px, cy, size, ts, goop, fade) {
+    const hasImg = v.face && v.face.complete && v.face.naturalWidth > 0
+    const alpha = Math.max(0, Math.min(1, fade)) * Math.max(0, 1 - Math.max(0, ts - 0.9) / 0.4)
+    ctx.save()
+    ctx.translate(px, cy)
+    for (const poly of SHARD_POLYS) {
+      const age = Math.max(0, ts - poly.lag)
+      const dx = poly.cx - 0.5
+      const dy = poly.cy - 0.5
+      const len = Math.hypot(dx, dy) || 0.1
+      // Fast burst that eases out, so shards settle under the quote card.
+      const travel = size * 0.55 * poly.speed * (1 - Math.exp(-age * 4))
+      const ox = (dx / len) * travel
+      const oy = (dy / len) * travel + age * age * 40
+      ctx.save()
+      ctx.globalAlpha = alpha
+      ctx.translate(ox + dx * size, oy + dy * size)
+      ctx.rotate(poly.spin * age)
+      ctx.beginPath()
+      poly.pts.forEach((p, i) => {
+        const x = (p.x - poly.cx) * size
+        const y = (p.y - poly.cy) * size
+        if (i === 0) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      })
+      ctx.closePath()
+      ctx.clip()
+      if (hasImg) {
+        ctx.drawImage(v.face, -poly.cx * size, -poly.cy * size, size, size)
+      } else {
+        ctx.fillStyle = v.color || '#888'
+        ctx.fillRect(-size, -size, size * 2, size * 2)
+      }
+      ctx.restore()
+    }
+    // crimson / goop comic particles from fixed angles
+    ctx.globalAlpha = alpha
+    ctx.fillStyle = goop ? 'rgba(180, 60, 160, 0.9)' : 'rgba(170, 15, 30, 0.9)'
+    for (let i = 0; i < 14; i++) {
+      const a = (i / 14) * Math.PI * 2 + i * 0.7
+      const d = size * 0.3 + ts * (140 + (i % 4) * 50)
+      ctx.beginPath()
+      ctx.arc(Math.cos(a) * d, Math.sin(a) * d, 3 + (i % 3) * 2, 0, Math.PI * 2)
+      ctx.fill()
+    }
     ctx.restore()
   }
 

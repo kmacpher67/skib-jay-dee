@@ -15,6 +15,14 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.79 (real code — 2026-10-22):** Boom Stick Slice D: splotch decals
+  (cap 12, goop on Noob-noob) and one combined portrait-shatter cutaway per
+  blast (seeded 25-shard polygon set clipped from the real portrait, 1.75s
+  cap, reduced-motion 0.9s path, up to 3 portraits + `+N MORE`). Placeholder
+  splotch PNGs (`frontend/src/assets/splat/`) and stub SFX
+  (`frontend/src/assets/audio/boom-stick-*.mp3`, NOT wired yet) use the
+  filenames from `splat-effects-brief-for-alex.md`; swap finals in place.
+  See `roadmap-handoff-v0.4.79.md`. Next: Slice E (subtitles + SFX wiring + mute).
 - **v0.4.78 (real code — 2026-10-22):** Boom Stick Slice C2 (cone blast,
   1-in-3 explosions, 7s stun + 90px knockback, 12s respawn, session body
   count, one reward per blast, temporary SPLAT!/smoke) plus the issue #5

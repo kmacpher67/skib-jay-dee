@@ -2451,3 +2451,12 @@ Mode B. Ken asked to finish Boom Stick, update the version files, and deploy.
 - Blast smoke is deterministic (no `Math.random`) so tests can script explosion rolls.
 - Shipped the pending issue #5 wall-spawn fix in the same version.
 - Not done: splotch decal, portrait-shatter cutaway (Slice D); subtitles / SFX (E); final voice (F, needs Ken's recordings); handgun ammo / chaser HP / persistent body count; `Splat` death gag. Issue #3 stays open for those.
+
+## v0.4.79 — Boom Stick Slice D: splotch + shatter cutaway (Claude Sonnet 5.5, 2026-10-22)
+
+- Exploded chasers now trigger one cutaway per blast: hit-stop, punch-in, 25 seeded irregular shards clipped from the chaser's real portrait flying outward, white fracture flash, crimson (goop on Noob-noob) particles, quote card, snap back. Hard cap 1.75s; reduced-motion shows a 0.2s cracked-portrait flash then the quote card, 0.9s total. Up to 3 portraits, extras shown as `+N MORE`.
+- Simulation is frozen during the cutaway. Any non-chase phase (capture, level change) cancels it; level sync clears splotches.
+- Splotch decal stamped at 0.62s (up front for reduced-motion), cap 12 oldest-dropped, 4 variants, crimson vs goop by difficulty. Replaced the temporary `SPLAT!` text; muzzle flash and 6px camera kick added.
+- Placeholder assets with Alex's proposed filenames: 8 splotch PNGs (procedural) and 5 `boom-stick-*.mp3` stubs (not wired).
+- Decision: quotes are the two signature lines (75/25) for Casual and 4chan-st; Noob-noob uses its caption pool. Supplemental captions/difficulty routing deferred to Slice E.
+- Not done: SFX wiring/mute (E), subtitles pools (E), final voice (F), real art swap, handgun/HP/persistent body count.

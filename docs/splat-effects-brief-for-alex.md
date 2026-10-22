@@ -141,6 +141,15 @@ wiring session will map them. These are parody quotes of recognizable
 movies and a retailer, so do a final content review before using them in
 marketing outside the game.
 
+## Status of stubs (v0.4.79)
+
+Placeholder files with these exact names already exist so finals can be
+dropped in as straight replacements: `frontend/src/assets/splat/` (8 PNGs,
+procedural blobs) and `frontend/src/assets/audio/boom-stick-*.mp3` (5
+synthesized noise stubs, not wired yet). Slice D (splotch + shatter
+cutaway) is live using the placeholder splotches. Voice files (`bs-*.mp3`)
+are not stubbed.
+
 ## Delivery
 
 Drop finished files in a folder or branch and tell Ken the filenames.

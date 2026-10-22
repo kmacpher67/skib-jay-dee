@@ -778,3 +778,9 @@ a new shipped version or docs-only planning note.
 - Issue #5 pickup wall-spawn fix shipped in the same version (see v0.4.78-pending entries above).
 - Added `frontend/e2e/boom-stick-c2.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.78.
 2026-10-22 | docs (Claude Sonnet 5.5) | Added `docs/splat-effects-brief-for-alex.md`: what remains to finish the Boom Stick splat (Slices D/E/F), art/SFX asset list with suggested filenames and timings. Docs only, no code.
+
+## v0.4.79 — 2026-10-22 (Claude Sonnet 5.5)
+- Boom Stick Slice D: one portrait-shatter cutaway per blast (1.75s cap, reduced-motion 0.9s path, up to 3 portraits + `+N MORE`).
+- Floor splotch decals (cap 12, crimson / Noob-noob goop), muzzle flash, 6px camera kick; temporary `SPLAT!` text removed.
+- Placeholder splotch PNGs and `boom-stick-*.mp3` stubs added under Alex's proposed filenames (SFX not wired).
+- Added `frontend/e2e/boom-stick-d-cutaway.spec.js`; Version Log modal updated; `GAME_ITERATION` -> v0.4.79.

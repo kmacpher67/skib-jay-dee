@@ -14,10 +14,25 @@ import dedDad from './assets/ded-dad.jpg'
 import crazyJackChaser from './assets/crazy-jack-chaser.jpeg'
 import skyDiverMotorKiller from './assets/sky-diver-motor-killer.png'
 import turdstoneTokenSprite from './assets/turdstone-toilet-token-perk.png'
+import splatCrimson1 from './assets/splat/splat-crimson-1.png'
+import splatGoop1 from './assets/splat/splat-goop-1.png'
+import splatCrimson2 from './assets/splat/splat-crimson-2.png'
+import splatGoop2 from './assets/splat/splat-goop-2.png'
+import splatCrimson3 from './assets/splat/splat-crimson-3.png'
+import splatGoop3 from './assets/splat/splat-goop-3.png'
+import splatCrimson4 from './assets/splat/splat-crimson-4.png'
+import splatGoop4 from './assets/splat/splat-goop-4.png'
 
 // The Turdstone Token sprite — loaded once here and re-exported so GameEngine
 // can pull it in without importing from assets directly inside the engine.
 export { turdstoneTokenSprite }
+
+// Boom Stick splotch decals. Placeholder art until Alex's finals land; swap
+// the PNGs in assets/splat/ keeping the same filenames.
+export const SPLAT_SPRITES = {
+  crimson: [splatCrimson1, splatCrimson2, splatCrimson3, splatCrimson4],
+  goop: [splatGoop1, splatGoop2, splatGoop3, splatGoop4],
+}
 
 export const RUNNER_FACE_POOL = [
   { id: 'jayden-default', label: 'Jayden Default', src: jaydenDefault },

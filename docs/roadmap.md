@@ -39,7 +39,7 @@ the flow end-to-end:
   [#2](https://github.com/kmacpher67/skib-jay-dee/issues/2) — close once
   Ken confirms the feel in a live playtest. See
   [`roadmap-handoff-v0.4.76.md`](handoffs/roadmap-handoff-v0.4.76.md).
-- [ ] **Gun rebalance (ammo table, longer stun/knockback, chaser HP tiers, body count, Splat) + escalating "Boom Stick" shotgun + per-difficulty kill dialog/audio.** [#3](https://github.com/kmacpher67/skib-jay-dee/issues/3) — fully refined 2026-09-20 in [`roadmap-handoff-v0.4.77-plan.md`](handoffs/roadmap-handoff-v0.4.77-plan.md). **C1 shipped in v0.4.77**: Boom Stick event rolls occur at level start and every extra-chaser spawn, Level 1 is 6% for all modes, each level adds 3/6/9 points for Noob-noob/Casual/4chan-st, the combined chance is capped at 90%, Lucky assist is trimmed under that cap, and success spawns a loaded Boom Stick if unowned or one loose shell if owned (one-shell chamber, five-shell reserve, 0.85s reload state). **C2 shipped in v0.4.78** (cone blast, 1-in-3 explosions, stun/knockback, 12s respawn, body count). **Still open:** D splotch + cutaway; E subtitles/browser-safe SFX; F final voice assets; and the broader handgun/HP/persistent-body-count work.
+- [ ] **Gun rebalance (ammo table, longer stun/knockback, chaser HP tiers, body count, Splat) + escalating "Boom Stick" shotgun + per-difficulty kill dialog/audio.** [#3](https://github.com/kmacpher67/skib-jay-dee/issues/3) — fully refined 2026-09-20 in [`roadmap-handoff-v0.4.77-plan.md`](handoffs/roadmap-handoff-v0.4.77-plan.md). **C1 shipped in v0.4.77**: Boom Stick event rolls occur at level start and every extra-chaser spawn, Level 1 is 6% for all modes, each level adds 3/6/9 points for Noob-noob/Casual/4chan-st, the combined chance is capped at 90%, Lucky assist is trimmed under that cap, and success spawns a loaded Boom Stick if unowned or one loose shell if owned (one-shell chamber, five-shell reserve, 0.85s reload state). **C2 shipped in v0.4.78** (cone blast, 1-in-3 explosions, stun/knockback, 12s respawn, body count). **D shipped in v0.4.79** (splotch + shatter cutaway, placeholder art). **Still open:** E subtitles/browser-safe SFX; F final voice assets; and the broader handgun/HP/persistent-body-count work.
 - [ ] **Taco fart attack rework (funnier, omni-directional, difficulty-scaled, new trophy).** [#4](https://github.com/kmacpher67/skib-jay-dee/issues/4) — blocked on confirming current implementation first.
 
 **Decision (2026-08-07):** going with the hybrid from the experiment
@@ -113,7 +113,7 @@ Updated summary:
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next (ranked)** | 1 | Boom Stick Slice D (splotch + cutaway), copy-paste in `roadmap-handoff-v0.4.78.md`. C2 shipped in v0.4.78. Pickup-consumption tracking + Play Recap and Debug State Dump already shipped (v0.4.67, v0.4.64). |
+| **Unblocked — code next (ranked)** | 1 | Boom Stick Slice E (subtitles + SFX wiring + mute), copy-paste in `roadmap-handoff-v0.4.79.md`. D shipped in v0.4.79. Pickup-consumption tracking + Play Recap and Debug State Dump already shipped (v0.4.67, v0.4.64). |
 | **Parallel quality debt** | 1 | Role Reversal Beta full recovery (`v0.4.61-plan`; outcome UX blocked on Ken); runner AI item-use slice (`v0.4.69-plan`) still open |
 | **Design-only / TBD** | 3 | Debt Lock math (`difficulty-mechanics-plan.md`), Level 7+ Mosaic (blocked on Ken's trigger-mechanism answer), Interactive content pack |
 | **Refinement-gated** | 1 | Audio overlay enhancement (issue #1.1) — blocked on asset list + mix/trigger decisions, see `audio-recording-brief-for-alex.md` |
@@ -121,9 +121,9 @@ Updated summary:
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 | **Open GitHub issues** | 2 (+#5 fix landed unshipped, see `rca-issue-5-pickups-in-walls.md`) | Gun rebalance + Boom Stick shotgun ([#3](https://github.com/kmacpher67/skib-jay-dee/issues/3): C1 spawn/ammo and C2 blast shipped; VFX/text, final voice assets, and broader handgun/HP work remain separate), Taco fart attack rework ([#4](https://github.com/kmacpher67/skib-jay-dee/issues/4), blocked on confirming current implementation) |
 
-Next unblocked pick is **Boom Stick Slice D** (issue #3 stays open;
-Boom Stick is not done until D splotch/cutaway, E subtitles/SFX, and
-F final voice assets land). See `roadmap-handoff-v0.4.78.md`. The
+Next unblocked pick is **Boom Stick Slice E** (issue #3 stays open;
+Boom Stick is not done until E subtitles/SFX and
+F final voice assets land). See `roadmap-handoff-v0.4.79.md`. The
 Version Log modal shows a COMING NEXT entry for this.
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.

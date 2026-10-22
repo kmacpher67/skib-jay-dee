@@ -1,5 +1,10 @@
 const PAST_VERSION_NOTES = [
   {
+    version: 'v0.4.79',
+    title: 'Boom Stick Splat + Shatter Cutaway',
+    description: 'When a Boom Stick blast explodes a chaser, the game now cuts away to their portrait breaking into glass-like shards with a quote card (one cutaway per blast, up to 3 faces, 1.75s max, shorter with reduced-motion). A comic splotch stays on the floor (crimson, or purple goop on Noob-noob; max 12). The splotch art is placeholder until final art arrives.',
+  },
+  {
     version: 'v0.4.78',
     title: 'Boom Stick Blast + Pickup Wall Fix',
     description: 'The Boom Stick now fires. A 230px forward cone (blocked by walls) hits every chaser: each has a 1-in-3 chance to explode, the survivors get stunned for 7s and knocked back. Exploded chasers respawn after 12s and add to your body count. You get one sheeb reward per blast. Also fixed pickups spawning inside walls (issue #5).',
@@ -276,7 +281,7 @@ const UPCOMING_NOTES = [
   {
     status: 'COMING NEXT',
     title: 'Boom Stick Polish (Issue #3)',
-    description: 'Still to come: blood splotches, the portrait-shatter cutaway, subtitles and sound effects, and final voice lines. The blast itself is live now; the splat and smoke are temporary placeholders.',
+    description: 'Still to come: subtitles and sound effects, final art for the splotches and shards, and final voice lines. The blast, splotches, and shatter cutaway are live now with placeholder art.',
   },
 ]
 
