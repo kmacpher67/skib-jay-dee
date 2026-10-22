@@ -267,6 +267,14 @@ const PAST_VERSION_NOTES = [
   },
 ]
 
+const UPCOMING_NOTES = [
+  {
+    status: 'IN PROGRESS',
+    title: 'Boom Stick (Issue #3)',
+    description: 'Pickups, shells, and reload are in. Still coming: the cone blast, 1-in-3 explosions, survivor stun and knockback, respawns, splotches, the portrait-shatter cutaway, and final audio. Next slice: Boom Stick C2.',
+  },
+]
+
 export default function VersionModal({ iteration, onClose }) {
   const versionNotes = PAST_VERSION_NOTES
 
@@ -287,6 +295,15 @@ export default function VersionModal({ iteration, onClose }) {
         <p className="version-note">Short changelog, mirrored from the shipped session ledger.</p>
 
         <div className="version-list">
+          {UPCOMING_NOTES.map((note) => (
+            <article key={note.status} className="version-card">
+              <div className="version-card-top">
+                <span className="version-tag">{note.status}</span>
+                <h3>{note.title}</h3>
+              </div>
+              <p>{note.description}</p>
+            </article>
+          ))}
           {versionNotes.map((note) => (
             <article key={note.version} className="version-card">
               <div className="version-card-top">

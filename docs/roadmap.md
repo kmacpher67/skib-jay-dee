@@ -113,7 +113,7 @@ Updated summary:
 
 | Status | Count | Items |
 |---|---|---|
-| **Unblocked — code next (ranked)** | 2 | Pickup-consumption tracking + Play Recap (`v0.4.62-plan` Slice 2) → Debug State Dump (`v0.4.64-plan`) |
+| **Unblocked — code next (ranked)** | 1 | Boom Stick Slice C2 (blast geometry + hit outcomes), ready-to-run copy-paste in `roadmap-handoff-v0.4.77.md`. Pickup-consumption tracking + Play Recap and Debug State Dump already shipped (v0.4.67, v0.4.64). |
 | **Parallel quality debt** | 1 | Role Reversal Beta full recovery (`v0.4.61-plan`; outcome UX blocked on Ken); runner AI item-use slice (`v0.4.69-plan`) still open |
 | **Design-only / TBD** | 3 | Debt Lock math (`difficulty-mechanics-plan.md`), Level 7+ Mosaic (blocked on Ken's trigger-mechanism answer), Interactive content pack |
 | **Refinement-gated** | 1 | Audio overlay enhancement (issue #1.1) — blocked on asset list + mix/trigger decisions, see `audio-recording-brief-for-alex.md` |
@@ -121,8 +121,10 @@ Updated summary:
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
 | **Open GitHub issues** | 2 (+#5 fix landed unshipped, see `rca-issue-5-pickups-in-walls.md`) | Gun rebalance + Boom Stick shotgun ([#3](https://github.com/kmacpher67/skib-jay-dee/issues/3): C1 spawn/ammo shipped; C2 blast, VFX/text, final voice assets, and broader handgun/HP work remain separate), Taco fart attack rework ([#4](https://github.com/kmacpher67/skib-jay-dee/issues/4), blocked on confirming current implementation) |
 
-Next unblocked pick is **Pickup-consumption tracking + Play Recap**
-(`roadmap-handoff-v0.4.62-plan.md` Slice 2).
+Next unblocked pick is **Boom Stick Slice C2** (issue #3 stays open;
+Boom Stick is not done until C2, D splotch/cutaway, E subtitles/SFX, and
+F final voice assets land). See `roadmap-handoff-v0.4.77.md`. The
+Version Log modal shows an IN PROGRESS entry for this.
 
 Planning-session entry point: `docs/next-agent-planning-brief.md`.
 Coding-session entry point: `docs/next-agent-coding-brief.md`.
