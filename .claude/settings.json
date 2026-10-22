@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check frontend/src/GameEngine.js)",
+      "Bash(cd /mnt/data/projects/skib-jay-dee/frontend && ls src src/* | head -60; grep -n \"canvas\\\\|requestAnimationFrame\\\\|three\\\\|pixi\\\\|phaser\" package.json src -r -l | head; cat package.json | sed -n 1,40p; grep -n \"role.reversal\\\\|reversal\" -i ../docs/role-reversal-design.md | head -5)",
+      "Read(//mnt/data/projects/docs/**)",
+      "Read(//mnt/data/docs/**)"
+    ]
+  }
+}
