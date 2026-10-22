@@ -15,6 +15,13 @@ entry heading so the change trail stays obvious at a glance.
 
 ## Current state
 
+- **v0.4.78-pending (real code, unshipped — 2026-10-22):** Issue #5 bug-fix
+  slice. Fixed pickups (potion/decoy/taco/turdstone) no longer spawn in
+  walls; random spawns keep a wall margin; held input cleared at level
+  sync (defensive, root cause of the latch is unconfirmed). Not version
+  bumped or deployed — ship + close #5 when Ken says so. See
+  `rca-issue-5-pickups-in-walls.md`. Known leftover: potion shrink never
+  restores runner size (`future-versions.md`).
 - **v0.4.77 (real code — 2026-09-20):** Completed Boom Stick Slice C1
   from GitHub issue #3. The game now rolls Boom Stick events at level
   start and every extra-chaser spawn, using the planned level/difficulty

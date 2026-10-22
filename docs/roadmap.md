@@ -119,7 +119,7 @@ Updated summary:
 | **Refinement-gated** | 1 | Audio overlay enhancement (issue #1.1) — blocked on asset list + mix/trigger decisions, see `audio-recording-brief-for-alex.md` |
 | **Blocked on Ken** | 2 | Audio 2 phase 1 (record capture clips), Yoodeling Unc-2 photo |
 | **Large / later** | 2 | Intro cinematic, Multiplayer (Phase 5) |
-| **Open GitHub issues** | 2 | Gun rebalance + Boom Stick shotgun ([#3](https://github.com/kmacpher67/skib-jay-dee/issues/3): C1 spawn/ammo shipped; C2 blast, VFX/text, final voice assets, and broader handgun/HP work remain separate), Taco fart attack rework ([#4](https://github.com/kmacpher67/skib-jay-dee/issues/4), blocked on confirming current implementation) |
+| **Open GitHub issues** | 2 (+#5 fix landed unshipped, see `rca-issue-5-pickups-in-walls.md`) | Gun rebalance + Boom Stick shotgun ([#3](https://github.com/kmacpher67/skib-jay-dee/issues/3): C1 spawn/ammo shipped; C2 blast, VFX/text, final voice assets, and broader handgun/HP work remain separate), Taco fart attack rework ([#4](https://github.com/kmacpher67/skib-jay-dee/issues/4), blocked on confirming current implementation) |
 
 Next unblocked pick is **Pickup-consumption tracking + Play Recap**
 (`roadmap-handoff-v0.4.62-plan.md` Slice 2).

@@ -185,3 +185,7 @@ simulation; memory is not the risk, mobile frame rate, portrait controls
 and parody/IP content are. Needs Ken's answers to decisions D1-D7 before
 a code-ready handoff. Full evaluation, slices S0-S6 and a draft GitHub
 issue body: [`chase-cam-raycast-view-plan.md`](chase-cam-raycast-view-plan.md).
+
+## Schleimy Potion shrink never restores (found 2026-10-22, issue #5 RCA)
+
+Runner `w/h` drops to 14 on pickup and is not restored when the 8s buff ends. Fix needs a grow-back that only expands when the full-size rect is wall-free (otherwise it re-creates the stuck-in-wall bug). Needs a design call from Ken on the grow-back policy. See `docs/rca-issue-5-pickups-in-walls.md`.

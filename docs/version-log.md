@@ -2433,3 +2433,12 @@ Mode A planning only; no code, build, `GAME_ITERATION` bump, or deploy.
   separate issue #3 slices so the Boom Stick can ship incrementally.
 - Full implementation contract:
   `docs/handoffs/roadmap-handoff-v0.4.77-plan.md`.
+
+## v0.4.78-pending — Issue #5 pickup wall-spawn fix (Claude Sonnet 5.5, 2026-10-22)
+
+Mode B bug-fix slice. Code landed on `master`; `GAME_ITERATION` NOT bumped and NOT deployed (awaiting Ken).
+
+- Fixed fixed-position pickups (Schleimy Potion, Decoy, Taco Bell, Turdstone Token) spawning inside walls; added wall-margin clearance to random spawns. See `docs/rca-issue-5-pickups-in-walls.md`.
+- Defensive fix for latched keyboard direction at level start: held input is cleared on level sync. Root cause of that symptom is a hypothesis, not reproduced.
+- Added `frontend/e2e/issue-5-pickup-wall-spawn.spec.js`.
+- Not done: potion shrink never restores runner size (parked in future-versions); GitHub issue #5 left open until ship.

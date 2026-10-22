@@ -765,3 +765,8 @@ a new shipped version or docs-only planning note.
 2026-09-20 | docs (Codex GPT-5) | v0.4.77-plan: renamed issue #3's proposed Poop Popper shotgun to the Boom Stick; refined escalating level/difficulty spawn events (6% Level 1, Level-2 9%/12%/15%, per-extra-chaser rerolls, 90% cap), one-shell chamber + reserve ammo, independent 1-in-3 chaser explosions, splotch/respawn rules, 1.75s portrait Voronoi-shatter cutaway, Mustang-and-Sally/Freekalops dialogue, tests, and small implementation slices. Mechanics/VFX/text are code-ready; final voice integration waits for recorded/approved assets. No code, build, version bump, or deploy.
 
 2026-10-22 | docs (Claude Sonnet 5.5) | Chase-cam / raycast view mode evaluation: added `docs/chase-cam-raycast-view-plan.md` (architecture check, memory/perf verdict, 3 interpretations, viewMode seam strategy, slices S0-S6, content/rules/parody-IP open decisions D1-D7, draft GitHub issue body) and a parking-lot entry in `docs/future-versions.md`. Mode A only: no code, build, version bump, or deploy.
+
+## v0.4.78-pending — 2026-10-22 (unshipped, no version bump)
+- Issue #5: pickups (potion, decoy, taco, turdstone) no longer spawn inside walls; random spawns keep 8px wall margin.
+- Issue #5: held input cleared on level sync (defensive fix for latched direction).
+- Added `docs/rca-issue-5-pickups-in-walls.md` and `frontend/e2e/issue-5-pickup-wall-spawn.spec.js`.

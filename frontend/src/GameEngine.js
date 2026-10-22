@@ -372,6 +372,8 @@ const GUN_BULLET_SIZE = 8
 const GUN_STUN_MIN = 3
 const GUN_STUN_MAX = 5
 const GUN_PICKUP_SIZE = 28
+// Issue #5: open space required around any spawned pickup (wall-stuck fix).
+const PICKUP_WALL_MARGIN = 8
 const FRIENDLY_FIRE_GRACE_SECONDS = 2 // window after a gun-stun wears off for the "Friendly Fire" badge
 const BOOM_STICK_BASE_CHANCE = 0.06
 const BOOM_STICK_MAX_EVENT_CHANCE = 0.9
@@ -1113,6 +1115,10 @@ export class GameEngine {
       this.chaser.y = this.level.chaserSpawn.y
       this.stamina = this.maxStamina
     }
+
+    // Issue #5: drop any key/joystick state carried across the level
+    // transition so a lost keyup can't leave a direction latched.
+    if (resetPositions) this._clearHeldInput()
 
     this.bullets = []
     this.chaserProjectiles = []
@@ -2099,10 +2105,12 @@ export class GameEngine {
     // Only one Turdstone Token can be held at a time — no point spawning another.
     if (this.runner.hasTurdstoneToken) return
     if (this.levelIndex === 3) {
+      const fixed = this._findClearSpawnNear(820, 220, TURDSTONE_TOKEN_PICKUP_SIZE)
+      if (!fixed) return
       this.pickups.push({
         type: 'turdstone-token',
-        x: 820,
-        y: 220,
+        x: fixed.x,
+        y: fixed.y,
         w: TURDSTONE_TOKEN_PICKUP_SIZE,
         h: TURDSTONE_TOKEN_PICKUP_SIZE,
       })
@@ -2124,12 +2132,12 @@ export class GameEngine {
   _maybeSpawnSchleimyPotion() {
     const chance = this.levelIndex === 3 ? 1.0 : 0.15
     if (Math.random() > chance) return
-    const cx = WORLD.width / 2
-    const cy = WORLD.height / 2
+    const spot = this._findClearSpawnNear(WORLD.width / 2, WORLD.height / 2, GAWD_PARTICLE_PICKUP_SIZE)
+    if (!spot) return
     this.pickups.push({
       type: 'schleimy-potion',
-      x: cx,
-      y: cy,
+      x: spot.x,
+      y: spot.y,
       w: GAWD_PARTICLE_PICKUP_SIZE,
       h: GAWD_PARTICLE_PICKUP_SIZE,
       vx: 0,
@@ -2141,12 +2149,12 @@ export class GameEngine {
   _maybeSpawnTacoBell() {
     const chance = this.levelIndex === 3 ? 0.3 : 0.05
     if (Math.random() > chance) return
-    const cx = this.map.walls[0].x + this.map.walls[0].w / 2
-    const cy = this.map.walls[0].y + this.map.walls[0].h / 2
+    const spot = this._findClearSpawnNear(WORLD.width / 2, WORLD.height / 2, 28)
+    if (!spot) return
     this.pickups.push({
       type: 'taco-bell',
-      x: cx,
-      y: cy,
+      x: spot.x,
+      y: spot.y,
       w: 28,
       h: 28,
       vx: 0,
@@ -2158,12 +2166,12 @@ export class GameEngine {
   _maybeSpawnDecoy() {
     const chance = this.levelIndex === 3 ? 0.3 : 0.05
     if (Math.random() > chance) return
-    const cx = WORLD.width / 2
-    const cy = WORLD.height / 2
+    const spot = this._findClearSpawnNear(WORLD.width / 2, WORLD.height / 2, 28)
+    if (!spot) return
     this.pickups.push({
       type: 'decoy',
-      x: cx,
-      y: cy,
+      x: spot.x,
+      y: spot.y,
       w: 28,
       h: 28,
       vx: 0,
@@ -2192,12 +2200,33 @@ export class GameEngine {
     }
   }
 
+  // Issue #5: a pickup rect is only "clear" if the full-size runner could
+  // stand on it, so leave PICKUP_WALL_MARGIN of open space on every side.
+  _isClearSpawnRect(x, y, size) {
+    const m = PICKUP_WALL_MARGIN
+    return !this._hitsWall({ x: x - m, y: y - m, w: size + m * 2, h: size + m * 2 })
+  }
+
+  // Preferred point first, then a widening ring search around it, so
+  // fixed-position pickups never land inside walls on any level layout.
+  _findClearSpawnNear(px, py, size) {
+    if (this._isClearSpawnRect(px, py, size)) return { x: px, y: py }
+    for (let r = 20; r <= 400; r += 20) {
+      for (let a = 0; a < 16; a++) {
+        const ang = (a / 16) * Math.PI * 2
+        const x = clamp(px + Math.cos(ang) * r, 60, WORLD.width - 60 - size)
+        const y = clamp(py + Math.sin(ang) * r, 60, WORLD.height - 60 - size)
+        if (this._isClearSpawnRect(x, y, size)) return { x, y }
+      }
+    }
+    return this._findRandomWalkableSpawn()
+  }
+
   _findRandomWalkableSpawn() {
-    for (let attempt = 0; attempt < 30; attempt++) {
+    for (let attempt = 0; attempt < 60; attempt++) {
       const x = 60 + Math.random() * (WORLD.width - 120)
       const y = 60 + Math.random() * (WORLD.height - 120)
-      const rect = { x, y, w: GUN_PICKUP_SIZE, h: GUN_PICKUP_SIZE }
-      if (this._hitsWall(rect)) continue
+      if (!this._isClearSpawnRect(x, y, GUN_PICKUP_SIZE)) continue
 
       const distFromRunnerSpawn = Math.hypot(x - this.level.runnerSpawn.x, y - this.level.runnerSpawn.y)
       if (distFromRunnerSpawn < 150) continue
